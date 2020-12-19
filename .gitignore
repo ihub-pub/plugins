@@ -1,14 +1,39 @@
+.github
+.gitee
+logs
+
+# Gradle #
 .gradle
-/build/
-
-# Ignore Gradle GUI config
+build
 gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-
-# Cache of project
 .gradletasknamecache
 
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+# Maven #
+target
+
+# windows #
+Thumbs.db
+
+# Mac #
+.DS_Store
+
+# Eclipse
+.project
+.classpath
+.settings
+out
+.log
+*.class
+
+# IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+.idea
+classes
+
+# Package Files #
+*.jar
+*.war
+*.ear
