@@ -1,6 +1,7 @@
 .github
 .gitee
 logs
+repo
 
 # Gradle #
 .gradle

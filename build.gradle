@@ -18,7 +18,7 @@ version versionName
 uploadArchives{ //当前项目可以发布到本地文件夹中
     repositories {
         mavenDeployer {
-            repository(url: uri('./repo')) //定义本地maven仓库的地址
+            repository(url: uri('C:\\Users\\henry\\.m2\\repository')) //定义本地maven仓库的地址
         }
     }
 }
