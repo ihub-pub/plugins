@@ -1,24 +1,16 @@
-apply plugin: 'groovy'
-apply plugin: 'maven'
+/**
+ +----------------+
+ | Build Settings |
+ +----------------+
+ */
+subprojects {
+    apply {
+        plugin 'groovy'
+        plugin 'maven'
+        from rootProject.file('gradle/publishing_settings.gradle')
+    }
 
-repositories {
-    mavenLocal()
-    jcenter()
-}
-
-dependencies {
-    compile gradleApi()
-}
-
-//publish to local directory
-def versionName = "1.0.0"
-group "pub.ihub.plugin"
-version versionName
-
-uploadArchives{ //当前项目可以发布到本地文件夹中
-    repositories {
-        mavenDeployer {
-            repository(url: uri('C:\\Users\\henry\\.m2\\repository')) //定义本地maven仓库的地址
-        }
+    dependencies {
+        implementation gradleApi()
     }
 }

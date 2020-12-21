@@ -1,0 +1,4 @@
+description = '子项目构建插件'
+
+dependencies {
+}
