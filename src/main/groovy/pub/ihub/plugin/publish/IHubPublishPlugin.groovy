@@ -11,10 +11,10 @@ import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningPlugin
 
+import static pub.ihub.plugin.Constants.RELEASE_DOCS_ENABLED
+import static pub.ihub.plugin.Constants.RELEASE_SIGNING_ENABLED
+import static pub.ihub.plugin.Constants.RELEASE_SOURCES_ENABLED
 import static pub.ihub.plugin.PluginUtils.findProperty
-import static pub.ihub.plugin.publish.Constants.RELEASE_DOCS_ENABLED
-import static pub.ihub.plugin.publish.Constants.RELEASE_SIGNING_ENABLED
-import static pub.ihub.plugin.publish.Constants.RELEASE_SOURCES_ENABLED
 
 
 

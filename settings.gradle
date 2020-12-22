@@ -6,14 +6,10 @@
 pluginManagement {
     repositories {
         flatDir dirs: "$rootProject.projectDir/gradle/plugins"
-        maven { url gradle_plugin_repo_mirror_aliyun }
-        maven { url maven_central_repo_mirror_aliyun }
-        maven { url aliyun_content_repo }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
         gradlePluginPortal()
-        mavenCentral()
-        jcenter()
-        maven { url spring_plugin_repo_release }
+        maven { url 'https://repo.spring.io/plugins-release/' }
     }
 }
 
-rootProject.name = 'ihub-plugins-gradle-plugin'
+rootProject.name = 'ihub-plugins'
