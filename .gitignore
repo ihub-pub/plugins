@@ -1,7 +1,9 @@
 .github
 .gitee
 logs
-repo
+pom.xml
+pom.xml.asc
+lombok.config
 
 # Gradle #
 .gradle

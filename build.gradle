@@ -1,16 +1,53 @@
-/**
- +----------------+
- | Build Settings |
- +----------------+
- */
-subprojects {
-    apply {
-        plugin 'groovy'
-        plugin 'maven'
-        from rootProject.file('gradle/publishing_settings.gradle')
-    }
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.12.0'
+    id 'com.github.ben-manes.versions' version '0.33.0'
+}
 
-    dependencies {
-        implementation gradleApi()
+apply {
+    plugin 'groovy'
+    plugin 'maven'
+    plugin 'maven-publish'
+}
+
+dependencies {
+    implementation gradleApi()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.name
+            from components.java
+        }
     }
 }
+
+//region Gradle plugin publication configuration
+
+pluginBundle {
+    website = 'https://github.com/ihub-pub/plugins'
+    vcsUrl = 'https://github.com/ihub-pub/plugins.git'
+    tags = ['gradle', 'spring', 'boot', 'java',]
+}
+
+gradlePlugin {
+    plugins {
+        ihubPlugins {
+            id = 'pub.ihub.plugin'
+            displayName = 'IHub Plugins Gradle Plugin'
+            description = 'IHub Plugins Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubPlugins'
+        }
+        ihubPublish {
+            id = 'pub.ihub.plugin.ihub-publish'
+            displayName = 'IHub Publish Gradle Plugin'
+            description = 'IHub Publish Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.publish.IHubPublishPlugin'
+        }
+    }
+}
+
+//endregion

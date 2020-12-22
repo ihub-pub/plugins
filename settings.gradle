@@ -16,20 +16,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = project_name + '-plugins'
-
-includeSubprojects('project')
-
-includeSubprojects('settings')
-
-private includeSubprojects(String projectPath) {
-    new File(rootDir, projectPath).with {
-        it.eachDir { dir ->
-            if ('build' != dir.name) {
-                include ":$dir.name"
-                project(":$dir.name").projectDir = new File(it.absolutePath, dir.name)
-                project(":$dir.name").name = project_name + '-' + dir.name
-            }
-        }
-    }
-}
+rootProject.name = 'ihub-plugins-gradle-plugin'
