@@ -10,7 +10,7 @@ import org.gradle.api.Project
 class PluginUtils {
 
     static String findProperty(String key, String defaultValue = null) {
-        System.getProperty(key.toUpperCase()) ?: System.getenv(key.toLowerCase()) ?: defaultValue
+        System.getenv(key) ?: System.getProperty(key, defaultValue)
     }
 
     static String findProperty(Project project, String key, String defaultValue = null) {
