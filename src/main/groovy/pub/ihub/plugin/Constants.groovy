@@ -11,35 +11,48 @@ import static pub.ihub.plugin.PluginUtils.findProperty
  */
 class Constants {
 
+    //<editor-fold desc="Settings组件相关">
+
+    static final PROJECT_NAME = 'PROJECT_NAME'
+
+    //</editor-fold>
+
+    //<editor-fold desc="仓库相关相关">
+
+    static final MAVEN_LOCAL_ENABLED = 'MAVEN_LOCAL_ENABLED'
+
     static final RELEASE_REPOSITORY_URL = 'RELEASE_REPOSITORY_URL'
     static final SNAPSHOT_REPOSITORY_URL = 'SNAPSHOT_REPOSITORY_URL'
     static final SONATYPE_NEXUS_USERNAME = 'SONATYPE_NEXUS_USERNAME'
     static final SONATYPE_NEXUS_PASSWORD = 'SONATYPE_NEXUS_PASSWORD'
 
-    static final MAVEN_LOCAL_ENABLED = 'MAVEN_LOCAL_ENABLED'
-    static final RELEASE_SIGNING_ENABLED = 'RELEASE_SIGNING_ENABLED'
-    static final RELEASE_DOCS_ENABLED = 'RELEASE_DOCS_ENABLED'
-    static final RELEASE_SOURCES_ENABLED = 'RELEASE_SOURCES_ENABLED'
-
     static final MAVEN_CENTRAL_REPOSITORY = 'MAVEN_CENTRAL_REPOSITORY'
+    static final MAVEN_CENTRAL_REPO_MIRROR_ALIYUN = 'https://maven.aliyun.com/repository/public/'
+    static final GRADLE_PLUGIN_REPO_MIRROR_ALIYUN = 'https://maven.aliyun.com/repository/gradle-plugin/'
+    static final ALIYUN_CONTENT_REPO = 'https://maven.aliyun.com/nexus/content/groups/public/'
+    static final SPRING_PLUGIN_REPO_RELEASE = 'https://repo.spring.io/plugins-release/'
     static final DEFAULT_RELEASE_REPOSITORY_URL = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
     static final DEFAULT_SNAPSHOT_REPOSITORY_URL = 'https://oss.sonatype.org/content/repositories/snapshots/'
+
+    //</editor-fold>
+
+    //<editor-fold desc="Plugins组件相关">
 
     private static final Closure<String> FIND_VERSION_FINDNER = { String key, String defaultVersion, Project project ->
         findProperty project, key, defaultVersion
     }
 
     static final Map<String, Closure<String>> GROUP_DEPENDENCY_VERSION_MAPPING = [
-            'pub.ihub.lib'       : FIND_VERSION_FINDNER.curry('ihub_lib_version',       'dev-SNAPSHOT'),
-            'org.slf4j'          : FIND_VERSION_FINDNER.curry('slf4j_version',          '1.7.25'),
-            'com.alibaba.cloud'  : FIND_VERSION_FINDNER.curry('alibaba_cloud_version',  '2.2.3.RELEASE'),
-            'io.jsonwebtoken'    : FIND_VERSION_FINDNER.curry('jjwt_version',           '0.11.2'),
-            'io.springfox'       : FIND_VERSION_FINDNER.curry('springfox_version',      '3.0.0'),
-            'io.swagger'         : FIND_VERSION_FINDNER.curry('swagger_version',        '1.6.2'),
-            'com.github.xiaoymin': FIND_VERSION_FINDNER.curry('knife4j_version',        '3.0.2'),
-            'com.sun.xml.bind'   : FIND_VERSION_FINDNER.curry('sun_jaxb_version',       '3.0.0'),
-            'com.baomidou'       : FIND_VERSION_FINDNER.curry('mybatis_plus_version',   '3.4.1'),
-            'io.protostuff'      : FIND_VERSION_FINDNER.curry('protostuff_version',     '1.7.2')
+            'pub.ihub.lib'       : FIND_VERSION_FINDNER.curry('ihub_lib_version', 'dev-SNAPSHOT'),
+            'org.slf4j'          : FIND_VERSION_FINDNER.curry('slf4j_version', '1.7.25'),
+            'com.alibaba.cloud'  : FIND_VERSION_FINDNER.curry('alibaba_cloud_version', '2.2.3.RELEASE'),
+            'io.jsonwebtoken'    : FIND_VERSION_FINDNER.curry('jjwt_version', '0.11.2'),
+            'io.springfox'       : FIND_VERSION_FINDNER.curry('springfox_version', '3.0.0'),
+            'io.swagger'         : FIND_VERSION_FINDNER.curry('swagger_version', '1.6.2'),
+            'com.github.xiaoymin': FIND_VERSION_FINDNER.curry('knife4j_version', '3.0.2'),
+            'com.sun.xml.bind'   : FIND_VERSION_FINDNER.curry('sun_jaxb_version', '3.0.0'),
+            'com.baomidou'       : FIND_VERSION_FINDNER.curry('mybatis_plus_version', '3.4.1'),
+            'io.protostuff'      : FIND_VERSION_FINDNER.curry('protostuff_version', '1.7.2')
     ]
 
     static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
@@ -69,5 +82,15 @@ class Constants {
             'debugImplementation'  : [],
             'releaseImplementation': []
     ]
+
+    //</editor-fold>
+
+    //<editor-fold desc="Publish组件相关">
+
+    static final RELEASE_SIGNING_ENABLED = 'RELEASE_SIGNING_ENABLED'
+    static final RELEASE_DOCS_ENABLED = 'RELEASE_DOCS_ENABLED'
+    static final RELEASE_SOURCES_ENABLED = 'RELEASE_SOURCES_ENABLED'
+
+    //</editor-fold>
 
 }

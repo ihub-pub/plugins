@@ -4,10 +4,12 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
 import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_MAPPING
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPOSITORY
+import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
 import static pub.ihub.plugin.PluginUtils.findProperty
 
@@ -16,7 +18,7 @@ import static pub.ihub.plugin.PluginUtils.findProperty
 /**
  * @author liheng
  */
-class IHubPlugins implements Plugin<Project> {
+class IHubPluginsPlugin implements Plugin<Project> {
 
     private static final Closure REPOSITORIES_CONFIGURE = { Project project ->
         flatDir dirs: "$project.rootProject.projectDir/libs"
@@ -29,8 +31,8 @@ class IHubPlugins implements Plugin<Project> {
         if (mavenCentralRepo && !mavenCentralRepo.blank) {
             maven { url mavenCentralRepo }
         }
-        maven { url 'https://maven.aliyun.com/repository/public/' }
-        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url MAVEN_CENTRAL_REPO_MIRROR_ALIYUN }
+        maven { url ALIYUN_CONTENT_REPO }
         mavenCentral()
         jcenter()
     }

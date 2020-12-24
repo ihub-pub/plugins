@@ -1,4 +1,4 @@
-package pub.ihub.plugin.publish
+package pub.ihub.plugin
 
 import groovy.transform.TupleConstructor
 import org.gradle.api.Project

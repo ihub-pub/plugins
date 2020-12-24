@@ -1,4 +1,4 @@
-package pub.ihub.plugin.publish
+package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project

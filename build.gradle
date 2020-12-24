@@ -1,8 +1,8 @@
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '0.12.0'
-    id 'com.github.ben-manes.versions' version '0.36.0'
+    id 'com.gradle.plugin-publish'      version '0.12.0'
+    id 'com.github.ben-manes.versions'  version '0.36.0'
 }
 
 apply {
@@ -29,23 +29,29 @@ publishing {
 
 pluginBundle {
     website = 'https://github.com/ihub-pub/plugins'
-    vcsUrl = 'https://github.com/ihub-pub/plugins.git'
-    tags = ['gradle', 'spring', 'boot', 'java',]
+    vcsUrl  = 'https://github.com/ihub-pub/plugins.git'
+    tags    = ['gradle', 'spring', 'boot', 'java',]
 }
 
 gradlePlugin {
     plugins {
+        ihubSettings {
+            id                  = 'pub.ihub.plugin.ihub-settings'
+            displayName         = 'IHub Settings Gradle Plugin'
+            description         = 'IHub Settings Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubSettingsPlugin'
+        }
         ihubPlugins {
-            id = 'pub.ihub.plugin'
-            displayName = 'IHub Plugins Gradle Plugin'
-            description = 'IHub Plugins Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubPlugins'
+            id                  = 'pub.ihub.plugin'
+            displayName         = 'IHub Plugins Gradle Plugin'
+            description         = 'IHub Plugins Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
         }
         ihubPublish {
-            id = 'pub.ihub.plugin.ihub-publish'
-            displayName = 'IHub Publish Gradle Plugin'
-            description = 'IHub Publish Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.publish.IHubPublishPlugin'
+            id                  = 'pub.ihub.plugin.ihub-publish'
+            displayName         = 'IHub Publish Gradle Plugin'
+            description         = 'IHub Publish Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubPublishPlugin'
         }
     }
 }
