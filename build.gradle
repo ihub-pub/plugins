@@ -47,6 +47,18 @@ gradlePlugin {
             description         = 'IHub Plugins Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
         }
+        ihubJava {
+            id                  = 'pub.ihub.plugin.ihub-java'
+            displayName         = 'IHub Java Gradle Plugin'
+            description         = 'IHub Java Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubJavaPlugin'
+        }
+        ihubSpring {
+            id                  = 'pub.ihub.plugin.ihub-spring'
+            displayName         = 'IHub Spring Gradle Plugin'
+            description         = 'IHub Spring Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubSpringPlugin'
+        }
         ihubPublish {
             id                  = 'pub.ihub.plugin.ihub-publish'
             displayName         = 'IHub Publish Gradle Plugin'

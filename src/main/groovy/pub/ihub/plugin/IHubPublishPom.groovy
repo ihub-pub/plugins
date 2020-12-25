@@ -20,7 +20,7 @@ class IHubPublishPom {
     String pomPackaging
     String pomDescription
     String pomUrl = 'https://ihub.pub'
-    String pomInceptionYear
+    String pomInceptionYear = '2020'
 
     String pomScmUrl
     String pomScmConnection

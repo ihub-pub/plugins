@@ -16,6 +16,9 @@ class Constants {
     static final SKIPPED_DIRS = 'skipped_dirs'
     static final MAVEN_CENTRAL_REPO_CUSTOMIZE = 'maven_central_repo_customize'
 
+    static final GRADLE_COMPILATION_INCREMENTAL = 'gradle_compilation_incremental'
+    static final JAVA_COMPATIBILITY = 'java_compatibility'
+
     //<editor-fold desc="仓库相关相关">
 
     static final MAVEN_LOCAL_ENABLED = 'MAVEN_LOCAL_ENABLED'
@@ -67,15 +70,11 @@ class Constants {
 
     static final Map<String, List<String>> GROUP_DEFAULT_DEPENDENCIES_MAPPING = [
             compileOnly          : [],
-            implementation       : [
-                    'org.slf4j:slf4j-api'
-            ],
+            implementation       : ['org.slf4j:slf4j-api'],
             api                  : [],
-            runtimeOnly          : [
-                    'org.slf4j:jul-to-slf4j',
-                    'org.slf4j:jcl-over-slf4j',
-                    'org.slf4j:log4j-over-slf4j'
-            ],
+            runtimeOnly          : ['org.slf4j:jul-to-slf4j',
+                                    'org.slf4j:jcl-over-slf4j',
+                                    'org.slf4j:log4j-over-slf4j'],
             testImplementation   : [],
             debugImplementation  : [],
             releaseImplementation: []
