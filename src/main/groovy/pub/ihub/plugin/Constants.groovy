@@ -68,19 +68,19 @@ class Constants {
     ]
 
     static final Map<String, List<String>> GROUP_DEFAULT_DEPENDENCIES_MAPPING = [
-            'compileOnly'          : [],
-            'implementation'       : [
+            compileOnly          : [],
+            implementation       : [
                     'org.slf4j:slf4j-api'
             ],
-            'api'                  : [],
-            'runtimeOnly'          : [
+            api                  : [],
+            runtimeOnly          : [
                     'org.slf4j:jul-to-slf4j',
                     'org.slf4j:jcl-over-slf4j',
                     'org.slf4j:log4j-over-slf4j'
             ],
-            'testImplementation'   : [],
-            'debugImplementation'  : [],
-            'releaseImplementation': []
+            testImplementation   : [],
+            debugImplementation  : [],
+            releaseImplementation: []
     ]
 
     //</editor-fold>

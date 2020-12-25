@@ -12,6 +12,7 @@ import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPOSITORY
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
 import static pub.ihub.plugin.PluginUtils.findProperty
+import static pub.ihub.plugin.PluginUtils.printConfigContent
 
 
 
@@ -69,23 +70,16 @@ class IHubPluginsPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.repositories REPOSITORIES_CONFIGURE.curry(project)
         project.subprojects { repositories REPOSITORIES_CONFIGURE.curry(project) }
-        println '<<<<<<<<<<<<<<<<<<<<<<<<<<配置组件仓库>>>>>>>>>>>>>>>>>>>>>>>>>>'
-        println project.repositories*.displayName.join('\n')
+        printConfigContent 'Gradle Project Repos', project.repositories*.displayName
 
         project.configurations CONFIGURATIONS_CONFIGURE.curry(project)
         project.subprojects { configurations CONFIGURATIONS_CONFIGURE.curry(project) }
-        println '<<<<<<<<<<<<<<<<<<<<<<<<配置组件默认版本>>>>>>>>>>>>>>>>>>>>>>>>'
-        GROUP_DEPENDENCY_VERSION_MAPPING.each { key, findner ->
-            println "${key} -> ${findner(project)}"
-        }
-        println '<<<<<<<<<<<<<<<<<<<<<<<<排除组件默认依赖>>>>>>>>>>>>>>>>>>>>>>>>'
-        GROUP_DEPENDENCY_EXCLUDE_MAPPING.each { key, modules ->
-            modules.each { println "${key} -> $it" }
-        }
-        println '<<<<<<<<<<<<<<<<<<<<<<<<配置默认依赖组件>>>>>>>>>>>>>>>>>>>>>>>>'
-        GROUP_DEFAULT_DEPENDENCIES_MAPPING.each { key, list ->
-            list.each { println "$key $it" }
-        }
+        printConfigContent 'Gradle Project Group Dependency Version', 'Group', 'Version',
+                GROUP_DEPENDENCY_VERSION_MAPPING.collectEntries { key, findner -> [(key): findner(project)] }
+        printConfigContent 'Gradle Project Exclude Group Modules', 'Group', 'Modules',
+                GROUP_DEPENDENCY_EXCLUDE_MAPPING
+        printConfigContent 'Gradle Project Config Default Dependencies', 'DependencyType', 'Dependencies',
+                GROUP_DEFAULT_DEPENDENCIES_MAPPING
     }
 
 }
