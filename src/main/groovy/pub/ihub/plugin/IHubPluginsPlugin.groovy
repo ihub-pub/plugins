@@ -8,7 +8,7 @@ import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
 import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_MAPPING
-import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPOSITORY
+import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_CUSTOMIZE
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
 import static pub.ihub.plugin.PluginUtils.findProperty
@@ -28,7 +28,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
         }
         // TODO 添加私有仓库
         // 添加自定义仓库
-        def mavenCentralRepo = findProperty project, MAVEN_CENTRAL_REPOSITORY
+        def mavenCentralRepo = findProperty project, MAVEN_CENTRAL_REPO_CUSTOMIZE
         if (mavenCentralRepo && !mavenCentralRepo.blank) {
             maven { url mavenCentralRepo }
         }

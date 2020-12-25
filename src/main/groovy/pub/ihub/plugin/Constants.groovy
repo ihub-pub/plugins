@@ -11,11 +11,10 @@ import static pub.ihub.plugin.PluginUtils.findProperty
  */
 class Constants {
 
-    //<editor-fold desc="Settings组件相关">
-
-    static final PROJECT_NAME = 'PROJECT_NAME'
-
-    //</editor-fold>
+    static final PROJECT_NAME = 'project_name'
+    static final INCLUDE_DIRS = 'include_dirs'
+    static final SKIPPED_DIRS = 'skipped_dirs'
+    static final MAVEN_CENTRAL_REPO_CUSTOMIZE = 'maven_central_repo_customize'
 
     //<editor-fold desc="仓库相关相关">
 
@@ -26,7 +25,6 @@ class Constants {
     static final SONATYPE_NEXUS_USERNAME = 'SONATYPE_NEXUS_USERNAME'
     static final SONATYPE_NEXUS_PASSWORD = 'SONATYPE_NEXUS_PASSWORD'
 
-    static final MAVEN_CENTRAL_REPOSITORY = 'MAVEN_CENTRAL_REPOSITORY'
     static final MAVEN_CENTRAL_REPO_MIRROR_ALIYUN = 'https://maven.aliyun.com/repository/public/'
     static final GRADLE_PLUGIN_REPO_MIRROR_ALIYUN = 'https://maven.aliyun.com/repository/gradle-plugin/'
     static final ALIYUN_CONTENT_REPO = 'https://maven.aliyun.com/nexus/content/groups/public/'

@@ -5,8 +5,10 @@ import org.gradle.api.initialization.Settings
 
 import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
 import static pub.ihub.plugin.Constants.GRADLE_PLUGIN_REPO_MIRROR_ALIYUN
+import static pub.ihub.plugin.Constants.INCLUDE_DIRS
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.PROJECT_NAME
+import static pub.ihub.plugin.Constants.SKIPPED_DIRS
 import static pub.ihub.plugin.Constants.SPRING_PLUGIN_REPO_RELEASE
 import static pub.ihub.plugin.PluginUtils.findProperty
 import static pub.ihub.plugin.PluginUtils.printConfigContent
@@ -37,6 +39,22 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
 
         settings.rootProject.name = findProperty settings, PROJECT_NAME, settings.rootProject.name
+
+        def includeDirs = findProperty settings, INCLUDE_DIRS
+        def skippedDirs = findProperty settings, SKIPPED_DIRS
+        if (includeDirs) {
+            includeDirs.split(',').each {
+                settings.include ":$it"
+                settings.project(":$it").name = settings.rootProject.name + '-' + it
+            }
+        } else if (skippedDirs) {
+            settings.rootDir.eachDir {
+                if (!skippedDirs.split(',').contains(it.name)) {
+                    settings.include ":$it.name"
+                    settings.project(":$it.name").name = settings.rootProject.name + '-' + it.name
+                }
+            }
+        }
 
         settings.extensions.add('includeSubprojects', {
             String projectPath, String namePrefix = settings.rootProject.name, String nameSuffix = '' ->
