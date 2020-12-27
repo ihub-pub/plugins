@@ -7,6 +7,7 @@ import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
 import static pub.ihub.plugin.Constants.GRADLE_PLUGIN_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.INCLUDE_DIRS
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
+import static pub.ihub.plugin.Constants.PLUGINS_DEPENDENCY_VERSION_MAPPING
 import static pub.ihub.plugin.Constants.PROJECT_NAME
 import static pub.ihub.plugin.Constants.SKIPPED_DIRS
 import static pub.ihub.plugin.Constants.SPRING_PLUGIN_REPO_RELEASE
@@ -35,8 +36,15 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 if (!findByName("MavenRepo")) mavenCentral()
                 if (!findByName("BintrayJCenter")) jcenter()
             }
+
+            plugins {
+                PLUGINS_DEPENDENCY_VERSION_MAPPING.each { group, version ->
+                    id group version version
+                }
+            }
         }
         printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
+        printConfigContent 'Gradle Plugin Plugins', 'ID', 'Version', PLUGINS_DEPENDENCY_VERSION_MAPPING
 
         settings.rootProject.name = findProperty settings, PROJECT_NAME, settings.rootProject.name
 

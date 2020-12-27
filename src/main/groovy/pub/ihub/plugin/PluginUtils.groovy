@@ -12,32 +12,24 @@ class PluginUtils {
     private static final DEFAULT_CONTENT_WIDTH = 80
 
     static String findProperty(String key, String defaultValue = null) {
-        System.getProperty(key) ?: System.getenv(key) ?: System.getProperty(key.toUpperCase()) ?: key.toLowerCase().with {
-            System.getProperty(it) ?: System.getProperty(it.split('_').inject { a, b -> a + b.capitalize() })
-                    ?: System.getProperty(it.replaceAll('_', '.'), defaultValue)
-        }
+        findProperty({ String k -> System.getProperty(k) ?: System.getenv(k) }, key, defaultValue)
     }
 
     static String findProperty(Project project, String key, String defaultValue = null) {
-        project.findProperty(key) ?: key.replaceAll(/([A-Z])/, '_$1').toLowerCase().with {
-            project.findProperty(it) ?: project.findProperty(it.toUpperCase())
-                    ?: project.findProperty(it.replaceAll('_', '.'))
-                    ?: project.findProperty(it.replaceAll('_', '-'))
-                    ?: defaultValue
-        }
+        findProperty({ Project p, String k -> p.findProperty k }.curry(project), key, defaultValue)
     }
 
     static String findProperty(obj, String key, String defaultValue = null) {
-        getObjectProperty(obj, key) ?: key.toLowerCase().with {
-            getObjectProperty(obj, it) ?: getObjectProperty(obj, it.toUpperCase())
-                    ?: getObjectProperty(obj, it.replaceAll('_', '.'))
-                    ?: getObjectProperty(obj, it.replaceAll('_', '-'))
-                    ?: defaultValue
-        }
+        findProperty({ o, String k -> o.hasProperty(k) ? o."$k" : null }.curry(obj), key, defaultValue)
     }
 
-    private static String getObjectProperty(obj, String key) {
-        obj.hasProperty(key) ? obj."$key" : null
+    static String findProperty(Closure closure, String key, String defaultValue = null) {
+        closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').toLowerCase().with {
+            closure(it) ?: closure(it.toUpperCase())
+                    ?: closure(it.replaceAll('_', '.'))
+                    ?: closure(it.replaceAll('_', '-'))
+                    ?: defaultValue
+        }
     }
 
     static void printConfigContent(String title, List<String> list) {

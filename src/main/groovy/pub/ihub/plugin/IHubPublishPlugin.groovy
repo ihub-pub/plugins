@@ -45,42 +45,7 @@ class IHubPublishPlugin implements Plugin<Project> {
                         publication.artifact it
                     }
 
-                    publication.pom { p ->
-                        p.name.set pom.pomName ?: project.name
-                        p.packaging = pom.pomPackaging
-                        p.description.set pom.pomDescription
-                        p.url.set pom.pomUrl
-                        p.inceptionYear.set pom.pomInceptionYear
-
-                        p.scm {
-                            url.set pom.pomScmUrl
-                            connection.set pom.pomScmConnection
-                            developerConnection.set pom.pomScmDeveloperConnection
-                            tag.set pom.pomScmTag
-                        }
-
-                        p.licenses { licenses ->
-                            licenses.license {
-                                name.set pom.pomLicenseName
-                                url.set pom.pomLicenseUrl
-                                distribution.set pom.pomLicenseDistribution
-                                comments.set pom.pomLicenseComments
-                            }
-                        }
-
-                        p.developers { developers ->
-                            developers.developer {
-                                id.set pom.pomDeveloperId
-                                name.set pom.pomDeveloperName
-                                email.set pom.pomDeveloperEmail
-                                url.set pom.pomDeveloperUrl
-                                organization.set pom.pomDeveloperOrganization
-                                organizationUrl.set pom.pomDeveloperOrganizationUrl
-                                roles.set pom.pomDeveloperRoles?.split(',')?.toList() ?: []
-                                timezone.set pom.pomDeveloperTimezone
-                            }
-                        }
-                    }
+                    pom.configPom publication
                 }
             }
             repositories {

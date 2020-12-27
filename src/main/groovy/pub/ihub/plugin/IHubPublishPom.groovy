@@ -1,7 +1,8 @@
 package pub.ihub.plugin
 
-import groovy.transform.TupleConstructor
+
 import org.gradle.api.Project
+import org.gradle.api.publish.maven.MavenPublication
 
 import static pub.ihub.plugin.PluginUtils.findProperty
 
@@ -10,7 +11,6 @@ import static pub.ihub.plugin.PluginUtils.findProperty
 /**
  * @author henry
  */
-@TupleConstructor
 class IHubPublishPom {
 
     String groupId
@@ -45,6 +45,46 @@ class IHubPublishPom {
         properties.each { k, v ->
             if ('class' != k) {
                 this."$k" = findProperty project, k, v
+            }
+        }
+        pomName = pomName ?: project.name
+    }
+
+    void configPom(MavenPublication publication) {
+        publication.pom { p ->
+            p.name.set pomName
+            p.packaging = pomPackaging
+            p.description.set pomDescription
+            p.url.set pomUrl
+            p.inceptionYear.set pomInceptionYear
+
+            p.scm {
+                url.set pomScmUrl
+                connection.set pomScmConnection
+                developerConnection.set pomScmDeveloperConnection
+                tag.set pomScmTag
+            }
+
+            p.licenses { licenses ->
+                licenses.license {
+                    name.set pomLicenseName
+                    url.set pomLicenseUrl
+                    distribution.set pomLicenseDistribution
+                    comments.set pomLicenseComments
+                }
+            }
+
+            p.developers { developers ->
+                developers.developer {
+                    id.set pomDeveloperId
+                    name.set pomDeveloperName
+                    email.set pomDeveloperEmail
+                    url.set pomDeveloperUrl
+                    organization.set pomDeveloperOrganization
+                    organizationUrl.set pomDeveloperOrganizationUrl
+                    roles.set pomDeveloperRoles?.split(',')?.toList() ?: []
+                    timezone.set pomDeveloperTimezone
+                }
             }
         }
     }

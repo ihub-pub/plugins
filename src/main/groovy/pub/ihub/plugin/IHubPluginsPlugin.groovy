@@ -38,13 +38,13 @@ class IHubPluginsPlugin implements Plugin<Project> {
         jcenter()
     }
 
-    private static final Closure CONFIGURATIONS_CONFIGURE = { Project project ->
+    private static final Closure CONFIGURATIONS_CONFIGURE = { Project project, Map<String, String> groupVersion ->
         all {
             resolutionStrategy {
                 eachDependency {
-                    def findner = GROUP_DEPENDENCY_VERSION_MAPPING[it.requested.group]
-                    if (findner) {
-                        it.useVersion findner(project)
+                    def version = groupVersion[it.requested.group]
+                    if (version) {
+                        it.useVersion version
                     }
                 }
                 // 不缓存动态版本
@@ -72,10 +72,12 @@ class IHubPluginsPlugin implements Plugin<Project> {
         project.subprojects { repositories REPOSITORIES_CONFIGURE.curry(project) }
         printConfigContent 'Gradle Project Repos', project.repositories*.displayName
 
-        project.configurations CONFIGURATIONS_CONFIGURE.curry(project)
-        project.subprojects { configurations CONFIGURATIONS_CONFIGURE.curry(project) }
-        printConfigContent 'Gradle Project Group Dependency Version', 'Group', 'Version',
-                GROUP_DEPENDENCY_VERSION_MAPPING.collectEntries { key, findner -> [(key): findner(project)] }
+        def groupVersion = GROUP_DEPENDENCY_VERSION_MAPPING.collectEntries { group, version ->
+            [(group): findProperty(project, group + '.version', version)]
+        }
+        project.configurations CONFIGURATIONS_CONFIGURE.curry(project, groupVersion)
+        project.subprojects { configurations CONFIGURATIONS_CONFIGURE.curry(project, groupVersion) }
+        printConfigContent 'Gradle Project Group Dependency Version', 'Group', 'Version', groupVersion
         printConfigContent 'Gradle Project Exclude Group Modules', 'Group', 'Modules',
                 GROUP_DEPENDENCY_EXCLUDE_MAPPING
         printConfigContent 'Gradle Project Config Default Dependencies', 'DependencyType', 'Dependencies',
