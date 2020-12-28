@@ -2,9 +2,13 @@ package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaLibraryPlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.javadoc.Groovydoc
 import org.gradle.api.tasks.javadoc.Javadoc
@@ -27,8 +31,8 @@ class IHubPublishPlugin implements Plugin<Project> {
     void apply(Project project) {
         def jarTasks = getJarTasks project
 
-        project.pluginManager.apply 'maven-publish'
-        project.extensions.getByType(PublishingExtension).with {
+        project.pluginManager.apply MavenPublishPlugin
+        project.extensions.getByType(PublishingExtension).identity {
             publications {
                 it.create('mavenJava', MavenPublication) { publication ->
                     def pom = new IHubPublishPom(project)
@@ -64,7 +68,7 @@ class IHubPublishPlugin implements Plugin<Project> {
     }
 
     private static List<TaskProvider> getJarTasks(Project project) {
-        assert project.plugins.hasPlugin('java') || project.plugins.hasPlugin('java-library')
+        assert project.plugins.hasPlugin(JavaPlugin) || project.plugins.hasPlugin(JavaLibraryPlugin)
         def releaseDocsEnabled = findProperty(RELEASE_DOCS_ENABLED, 'false').toBoolean()
         def releaseSourcesEnabled = findProperty(RELEASE_SOURCES_ENABLED, 'true').toBoolean()
         def tasks = []
@@ -82,7 +86,7 @@ class IHubPublishPlugin implements Plugin<Project> {
                 from javadocTask
             }
         }
-        if (releaseDocsEnabled && project.plugins.hasPlugin('groovy')) {
+        if (releaseDocsEnabled && project.plugins.hasPlugin(GroovyPlugin)) {
             tasks << project.tasks.register('groovydocJar', Jar) {
                 archiveClassifier.set 'groovydoc'
                 def groovydocTask = project.tasks.getByName('groovydoc') as Groovydoc

@@ -65,6 +65,12 @@ gradlePlugin {
             description         = 'IHub Publish Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubPublishPlugin'
         }
+        ihubVerification {
+            id                  = 'pub.ihub.plugin.ihub-verification'
+            displayName         = 'IHub Verification Gradle Plugin'
+            description         = 'IHub Verification Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubVerificationPlugin'
+        }
     }
 }
 

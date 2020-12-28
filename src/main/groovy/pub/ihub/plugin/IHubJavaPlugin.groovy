@@ -2,6 +2,7 @@ package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.tasks.compile.AbstractCompile
 
 import static pub.ihub.plugin.Constants.GRADLE_COMPILATION_INCREMENTAL
@@ -17,7 +18,7 @@ class IHubJavaPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.pluginManager.apply 'java-library'
+        project.pluginManager.apply JavaLibraryPlugin
 //        project.pluginManager.apply 'build-dashboard' // TODO 待确认
 //        project.pluginManager.apply 'project-report' // TODO 待确认
         project.pluginManager.apply 'io.freefair.lombok'
