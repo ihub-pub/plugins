@@ -23,6 +23,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     @Override
     void apply(Settings settings) {
+        def pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
+            [(id): findProperty(settings, id + '.version', version)]
+        } as Map<String, String>
         settings.pluginManagement {
             repositories {
                 flatDir dirs: "$settings.rootProject.projectDir/gradle/plugins"
@@ -37,14 +40,18 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 if (!findByName("BintrayJCenter")) jcenter()
             }
 
-            plugins {
-                PLUGINS_DEPENDENCY_VERSION_MAPPING.each { group, version ->
-                    id group version version
+            resolutionStrategy {
+                eachPlugin {
+                    pluginVersion.each { id, version ->
+                        if (id == requested.id.toString()) {
+                            useVersion version
+                        }
+                    }
                 }
             }
         }
         printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
-        printConfigContent 'Gradle Plugin Plugins', 'ID', 'Version', PLUGINS_DEPENDENCY_VERSION_MAPPING
+        printConfigContent 'Gradle Plugin Plugins Version', 'ID', 'Version', pluginVersion
 
         settings.rootProject.name = findProperty settings, PROJECT_NAME, settings.rootProject.name
 

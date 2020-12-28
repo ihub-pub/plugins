@@ -70,11 +70,11 @@ class Constants {
     ]
 
     static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
-            'com.github.ben-manes.versions'  : '0.29.0',
+            'com.github.ben-manes.versions'  : '0.36.0',
             'com.palantir.git-version'       : '0.12.3',
-            'io.freefair.lombok'             : '5.2.1',
+            'io.freefair.lombok'             : '5.3.0',
             'io.spring.dependency-management': '1.0.10.RELEASE',
-            'org.springframework.boot'       : '2.3.5.RELEASE'
+            'org.springframework.boot'       : '2.3.7.RELEASE'
     ]
 
     //</editor-fold>
