@@ -72,9 +72,10 @@ class IHubPluginsPlugin implements Plugin<Project> {
         project.subprojects { repositories REPOSITORIES_CONFIGURE.curry(project) }
         printConfigContent 'Gradle Project Repos', project.repositories*.displayName
 
-        def groupVersion = GROUP_DEPENDENCY_VERSION_MAPPING.collectEntries { group, version ->
-            [(group): findProperty(project, group + '.version', version)]
-        }
+        def groupVersion = GROUP_DEPENDENCY_VERSION_MAPPING.findAll { it.key != project.group }
+                .collectEntries { group, version ->
+                    [(group): findProperty(project, group + '.version', version)]
+                }
         project.configurations CONFIGURATIONS_CONFIGURE.curry(project, groupVersion)
         project.subprojects { configurations CONFIGURATIONS_CONFIGURE.curry(project, groupVersion) }
         printConfigContent 'Gradle Project Group Dependency Version', 'Group', 'Version', groupVersion

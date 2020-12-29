@@ -14,8 +14,8 @@ class IHubSpringPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        def springBootDepVersion = findProperty project, 'spring_boot_dep_version', '2.3.5.RELEASE'
-        def springCloudDepVersion = findProperty project, 'spring_cloud_dep_version', 'Hoxton.SR9'
+        def springBootDepVersion = findProperty project, 'spring.boot.dependencies.version', '2.3.5.RELEASE'
+        def springCloudDepVersion = findProperty project, 'spring.cloud.dependencies.version', 'Hoxton.SR9'
 
         project.pluginManager.apply 'io.spring.dependency-management'
 

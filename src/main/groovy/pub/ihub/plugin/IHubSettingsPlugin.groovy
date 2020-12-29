@@ -71,7 +71,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             }
         }
 
-        settings.extensions.add('includeSubprojects', {
+        settings.extensions.add('includeSubprojects') {
             String projectPath, String namePrefix = settings.rootProject.name, String nameSuffix = '' ->
                 new File(settings.rootDir, projectPath).with {
                     settings.include ":$projectPath"
@@ -84,7 +84,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                         }
                     }
                 }
-        })
+        }
     }
 
 }
