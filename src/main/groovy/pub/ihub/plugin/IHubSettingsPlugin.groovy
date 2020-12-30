@@ -72,15 +72,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
 
         settings.extensions.add('includeSubprojects') {
-            String projectPath, String nameSuffix = '',
-            String namePrefix = settings.rootProject.name + '-' + projectPath, boolean includeCurrent = true ->
-                new File(settings.rootDir, projectPath).with {
-                    if (includeCurrent) {
-                        def projectName = ":$name:$name"
-                        settings.include projectName
-                        settings.project(projectName).projectDir = new File(settings.rootDir.absolutePath, name)
-                        settings.project(projectName).name = settings.rootProject.name + '-' + name
-                    }
+            String projectPath, String namePrefix = projectPath, String nameSuffix = '' ->
+                new File(settings.rootDir, projectPath).identity {
+                    settings.include ":$name"
                     eachDir { dir ->
                         if (!['build', 'src'].contains(dir.name)) {
                             def subprojectName = ":$name:$dir.name"
