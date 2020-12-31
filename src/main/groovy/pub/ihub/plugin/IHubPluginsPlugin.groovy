@@ -41,6 +41,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
     private static final Closure CONFIGURATIONS_CONFIGURE = { Project project, Map<String, String> groupVersion ->
         all {
             resolutionStrategy {
+                // TODO 使用dependencyManagement管理依赖版本
                 eachDependency {
                     def version = groupVersion[it.requested.group]
                     if (version) {

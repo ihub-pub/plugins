@@ -33,15 +33,17 @@ class Constants {
     //<editor-fold desc="Plugins组件相关">
 
     static final SPRING_BOOT_VERSION = '2.3.7.RELEASE'
-    static final SPRING_CLOUD_VERSION = 'Hoxton.SR9'
+
+    static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
+            ['org.springframework.boot' , 'spring-boot-dependencies'            , SPRING_BOOT_VERSION   ],
+            ['org.springframework.cloud', 'spring-cloud-dependencies'           , 'Hoxton.SR9'          ],
+            ['com.alibaba.cloud'        , 'spring-cloud-alibaba-dependencies'   , '2.2.3.RELEASE'       ],
+            ['com.github.xiaoymin'      , 'knife4j-dependencies'                , '3.0.2'               ]
+    ]
 
     static final Map<String, String> GROUP_DEPENDENCY_VERSION_MAPPING = [
             'pub.ihub.lib'       : 'dev-SNAPSHOT',
-            'com.alibaba.cloud'  : '2.2.3.RELEASE',
             'io.jsonwebtoken'    : '0.11.2',
-            'io.springfox'       : '3.0.0',
-            'io.swagger'         : '1.6.2',
-            'com.github.xiaoymin': '3.0.2',
             'com.sun.xml.bind'   : '3.0.0',
             'com.baomidou'       : '3.4.1',
             'io.protostuff'      : '1.7.2'

@@ -53,11 +53,11 @@ gradlePlugin {
             description         = 'IHub Java Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubJavaPlugin'
         }
-        ihubSpring {
-            id                  = 'pub.ihub.plugin.ihub-spring'
-            displayName         = 'IHub Spring Gradle Plugin'
-            description         = 'IHub Spring Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubSpringPlugin'
+        ihubDependencyManagement {
+            id                  = 'pub.ihub.plugin.ihub-dependency-management'
+            displayName         = 'IHub Dependency Management Gradle Plugin'
+            description         = 'IHub Dependency Management Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubDependencyManagementPlugin'
         }
         ihubPublish {
             id                  = 'pub.ihub.plugin.ihub-publish'
