@@ -35,7 +35,7 @@ class IHubVerificationPlugin implements Plugin<Project> {
     private static void configPmd(Project project) {
         project.pluginManager.apply PmdPlugin
         project.extensions.getByType(PmdExtension).identity {
-            toolVersion = findProperty 'pmd.version', '6.30.0'
+            toolVersion = findProperty project, 'pmd.version', '6.30.0'
             ruleSetFiles()
             ruleSets = [
                     'rulesets/java/ali-comment.xml',
@@ -80,7 +80,7 @@ class IHubVerificationPlugin implements Plugin<Project> {
     private static void configCodenarc(Project project) {
         project.pluginManager.apply CodeNarcPlugin
         project.extensions.getByType(CodeNarcExtension).identity {
-            toolVersion = findProperty 'codenarc.version', '1.6.1'
+            toolVersion = findProperty project, 'codenarc.version', '1.6.1'
             // TODO 处理配置文件
             configFile = project.rootProject.file 'conf/engineering-process/static-checking/groovy/codenarc.gcfg'
             ignoreFailures = false
@@ -90,7 +90,7 @@ class IHubVerificationPlugin implements Plugin<Project> {
     private static void configJacoco(Project project) {
         project.pluginManager.apply JacocoPlugin
         project.extensions.getByType(JacocoPluginExtension).identity {
-            toolVersion = findProperty 'jacoco.version', '0.8.6'
+            toolVersion = findProperty project, 'jacoco.version', '0.8.6'
         }
         // TODO 配置检查规则
     }

@@ -33,9 +33,9 @@ class IHubJavaPlugin implements Plugin<Project> {
             }
         }
 
-        def javaCompatibility = findProperty JAVA_COMPATIBILITY
+        def javaCompatibility = findProperty project, JAVA_COMPATIBILITY
         if (javaCompatibility) {
-            def gradleCompilationIncremental = findProperty(GRADLE_COMPILATION_INCREMENTAL, 'true').toBoolean()
+            def gradleCompilationIncremental = findProperty(project, GRADLE_COMPILATION_INCREMENTAL, 'true').toBoolean()
             project.tasks.withType(AbstractCompile) {
                 sourceCompatibility = javaCompatibility
                 targetCompatibility = javaCompatibility

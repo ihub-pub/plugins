@@ -23,7 +23,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 
     private static final Closure REPOSITORIES_CONFIGURE = { Project project ->
         flatDir dirs: "$project.rootProject.projectDir/libs"
-        if (findProperty(MAVEN_LOCAL_ENABLED, 'false').toBoolean()) {
+        if (findProperty(MAVEN_LOCAL_ENABLED, findProperty(project, MAVEN_LOCAL_ENABLED, 'false')).toBoolean()) {
             mavenLocal()
         }
         // TODO 添加私有仓库
