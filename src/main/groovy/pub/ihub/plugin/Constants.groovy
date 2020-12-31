@@ -32,9 +32,11 @@ class Constants {
 
     //<editor-fold desc="Plugins组件相关">
 
+    static final SPRING_BOOT_VERSION = '2.3.7.RELEASE'
+    static final SPRING_CLOUD_VERSION = 'Hoxton.SR9'
+
     static final Map<String, String> GROUP_DEPENDENCY_VERSION_MAPPING = [
             'pub.ihub.lib'       : 'dev-SNAPSHOT',
-            'org.slf4j'          : '1.7.25',
             'com.alibaba.cloud'  : '2.2.3.RELEASE',
             'io.jsonwebtoken'    : '0.11.2',
             'io.springfox'       : '3.0.0',
@@ -74,7 +76,7 @@ class Constants {
             'com.palantir.git-version'       : '0.12.3',
             'io.freefair.lombok'             : '5.3.0',
             'io.spring.dependency-management': '1.0.10.RELEASE',
-            'org.springframework.boot'       : '2.3.7.RELEASE'
+            'org.springframework.boot'       : SPRING_BOOT_VERSION
     ]
 
     //</editor-fold>
