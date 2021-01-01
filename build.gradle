@@ -28,9 +28,10 @@ publishing {
 //region Gradle plugin publication configuration
 
 pluginBundle {
-    website = 'https://github.com/ihub-pub/plugins'
-    vcsUrl  = 'https://github.com/ihub-pub/plugins.git'
-    tags    = ['gradle', 'spring', 'boot', 'java',]
+    website     = 'https://github.com/ihub-pub/plugins'
+    vcsUrl      = 'https://github.com/ihub-pub/plugins.git'
+    description = 'IHub Plugins Gradle Plugin'
+    tags        = ['ihub', 'groovy', 'gradle', 'spring', 'boot', 'java']
 }
 
 gradlePlugin {
