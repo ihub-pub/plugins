@@ -4,8 +4,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
-import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
-import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_CUSTOMIZE
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
@@ -34,35 +32,6 @@ class IHubPluginsPlugin implements Plugin<Project> {
 		maven { url ALIYUN_CONTENT_REPO }
 		mavenCentral()
 		jcenter()
-	}
-
-	private static final Closure CONFIGURATIONS_CONFIGURE = { Project project, Map<String, String> groupVersion ->
-		all {
-			resolutionStrategy {
-				// TODO 使用dependencyManagement管理依赖版本
-				eachDependency {
-					def version = groupVersion[it.requested.group]
-					if (version) {
-						it.useVersion version
-					}
-				}
-				// 不缓存动态版本
-				cacheDynamicVersionsFor 0, 'seconds'
-				// 不缓存快照模块
-				cacheChangingModulesFor 0, 'seconds'
-			}
-		}
-		all {
-			GROUP_DEPENDENCY_EXCLUDE_MAPPING.each { group, modules ->
-				modules.each { module ->
-					exclude group: group, module: module
-				}
-			}
-		}
-		GROUP_DEFAULT_DEPENDENCIES_MAPPING.each { key, dependencies ->
-			maybeCreate(key).getDependencies()
-				.addAll(dependencies.collect { project.getDependencies().create(it) })
-		}
 	}
 
 	@Override
