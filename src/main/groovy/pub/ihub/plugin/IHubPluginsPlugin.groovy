@@ -1,13 +1,11 @@
 package pub.ihub.plugin
 
-
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
 import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
-import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_MAPPING
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_CUSTOMIZE
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
@@ -72,18 +70,6 @@ class IHubPluginsPlugin implements Plugin<Project> {
 		project.repositories REPOSITORIES_CONFIGURE.curry(project)
 		project.subprojects { repositories REPOSITORIES_CONFIGURE.curry(project) }
 		printConfigContent 'Gradle Project Repos', project.repositories*.displayName
-
-		def groupVersion = GROUP_DEPENDENCY_VERSION_MAPPING.findAll { it.key != project.group }
-			.collectEntries { group, version ->
-				[(group): findProperty(project, group + '.version', version)]
-			}
-		project.configurations CONFIGURATIONS_CONFIGURE.curry(project, groupVersion)
-		project.subprojects { configurations CONFIGURATIONS_CONFIGURE.curry(project, groupVersion) }
-		printConfigContent 'Gradle Project Group Dependency Version', 'Group', 'Version', groupVersion
-		printConfigContent 'Gradle Project Exclude Group Modules', 'Group', 'Modules',
-			GROUP_DEPENDENCY_EXCLUDE_MAPPING
-		printConfigContent 'Gradle Project Config Default Dependencies', 'DependencyType', 'Dependencies',
-			GROUP_DEFAULT_DEPENDENCIES_MAPPING
 	}
 
 }

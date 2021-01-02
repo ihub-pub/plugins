@@ -33,20 +33,21 @@ class Constants {
 	//<editor-fold desc="Plugins组件相关">
 
 	static final SPRING_BOOT_VERSION = '2.3.7.RELEASE'
+	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
 
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'	, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
 		['org.springframework.cloud', 'spring-cloud-dependencies'			, 'Hoxton.SR9'			],
 		['com.alibaba.cloud'		, 'spring-cloud-alibaba-dependencies'	, '2.2.3.RELEASE'		],
-		['com.github.xiaoymin'		, 'knife4j-dependencies'				, '3.0.2'				]
+		['com.github.xiaoymin'		, 'knife4j-dependencies'				, '3.0.2'				],
+		['com.sun.xml.bind'			, 'jaxb-release-documentation'			, '3.0.0'				],
+		['io.protostuff'			, 'protostuff-bom'						, '1.7.2'				],
 	]
 
-	static final Map<String, String> GROUP_DEPENDENCY_VERSION_MAPPING = [
-		'pub.ihub.lib'    : 'dev-SNAPSHOT',
-		'io.jsonwebtoken' : '0.11.2',
-		'com.sun.xml.bind': '3.0.0',
-		'com.baomidou'    : '3.4.1',
-		'io.protostuff'   : '1.7.2'
+	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
+		['io.jsonwebtoken'	, '0.11.2'	, ['jjwt-jackson', 'jjwt-impl']],
+		['com.baomidou'		, '3.4.1'	, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']],
+		['net.dreamlu'		, '2.0.3'	, ['mica-auto']],
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
@@ -65,9 +66,7 @@ class Constants {
 		compileOnly          : [],
 		implementation       : ['org.slf4j:slf4j-api'],
 		api                  : [],
-		runtimeOnly          : ['org.slf4j:jul-to-slf4j',
-								'org.slf4j:jcl-over-slf4j',
-								'org.slf4j:log4j-over-slf4j'],
+		runtimeOnly          : ['org.slf4j:jul-to-slf4j', 'org.slf4j:jcl-over-slf4j', 'org.slf4j:log4j-over-slf4j'],
 		testImplementation   : [],
 		debugImplementation  : [],
 		releaseImplementation: []

@@ -13,6 +13,7 @@ import static pub.ihub.plugin.Constants.SKIPPED_DIRS
 import static pub.ihub.plugin.Constants.SPRING_PLUGIN_REPO_RELEASE
 import static pub.ihub.plugin.PluginUtils.findProperty
 import static pub.ihub.plugin.PluginUtils.printConfigContent
+import static pub.ihub.plugin.PluginUtils.tap
 
 
 
@@ -51,7 +52,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 			}
 		}
 		printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
-		printConfigContent 'Gradle Plugin Plugins Version', 'ID', 'Version', pluginVersion
+		printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), pluginVersion
 
 		settings.rootProject.name = findProperty settings, PROJECT_NAME, settings.rootProject.name
 
