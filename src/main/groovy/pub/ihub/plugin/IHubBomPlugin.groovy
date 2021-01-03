@@ -56,7 +56,7 @@ class IHubBomPlugin implements Plugin<Project> {
 			all {
 				resolutionStrategy {
 					eachDependency {
-						if ('pub.ihub.lib' == it.requested.group) {
+						if ('pub.ihub.lib' != project.group && 'pub.ihub.lib' == it.requested.group) {
 							it.useVersion findProperty(project, 'pub.ihub.lib.version', IHUB_LIB_VERSION)
 						}
 					}

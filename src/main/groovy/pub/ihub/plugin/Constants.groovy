@@ -1,4 +1,5 @@
 package pub.ihub.plugin
+
 /**
  * @author liheng
  */
@@ -41,13 +42,11 @@ class Constants {
 		['com.alibaba.cloud'		, 'spring-cloud-alibaba-dependencies'	, '2.2.3.RELEASE'		],
 		['com.github.xiaoymin'		, 'knife4j-dependencies'				, '3.0.2'				],
 		['com.sun.xml.bind'			, 'jaxb-release-documentation'			, '3.0.0'				],
-		['io.protostuff'			, 'protostuff-bom'						, '1.7.2'				],
 	]
 
 	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
 		['io.jsonwebtoken'	, '0.11.2'	, ['jjwt-jackson', 'jjwt-impl']],
 		['com.baomidou'		, '3.4.1'	, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']],
-		['net.dreamlu'		, '2.0.3'	, ['mica-auto']],
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
@@ -58,7 +57,6 @@ class Constants {
 		'org.apache.logging.log4j': ['log4j-core'],
 		'org.apache.tomcat'       : ['tomcat-jdbc'],
 		'org.slf4j'               : ['slf4j-jcl', 'slf4j-log4j12'],
-		'org.springframework.boot': ['spring-boot-starter-tomcat'],
 		'stax'                    : ['stax-api']
 	]
 
