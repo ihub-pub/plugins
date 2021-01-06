@@ -19,6 +19,7 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 
 import static pub.ihub.plugin.Constants.GRADLE_COMPILATION_INCREMENTAL
@@ -59,6 +60,18 @@ class IHubJavaPlugin implements Plugin<Project> {
 				targetCompatibility = javaCompatibility
 				options.encoding = 'UTF-8'
 				options.incremental = gradleCompilationIncremental
+			}
+		}
+
+		project.tasks.withType(Jar) {
+			manifest {
+				attributes(
+					'Implementation-Title': project.name,
+					'Automatic-Module-Name': project.name.replaceAll('-', '.'),
+					'Implementation-Version': project.version,
+					'Implementation-Vendor': 'IHub',
+					'Created-By': 'Java ' + System.getProperty('java.version')
+				)
 			}
 		}
 	}
