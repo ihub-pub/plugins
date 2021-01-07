@@ -63,8 +63,9 @@ class Constants {
 	]
 
 	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
-		['io.jsonwebtoken'	, '0.11.2'	, ['jjwt-jackson', 'jjwt-impl']],
-		['com.baomidou'		, '3.4.1'	, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']],
+		['io.jsonwebtoken'		, '0.11.2'	, ['jjwt-jackson', 'jjwt-impl']],
+		['com.baomidou'			, '3.4.1'	, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']],
+		['com.github.xiaoymin'	, '2.0.8'	, ['knife4j-aggregation-spring-boot-starter']],
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
