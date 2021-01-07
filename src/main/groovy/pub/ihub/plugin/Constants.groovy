@@ -58,6 +58,8 @@ class Constants {
 		['com.alibaba.cloud'		, 'spring-cloud-alibaba-dependencies'	, '2.2.3.RELEASE'		],
 		['com.github.xiaoymin'		, 'knife4j-dependencies'				, '3.0.2'				],
 		['com.sun.xml.bind'			, 'jaxb-release-documentation'			, '3.0.0'				],
+		['de.codecentric'			, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
+		['de.codecentric'			, 'spring-boot-admin-dependencies'		, '2.3.1'				],
 	]
 
 	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
