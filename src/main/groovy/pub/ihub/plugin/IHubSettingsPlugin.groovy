@@ -101,6 +101,13 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 					}
 				}
 		}
+
+		settings.extensions.add('includeSubproject') {
+			String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '' ->
+				def subprojectName = ":$projectPath"
+				settings.include subprojectName
+				settings.project(subprojectName).name = namePrefix + projectPath + nameSuffix
+		}
 	}
 
 }
