@@ -52,7 +52,7 @@ class IHubBomPlugin implements Plugin<Project> {
 				}
 			}
 			printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
-				tap('Group', 30), tap('Module'), tap('Version', 20)
+				tap('Group', 35), tap('Module'), tap('Version', 15)
 
 			dependencies {
 				dependenciesVersion.each { group, version, modules ->
@@ -65,7 +65,7 @@ class IHubBomPlugin implements Plugin<Project> {
 				.inject([]) { list, config ->
 					def (group, version, modules) = config
 					list + modules.collect { [group, it, version] }
-				}, tap('Group', 30), tap('Module'), tap('Version', 20)
+				}, tap('Group', 35), tap('Module'), tap('Version', 15)
 		}
 
 		project.configurations {

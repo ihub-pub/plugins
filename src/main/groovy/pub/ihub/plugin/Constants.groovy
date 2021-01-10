@@ -53,19 +53,26 @@ class Constants {
 	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
 
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
-		['org.springframework.boot'	, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
-		['org.springframework.cloud', 'spring-cloud-dependencies'			, 'Hoxton.SR9'			],
-		['com.alibaba.cloud'		, 'spring-cloud-alibaba-dependencies'	, '2.2.3.RELEASE'		],
-		['com.github.xiaoymin'		, 'knife4j-dependencies'				, '3.0.2'				],
-		['com.sun.xml.bind'			, 'jaxb-release-documentation'			, '3.0.0'				],
-		['de.codecentric'			, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
-		['de.codecentric'			, 'spring-boot-admin-dependencies'		, '2.3.1'				],
+		['org.springframework.boot'				, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
+		['org.springframework.cloud'			, 'spring-cloud-dependencies'			, 'Hoxton.SR9'			],
+		['org.springframework.security'			, 'spring-security-bom'					, '5.3.6.RELEASE'		],
+		['org.springframework.security.oauth'	, 'spring-security-oauth-parent'		, '2.5.0.RELEASE'		],
+		['com.alibaba.cloud'					, 'spring-cloud-alibaba-dependencies'	, '2.2.3.RELEASE'		],
+		['com.github.xiaoymin'					, 'knife4j-dependencies'				, '3.0.2'				],
+		['com.sun.xml.bind'						, 'jaxb-release-documentation'			, '3.0.0'				],
+		['de.codecentric'						, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
+		['de.codecentric'						, 'spring-boot-admin-dependencies'		, '2.3.1'				],
 	]
 
 	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
-		['io.jsonwebtoken'		, '0.11.2'	, ['jjwt-jackson', 'jjwt-impl']],
-		['com.baomidou'			, '3.4.1'	, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']],
-		['com.github.xiaoymin'	, '2.0.8'	, ['knife4j-aggregation-spring-boot-starter']],
+		// TODO JWT选用组件待定暂时添加
+		['org.springframework.security'			, '1.1.1.RELEASE'	, ['spring-security-jwt']],
+		['org.springframework.security.oauth'	, '2.5.0.RELEASE'	, ['spring-security-oauth2']],
+		['org.bitbucket.b_c'					, '0.7.4'			, ['jose4j']],
+		['io.jsonwebtoken'						, '0.11.2'			, ['jjwt-jackson', 'jjwt-impl']],
+		['com.baomidou'							, '3.4.1'			, ['mybatis-plus', 'mybatis-plus-boot-starter',
+																		   'mybatis-plus-generator']],
+		['com.github.xiaoymin'					, '2.0.8'			, ['knife4j-aggregation-spring-boot-starter']],
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
