@@ -51,6 +51,7 @@ class Constants {
 
 	static final SPRING_BOOT_VERSION = '2.3.7.RELEASE'
 	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
+	static final HUTOOL_VERSION = '5.5.7'
 
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'				, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
@@ -62,6 +63,7 @@ class Constants {
 		['com.sun.xml.bind'						, 'jaxb-release-documentation'			, '3.0.0'				],
 		['de.codecentric'						, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
 		['de.codecentric'						, 'spring-boot-admin-dependencies'		, '2.3.1'				],
+		['cn.hutool'							, 'hutool-bom'							, HUTOOL_VERSION		],
 	]
 
 	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
@@ -73,6 +75,7 @@ class Constants {
 		['com.baomidou'							, '3.4.1'			, ['mybatis-plus', 'mybatis-plus-boot-starter',
 																		   'mybatis-plus-generator']],
 		['com.github.xiaoymin'					, '2.0.8'			, ['knife4j-aggregation-spring-boot-starter']],
+		['cn.hutool'							, HUTOOL_VERSION	, ['hutool-all']],
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
