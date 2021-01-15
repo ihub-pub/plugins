@@ -23,6 +23,7 @@ import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_CONFIG
 import static pub.ihub.plugin.Constants.GROUP_MAVEN_BOM_VERSION_CONFIG
+import static pub.ihub.plugin.Constants.HUTOOL_VERSION
 import static pub.ihub.plugin.Constants.IHUB_LIB_VERSION
 import static pub.ihub.plugin.PluginUtils.findProperty
 import static pub.ihub.plugin.PluginUtils.printConfigContent
@@ -74,6 +75,10 @@ class IHubBomPlugin implements Plugin<Project> {
 					eachDependency {
 						if ('pub.ihub.lib' != project.group && 'pub.ihub.lib' == it.requested.group) {
 							it.useVersion findProperty(project, 'pub.ihub.lib.version', IHUB_LIB_VERSION)
+						}
+						// TODO 官方hutool-bom组件只有依赖，没有管理
+						if ('cn.hutool' == it.requested.group) {
+							it.useVersion findProperty(project, 'cn.hutool.version', HUTOOL_VERSION)
 						}
 					}
 					// 不缓存动态版本
