@@ -49,7 +49,7 @@ class Constants {
 
 	//<editor-fold desc="Plugins组件相关">
 
-	static final SPRING_BOOT_VERSION = '2.3.7.RELEASE'
+	static final SPRING_BOOT_VERSION = '2.3.8.RELEASE'
 	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
 	static final HUTOOL_VERSION = '5.5.7'
 
@@ -57,7 +57,7 @@ class Constants {
 		['org.springframework.boot'		, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
 		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, 'Hoxton.SR9'			],
 		['org.springframework.security'	, 'spring-security-bom'					, '5.3.6.RELEASE'		],
-		['com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2.2.3.RELEASE'		],
+		['com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2.2.4.RELEASE'		],
 		['com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				],
 		['com.sun.xml.bind'				, 'jaxb-release-documentation'			, '3.0.0'				],
 		['de.codecentric'				, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
