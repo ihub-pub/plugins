@@ -51,13 +51,13 @@ class Constants {
 
 	static final SPRING_BOOT_VERSION = '2.3.8.RELEASE'
 	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
-	static final HUTOOL_VERSION = '5.5.7'
+	static final HUTOOL_VERSION = '5.5.8'
 
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'		, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
-		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, 'Hoxton.SR9'			],
+		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, '2020.0.0'			],
 		['org.springframework.security'	, 'spring-security-bom'					, '5.3.6.RELEASE'		],
-		['com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2.2.4.RELEASE'		],
+		['com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2.2.5.RELEASE'		],
 		['com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				],
 		['com.sun.xml.bind'				, 'jaxb-release-documentation'			, '3.0.0'				],
 		['de.codecentric'				, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
@@ -66,7 +66,7 @@ class Constants {
 	]
 
 	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
-		['com.baomidou'			, '3.4.1'			, ['mybatis-plus', 'mybatis-plus-boot-starter',
+		['com.baomidou'			, '3.4.2'			, ['mybatis-plus', 'mybatis-plus-boot-starter',
 														   'mybatis-plus-generator']],
 		['com.github.xiaoymin'	, '2.0.8'			, ['knife4j-aggregation-spring-boot-starter']],
 		['cn.hutool'			, HUTOOL_VERSION	, ['hutool-all']],
