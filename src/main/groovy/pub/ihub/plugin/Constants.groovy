@@ -49,14 +49,14 @@ class Constants {
 
 	//<editor-fold desc="Plugins组件相关">
 
-	static final SPRING_BOOT_VERSION = '2.3.9.RELEASE'
+	static final SPRING_BOOT_VERSION = '2.4.3'
 	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
 	static final HUTOOL_VERSION = '5.5.8'
 
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'		, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
-		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, 'Hoxton.SR10'			],
-		['org.springframework.security'	, 'spring-security-bom'					, '5.3.8.RELEASE'		],
+		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, '2020.0.1'			],
+		['org.springframework.security'	, 'spring-security-bom'					, '5.4.5'		],
 		['com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2.2.5.RELEASE'		],
 		['com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				],
 		['com.sun.xml.bind'				, 'jaxb-release-documentation'			, '3.0.0'				],
