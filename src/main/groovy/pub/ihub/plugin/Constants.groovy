@@ -56,12 +56,12 @@ class Constants {
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'		, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
 		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, '2020.0.1'			],
-		['org.springframework.security'	, 'spring-security-bom'					, '5.4.5'		],
+		['org.springframework.security'	, 'spring-security-bom'					, '5.4.5'				],
 		['com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2.2.5.RELEASE'		],
 		['com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				],
 		['com.sun.xml.bind'				, 'jaxb-release-documentation'			, '3.0.0'				],
 		['de.codecentric'				, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
-		['de.codecentric'				, 'spring-boot-admin-dependencies'		, '2.3.1'				],
+		['de.codecentric'				, 'spring-boot-admin-dependencies'		, '2.4.0'				],
 		['cn.hutool'					, 'hutool-bom'							, HUTOOL_VERSION		],
 	]
 
