@@ -49,13 +49,13 @@ class Constants {
 
 	//<editor-fold desc="Plugins组件相关">
 
-	static final SPRING_BOOT_VERSION = '2.4.3'
+	static final SPRING_BOOT_VERSION = '2.4.4'
 	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
-	static final HUTOOL_VERSION = '5.5.8'
+	static final HUTOOL_VERSION = '5.6.1'
 
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'		, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
-		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, '2020.0.1'			],
+		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, '2020.0.2'			],
 		['org.springframework.security'	, 'spring-security-bom'					, '5.4.5'				],
 		['com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2.2.5.RELEASE'		],
 		['com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				],
@@ -94,10 +94,10 @@ class Constants {
 	]
 
 	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
-		'com.github.ben-manes.versions'  : '0.36.0',
+		'com.github.ben-manes.versions'  : '0.38.0',
 		'com.palantir.git-version'       : '0.12.3',
-		'io.spring.dependency-management': '1.0.10.RELEASE',
-		'org.springframework.boot'       : SPRING_BOOT_VERSION
+		'io.spring.dependency-management': '1.0.11.RELEASE',
+		'org.springframework.boot'       : '2.4.3'
 	]
 
 	//</editor-fold>
