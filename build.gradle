@@ -4,24 +4,10 @@ plugins {
     id 'com.gradle.plugin-publish'      version '0.14.0'
 }
 
-apply {
-    plugin 'groovy'
-    plugin 'maven'
-    plugin 'maven-publish'
-}
-
-dependencies {
-    implementation gradleApi()
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.name
-            from components.java
-        }
-    }
+ext {
+    springDependencyManagementVersion       = '1.0.11.RELEASE'
+    springBootVersion                       = '2.4.4'
+    springAotVersion                        = '0.9.1'
 }
 
 subprojects {
@@ -42,7 +28,7 @@ subprojects {
     }
 
     dependencies {
-        implementation gradleApi(), rootProject
+        implementation gradleApi()
     }
 
     jar {

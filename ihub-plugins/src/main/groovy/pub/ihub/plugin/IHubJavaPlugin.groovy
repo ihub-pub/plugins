@@ -36,18 +36,19 @@ class IHubJavaPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply JavaLibraryPlugin
+		project.pluginManager.apply IHubBomPlugin
 //        project.pluginManager.apply 'build-dashboard' // TODO 待确认
 //        project.pluginManager.apply 'project-report' // TODO 待确认
 
 		project.configurations {
 			if (System.getProperty('java.version').startsWith('11')) {
 				maybeCreate('runtimeOnly').getDependencies().addAll([
-					'javax.xml.bind:jaxb-api:2.3.1',
-					'com.sun.xml.bind:jaxb-core:2.3.0.1',
-					'com.sun.xml.bind:jaxb-impl:2.3.1'
+					'javax.xml.bind:jaxb-api',
+					'com.sun.xml.bind:jaxb-core',
+					'com.sun.xml.bind:jaxb-impl'
 				].collect { project.getDependencies().create(it) })
 			}
-			def lombok = 'org.projectlombok:lombok:1.18.16'
+			def lombok = 'org.projectlombok:lombok'
 			maybeCreate('compileOnly').getDependencies().add project.getDependencies().create(lombok)
 			maybeCreate('annotationProcessor').getDependencies().add project.getDependencies().create(lombok)
 		}
@@ -75,7 +76,6 @@ class IHubJavaPlugin implements Plugin<Project> {
 			}
 		}
 
-		project.pluginManager.apply IHubBomPlugin
 		// TODO 可选
 		project.pluginManager.apply IHubVerificationPlugin
 	}

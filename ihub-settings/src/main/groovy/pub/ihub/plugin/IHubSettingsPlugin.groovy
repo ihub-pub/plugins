@@ -19,10 +19,6 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 
-import static pub.ihub.plugin.Constants.INCLUDE_DIRS
-import static pub.ihub.plugin.Constants.PLUGINS_DEPENDENCY_VERSION_MAPPING
-import static pub.ihub.plugin.Constants.PROJECT_NAME
-import static pub.ihub.plugin.Constants.SKIPPED_DIRS
 import static pub.ihub.plugin.PluginUtils.findProperty
 import static pub.ihub.plugin.PluginUtils.printConfigContent
 import static pub.ihub.plugin.PluginUtils.tap
@@ -34,6 +30,11 @@ import static pub.ihub.plugin.PluginUtils.tap
  * @author henry
  */
 class IHubSettingsPlugin implements Plugin<Settings> {
+
+	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
+		'com.github.ben-manes.versions': '0.38.0',
+		'com.palantir.git-version'     : '0.12.3'
+	]
 
 	@Override
 	void apply(Settings settings) {
@@ -72,12 +73,12 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
 		//</editor-fold>
 
-		settings.rootProject.name = findProperty settings, PROJECT_NAME, settings.rootProject.name
+		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
 
 		//<editor-fold desc="子项目扩展配置">
 
-		def includeDirs = findProperty settings, INCLUDE_DIRS
-		def skippedDirs = findProperty settings, SKIPPED_DIRS
+		def includeDirs = findProperty settings, 'includeDirs'
+		def skippedDirs = findProperty settings, 'skippedDirs'
 		if (includeDirs) {
 			includeDirs.split(',').each {
 				settings.include ":$it"

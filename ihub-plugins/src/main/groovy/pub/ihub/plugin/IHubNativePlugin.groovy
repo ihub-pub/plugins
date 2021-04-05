@@ -32,9 +32,6 @@ class IHubNativePlugin implements Plugin<Project> {
 		project.pluginManager.apply IHubBootPlugin
 		project.pluginManager.apply 'org.springframework.experimental.aot'
 
-		project.configurations.maybeCreate('implementation').dependencies <<
-			project.dependencies.create('org.springframework.experimental:spring-native:0.9.1')
-
 		project.bootBuildImage {
 			builder = 'paketobuildpacks/builder:tiny'
 			environment = [
