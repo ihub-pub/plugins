@@ -38,10 +38,6 @@ class Constants {
 	static final SONATYPE_NEXUS_USERNAME = 'sonatypeNexusUsername'
 	static final SONATYPE_NEXUS_PASSWORD = 'sonatypeNexusPassword'
 
-	static final MAVEN_CENTRAL_REPO_MIRROR_ALIYUN = 'https://maven.aliyun.com/repository/public/'
-	static final GRADLE_PLUGIN_REPO_MIRROR_ALIYUN = 'https://maven.aliyun.com/repository/gradle-plugin/'
-	static final ALIYUN_CONTENT_REPO = 'https://maven.aliyun.com/nexus/content/groups/public/'
-	static final SPRING_PLUGIN_REPO_RELEASE = 'https://repo.spring.io/plugins-release/'
 	static final DEFAULT_RELEASE_REPOSITORY_URL = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
 	static final DEFAULT_SNAPSHOT_REPOSITORY_URL = 'https://oss.sonatype.org/content/repositories/snapshots/'
 
@@ -51,7 +47,7 @@ class Constants {
 
 	static final SPRING_BOOT_VERSION = '2.4.4'
 	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
-	static final HUTOOL_VERSION = '5.6.1'
+	static final HUTOOL_VERSION = '5.6.2'
 
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'		, 'spring-boot-dependencies'			, SPRING_BOOT_VERSION	],
@@ -94,10 +90,11 @@ class Constants {
 	]
 
 	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
-		'com.github.ben-manes.versions'  : '0.38.0',
-		'com.palantir.git-version'       : '0.12.3',
-		'io.spring.dependency-management': '1.0.11.RELEASE',
-		'org.springframework.boot'       : '2.4.3'
+		'com.github.ben-manes.versions'       : '0.38.0',
+		'com.palantir.git-version'            : '0.12.3',
+		'io.spring.dependency-management'     : '1.0.11.RELEASE',
+		'org.springframework.boot'            : SPRING_BOOT_VERSION,
+		'org.springframework.experimental.aot': '0.9.1'
 	]
 
 	//</editor-fold>

@@ -45,6 +45,9 @@ class IHubPublishPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
+		if (!project.plugins.hasPlugin(IHubJavaPlugin)) {
+			project.pluginManager.apply IHubJavaPlugin
+		}
 		def jarTasks = getJarTasks project
 
 		project.pluginManager.apply MavenPublishPlugin

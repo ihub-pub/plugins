@@ -1,8 +1,7 @@
 plugins {
     id 'groovy'
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish'      version '0.12.0'
-    id 'com.github.ben-manes.versions'  version '0.36.0'
+    id 'com.gradle.plugin-publish'      version '0.14.0'
 }
 
 apply {
@@ -25,54 +24,54 @@ publishing {
     }
 }
 
-//region Gradle plugin publication configuration
+subprojects {
 
-pluginBundle {
-    website     = 'https://github.com/ihub-pub/plugins'
-    vcsUrl      = 'https://github.com/ihub-pub/plugins.git'
-    description = 'IHub Plugins Gradle Plugin'
-    tags        = ['ihub', 'groovy', 'gradle', 'spring', 'boot', 'java']
-}
+    apply {
+        plugin 'groovy'
+        plugin 'maven'
+        plugin 'maven-publish'
+        plugin 'java-gradle-plugin'
+        plugin 'com.gradle.plugin-publish'
+    }
 
-gradlePlugin {
-    plugins {
-        ihubSettings {
-            id                  = 'pub.ihub.plugin.ihub-settings'
-            displayName         = 'IHub Settings Gradle Plugin'
-            description         = 'IHub Settings Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubSettingsPlugin'
-        }
-        ihubPlugins {
-            id                  = 'pub.ihub.plugin'
-            displayName         = 'IHub Plugins Gradle Plugin'
-            description         = 'IHub Plugins Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
-        }
-        ihubJava {
-            id                  = 'pub.ihub.plugin.ihub-java'
-            displayName         = 'IHub Java Gradle Plugin'
-            description         = 'IHub Java Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubJavaPlugin'
-        }
-        ihubBom {
-            id                  = 'pub.ihub.plugin.ihub-bom'
-            displayName         = 'IHub Bom Gradle Plugin'
-            description         = 'IHub Dependency Management Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubBomPlugin'
-        }
-        ihubPublish {
-            id                  = 'pub.ihub.plugin.ihub-publish'
-            displayName         = 'IHub Publish Gradle Plugin'
-            description         = 'IHub Publish Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubPublishPlugin'
-        }
-        ihubVerification {
-            id                  = 'pub.ihub.plugin.ihub-verification'
-            displayName         = 'IHub Verification Gradle Plugin'
-            description         = 'IHub Verification Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubVerificationPlugin'
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://repo.spring.io/release' }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        implementation gradleApi(), rootProject
+    }
+
+    jar {
+        manifest {
+            attributes(
+                'Implementation-Title'      : project.name,
+                'Automatic-Module-Name'     : project.name.replaceAll('-', '.'),
+                'Implementation-Version'    : project.version,
+                'Implementation-Vendor'     : 'IHub',
+                'Created-By'                : 'Java ' + System.getProperty('java.version')
+            )
         }
     }
-}
 
-//endregion
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                from components.java
+            }
+        }
+    }
+
+    pluginBundle {
+        website     = 'https://github.com/ihub-pub/plugins'
+        vcsUrl      = 'https://github.com/ihub-pub/plugins.git'
+        description = 'IHub Plugins Gradle Plugin'
+        tags        = ['ihub', 'groovy', 'gradle', 'spring', 'boot', 'java', 'native']
+    }
+
+}

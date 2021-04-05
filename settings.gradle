@@ -1,15 +1,2 @@
-/**
- +---------------------+
- | Gradle Plugin Repos |
- +---------------------+
- */
-pluginManagement {
-    repositories {
-        flatDir dirs: "$rootProject.projectDir/gradle/plugins"
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin/' }
-        gradlePluginPortal()
-        maven { url 'https://repo.spring.io/plugins-release/' }
-    }
-}
-
 rootProject.name = 'ihub-plugins-gradle-plugin'
+include 'ihub-plugins', 'ihub-settings'

@@ -19,9 +19,7 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
 import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_CUSTOMIZE
-import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
 import static pub.ihub.plugin.PluginUtils.findProperty
 import static pub.ihub.plugin.PluginUtils.printConfigContent
@@ -29,12 +27,14 @@ import static pub.ihub.plugin.PluginUtils.printConfigContent
 
 
 /**
+ * IHub Plugins Gradle Plugin
  * @author liheng
  */
 class IHubPluginsPlugin implements Plugin<Project> {
 
 	private static final Closure REPOSITORIES_CONFIGURE = { Project project ->
-		flatDir dirs: "$project.rootProject.projectDir/libs"
+		def dirs = "$project.rootProject.projectDir/libs"
+		if ((dirs as File).directory) flatDir dirs: dirs
 		if (findProperty(MAVEN_LOCAL_ENABLED, findProperty(project, MAVEN_LOCAL_ENABLED, 'false')).toBoolean()) {
 			mavenLocal()
 		}
@@ -44,14 +44,23 @@ class IHubPluginsPlugin implements Plugin<Project> {
 		if (mavenCentralRepo && !mavenCentralRepo.blank) {
 			maven { url mavenCentralRepo }
 		}
-		maven { url MAVEN_CENTRAL_REPO_MIRROR_ALIYUN }
-		maven { url ALIYUN_CONTENT_REPO }
-		mavenCentral()
-		jcenter()
+		maven { url 'https://maven.aliyun.com/repository/public' }
+		maven {
+			url 'https://maven.aliyun.com/repository/google'
+			artifactUrls 'https://maven.google.com'
+		}
+		maven {
+			url 'https://maven.aliyun.com/repository/spring'
+			artifactUrls 'https://repo.spring.io/release'
+		}
+		maven { url 'https://repo.spring.io/release' }
+		if (!findByName("MavenRepo")) mavenCentral()
+		if (!findByName("BintrayJCenter")) jcenter()
 	}
 
 	@Override
 	void apply(Project project) {
+		// 配置项目以及子项目组件仓库
 		project.repositories REPOSITORIES_CONFIGURE.curry(project)
 		project.subprojects { repositories REPOSITORIES_CONFIGURE.curry(project) }
 		printConfigContent 'Gradle Project Repos', project.repositories*.displayName

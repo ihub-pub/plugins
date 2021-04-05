@@ -1,0 +1,71 @@
+/*
+ * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+description = 'IHub Gradle Plugins'
+
+dependencies {
+    runtime project(':ihub-plugins')
+    runtime 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+    runtime 'org.springframework.boot:spring-boot-gradle-plugin:2.4.4'
+    runtime "org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.9.1"
+}
+
+gradlePlugin {
+    plugins {
+        ihubPlugins {
+            id                  = 'pub.ihub.plugin'
+            displayName         = 'IHub Plugins Gradle Plugin'
+            description         = 'IHub Plugins Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
+        }
+        ihubJava {
+            id                  = 'pub.ihub.plugin.ihub-java'
+            displayName         = 'IHub Java Gradle Plugin'
+            description         = 'IHub Java Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubJavaPlugin'
+        }
+        ihubBom {
+            id                  = 'pub.ihub.plugin.ihub-bom'
+            displayName         = 'IHub Bom Gradle Plugin'
+            description         = 'IHub Dependency Management Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubBomPlugin'
+        }
+        ihubPublish {
+            id                  = 'pub.ihub.plugin.ihub-publish'
+            displayName         = 'IHub Publish Gradle Plugin'
+            description         = 'IHub Publish Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubPublishPlugin'
+        }
+        ihubVerification {
+            id                  = 'pub.ihub.plugin.ihub-verification'
+            displayName         = 'IHub Verification Gradle Plugin'
+            description         = 'IHub Verification Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubVerificationPlugin'
+        }
+        ihubBoot {
+            id                  = 'pub.ihub.plugin.ihub-boot'
+            displayName         = 'IHub Boot Gradle Plugin'
+            description         = 'IHub Boot Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubBootPlugin'
+        }
+        ihubNative {
+            id                  = 'pub.ihub.plugin.ihub-native'
+            displayName         = 'IHub Native Gradle Plugin'
+            description         = 'IHub Native Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubNativePlugin'
+        }
+    }
+}

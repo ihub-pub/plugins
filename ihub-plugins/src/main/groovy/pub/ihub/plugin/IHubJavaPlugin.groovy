@@ -74,6 +74,10 @@ class IHubJavaPlugin implements Plugin<Project> {
 				)
 			}
 		}
+
+		project.pluginManager.apply IHubBomPlugin
+		// TODO 可选
+		project.pluginManager.apply IHubVerificationPlugin
 	}
 
 }

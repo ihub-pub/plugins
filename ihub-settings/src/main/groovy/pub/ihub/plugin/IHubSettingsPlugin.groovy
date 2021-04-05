@@ -19,14 +19,10 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 
-import static pub.ihub.plugin.Constants.ALIYUN_CONTENT_REPO
-import static pub.ihub.plugin.Constants.GRADLE_PLUGIN_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.INCLUDE_DIRS
-import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_MIRROR_ALIYUN
 import static pub.ihub.plugin.Constants.PLUGINS_DEPENDENCY_VERSION_MAPPING
 import static pub.ihub.plugin.Constants.PROJECT_NAME
 import static pub.ihub.plugin.Constants.SKIPPED_DIRS
-import static pub.ihub.plugin.Constants.SPRING_PLUGIN_REPO_RELEASE
 import static pub.ihub.plugin.PluginUtils.findProperty
 import static pub.ihub.plugin.PluginUtils.printConfigContent
 import static pub.ihub.plugin.PluginUtils.tap
@@ -34,34 +30,38 @@ import static pub.ihub.plugin.PluginUtils.tap
 
 
 /**
+ * IHub Gradle Plugins Settings Plugin
  * @author henry
  */
 class IHubSettingsPlugin implements Plugin<Settings> {
 
 	@Override
 	void apply(Settings settings) {
+
+		//<editor-fold desc="配置插件仓库以及版本">
+
 		def pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
 			[(id): findProperty(settings, id + '.version', version)]
 		} as Map<String, String>
 		settings.pluginManagement {
 			repositories {
-				flatDir dirs: "$settings.rootProject.projectDir/gradle/plugins"
+				def dirs = "$settings.rootProject.projectDir/gradle/plugins"
+				if ((dirs as File).directory) flatDir dirs: dirs
 				[
-					GRADLE_PLUGIN_REPO_MIRROR_ALIYUN,
-					MAVEN_CENTRAL_REPO_MIRROR_ALIYUN,
-					ALIYUN_CONTENT_REPO,
-					SPRING_PLUGIN_REPO_RELEASE
+					'https://maven.aliyun.com/repository/gradle-plugin',
+					'https://maven.aliyun.com/repository/spring-plugin',
+					'https://repo.spring.io/release'
 				].each { repo -> if (!it*.displayName.any { it.contains repo }) maven { url repo } }
 				if (!findByName("Gradle Central Plugin Repository")) gradlePluginPortal()
-				if (!findByName("MavenRepo")) mavenCentral()
-				if (!findByName("BintrayJCenter")) jcenter()
 			}
 
 			resolutionStrategy {
 				eachPlugin {
-					pluginVersion.each { id, version ->
-						if (id == requested.id.toString()) {
-							useVersion version
+					if (requested.id.toString().startsWith('pub.ihub.plugin')) {
+						useVersion IHubSettingsPlugin.class.getPackage().getImplementationVersion()
+					} else {
+						pluginVersion.each { id, version ->
+							if (id == requested.id.toString()) useVersion version
 						}
 					}
 				}
@@ -70,7 +70,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 		printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
 		printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), pluginVersion
 
+		//</editor-fold>
+
 		settings.rootProject.name = findProperty settings, PROJECT_NAME, settings.rootProject.name
+
+		//<editor-fold desc="子项目扩展配置">
 
 		def includeDirs = findProperty settings, INCLUDE_DIRS
 		def skippedDirs = findProperty settings, SKIPPED_DIRS
@@ -108,6 +112,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 				settings.include subprojectName
 				settings.project(subprojectName).name = namePrefix + projectPath + nameSuffix
 		}
+
+		//</editor-fold>
+
 	}
 
 }
