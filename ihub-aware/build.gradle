@@ -14,30 +14,15 @@
  * limitations under the License.
  */
 
-package pub.ihub.plugin
+description = 'IHub Gradle Plugins Aware'
 
-
-import org.gradle.api.Project
-
-
-
-/**
- * IHub Spring Boot Plugin
- * @author henry
- */
-class IHubBootPlugin implements IHubPluginAware<Project> {
-
-	@Override
-	void apply() {
-		if (!target.plugins.hasPlugin(IHubJavaPlugin)) {
-			target.pluginManager.apply IHubJavaPlugin
-		}
-		target.pluginManager.apply 'org.springframework.boot'
-
-		target.bootBuildImage {
-			builder = 'paketobuildpacks/builder:tiny'
-		}
-
-	}
-
+gradlePlugin {
+    plugins {
+        ihubSettings {
+            id                  = 'pub.ihub.plugin.ihub-aware'
+            displayName         = 'IHub Gradle Plugins Aware'
+            description         = 'IHub Gradle Plugins Aware'
+            implementationClass = 'pub.ihub.plugin.IHubPluginAware'
+        }
+    }
 }

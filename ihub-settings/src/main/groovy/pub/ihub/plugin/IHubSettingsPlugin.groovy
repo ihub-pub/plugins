@@ -16,12 +16,8 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
-import org.gradle.api.initialization.Settings
 
-import static pub.ihub.plugin.PluginUtils.findProperty
-import static pub.ihub.plugin.PluginUtils.printConfigContent
-import static pub.ihub.plugin.PluginUtils.tap
+import org.gradle.api.initialization.Settings
 
 
 
@@ -29,7 +25,7 @@ import static pub.ihub.plugin.PluginUtils.tap
  * IHub Gradle Plugins Settings Plugin
  * @author henry
  */
-class IHubSettingsPlugin implements Plugin<Settings> {
+class IHubSettingsPlugin implements IHubPluginAware<Settings> {
 
 	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
 		'com.github.ben-manes.versions': '0.38.0',
@@ -37,16 +33,16 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 	]
 
 	@Override
-	void apply(Settings settings) {
+	void apply() {
 
 		//<editor-fold desc="配置插件仓库以及版本">
 
 		def pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
-			[(id): findProperty(settings, id + '.version', version)]
+			[(id): findProperty(id + '.version', version)]
 		} as Map<String, String>
-		settings.pluginManagement {
+		target.pluginManagement {
 			repositories {
-				def dirs = "$settings.rootProject.projectDir/gradle/plugins"
+				def dirs = "$target.rootProject.projectDir/gradle/plugins"
 				if ((dirs as File).directory) flatDir dirs: dirs
 				[
 					'https://maven.aliyun.com/repository/gradle-plugin',
@@ -68,50 +64,50 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 				}
 			}
 		}
-		printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
+		printConfigContent 'Gradle Plugin Repos', target.pluginManagement.repositories*.displayName
 		printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), pluginVersion
 
 		//</editor-fold>
 
-		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
+		target.rootProject.name = findProperty 'projectName', target.rootProject.name
 
 		//<editor-fold desc="子项目扩展配置">
 
-		def includeDirs = findProperty settings, 'includeDirs'
-		def skippedDirs = findProperty settings, 'skippedDirs'
+		def includeDirs = findProperty 'includeDirs'
+		def skippedDirs = findProperty 'skippedDirs'
 		if (includeDirs) {
 			includeDirs.split(',').each {
-				settings.include ":$it"
-				settings.project(":$it").name = settings.rootProject.name + '-' + it
+				target.include ":$it"
+				target.project(":$it").name = target.rootProject.name + '-' + it
 			}
 		} else if (skippedDirs) {
-			settings.rootDir.eachDir {
+			target.rootDir.eachDir {
 				if (!skippedDirs.split(',').contains(it.name)) {
-					settings.include ":$it.name"
-					settings.project(":$it.name").name = settings.rootProject.name + '-' + it.name
+					target.include ":$it.name"
+					target.project(":$it.name").name = target.rootProject.name + '-' + it.name
 				}
 			}
 		}
 
-		settings.extensions.add('includeSubprojects') {
+		target.extensions.add('includeSubprojects') {
 			String projectPath, String namePrefix = projectPath + '-', String nameSuffix = '' ->
-				new File(settings.rootDir, projectPath).identity {
-					settings.include ":$name"
+				new File(target.rootDir, projectPath).identity {
+					target.include ":$name"
 					eachDir { dir ->
 						if (!['build', 'src'].contains(dir.name)) {
 							def subprojectName = ":$name:$dir.name"
-							settings.include subprojectName
-							settings.project(subprojectName).name = namePrefix + dir.name + nameSuffix
+							target.include subprojectName
+							target.project(subprojectName).name = namePrefix + dir.name + nameSuffix
 						}
 					}
 				}
 		}
 
-		settings.extensions.add('includeSubproject') {
-			String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '' ->
+		target.extensions.add('includeSubproject') {
+			String projectPath, String namePrefix = target.rootProject.name + '-', String nameSuffix = '' ->
 				def subprojectName = ":$projectPath"
-				settings.include subprojectName
-				settings.project(subprojectName).name = namePrefix + projectPath + nameSuffix
+				target.include subprojectName
+				target.project(subprojectName).name = namePrefix + projectPath + nameSuffix
 		}
 
 		//</editor-fold>

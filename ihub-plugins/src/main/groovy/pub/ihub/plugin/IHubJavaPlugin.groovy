@@ -16,7 +16,6 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.ProjectReportsPlugin
@@ -26,39 +25,38 @@ import org.gradle.api.tasks.compile.AbstractCompile
 
 import static pub.ihub.plugin.Constants.GRADLE_COMPILATION_INCREMENTAL
 import static pub.ihub.plugin.Constants.JAVA_COMPATIBILITY
-import static pub.ihub.plugin.PluginUtils.findProperty
 
 
 
 /**
  * @author henry
  */
-class IHubJavaPlugin implements Plugin<Project> {
+class IHubJavaPlugin implements IHubPluginAware<Project> {
 
 	@Override
-	void apply(Project project) {
-		project.pluginManager.apply JavaLibraryPlugin
-		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply ProjectReportsPlugin
-		project.pluginManager.apply BuildDashboardPlugin
+	void apply() {
+		target.pluginManager.apply JavaLibraryPlugin
+		target.pluginManager.apply IHubBomPlugin
+		target.pluginManager.apply ProjectReportsPlugin
+		target.pluginManager.apply BuildDashboardPlugin
 
-		project.configurations {
+		target.configurations {
 			if (System.getProperty('java.version').startsWith('11')) {
 				maybeCreate('runtimeOnly').getDependencies().addAll([
 					'javax.xml.bind:jaxb-api',
 					'com.sun.xml.bind:jaxb-core',
 					'com.sun.xml.bind:jaxb-impl'
-				].collect { project.getDependencies().create(it) })
+				].collect { target.getDependencies().create(it) })
 			}
 			def lombok = 'org.projectlombok:lombok'
-			maybeCreate('compileOnly').getDependencies().add project.getDependencies().create(lombok)
-			maybeCreate('annotationProcessor').getDependencies().add project.getDependencies().create(lombok)
+			maybeCreate('compileOnly').getDependencies().add target.getDependencies().create(lombok)
+			maybeCreate('annotationProcessor').getDependencies().add target.getDependencies().create(lombok)
 		}
 
-		def javaCompatibility = findProperty project, JAVA_COMPATIBILITY
+		def javaCompatibility = findProperty JAVA_COMPATIBILITY
 		if (javaCompatibility) {
-			def gradleCompilationIncremental = findProperty(project, GRADLE_COMPILATION_INCREMENTAL, 'true').toBoolean()
-			project.tasks.withType(AbstractCompile) {
+			def gradleCompilationIncremental = findProperty(GRADLE_COMPILATION_INCREMENTAL, 'true').toBoolean()
+			target.tasks.withType(AbstractCompile) {
 				sourceCompatibility = javaCompatibility
 				targetCompatibility = javaCompatibility
 				options.encoding = 'UTF-8'
@@ -66,19 +64,19 @@ class IHubJavaPlugin implements Plugin<Project> {
 			}
 		}
 
-		project.tasks.withType(Jar) {
+		target.tasks.withType(Jar) {
 			manifest {
 				attributes(
-					'Implementation-Title': project.name,
-					'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-					'Implementation-Version': project.version,
+					'Implementation-Title': target.name,
+					'Automatic-Module-Name': target.name.replaceAll('-', '.'),
+					'Implementation-Version': target.version,
 					'Implementation-Vendor': 'IHub',
 					'Created-By': 'Java ' + System.getProperty('java.version')
 				)
 			}
 		}
 
-		project.pluginManager.apply IHubVerificationPlugin
+		target.pluginManager.apply IHubVerificationPlugin
 	}
 
 }

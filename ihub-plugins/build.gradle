@@ -17,6 +17,7 @@
 description = 'IHub Gradle Plugins'
 
 dependencies {
+    implementation project(':ihub-aware')
     runtime "io.spring.gradle:dependency-management-plugin:$springDependencyManagementVersion"
     runtime "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     runtime "org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:$springAotVersion"

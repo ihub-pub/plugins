@@ -16,7 +16,7 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
+
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
@@ -28,30 +28,28 @@ import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 
-import static pub.ihub.plugin.PluginUtils.findProperty
-
 
 
 /**
  * @author liheng
  */
-class IHubVerificationPlugin implements Plugin<Project> {
+class IHubVerificationPlugin implements IHubPluginAware<Project> {
 
 	@Override
-	void apply(Project project) {
-		if (project.plugins.hasPlugin(JavaPlugin) || project.plugins.hasPlugin(JavaLibraryPlugin)) {
-			configPmd project
+	void apply() {
+		if (target.plugins.hasPlugin(JavaPlugin) || target.plugins.hasPlugin(JavaLibraryPlugin)) {
+			configPmd()
 		}
-		if (project.plugins.hasPlugin(GroovyPlugin)) {
-			configCodenarc project
+		if (target.plugins.hasPlugin(GroovyPlugin)) {
+			configCodenarc()
 		}
-		configJacoco project
+		configJacoco()
 	}
 
-	private static void configPmd(Project project) {
-		project.pluginManager.apply PmdPlugin
-		project.extensions.getByType(PmdExtension).identity {
-			toolVersion = findProperty project, 'pmd.version', '6.30.0'
+	private void configPmd() {
+		target.pluginManager.apply PmdPlugin
+		target.extensions.getByType(PmdExtension).identity {
+			toolVersion = findProperty 'pmd.version', '6.30.0'
 			ruleSetFiles()
 			ruleSets = [
 				'rulesets/java/ali-comment.xml',
@@ -93,20 +91,20 @@ class IHubVerificationPlugin implements Plugin<Project> {
 		}
 	}
 
-	private static void configCodenarc(Project project) {
-		project.pluginManager.apply CodeNarcPlugin
-		project.extensions.getByType(CodeNarcExtension).identity {
-			toolVersion = findProperty project, 'codenarc.version', '1.6.1'
+	private void configCodenarc() {
+		target.pluginManager.apply CodeNarcPlugin
+		target.extensions.getByType(CodeNarcExtension).identity {
+			toolVersion = findProperty 'codenarc.version', '1.6.1'
 			// TODO 处理配置文件
-			configFile = project.rootProject.file 'conf/engineering-process/static-checking/groovy/codenarc.gcfg'
+			configFile = target.rootProject.file 'conf/engineering-process/static-checking/groovy/codenarc.gcfg'
 			ignoreFailures = false
 		}
 	}
 
-	private static void configJacoco(Project project) {
-		project.pluginManager.apply JacocoPlugin
-		project.extensions.getByType(JacocoPluginExtension).identity {
-			toolVersion = findProperty project, 'jacoco.version', '0.8.6'
+	private void configJacoco() {
+		target.pluginManager.apply JacocoPlugin
+		target.extensions.getByType(JacocoPluginExtension).identity {
+			toolVersion = findProperty 'jacoco.version', '0.8.6'
 		}
 		// TODO 配置检查规则
 	}

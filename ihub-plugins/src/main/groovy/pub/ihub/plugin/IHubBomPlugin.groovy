@@ -16,7 +16,7 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
+
 import org.gradle.api.Project
 
 import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
@@ -24,34 +24,31 @@ import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_CONFIG
 import static pub.ihub.plugin.Constants.GROUP_MAVEN_BOM_VERSION_CONFIG
 import static pub.ihub.plugin.Constants.GROUP_MAVEN_VERSION_CONFIG
-import static pub.ihub.plugin.PluginUtils.findProperty
-import static pub.ihub.plugin.PluginUtils.printConfigContent
-import static pub.ihub.plugin.PluginUtils.tap
 
 
 
 /**
  * @author henry
  */
-class IHubBomPlugin implements Plugin<Project> {
+class IHubBomPlugin implements IHubPluginAware<Project> {
 
 	@Override
-	void apply(Project project) {
-		project.pluginManager.apply 'io.spring.dependency-management'
+	void apply() {
+		target.pluginManager.apply 'io.spring.dependency-management'
 
 		def bomVersion = GROUP_MAVEN_BOM_VERSION_CONFIG.collect { group, module, version ->
-			[group, module, findProperty(project, group + '.version', version)]
+			[group, module, findProperty(group + '.version', version)]
 		}
 		def dependenciesVersion = GROUP_DEPENDENCY_VERSION_CONFIG.collect { group, version, modules ->
-			[group, findProperty(project, group + '.version', version), modules]
+			[group, findProperty(group + '.version', version), modules]
 		}
-		project.dependencyManagement {
+		target.dependencyManagement {
 			imports {
 				bomVersion.each { group, module, version ->
 					mavenBom "$group:$module:$version"
 				}
 			}
-			printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
+			printConfigContent "${target.name.toUpperCase()} Group Maven Bom Version", bomVersion,
 				tap('Group', 35), tap('Module'), tap('Version', 15)
 
 			dependencies {
@@ -61,20 +58,20 @@ class IHubBomPlugin implements Plugin<Project> {
 					}
 				}
 			}
-			printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", dependenciesVersion
+			printConfigContent "${target.name.toUpperCase()} Group Maven Bom Version", dependenciesVersion
 				.inject([]) { list, config ->
 					def (group, version, modules) = config
 					list + modules.collect { [group, it, version] }
 				}, tap('Group', 35), tap('Module'), tap('Version', 15)
 		}
 
-		project.configurations {
+		target.configurations {
 			all {
 				resolutionStrategy {
 					eachDependency {
 						def version = GROUP_MAVEN_VERSION_CONFIG[it.requested.group]
-						if (it.requested.group != project.group && version) {
-							it.useVersion findProperty(project, it.requested.group + '.version', version)
+						if (it.requested.group != target.group && version) {
+							it.useVersion findProperty(it.requested.group + '.version', version)
 						}
 					}
 					// 不缓存动态版本
@@ -90,14 +87,14 @@ class IHubBomPlugin implements Plugin<Project> {
 					}
 				}
 			}
-			printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
+			printConfigContent "${target.name.toUpperCase()} Exclude Group Modules",
 				tap('Group', 40), tap('Modules'), GROUP_DEPENDENCY_EXCLUDE_MAPPING
 
 			GROUP_DEFAULT_DEPENDENCIES_MAPPING.each { key, dependencies ->
 				maybeCreate(key).getDependencies()
-					.addAll(dependencies.collect { project.getDependencies().create(it) })
+					.addAll(dependencies.collect { target.getDependencies().create(it) })
 			}
-			printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
+			printConfigContent "${target.name.toUpperCase()} Config Default Dependencies",
 				tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
 		}
 	}

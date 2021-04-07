@@ -16,11 +16,8 @@
 
 package pub.ihub.plugin
 
-
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
-
-import static pub.ihub.plugin.PluginUtils.findProperty
 
 
 
@@ -60,7 +57,8 @@ class IHubPublishPom {
 	IHubPublishPom(Project project) {
 		properties.each { k, v ->
 			if ('class' != k) {
-				this."$k" = findProperty project, k, v
+				// TODO
+				this."$k" = project.findProperty(k) ?: v
 			}
 		}
 		pomName = pomName ?: project.name

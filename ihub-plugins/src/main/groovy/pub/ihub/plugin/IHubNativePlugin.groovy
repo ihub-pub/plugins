@@ -16,7 +16,7 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
+
 import org.gradle.api.Project
 
 
@@ -25,14 +25,14 @@ import org.gradle.api.Project
  * IHub Spring Native Plugin
  * @author henry
  */
-class IHubNativePlugin implements Plugin<Project> {
+class IHubNativePlugin implements IHubPluginAware<Project> {
 
 	@Override
-	void apply(Project project) {
-		project.pluginManager.apply IHubBootPlugin
-		project.pluginManager.apply 'org.springframework.experimental.aot'
+	void apply() {
+		target.pluginManager.apply IHubBootPlugin
+		target.pluginManager.apply 'org.springframework.experimental.aot'
 
-		project.bootBuildImage {
+		target.bootBuildImage {
 			builder = 'paketobuildpacks/builder:tiny'
 			environment = [
 				BP_JVM_VERSION : '11',

@@ -16,27 +16,31 @@
 
 package pub.ihub.plugin
 
+import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.PluginAware
 
 
 
 /**
- * @author liheng
+ * @author henry
  */
-class PluginUtils {
+trait IHubPluginAware<T extends PluginAware> implements Plugin<T> {
 
+	private static final ThreadLocal<T> TARGET_PLUGIN = new ThreadLocal<>()
 	private static final DEFAULT_CONTENT_WIDTH = 100
 
-	static String findProperty(String key, String defaultValue = null) {
+	String findProperty(String key, boolean findSystem, String defaultValue = null) {
+		findProperty(key) ?: findSystem ? findSystemProperty(key, defaultValue) : defaultValue
+	}
+
+	String findProperty(String key, String defaultValue = null) {
+		findProperty target instanceof Project ? { String k -> target.findProperty k } :
+			{ String k -> target.hasProperty(k) ? target."$k" : null }, key, defaultValue
+	}
+
+	static String findSystemProperty(String key, String defaultValue = null) {
 		findProperty({ String k -> System.getProperty(k) ?: System.getenv(k) }, key, defaultValue)
-	}
-
-	static String findProperty(Project project, String key, String defaultValue = null) {
-		findProperty({ Project p, String k -> p.findProperty k }.curry(project), key, defaultValue)
-	}
-
-	static String findProperty(obj, String key, String defaultValue = null) {
-		findProperty({ o, String k -> o.hasProperty(k) ? o."$k" : null }.curry(obj), key, defaultValue)
 	}
 
 	static String findProperty(Closure closure, String key, String defaultValue = null) {
@@ -91,5 +95,18 @@ class PluginUtils {
 	private static void printBorderline(List<Integer> widths, String leftFrame, String separator, String rightFrame) {
 		println "$leftFrame${widths.collect { '─' * it }.join(separator)}$rightFrame"
 	}
+
+	@Override
+	void apply(T target) {
+		TARGET_PLUGIN.set target
+		apply()
+		TARGET_PLUGIN.remove()
+	}
+
+	T getTarget() {
+		TARGET_PLUGIN.get()
+	}
+
+	abstract void apply()
 
 }
