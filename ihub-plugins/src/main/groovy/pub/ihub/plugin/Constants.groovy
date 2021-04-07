@@ -42,9 +42,6 @@ class Constants {
 
 	//<editor-fold desc="Plugins组件相关">
 
-	static final IHUB_LIB_VERSION = 'dev-SNAPSHOT'
-	static final HUTOOL_VERSION = '5.6.2'
-
 	static final List<List<String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		['org.springframework.boot'		, 'spring-boot-dependencies'			, '2.4.4'				],
 		['org.springframework.cloud'	, 'spring-cloud-dependencies'			, '2020.0.2'			],
@@ -54,7 +51,11 @@ class Constants {
 		['com.sun.xml.bind'				, 'jaxb-bom-ext'						, '3.0.0'				],
 		['de.codecentric'				, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		],
 		['de.codecentric'				, 'spring-boot-admin-dependencies'		, '2.4.0'				],
-		['cn.hutool'					, 'hutool-bom'							, HUTOOL_VERSION		],
+	]
+
+	static final Map<String, String> GROUP_MAVEN_VERSION_CONFIG = [
+		'pub.ihub.lib': 'dev-SNAPSHOT',
+		'cn.hutool'   : '5.6.2',
 	]
 
 	static final List GROUP_DEPENDENCY_VERSION_CONFIG = [
@@ -63,7 +64,6 @@ class Constants {
 		['com.baomidou'			, '3.4.2'			, ['mybatis-plus', 'mybatis-plus-boot-starter',
 														   'mybatis-plus-generator']],
 		['com.github.xiaoymin'	, '2.0.8'			, ['knife4j-aggregation-spring-boot-starter']],
-		['cn.hutool'			, HUTOOL_VERSION	, ['hutool-all']],
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
@@ -78,7 +78,7 @@ class Constants {
 	]
 
 	static final Map<String, List<String>> GROUP_DEFAULT_DEPENDENCIES_MAPPING = [
-		compileOnly          : [],
+		compileOnly          : ['cn.hutool:hutool-all'],
 		implementation       : ['org.slf4j:slf4j-api'],
 		api                  : [],
 		runtimeOnly          : ['org.slf4j:jul-to-slf4j', 'org.slf4j:jcl-over-slf4j', 'org.slf4j:log4j-over-slf4j'],

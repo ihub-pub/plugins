@@ -19,6 +19,8 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
+import org.gradle.api.plugins.ProjectReportsPlugin
+import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 
@@ -37,8 +39,8 @@ class IHubJavaPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		project.pluginManager.apply JavaLibraryPlugin
 		project.pluginManager.apply IHubBomPlugin
-//        project.pluginManager.apply 'build-dashboard' // TODO 待确认
-//        project.pluginManager.apply 'project-report' // TODO 待确认
+		project.pluginManager.apply ProjectReportsPlugin
+		project.pluginManager.apply BuildDashboardPlugin
 
 		project.configurations {
 			if (System.getProperty('java.version').startsWith('11')) {
@@ -76,7 +78,6 @@ class IHubJavaPlugin implements Plugin<Project> {
 			}
 		}
 
-		// TODO 可选
 		project.pluginManager.apply IHubVerificationPlugin
 	}
 
