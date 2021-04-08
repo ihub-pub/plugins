@@ -33,16 +33,16 @@ class IHubSettingsPlugin implements IHubPluginAware<Settings> {
 	]
 
 	@Override
-	void apply() {
+	void apply(Settings settings) {
 
 		//<editor-fold desc="配置插件仓库以及版本">
 
 		def pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
-			[(id): findProperty(id + '.version', version)]
+			[(id): findProperty(settings, id + '.version', version)]
 		} as Map<String, String>
-		target.pluginManagement {
+		settings.pluginManagement {
 			repositories {
-				def dirs = "$target.rootProject.projectDir/gradle/plugins"
+				def dirs = "$settings.rootProject.projectDir/gradle/plugins"
 				if ((dirs as File).directory) flatDir dirs: dirs
 				[
 					'https://maven.aliyun.com/repository/gradle-plugin',
@@ -64,50 +64,50 @@ class IHubSettingsPlugin implements IHubPluginAware<Settings> {
 				}
 			}
 		}
-		printConfigContent 'Gradle Plugin Repos', target.pluginManagement.repositories*.displayName
+		printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
 		printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), pluginVersion
 
 		//</editor-fold>
 
-		target.rootProject.name = findProperty 'projectName', target.rootProject.name
+		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
 
 		//<editor-fold desc="子项目扩展配置">
 
-		def includeDirs = findProperty 'includeDirs'
-		def skippedDirs = findProperty 'skippedDirs'
+		def includeDirs = findProperty settings, 'includeDirs'
+		def skippedDirs = findProperty settings, 'skippedDirs'
 		if (includeDirs) {
 			includeDirs.split(',').each {
-				target.include ":$it"
-				target.project(":$it").name = target.rootProject.name + '-' + it
+				settings.include ":$it"
+				settings.project(":$it").name = settings.rootProject.name + '-' + it
 			}
 		} else if (skippedDirs) {
-			target.rootDir.eachDir {
+			settings.rootDir.eachDir {
 				if (!skippedDirs.split(',').contains(it.name)) {
-					target.include ":$it.name"
-					target.project(":$it.name").name = target.rootProject.name + '-' + it.name
+					settings.include ":$it.name"
+					settings.project(":$it.name").name = settings.rootProject.name + '-' + it.name
 				}
 			}
 		}
 
-		target.extensions.add('includeSubprojects') {
+		settings.extensions.add('includeSubprojects') {
 			String projectPath, String namePrefix = projectPath + '-', String nameSuffix = '' ->
-				new File(target.rootDir, projectPath).identity {
-					target.include ":$name"
+				new File(settings.rootDir, projectPath).identity {
+					settings.include ":$name"
 					eachDir { dir ->
 						if (!['build', 'src'].contains(dir.name)) {
 							def subprojectName = ":$name:$dir.name"
-							target.include subprojectName
-							target.project(subprojectName).name = namePrefix + dir.name + nameSuffix
+							settings.include subprojectName
+							settings.project(subprojectName).name = namePrefix + dir.name + nameSuffix
 						}
 					}
 				}
 		}
 
-		target.extensions.add('includeSubproject') {
-			String projectPath, String namePrefix = target.rootProject.name + '-', String nameSuffix = '' ->
+		settings.extensions.add('includeSubproject') {
+			String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '' ->
 				def subprojectName = ":$projectPath"
-				target.include subprojectName
-				target.project(subprojectName).name = namePrefix + projectPath + nameSuffix
+				settings.include subprojectName
+				settings.project(subprojectName).name = namePrefix + projectPath + nameSuffix
 		}
 
 		//</editor-fold>

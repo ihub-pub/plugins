@@ -28,13 +28,13 @@ import org.gradle.api.Project
 class IHubBootPlugin implements IHubPluginAware<Project> {
 
 	@Override
-	void apply() {
-		if (!target.plugins.hasPlugin(IHubJavaPlugin)) {
-			target.pluginManager.apply IHubJavaPlugin
+	void apply(Project project) {
+		if (!project.plugins.hasPlugin(IHubJavaPlugin)) {
+			project.pluginManager.apply IHubJavaPlugin
 		}
-		target.pluginManager.apply 'org.springframework.boot'
+		project.pluginManager.apply 'org.springframework.boot'
 
-		target.bootBuildImage {
+		project.bootBuildImage {
 			builder = 'paketobuildpacks/builder:tiny'
 		}
 

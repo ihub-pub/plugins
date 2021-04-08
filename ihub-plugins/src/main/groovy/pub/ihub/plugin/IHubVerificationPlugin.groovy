@@ -36,20 +36,20 @@ import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 class IHubVerificationPlugin implements IHubPluginAware<Project> {
 
 	@Override
-	void apply() {
-		if (target.plugins.hasPlugin(JavaPlugin) || target.plugins.hasPlugin(JavaLibraryPlugin)) {
-			configPmd()
+	void apply(Project project) {
+		if (project.plugins.hasPlugin(JavaPlugin) || project.plugins.hasPlugin(JavaLibraryPlugin)) {
+			configPmd project
 		}
-		if (target.plugins.hasPlugin(GroovyPlugin)) {
-			configCodenarc()
+		if (project.plugins.hasPlugin(GroovyPlugin)) {
+			configCodenarc project
 		}
-		configJacoco()
+		configJacoco project
 	}
 
-	private void configPmd() {
+	private void configPmd(def target) {
 		target.pluginManager.apply PmdPlugin
 		target.extensions.getByType(PmdExtension).identity {
-			toolVersion = findProperty 'pmd.version', '6.30.0'
+			toolVersion = findProperty target, 'pmd.version', '6.30.0'
 			ruleSetFiles()
 			ruleSets = [
 				'rulesets/java/ali-comment.xml',
@@ -91,20 +91,20 @@ class IHubVerificationPlugin implements IHubPluginAware<Project> {
 		}
 	}
 
-	private void configCodenarc() {
+	private void configCodenarc(def target) {
 		target.pluginManager.apply CodeNarcPlugin
 		target.extensions.getByType(CodeNarcExtension).identity {
-			toolVersion = findProperty 'codenarc.version', '1.6.1'
+			toolVersion = findProperty target, 'codenarc.version', '1.6.1'
 			// TODO 处理配置文件
 			configFile = target.rootProject.file 'conf/engineering-process/static-checking/groovy/codenarc.gcfg'
 			ignoreFailures = false
 		}
 	}
 
-	private void configJacoco() {
+	private void configJacoco(def target) {
 		target.pluginManager.apply JacocoPlugin
 		target.extensions.getByType(JacocoPluginExtension).identity {
-			toolVersion = findProperty 'jacoco.version', '0.8.6'
+			toolVersion = findProperty target, 'jacoco.version', '0.8.6'
 		}
 		// TODO 配置检查规则
 	}

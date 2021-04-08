@@ -42,25 +42,25 @@ import static pub.ihub.plugin.Constants.RELEASE_SOURCES_ENABLED
 class IHubPublishPlugin implements IHubPluginAware<Project> {
 
 	@Override
-	void apply() {
-		if (!target.plugins.hasPlugin(IHubJavaPlugin)) {
-			target.pluginManager.apply IHubJavaPlugin
+	void apply(Project project) {
+		if (!project.plugins.hasPlugin(IHubJavaPlugin)) {
+			project.pluginManager.apply IHubJavaPlugin
 		}
-		def jarTasks = getJarTasks target
+		def jarTasks = getJarTasks project
 
-		target.pluginManager.apply MavenPublishPlugin
-		target.extensions.getByType(PublishingExtension).identity {
+		project.pluginManager.apply MavenPublishPlugin
+		project.extensions.getByType(PublishingExtension).identity {
 			publications {
 				it.create('mavenJava', MavenPublication) { publication ->
-					def pom = new IHubPublishPom(target)
+					def pom = new IHubPublishPom(project)
 
-					publication.groupId = pom.groupId ?: target.group
-					publication.artifactId = pom.pomArtifactId ?: target.name
+					publication.groupId = pom.groupId ?: project.group
+					publication.artifactId = pom.pomArtifactId ?: project.name
 					assert publication.artifactId, 'artifactId不能为空！'
-					publication.version = target.version as String
+					publication.version = project.version as String
 					assert 'unspecified' != publication.version, 'version不能为空！'
 
-					publication.from target.components.getByName('java')
+					publication.from project.components.getByName('java')
 
 					jarTasks.each {
 						publication.artifact it
@@ -74,12 +74,12 @@ class IHubPublishPlugin implements IHubPluginAware<Project> {
 			}
 		}
 
-		def releaseSigningEnabled = findProperty(RELEASE_SIGNING_ENABLED, 'false').toBoolean()
-		target.plugins.apply SigningPlugin
-		target.signing.setRequired releaseSigningEnabled
-		target.afterEvaluate {
+		def releaseSigningEnabled = findProperty(project, RELEASE_SIGNING_ENABLED, 'false').toBoolean()
+		project.plugins.apply SigningPlugin
+		project.signing.setRequired releaseSigningEnabled
+		project.afterEvaluate {
 			if (releaseSigningEnabled) {
-				target.signing.sign target.publishing.publications
+				project.signing.sign project.publishing.publications
 			}
 		}
 	}

@@ -30,10 +30,10 @@ import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
  */
 class IHubPluginsPlugin implements IHubPluginAware<Project> {
 
-	private static final Closure REPOSITORIES_CONFIGURE = { Project project ->
+	private final Closure REPOSITORIES_CONFIGURE = { Project project ->
 		def dirs = "$project.rootProject.projectDir/libs"
 		if ((dirs as File).directory) flatDir dirs: dirs
-		if (findProperty(MAVEN_LOCAL_ENABLED, true, 'false').toBoolean()) {
+		if (findProperty(project, MAVEN_LOCAL_ENABLED, true, 'false').toBoolean()) {
 			mavenLocal()
 		}
 		// TODO 添加私有仓库
@@ -57,11 +57,11 @@ class IHubPluginsPlugin implements IHubPluginAware<Project> {
 	}
 
 	@Override
-	void apply() {
+	void apply(Project project) {
 		// 配置项目以及子项目组件仓库
-		target.repositories REPOSITORIES_CONFIGURE.curry(target)
-		target.subprojects { repositories REPOSITORIES_CONFIGURE.curry(target) }
-		printConfigContent 'Gradle Project Repos', target.repositories*.displayName
+		project.repositories REPOSITORIES_CONFIGURE.curry(project)
+		project.subprojects { repositories REPOSITORIES_CONFIGURE.curry(project) }
+		printConfigContent 'Gradle Project Repos', project.repositories*.displayName
 	}
 
 }
