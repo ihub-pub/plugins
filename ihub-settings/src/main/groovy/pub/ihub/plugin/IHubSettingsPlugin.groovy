@@ -54,8 +54,8 @@ class IHubSettingsPlugin implements IHubPluginAware<Settings> {
 
 			resolutionStrategy {
 				eachPlugin {
-					if (requested.id.toString().startsWith('pub.ihub.plugin')) {
-						useVersion IHubSettingsPlugin.class.getPackage().getImplementationVersion()
+					if (requested.id.toString().startsWith(IHubSettingsPlugin.package.name)) {
+						useVersion IHubSettingsPlugin.package.implementationVersion
 					} else {
 						pluginVersion.each { id, version ->
 							if (id == requested.id.toString()) useVersion version
@@ -89,26 +89,7 @@ class IHubSettingsPlugin implements IHubPluginAware<Settings> {
 			}
 		}
 
-		settings.extensions.add('includeSubprojects') {
-			String projectPath, String namePrefix = projectPath + '-', String nameSuffix = '' ->
-				new File(settings.rootDir, projectPath).identity {
-					settings.include ":$name"
-					eachDir { dir ->
-						if (!['build', 'src'].contains(dir.name)) {
-							def subprojectName = ":$name:$dir.name"
-							settings.include subprojectName
-							settings.project(subprojectName).name = namePrefix + dir.name + nameSuffix
-						}
-					}
-				}
-		}
-
-		settings.extensions.add('includeSubproject') {
-			String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '' ->
-				def subprojectName = ":$projectPath"
-				settings.include subprojectName
-				settings.project(subprojectName).name = namePrefix + projectPath + nameSuffix
-		}
+		settings.extensions.create 'includeSubprojects', IHubIncludeSubprojectsExtension, settings
 
 		//</editor-fold>
 
