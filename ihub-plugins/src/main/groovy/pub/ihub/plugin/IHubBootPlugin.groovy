@@ -16,7 +16,7 @@
 
 package pub.ihub.plugin
 
-
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 
@@ -25,7 +25,7 @@ import org.gradle.api.Project
  * IHub Spring Boot Plugin
  * @author henry
  */
-class IHubBootPlugin implements IHubPluginAware<Project> {
+class IHubBootPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {

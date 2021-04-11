@@ -18,9 +18,9 @@ description = 'IHub Gradle Plugins'
 
 dependencies {
     implementation project(':ihub-aware')
-    runtime "io.spring.gradle:dependency-management-plugin:$springDependencyManagementVersion"
-    runtime "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-    runtime "org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:$springAotVersion"
+    runtimeOnly "io.spring.gradle:dependency-management-plugin:$springDependencyManagementVersion"
+    runtimeOnly "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    runtimeOnly "org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:$springAotVersion"
 }
 
 gradlePlugin {
@@ -36,12 +36,6 @@ gradlePlugin {
             displayName         = 'IHub Java Gradle Plugin'
             description         = 'IHub Java Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubJavaPlugin'
-        }
-        ihubBom {
-            id                  = 'pub.ihub.plugin.ihub-bom'
-            displayName         = 'IHub Bom Gradle Plugin'
-            description         = 'IHub Dependency Management Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.IHubBomPlugin'
         }
         ihubPublish {
             id                  = 'pub.ihub.plugin.ihub-publish'

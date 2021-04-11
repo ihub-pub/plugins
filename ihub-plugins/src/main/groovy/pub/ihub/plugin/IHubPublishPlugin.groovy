@@ -16,6 +16,8 @@
 
 package pub.ihub.plugin
 
+import org.gradle.api.JavaVersion
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
@@ -25,88 +27,109 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.api.tasks.javadoc.Groovydoc
-import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.jvm.tasks.Jar
+import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
 
-import static pub.ihub.plugin.Constants.RELEASE_DOCS_ENABLED
-import static pub.ihub.plugin.Constants.RELEASE_SIGNING_ENABLED
-import static pub.ihub.plugin.Constants.RELEASE_SOURCES_ENABLED
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 
 
 /**
+ * 组件发布插件
  * @author liheng
  */
-class IHubPublishPlugin implements IHubPluginAware<Project> {
+class IHubPublishPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
 		if (!project.plugins.hasPlugin(IHubJavaPlugin)) {
 			project.pluginManager.apply IHubJavaPlugin
 		}
-		def jarTasks = getJarTasks project
+
+		boolean isRelease = project.version ==~ /(\d+\.)+\d+/
 
 		project.pluginManager.apply MavenPublishPlugin
 		project.extensions.getByType(PublishingExtension).identity {
 			publications {
-				it.create('mavenJava', MavenPublication) { publication ->
-					def pom = new IHubPublishPom(project)
+				create('mavenJava', MavenPublication) {
+					from project.components.getByName('java')
 
-					publication.groupId = pom.groupId ?: project.group
-					publication.artifactId = pom.pomArtifactId ?: project.name
-					assert publication.artifactId, 'artifactId不能为空！'
-					publication.version = project.version as String
-					assert 'unspecified' != publication.version, 'version不能为空！'
-
-					publication.from project.components.getByName('java')
-
-					jarTasks.each {
-						publication.artifact it
+					// release版本时发布sources以及docs包
+					if (isRelease) registerJarTasks(project).each {
+						artifact it
 					}
 
-					pom.configPom publication
+					versionMapping {
+						usage('java-api') {
+							fromResolutionOf('runtimeClasspath')
+						}
+						usage('java-runtime') {
+							fromResolutionResult()
+						}
+					}
+
+					it.groupId = project.group
+					it.version = project.version
+					project.afterEvaluate({ IHubPublishExtension ext ->
+						artifactId = project.jar.archiveBaseName.get()
+						ext.configPom it
+					}.curry(project.extensions.create('iHubPublish', IHubPublishExtension)))
 				}
 			}
 			repositories {
-				// TODO 配置远端仓库
+				maven {
+					url findProperty(project, isRelease ? 'releaseRepoUrl' : 'snapshotRepoUrl')
+					credentials {
+						username findProperty(project, 'repoUsername', true)
+						password findProperty(project, 'repoPassword', true)
+					}
+				}
 			}
 		}
 
-		def releaseSigningEnabled = findProperty(project, RELEASE_SIGNING_ENABLED, 'false').toBoolean()
 		project.plugins.apply SigningPlugin
-		project.signing.setRequired releaseSigningEnabled
-		project.afterEvaluate {
-			if (releaseSigningEnabled) {
-				project.signing.sign project.publishing.publications
+		project.extensions.getByType(SigningExtension).identity {
+			required = isRelease && findProperty(project, 'publishNeedSign', true, 'false').toBoolean()
+			useInMemoryPgpKeys findProperty(project, "signingKey", true),
+				findProperty(project, "signingPassword", true)
+			project.afterEvaluate {
+				sign project.extensions.getByType(PublishingExtension).publications
 			}
 		}
 	}
 
-	private static List<TaskProvider> getJarTasks(Project project) {
+	private static List<TaskProvider> registerJarTasks(Project project) {
 		assert project.plugins.hasPlugin(JavaPlugin) || project.plugins.hasPlugin(JavaLibraryPlugin)
-		def releaseDocsEnabled = findSystemProperty(RELEASE_DOCS_ENABLED, 'false').toBoolean()
-		def releaseSourcesEnabled = findSystemProperty(RELEASE_SOURCES_ENABLED, 'true').toBoolean()
-		def tasks = []
-		if (releaseSourcesEnabled) {
-			tasks << project.tasks.register('sourcesJar', Jar) {
+		def publishDocs = findProperty('publishDocs', 'false').toBoolean()
+		def tasks = [
+			project.tasks.register('sourcesJar', Jar) {
 				archiveClassifier.set 'sources'
 				from project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
 			}
-		}
-		if (releaseDocsEnabled) {
+		]
+		if (publishDocs) {
 			tasks << project.tasks.register('javadocsJar', Jar) {
 				archiveClassifier.set 'javadoc'
-				def javadocTask = project.tasks.getByName('javadoc') as Javadoc
+				def javadocTask = project.tasks.getByName('javadoc') {
+					options.encoding = 'UTF-8'
+					if (JavaVersion.current().java9Compatible) {
+						options.addBooleanOption 'html5', true
+					}
+				}
 				dependsOn javadocTask
 				from javadocTask
 			}
 		}
-		if (releaseDocsEnabled && project.plugins.hasPlugin(GroovyPlugin)) {
+		if (publishDocs && project.plugins.hasPlugin(GroovyPlugin)) {
 			tasks << project.tasks.register('groovydocJar', Jar) {
 				archiveClassifier.set 'groovydoc'
-				def groovydocTask = project.tasks.getByName('groovydoc') as Groovydoc
+				def groovydocTask = project.tasks.getByName('groovydoc') {
+					options.encoding = 'UTF-8'
+					if (JavaVersion.current().java9Compatible) {
+						options.addBooleanOption 'html5', true
+					}
+				}
 				dependsOn groovydocTask
 				from groovydocTask.destinationDir
 			}

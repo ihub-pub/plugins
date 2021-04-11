@@ -16,6 +16,8 @@
 
 package pub.ihub.plugin
 
+import org.gradle.api.JavaVersion
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.ProjectReportsPlugin
@@ -23,55 +25,56 @@ import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 
-import static pub.ihub.plugin.Constants.GRADLE_COMPILATION_INCREMENTAL
-import static pub.ihub.plugin.Constants.JAVA_COMPATIBILITY
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 
 
 /**
+ * Java插件
  * @author henry
  */
-class IHubJavaPlugin implements IHubPluginAware<Project> {
+class IHubJavaPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply JavaLibraryPlugin
-		project.pluginManager.apply IHubBomPlugin
 		project.pluginManager.apply ProjectReportsPlugin
 		project.pluginManager.apply BuildDashboardPlugin
 
 		project.configurations {
-			if (System.getProperty('java.version').startsWith('11')) {
-				maybeCreate('runtimeOnly').getDependencies().addAll([
+			// Java11添加jaxb运行时依赖
+			if (JavaVersion.current().java11) {
+				maybeCreate('runtimeOnly').dependencies.addAll([
 					'javax.xml.bind:jaxb-api',
 					'com.sun.xml.bind:jaxb-core',
 					'com.sun.xml.bind:jaxb-impl'
-				].collect { project.getDependencies().create(it) })
+				].collect { project.dependencies.create it })
 			}
+			// 添加lombok依赖
 			def lombok = 'org.projectlombok:lombok'
-			maybeCreate('compileOnly').getDependencies().add project.getDependencies().create(lombok)
-			maybeCreate('annotationProcessor').getDependencies().add project.getDependencies().create(lombok)
+			maybeCreate('compileOnly').dependencies << project.dependencies.create(lombok)
+			maybeCreate('annotationProcessor').dependencies << project.dependencies.create(lombok)
 		}
 
-		def javaCompatibility = findProperty project, JAVA_COMPATIBILITY
-		if (javaCompatibility) {
-			def gradleCompilationIncremental = findProperty(project, GRADLE_COMPILATION_INCREMENTAL, 'true').toBoolean()
+		// 兼容性配置
+		findProperty(project, 'javaCompatibility', true)?.with {
 			project.tasks.withType(AbstractCompile) {
-				sourceCompatibility = javaCompatibility
-				targetCompatibility = javaCompatibility
+				sourceCompatibility = it
+				targetCompatibility = it
 				options.encoding = 'UTF-8'
-				options.incremental = gradleCompilationIncremental
+				options.incremental = findProperty(project, 'gradleCompilationIncremental', true, 'true').toBoolean()
 			}
 		}
 
+		// 配置Jar属性
 		project.tasks.withType(Jar) {
 			manifest {
 				attributes(
-					'Implementation-Title': project.name,
-					'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-					'Implementation-Version': project.version,
-					'Implementation-Vendor': 'IHub',
-					'Created-By': 'Java ' + System.getProperty('java.version')
+					'Implementation-Title'		: project.name,
+					'Automatic-Module-Name'		: project.name.replaceAll('-', '.'),
+					'Implementation-Version'	: project.version,
+					'Implementation-Vendor'		: 'IHub',
+					'Created-By'				: 'Java ' + JavaVersion.current().majorVersion
 				)
 			}
 		}

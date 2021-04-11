@@ -16,52 +16,180 @@
 
 package pub.ihub.plugin
 
-
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-import static pub.ihub.plugin.Constants.MAVEN_CENTRAL_REPO_CUSTOMIZE
-import static pub.ihub.plugin.Constants.MAVEN_LOCAL_ENABLED
+import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
+import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
+import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_CONFIG
+import static pub.ihub.plugin.Constants.GROUP_MAVEN_BOM_VERSION_CONFIG
+import static pub.ihub.plugin.Constants.GROUP_MAVEN_VERSION_CONFIG
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
+import static pub.ihub.plugin.IHubPluginMethods.of
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
 
 
 
 /**
- * IHub Plugins Gradle Plugin
+ * Gradle基础插件
  * @author liheng
  */
-class IHubPluginsPlugin implements IHubPluginAware<Project> {
-
-	private final Closure REPOSITORIES_CONFIGURE = { Project project ->
-		def dirs = "$project.rootProject.projectDir/libs"
-		if ((dirs as File).directory) flatDir dirs: dirs
-		if (findProperty(project, MAVEN_LOCAL_ENABLED, true, 'false').toBoolean()) {
-			mavenLocal()
-		}
-		// TODO 添加私有仓库
-		// 添加自定义仓库
-		def mavenCentralRepo = findSystemProperty MAVEN_CENTRAL_REPO_CUSTOMIZE
-		if (mavenCentralRepo && !mavenCentralRepo.blank) {
-			maven { url mavenCentralRepo }
-		}
-		maven { url 'https://maven.aliyun.com/repository/public' }
-		maven {
-			url 'https://maven.aliyun.com/repository/google'
-			artifactUrls 'https://maven.google.com'
-		}
-		maven {
-			url 'https://maven.aliyun.com/repository/spring'
-			artifactUrls 'https://repo.spring.io/release'
-		}
-		maven { url 'https://repo.spring.io/release' }
-		if (!findByName("MavenRepo")) mavenCentral()
-		if (!findByName("BintrayJCenter")) jcenter()
-	}
+class IHubPluginsPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		// 配置项目以及子项目组件仓库
-		project.repositories REPOSITORIES_CONFIGURE.curry(project)
-		project.subprojects { repositories REPOSITORIES_CONFIGURE.curry(project) }
+		project.allprojects {
+			version = findProperty project, 'version', true, project.version.toString()
+		}
+		configRepositories project
 		printConfigContent 'Gradle Project Repos', project.repositories*.displayName
+		configDependencyManagement project, true
+		project.subprojects {
+			configRepositories it
+			configDependencyManagement it
+		}
+	}
+
+	/**
+	 * 配置项目组件仓库
+	 * @param project 项目
+	 */
+	private void configRepositories(Project project) {
+		project.repositories {
+			def dirs = "$project.rootProject.projectDir/libs"
+			if ((dirs as File).directory) flatDir dirs: dirs
+			if (findProperty(project, 'mavenLocalEnabled', true, 'false').toBoolean()) {
+				mavenLocal()
+			}
+			maven {
+				name 'AliYunPublic'
+				url 'https://maven.aliyun.com/repository/public'
+			}
+			maven {
+				name 'AliYunGoogle'
+				url 'https://maven.aliyun.com/repository/google'
+				artifactUrls 'https://maven.google.com'
+			}
+			maven {
+				name 'AliYunSpring'
+				url 'https://maven.aliyun.com/repository/spring'
+				artifactUrls 'https://repo.spring.io/release'
+			}
+			maven {
+				name 'SpringRelease'
+				url 'https://repo.spring.io/release'
+			}
+			// 添加私有仓库
+			def releaseRepoUrl = findProperty project, 'releaseRepoUrl'
+			if (releaseRepoUrl) {
+				maven {
+					name 'ReleaseRepo'
+					url releaseRepoUrl
+					credentials {
+						username findProperty(project, 'repoUsername', true)
+						password findProperty(project, 'repoPassword', true)
+					}
+				}
+			}
+			def snapshotRepoUrl = findProperty project, 'snapshotRepoUrl'
+			if (snapshotRepoUrl) {
+				maven {
+					name 'SnapshotRepo'
+					url snapshotRepoUrl
+					credentials {
+						username findProperty(project, 'repoUsername', true)
+						password findProperty(project, 'repoPassword', true)
+					}
+				}
+			}
+			// 添加自定义仓库
+			maven {
+				name 'CustomizeRepo'
+				url findProperty(project, 'customizeRepoUrl', 'https://maven.pkg.github.com/ihub-pub/*')
+			}
+			if (!findByName("MavenRepo")) mavenCentral()
+		}
+	}
+
+	/**
+	 * 配置组件依赖管理
+	 * @param project 项目
+	 * @param isRoot 是否主项目
+	 */
+	private void configDependencyManagement(Project project, boolean isRoot = false) {
+		project.pluginManager.apply 'io.spring.dependency-management'
+
+		project.dependencyManagement {
+			// 导入bom配置
+			def bomVersion = []
+			imports {
+				GROUP_MAVEN_BOM_VERSION_CONFIG.each {
+					def version = findVersion project, it.first, it.third
+					if (isRoot || version != it.third) bomVersion << of(it.first, it.second, version)
+					mavenBom "$it.first:$it.second:$version"
+				}
+			}
+			if (bomVersion) printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
+				tap('Group', 35), tap('Module'), tap('Version', 15)
+
+			// 配置组件版本
+			def dependenciesVersion = []
+			dependencies {
+				GROUP_DEPENDENCY_VERSION_CONFIG.each { t3 ->
+					def version = findVersion project, t3.first, t3.second
+					if (isRoot || version != t3.second) dependenciesVersion << of(t3.first, version, t3.third)
+					dependencySet(group: t3.first, version: version) {
+						t3.third.each { entry it }
+					}
+				}
+			}
+			if (dependenciesVersion) printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
+				dependenciesVersion.inject([]) { list, config ->
+					def (group, version, modules) = config
+					list + modules.collect { [group, it, version] }
+				}, tap('Group', 35), tap('Module'), tap('Version', 15)
+		}
+
+		project.configurations {
+			all {
+				resolutionStrategy {
+					// 配置组件组版本（用于配置无bom组件）
+					eachDependency {
+						String group = it.requested.group
+						def defaultVersion = GROUP_MAVEN_VERSION_CONFIG[group]
+						if (group != project.group && defaultVersion) {
+							def version = findVersion project, group, defaultVersion
+							if (version != defaultVersion) println "$project.name group $group use version $version"
+							it.useVersion version
+						}
+					}
+					// 不缓存动态版本
+					cacheDynamicVersionsFor 0, 'seconds'
+					// 不缓存快照模块
+					cacheChangingModulesFor 0, 'seconds'
+				}
+				// 排除组件依赖
+				GROUP_DEPENDENCY_EXCLUDE_MAPPING.each { group, modules ->
+					modules.each { module -> exclude group: group, module: module }
+				}
+			}
+			if (isRoot) printConfigContent 'Group Maven Default Version',
+				tap('Group'), tap('Version', 30), GROUP_MAVEN_VERSION_CONFIG
+			if (isRoot) printConfigContent 'Exclude Group Modules',
+				tap('Group', 40), tap('Modules'), GROUP_DEPENDENCY_EXCLUDE_MAPPING
+
+			// 配置默认依赖
+			GROUP_DEFAULT_DEPENDENCIES_MAPPING.each { type, dependencies ->
+				maybeCreate(type).dependencies.addAll dependencies.collect { project.dependencies.create it }
+			}
+			if (isRoot) printConfigContent 'Config Default Dependencies',
+				tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
+		}
+	}
+
+	private static String findVersion(Project project, String group, String defaultVersion) {
+		findProperty project, group + '.version', defaultVersion
 	}
 
 }

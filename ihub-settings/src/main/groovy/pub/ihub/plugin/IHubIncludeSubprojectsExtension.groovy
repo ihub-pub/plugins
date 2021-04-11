@@ -18,40 +18,82 @@ package pub.ihub.plugin
 
 import org.gradle.api.initialization.Settings
 
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
+
 
 
 /**
+ * 子项目配置扩展
  * @author liheng
  */
 class IHubIncludeSubprojectsExtension {
 
 	final Settings settings
-	String includeDirs
-	String skippedDirs
 
 	IHubIncludeSubprojectsExtension(Settings settings) {
 		this.settings = settings
-		includeDirs = settings.hasProperty('includeDirs') ? settings.includeDirs : null
-		skippedDirs = settings.hasProperty('skippedDirs') ? settings.skippedDirs : null
+		includeDirs = findProperty settings, 'includeDirs'
+		skippedDirs = findProperty settings, 'skippedDirs'
 	}
 
-	void include(String projectPath, String namePrefix = projectPath + '-', String nameSuffix = '') {
+	/**
+	 * 添加项目
+	 * @param projectPath 项目路径
+	 * @param namePrefix 项目名称前缀
+	 * @param nameSuffix 项目名称后缀
+	 */
+	void include(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
+		println 'include project -> ' + projectPath
+		projectPath = projectPath.with { startsWith(':') ? it : ":$it" }
+		settings.include projectPath
+		settings.project(projectPath).name = namePrefix + projectPath.split(':').last() + nameSuffix
+	}
+
+	/**
+	 * 添加多个项目
+	 * @param projectPaths 项目路径
+	 */
+	void includes(String... projectPaths) {
+		projectPaths.each { include it }
+	}
+
+	/**
+	 * 添加子项目
+	 * @param projectPath 项目路径
+	 * @param namePrefix 项目名称前缀
+	 * @param nameSuffix 项目名称后缀
+	 */
+	void includeSubprojects(String projectPath, String namePrefix = projectPath + '-', String nameSuffix = '') {
 		new File(settings.rootDir, projectPath).identity {
-			settings.include ":$name"
+			include name, ''
 			eachDir { dir ->
 				if (!['build', 'src'].contains(dir.name)) {
-					def subprojectName = ":$name:$dir.name"
-					settings.include subprojectName
-					settings.project(subprojectName).name = namePrefix + dir.name + nameSuffix
+					include "$name:$dir.name", namePrefix, nameSuffix
 				}
 			}
 		}
 	}
 
-	void include1(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
-		def subprojectName = ":$projectPath"
-		settings.include subprojectName
-		settings.project(subprojectName).name = namePrefix + projectPath + nameSuffix
+	/**
+	 * 通过环境配置添加多个项目
+	 * @param includeDirs 项目路径，多路径”,“分割
+	 */
+	void setIncludeDirs(String includeDirs) {
+		includes includeDirs?.split(',')
+	}
+
+	/**
+	 * 跳过某些目录添加其他项目
+	 * @param skippedDirs 需要跳过路径，多路径”,“分割
+	 */
+	void setSkippedDirs(String skippedDirs) {
+		if (skippedDirs) {
+			settings.rootDir.eachDir {
+				if (!skippedDirs.split(',').contains(it.name)) {
+					include it.name
+				}
+			}
+		}
 	}
 
 }

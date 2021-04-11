@@ -16,33 +16,77 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
+
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginAware
 
 
 
 /**
+ * 插件通用方法
  * @author henry
  */
-trait IHubPluginAware<T extends PluginAware> implements Plugin<T> {
+final class IHubPluginMethods {
 
-	private static final DEFAULT_CONTENT_WIDTH = 100
+	private static final int DEFAULT_CONTENT_WIDTH = 100
 
-	String findProperty(T target, String key, boolean findSystem, String defaultValue = null) {
-		findProperty(target, key) ?: findSystem ? findSystemProperty(key, defaultValue) : defaultValue
+	/**
+	 * 从插件查找属性
+	 * TODO
+	 * @param plugin
+	 * @param key
+	 * @param findSystem
+	 * @param defaultValue
+	 * @return
+	 */
+	static String findProperty(PluginAware plugin, String key, boolean findSystem, String defaultValue = null) {
+		(findSystem ? findProperty(key) : null) ?: findProperty(plugin, key, defaultValue)
 	}
 
-	String findProperty(T target, String key, String defaultValue = null) {
-		findProperty target instanceof Project ? { String k -> target.findProperty k } :
-			{ String k -> target.hasProperty(k) ? target."$k" : null }, key, defaultValue
+	/**
+	 * 从任务插件查找属性
+	 * @param project 插件
+	 * @param key key
+	 * @param defaultValue 默认值
+	 * @return 属性值
+	 */
+	static String findProperty(Project project, String key, String defaultValue = null) {
+		findProperty(key, defaultValue) { String k -> project.findProperty k }
 	}
 
-	static String findSystemProperty(String key, String defaultValue = null) {
-		findProperty({ String k -> System.getProperty(k) ?: System.getenv(k) }, key, defaultValue)
+	/**
+	 * 从插件查找属性
+	 * @param plugin 插件
+	 * @param key key
+	 * @param defaultValue 默认值
+	 * @return 属性值
+	 */
+	static String findProperty(PluginAware plugin, String key, String defaultValue = null) {
+		findProperty(key, defaultValue) { String k -> plugin.hasProperty(k) ? plugin."$k" : null }
 	}
 
-	static String findProperty(Closure closure, String key, String defaultValue = null) {
+	/**
+	 * 从环境变量查找属性
+	 * @param key key
+	 * @param defaultValue 默认值
+	 * @return 属性值
+	 */
+	static String findProperty(String key, String defaultValue = null) {
+		findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: System.getenv(k) }
+	}
+
+	/**
+	 * 查找属性
+	 *
+	 * 按如下优先级变换key查询：
+	 * demoKey(原值) -> demo_key -> DEMO_KEY -> demo.key -> demo-key
+	 *
+	 * @param key key
+	 * @param defaultValue 默认值
+	 * @param closure 查询闭包
+	 * @return 属性值
+	 */
+	static String findProperty(String key, String defaultValue = null, Closure closure) {
 		closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').toLowerCase().with {
 			closure(it) ?: closure(it.toUpperCase())
 				?: closure(it.replaceAll('_', '.'))
@@ -51,6 +95,21 @@ trait IHubPluginAware<T extends PluginAware> implements Plugin<T> {
 		}
 	}
 
+	static <T1, T2, T3> Tuple3<T1, T2, T3> of(T1 t1, T2 t2, T3 t3) {
+		new Tuple3<>(t1, t2, t3)
+	}
+
+	static Tuple2<String, Integer> tap(String tap, Integer width = null) {
+		new Tuple2<>(tap, width)
+	}
+
+	/**
+	 * 打印Map配置信息
+	 * @param title 标题
+	 * @param key key描述
+	 * @param value 值描述
+	 * @param map 配置数据
+	 */
 	static void printConfigContent(String title, Tuple2<String, Integer> key, Tuple2<String, Integer> value, Map map) {
 		printConfigContent title, map.inject([]) { list, k, v ->
 			if (v instanceof List)
@@ -61,10 +120,16 @@ trait IHubPluginAware<T extends PluginAware> implements Plugin<T> {
 		}, key, value
 	}
 
+	/**
+	 * 打印Map配置信息
+	 * @param title 标题
+	 * @param data 配置信息
+	 * @param taps 配置栏目描述
+	 */
 	static void printConfigContent(String title, List data, Tuple2<String, Integer>... taps) {
 		def contentWidth = DEFAULT_CONTENT_WIDTH - 4
 		def size = taps.count { !it.second }
-		def tapWidth = size ? ((contentWidth - taps.sum { it.second ?: 0 } - 3 * (taps.size() - 1)) / size).intValue() : null
+		def tapWidth = size ? ((contentWidth - (taps.sum { it.second ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
 		def tapsList = taps ? taps.collect { it.second ? it : tap(it.first, tapWidth) } : [tap(null, contentWidth)]
 		printBorderline tapsList*.second, '┌─', '───', '─┐'
 		printCenter title
@@ -77,20 +142,35 @@ trait IHubPluginAware<T extends PluginAware> implements Plugin<T> {
 		printBorderline tapsList*.second, '└─', '─┴─', '─┘'
 	}
 
-	static Tuple2<String, Integer> tap(String tap, Integer width = null) {
-		new Tuple2<>(tap, width)
-	}
-
+	/**
+	 * 居中打印
+	 * @param str 字符串
+	 */
 	private static void printCenter(String str) {
 		int width = DEFAULT_CONTENT_WIDTH - 4
 		def strRightBoundary = ((width + str.length()) / 2).intValue()
 		printf "│ %${strRightBoundary}s${' ' * (width - strRightBoundary)} │\n", str
 	}
 
+	/**
+	 * 打印行数据
+	 * @param widths 栏目宽度
+	 * @param data 打印数据
+	 * @param leftFrame 左边框字符
+	 * @param separator 分隔符
+	 * @param rightFrame 右边框字符
+	 */
 	private static void printTaps(List<Integer> widths, List data, String leftFrame, String separator, String rightFrame) {
 		printf "$leftFrame${widths.collect { "%-${it}s" }.join(separator)}$rightFrame\n", data
 	}
 
+	/**
+	 * 打印分割线
+	 * @param widths 栏目宽度
+	 * @param leftFrame 左边框字符
+	 * @param separator 分隔符
+	 * @param rightFrame 右边框字符
+	 */
 	private static void printBorderline(List<Integer> widths, String leftFrame, String separator, String rightFrame) {
 		println "$leftFrame${widths.collect { '─' * it }.join(separator)}$rightFrame"
 	}

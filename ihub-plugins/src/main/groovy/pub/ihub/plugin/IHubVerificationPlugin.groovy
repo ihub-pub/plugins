@@ -16,7 +16,7 @@
 
 package pub.ihub.plugin
 
-
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
@@ -28,12 +28,14 @@ import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
+
 
 
 /**
  * @author liheng
  */
-class IHubVerificationPlugin implements IHubPluginAware<Project> {
+class IHubVerificationPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {

@@ -16,18 +16,16 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.Project
+
 import org.gradle.api.publish.maven.MavenPublication
 
 
 
 /**
+ * 组件发布属性扩展
  * @author henry
  */
-class IHubPublishPom {
-
-	String groupId
-	String pomArtifactId
+class IHubPublishExtension {
 
 	String pomName
 	String pomPackaging
@@ -54,33 +52,26 @@ class IHubPublishPom {
 	String pomDeveloperRoles
 	String pomDeveloperTimezone
 
-	IHubPublishPom(Project project) {
-		properties.each { k, v ->
-			if ('class' != k) {
-				// TODO
-				this."$k" = project.findProperty(k) ?: v
-			}
-		}
-		pomName = pomName ?: project.name
+	IHubPublishExtension() {
 	}
 
 	void configPom(MavenPublication publication) {
-		publication.pom { p ->
-			p.name.set pomName
-			p.packaging = pomPackaging
-			p.description.set pomDescription
-			p.url.set pomUrl
-			p.inceptionYear.set pomInceptionYear
+		publication.pom {
+			name.set pomName ?: publication.artifactId
+			packaging = pomPackaging
+			description.set pomDescription
+			url.set pomUrl
+			inceptionYear.set pomInceptionYear
 
-			p.scm {
+			scm {
 				url.set pomScmUrl
 				connection.set pomScmConnection
 				developerConnection.set pomScmDeveloperConnection
 				tag.set pomScmTag
 			}
 
-			p.licenses { licenses ->
-				licenses.license {
+			licenses {
+				license {
 					name.set pomLicenseName
 					url.set pomLicenseUrl
 					distribution.set pomLicenseDistribution
@@ -88,8 +79,8 @@ class IHubPublishPom {
 				}
 			}
 
-			p.developers { developers ->
-				developers.developer {
+			developers {
+				developer {
 					id.set pomDeveloperId
 					name.set pomDeveloperName
 					email.set pomDeveloperEmail

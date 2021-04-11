@@ -16,27 +16,25 @@
 
 package pub.ihub.plugin
 
-
+import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+
+import static pub.ihub.plugin.Constants.PLUGINS_DEPENDENCY_VERSION_MAPPING
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
 
 
 
 /**
- * IHub Gradle Plugins Settings Plugin
+ * Gradle配置插件
  * @author henry
  */
-class IHubSettingsPlugin implements IHubPluginAware<Settings> {
-
-	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
-		'com.github.ben-manes.versions': '0.38.0',
-		'com.palantir.git-version'     : '0.12.3'
-	]
+class IHubSettingsPlugin implements Plugin<Settings> {
 
 	@Override
 	void apply(Settings settings) {
-
-		//<editor-fold desc="配置插件仓库以及版本">
-
+		// 配置插件仓库以及解析策略
 		def pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
 			[(id): findProperty(settings, id + '.version', version)]
 		} as Map<String, String>
@@ -44,55 +42,41 @@ class IHubSettingsPlugin implements IHubPluginAware<Settings> {
 			repositories {
 				def dirs = "$settings.rootProject.projectDir/gradle/plugins"
 				if ((dirs as File).directory) flatDir dirs: dirs
-				[
-					'https://maven.aliyun.com/repository/gradle-plugin',
-					'https://maven.aliyun.com/repository/spring-plugin',
-					'https://repo.spring.io/release'
-				].each { repo -> if (!it*.displayName.any { it.contains repo }) maven { url repo } }
+				maven {
+					name 'AliYunGradlePlugin'
+					url 'https://maven.aliyun.com/repository/gradle-plugin'
+				}
+				maven {
+					name 'AliYunSpringPlugin'
+					url 'https://maven.aliyun.com/repository/spring-plugin'
+				}
+				maven {
+					name 'SpringRelease'
+					url 'https://repo.spring.io/release'
+				}
 				if (!findByName("Gradle Central Plugin Repository")) gradlePluginPortal()
 			}
+			printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
 
 			resolutionStrategy {
 				eachPlugin {
-					if (requested.id.toString().startsWith(IHubSettingsPlugin.package.name)) {
-						useVersion IHubSettingsPlugin.package.implementationVersion
-					} else {
-						pluginVersion.each { id, version ->
-							if (id == requested.id.toString()) useVersion version
-						}
+					pluginVersion.each { id, version ->
+						if (id == requested.id.toString()) useVersion version
 					}
 				}
 			}
+			printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), pluginVersion
+
+			plugins {
+				id IHubSettingsPlugin.package.name version IHubSettingsPlugin.package.implementationVersion
+			}
 		}
-		printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
-		printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), pluginVersion
 
-		//</editor-fold>
-
+		// 配置主项目名称
 		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
 
-		//<editor-fold desc="子项目扩展配置">
-
-		def includeDirs = findProperty settings, 'includeDirs'
-		def skippedDirs = findProperty settings, 'skippedDirs'
-		if (includeDirs) {
-			includeDirs.split(',').each {
-				settings.include ":$it"
-				settings.project(":$it").name = settings.rootProject.name + '-' + it
-			}
-		} else if (skippedDirs) {
-			settings.rootDir.eachDir {
-				if (!skippedDirs.split(',').contains(it.name)) {
-					settings.include ":$it.name"
-					settings.project(":$it.name").name = settings.rootProject.name + '-' + it.name
-				}
-			}
-		}
-
-		settings.extensions.create 'includeSubprojects', IHubIncludeSubprojectsExtension, settings
-
-		//</editor-fold>
-
+		// 配置子项目
+		settings.extensions.create 'iHubInclude', IHubIncludeSubprojectsExtension, settings
 	}
 
 }
