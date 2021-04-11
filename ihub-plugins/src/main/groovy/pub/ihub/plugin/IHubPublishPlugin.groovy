@@ -27,6 +27,7 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.internal.os.OperatingSystem
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
@@ -91,10 +92,16 @@ class IHubPublishPlugin implements Plugin<Project> {
 		project.plugins.apply SigningPlugin
 		project.extensions.getByType(SigningExtension).identity {
 			required = isRelease && findProperty(project, 'publishNeedSign', true, 'false').toBoolean()
-			useInMemoryPgpKeys findProperty(project, "signingKey", true),
-				findProperty(project, "signingPassword", true)
+			// TODO 签名待调试
+			if (OperatingSystem.current().windows) {
+				useGpgCmd()
+			} else {
+				useInMemoryPgpKeys findProperty(project, "signingKeyId", true),
+					findProperty(project, "signingSecretKey", true),
+					findProperty(project, "signingPassword", true)
+			}
 			project.afterEvaluate {
-				sign project.extensions.getByType(PublishingExtension).publications
+				if (required) sign project.extensions.getByType(PublishingExtension).publications.mavenJava
 			}
 		}
 	}
@@ -111,11 +118,11 @@ class IHubPublishPlugin implements Plugin<Project> {
 		if (publishDocs) {
 			tasks << project.tasks.register('javadocsJar', Jar) {
 				archiveClassifier.set 'javadoc'
-				def javadocTask = project.tasks.getByName('javadoc') {
-					options.encoding = 'UTF-8'
+				def javadocTask = project.tasks.getByName('javadoc').tap {
 					if (JavaVersion.current().java9Compatible) {
 						options.addBooleanOption 'html5', true
 					}
+					options.encoding = 'UTF-8'
 				}
 				dependsOn javadocTask
 				from javadocTask
@@ -124,11 +131,11 @@ class IHubPublishPlugin implements Plugin<Project> {
 		if (publishDocs && project.plugins.hasPlugin(GroovyPlugin)) {
 			tasks << project.tasks.register('groovydocJar', Jar) {
 				archiveClassifier.set 'groovydoc'
-				def groovydocTask = project.tasks.getByName('groovydoc') {
-					options.encoding = 'UTF-8'
+				def groovydocTask = project.tasks.getByName('groovydoc').tap {
 					if (JavaVersion.current().java9Compatible) {
 						options.addBooleanOption 'html5', true
 					}
+					options.encoding = 'UTF-8'
 				}
 				dependsOn groovydocTask
 				from groovydocTask.destinationDir
