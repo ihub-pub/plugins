@@ -75,21 +75,26 @@ class IHubVerificationPlugin implements Plugin<Project> {
 				]
 			}
 			consoleOutput = findProperty(project, 'pmdConsoleOutput', 'false').toBoolean()
-			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', 'true').toBoolean()
-			toolVersion = findProperty project, 'pmd.version', '6.31.0'
+			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', 'false').toBoolean()
+			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
 		}
 		project.configurations {
 			maybeCreate('pmd').dependencies << project.dependencies.create('com.alibaba.p3c:p3c-pmd')
 		}
 	}
 
-	private static void configCodenarc(def target) {
-		target.pluginManager.apply CodeNarcPlugin
-		target.extensions.getByType(CodeNarcExtension).identity {
-			// TODO 处理配置文件
-			configFile = target.rootProject.file "$target.rootProject.projectDir/conf/codenarc/codenarc.groovy"
-			ignoreFailures = false
-			toolVersion = findProperty target, 'codenarc.version', '1.6.1'
+	private static void configCodenarc(Project project) {
+		project.pluginManager.apply CodeNarcPlugin
+		project.extensions.getByType(CodeNarcExtension).identity {
+			def codenarc = "$project.rootProject.projectDir/conf/codenarc/codenarc.groovy"
+			if (project.file(codenarc).exists()) {
+				configFile = project.rootProject.file codenarc
+			} else {
+				// TODO 处理默认配置
+				config = project.resources.text.fromString ''''''
+			}
+			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', 'false').toBoolean()
+			toolVersion = findProperty project, 'codenarcVersion', '2.1.0'
 		}
 	}
 
