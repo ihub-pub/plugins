@@ -29,9 +29,10 @@ class IHubBootPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		if (!project.plugins.hasPlugin(IHubJavaPlugin)) {
-			project.pluginManager.apply IHubJavaPlugin
+		if (project.plugins.hasPlugin(IHubBootPlugin)) {
+			return
 		}
+		project.pluginManager.apply IHubJavaPlugin
 		project.pluginManager.apply 'org.springframework.boot'
 
 		project.bootBuildImage {

@@ -44,9 +44,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		if (!project.plugins.hasPlugin(IHubJavaPlugin)) {
-			project.pluginManager.apply IHubJavaPlugin
-		}
+		project.pluginManager.apply IHubJavaPlugin
 
 		boolean isRelease = project.version ==~ /(\d+\.)+\d+/
 
@@ -82,8 +80,8 @@ class IHubPublishPlugin implements Plugin<Project> {
 				maven {
 					url findProperty(project, isRelease ? 'releaseRepoUrl' : 'snapshotRepoUrl')
 					credentials {
-						username findProperty(project, 'repoUsername', true)
-						password findProperty(project, 'repoPassword', true)
+						username findProperty('repoUsername', project)
+						password findProperty('repoPassword', project)
 					}
 				}
 			}
@@ -91,14 +89,13 @@ class IHubPublishPlugin implements Plugin<Project> {
 
 		project.plugins.apply SigningPlugin
 		project.extensions.getByType(SigningExtension).identity {
-			required = isRelease && findProperty(project, 'publishNeedSign', true, 'false').toBoolean()
+			required = isRelease && findProperty('publishNeedSign', project, 'false').toBoolean()
 			// TODO 签名待调试
 			if (OperatingSystem.current().windows) {
 				useGpgCmd()
 			} else {
-				useInMemoryPgpKeys findProperty(project, "signingKeyId", true),
-					findProperty(project, "signingSecretKey", true),
-					findProperty(project, "signingPassword", true)
+				useInMemoryPgpKeys findProperty('signingKeyId', project),
+					findProperty('signingSecretKey', project), findProperty('signingPassword', project)
 			}
 			project.afterEvaluate {
 				if (required) sign project.extensions.getByType(PublishingExtension).publications.mavenJava

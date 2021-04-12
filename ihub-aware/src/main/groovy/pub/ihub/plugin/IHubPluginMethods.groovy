@@ -31,16 +31,14 @@ final class IHubPluginMethods {
 	private static final int DEFAULT_CONTENT_WIDTH = 100
 
 	/**
-	 * 从插件查找属性
-	 * TODO
-	 * @param plugin
+	 * 优先从环境变量查找属性
 	 * @param key
-	 * @param findSystem
-	 * @param defaultValue
-	 * @return
+	 * @param plugin
+	 * @param defaultValue 默认值
+	 * @return 属性值
 	 */
-	static String findProperty(PluginAware plugin, String key, boolean findSystem, String defaultValue = null) {
-		(findSystem ? findProperty(key) : null) ?: findProperty(plugin, key, defaultValue)
+	static String findProperty(String key, PluginAware plugin, String defaultValue = null) {
+		findProperty(key) ?: findProperty(plugin, key, defaultValue)
 	}
 
 	/**

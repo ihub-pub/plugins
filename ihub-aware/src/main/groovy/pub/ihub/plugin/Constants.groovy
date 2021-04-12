@@ -61,6 +61,7 @@ class Constants {
 		of('javax.xml.bind'		, '2.3.1'	, ['jaxb-api']),
 		of('com.baomidou'		, '3.4.2'	, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),
 		of('com.github.xiaoymin'	, '2.0.8'	, ['knife4j-aggregation-spring-boot-starter']),
+		of('com.alibaba.p3c'		, '2.1.1'	, ['p3c-pmd']),
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [

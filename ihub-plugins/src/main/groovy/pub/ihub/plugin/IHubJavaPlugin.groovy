@@ -37,6 +37,10 @@ class IHubJavaPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
+		if (project.plugins.hasPlugin(IHubJavaPlugin)) {
+			return
+		}
+		project.pluginManager.apply IHubPluginsPlugin
 		project.pluginManager.apply JavaLibraryPlugin
 		project.pluginManager.apply ProjectReportsPlugin
 		project.pluginManager.apply BuildDashboardPlugin
@@ -57,12 +61,12 @@ class IHubJavaPlugin implements Plugin<Project> {
 		}
 
 		// 兼容性配置
-		findProperty(project, 'javaCompatibility', true)?.with {
+		findProperty('javaCompatibility', project)?.with {
 			project.tasks.withType(AbstractCompile) {
 				sourceCompatibility = it
 				targetCompatibility = it
 				options.encoding = 'UTF-8'
-				options.incremental = findProperty(project, 'gradleCompilationIncremental', true, 'true').toBoolean()
+				options.incremental = findProperty('gradleCompilationIncremental', project, 'true').toBoolean()
 			}
 		}
 
@@ -70,11 +74,11 @@ class IHubJavaPlugin implements Plugin<Project> {
 		project.tasks.withType(Jar) {
 			manifest {
 				attributes(
-					'Implementation-Title'		: project.name,
-					'Automatic-Module-Name'		: project.name.replaceAll('-', '.'),
-					'Implementation-Version'	: project.version,
-					'Implementation-Vendor'		: 'IHub',
-					'Created-By'				: 'Java ' + JavaVersion.current().majorVersion
+					'Implementation-Title': project.name,
+					'Automatic-Module-Name': project.name.replaceAll('-', '.'),
+					'Implementation-Version': project.version,
+					'Implementation-Vendor': 'IHub',
+					'Created-By': 'Java ' + JavaVersion.current().majorVersion
 				)
 			}
 		}

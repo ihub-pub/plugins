@@ -39,15 +39,18 @@ class IHubPluginsPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		project.allprojects {
-			version = findProperty project, 'version', true, project.version.toString()
+		if (project.plugins.hasPlugin(IHubPluginsPlugin)) {
+			return
 		}
+		project.version = findProperty 'version', project, project.version.toString()
+		boolean isRoot = project.name == project.rootProject.name
 		configRepositories project
-		printConfigContent 'Gradle Project Repos', project.repositories*.displayName
-		configDependencyManagement project, true
+		if (isRoot) {
+			printConfigContent 'Gradle Project Repos', project.repositories*.displayName
+		}
+		configDependencyManagement project, isRoot
 		project.subprojects {
-			configRepositories it
-			configDependencyManagement it
+			pluginManager.apply IHubPluginsPlugin
 		}
 	}
 
@@ -59,7 +62,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 		project.repositories {
 			def dirs = "$project.rootProject.projectDir/libs"
 			if ((dirs as File).directory) flatDir dirs: dirs
-			if (findProperty(project, 'mavenLocalEnabled', true, 'false').toBoolean()) {
+			if (findProperty('mavenLocalEnabled', project, 'false').toBoolean()) {
 				mavenLocal()
 			}
 			maven {
@@ -87,8 +90,8 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					name 'ReleaseRepo'
 					url releaseRepoUrl
 					credentials {
-						username findProperty(project, 'repoUsername', true)
-						password findProperty(project, 'repoPassword', true)
+						username findProperty('repoUsername', project)
+						password findProperty('repoPassword', project)
 					}
 				}
 			}
@@ -98,8 +101,8 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					name 'SnapshotRepo'
 					url snapshotRepoUrl
 					credentials {
-						username findProperty(project, 'repoUsername', true)
-						password findProperty(project, 'repoPassword', true)
+						username findProperty('repoUsername', project)
+						password findProperty('repoPassword', project)
 					}
 				}
 			}
@@ -117,7 +120,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 	 * @param project 项目
 	 * @param isRoot 是否主项目
 	 */
-	private void configDependencyManagement(Project project, boolean isRoot = false) {
+	private void configDependencyManagement(Project project, boolean isRoot) {
 		project.pluginManager.apply 'io.spring.dependency-management'
 
 		project.dependencyManagement {
