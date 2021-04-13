@@ -40,7 +40,10 @@ class Constants {
 
 	//<editor-fold desc="Plugins组件相关">
 
+	static final String GROOVY_VERSION = '3.0.7'
+
 	static final List<Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
+		of('org.codehaus.groovy'				, 'groovy-bom'							, GROOVY_VERSION		),
 		of('org.springframework.boot'		, 'spring-boot-dependencies'				, '2.4.4'			),
 		of('org.springframework.cloud'		, 'spring-cloud-dependencies'			, '2020.0.2'			),
 		of('org.springframework.security'	, 'spring-security-bom'					, '5.4.5'			),

@@ -16,22 +16,20 @@
 
 package pub.ihub.plugin
 
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.internal.os.OperatingSystem
-import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
 
+import static pub.ihub.plugin.IHubGroovyPlugin.registerGroovydocJar
+import static pub.ihub.plugin.IHubJavaBasePlugin.registerJavadocsJar
+import static pub.ihub.plugin.IHubJavaBasePlugin.registerSourcesJar
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 
@@ -44,7 +42,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		project.pluginManager.apply IHubJavaPlugin
+		project.pluginManager.apply IHubJavaBasePlugin
 
 		boolean isRelease = project.version ==~ /(\d+\.)+\d+/
 
@@ -104,39 +102,15 @@ class IHubPublishPlugin implements Plugin<Project> {
 	}
 
 	private static List<TaskProvider> registerJarTasks(Project project) {
-		assert project.plugins.hasPlugin(JavaPlugin) || project.plugins.hasPlugin(JavaLibraryPlugin)
 		def publishDocs = findProperty('publishDocs', 'false').toBoolean()
 		def tasks = [
-			project.tasks.register('sourcesJar', Jar) {
-				archiveClassifier.set 'sources'
-				from project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
-			}
+			registerSourcesJar(project)
 		]
 		if (publishDocs) {
-			tasks << project.tasks.register('javadocsJar', Jar) {
-				archiveClassifier.set 'javadoc'
-				def javadocTask = project.tasks.getByName('javadoc').tap {
-					if (JavaVersion.current().java9Compatible) {
-						options.addBooleanOption 'html5', true
-					}
-					options.encoding = 'UTF-8'
-				}
-				dependsOn javadocTask
-				from javadocTask
-			}
+			tasks << registerJavadocsJar(project)
 		}
 		if (publishDocs && project.plugins.hasPlugin(GroovyPlugin)) {
-			tasks << project.tasks.register('groovydocJar', Jar) {
-				archiveClassifier.set 'groovydoc'
-				def groovydocTask = project.tasks.getByName('groovydoc').tap {
-					if (JavaVersion.current().java9Compatible) {
-						options.addBooleanOption 'html5', true
-					}
-					options.encoding = 'UTF-8'
-				}
-				dependsOn groovydocTask
-				from groovydocTask.destinationDir
-			}
+			tasks << registerGroovydocJar(project)
 		}
 		tasks
 	}

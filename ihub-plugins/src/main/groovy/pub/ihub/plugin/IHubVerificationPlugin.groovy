@@ -19,7 +19,6 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
@@ -40,11 +39,8 @@ class IHubVerificationPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		if (project.plugins.hasPlugin(IHubVerificationPlugin)) {
-			return
-		}
 		project.pluginManager.apply IHubPluginsPlugin
-		if (project.plugins.hasPlugin(JavaPlugin) || project.plugins.hasPlugin(JavaLibraryPlugin)) {
+		if (project.plugins.hasPlugin(JavaPlugin)) {
 			configPmd project
 		}
 		if (project.plugins.hasPlugin(GroovyPlugin)) {
@@ -60,6 +56,7 @@ class IHubVerificationPlugin implements Plugin<Project> {
 			if (project.file(ruleset).exists()) {
 				ruleSetFiles = project.files ruleset
 			} else {
+				// TODO 整理默认校验规则
 				ruleSets = [
 					'rulesets/java/ali-comment.xml',
 					'rulesets/java/ali-concurrent.xml',
@@ -87,12 +84,9 @@ class IHubVerificationPlugin implements Plugin<Project> {
 		project.pluginManager.apply CodeNarcPlugin
 		project.extensions.getByType(CodeNarcExtension).identity {
 			def codenarc = "$project.rootProject.projectDir/conf/codenarc/codenarc.groovy"
-			if (project.file(codenarc).exists()) {
-				configFile = project.rootProject.file codenarc
-			} else {
-				// TODO 处理默认配置
-				config = project.resources.text.fromString ''''''
-			}
+			// TODO 整理默认校验规则
+			configFile = project.rootProject.file project.file(codenarc).exists() ? codenarc :
+				getClass().classLoader.getResource('codenarc.groovy').file
 			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', 'false').toBoolean()
 			toolVersion = findProperty project, 'codenarcVersion', '2.1.0'
 		}

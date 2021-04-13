@@ -31,11 +31,23 @@ gradlePlugin {
             description         = 'IHub Plugins Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
         }
+        ihubJavaBase {
+            id                  = 'pub.ihub.plugin.ihub-java-base'
+            displayName         = 'IHub Java Base Gradle Plugin'
+            description         = 'IHub Java Base Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubJavaBasePlugin'
+        }
         ihubJava {
             id                  = 'pub.ihub.plugin.ihub-java'
             displayName         = 'IHub Java Gradle Plugin'
             description         = 'IHub Java Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubJavaPlugin'
+        }
+        ihubGroovy {
+            id                  = 'pub.ihub.plugin.ihub-groovy'
+            displayName         = 'IHub Groovy Gradle Plugin'
+            description         = 'IHub Groovy Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.IHubGroovyPlugin'
         }
         ihubPublish {
             id                  = 'pub.ihub.plugin.ihub-publish'

@@ -39,9 +39,6 @@ class IHubPluginsPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		if (project.plugins.hasPlugin(IHubPluginsPlugin)) {
-			return
-		}
 		project.version = findProperty 'version', project, project.version.toString()
 		boolean isRoot = project.name == project.rootProject.name
 		configRepositories project
@@ -128,9 +125,9 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			def bomVersion = []
 			imports {
 				GROUP_MAVEN_BOM_VERSION_CONFIG.each {
-					def version = findVersion project, it.first, it.third
-					if (isRoot || version != it.third) bomVersion << of(it.first, it.second, version)
-					mavenBom "$it.first:$it.second:$version"
+					def version = findVersion project, it.v1, it.v3
+					if (isRoot || version != it.v3) bomVersion << of(it.v1, it.v2, version)
+					mavenBom "$it.v1:$it.v2:$version"
 				}
 			}
 			if (bomVersion) printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
@@ -140,10 +137,10 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			def dependenciesVersion = []
 			dependencies {
 				GROUP_DEPENDENCY_VERSION_CONFIG.each { t3 ->
-					def version = findVersion project, t3.first, t3.second
-					if (isRoot || version != t3.second) dependenciesVersion << of(t3.first, version, t3.third)
-					dependencySet(group: t3.first, version: version) {
-						t3.third.each { entry it }
+					def version = findVersion project, t3.v1, t3.v2
+					if (isRoot || version != t3.v2) dependenciesVersion << of(t3.v1, version, t3.v3)
+					dependencySet(group: t3.v1, version: version) {
+						t3.v3.each { entry it }
 					}
 				}
 			}
@@ -177,16 +174,16 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					modules.each { module -> exclude group: group, module: module }
 				}
 			}
-			if (isRoot) printConfigContent 'Group Maven Default Version',
+			if (isRoot) printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
 				tap('Group'), tap('Version', 30), GROUP_MAVEN_VERSION_CONFIG
-			if (isRoot) printConfigContent 'Exclude Group Modules',
+			if (isRoot) printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
 				tap('Group', 40), tap('Modules'), GROUP_DEPENDENCY_EXCLUDE_MAPPING
 
 			// 配置默认依赖
 			GROUP_DEFAULT_DEPENDENCIES_MAPPING.each { type, dependencies ->
 				maybeCreate(type).dependencies.addAll dependencies.collect { project.dependencies.create it }
 			}
-			if (isRoot) printConfigContent 'Config Default Dependencies',
+			if (isRoot) printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
 				tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
 		}
 	}

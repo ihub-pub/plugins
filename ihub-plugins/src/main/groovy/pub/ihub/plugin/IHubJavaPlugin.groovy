@@ -20,9 +20,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.plugins.ProjectReportsPlugin
-import org.gradle.api.reporting.plugins.BuildDashboardPlugin
-import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
@@ -37,13 +34,8 @@ class IHubJavaPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
-		if (project.plugins.hasPlugin(IHubJavaPlugin)) {
-			return
-		}
-		project.pluginManager.apply IHubPluginsPlugin
+		project.pluginManager.apply IHubJavaBasePlugin
 		project.pluginManager.apply JavaLibraryPlugin
-		project.pluginManager.apply ProjectReportsPlugin
-		project.pluginManager.apply BuildDashboardPlugin
 
 		project.configurations {
 			// Java11添加jaxb运行时依赖
@@ -67,19 +59,6 @@ class IHubJavaPlugin implements Plugin<Project> {
 				targetCompatibility = it
 				options.encoding = 'UTF-8'
 				options.incremental = findProperty('gradleCompilationIncremental', project, 'true').toBoolean()
-			}
-		}
-
-		// 配置Jar属性
-		project.tasks.withType(Jar) {
-			manifest {
-				attributes(
-					'Implementation-Title': project.name,
-					'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-					'Implementation-Version': project.version,
-					'Implementation-Vendor': 'IHub',
-					'Created-By': 'Java ' + JavaVersion.current().majorVersion
-				)
 			}
 		}
 
