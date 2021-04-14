@@ -23,6 +23,7 @@ import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 
+import static pub.ihub.plugin.Constants.GROOVY_GROUP_ID
 import static pub.ihub.plugin.Constants.GROOVY_VERSION
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
@@ -41,7 +42,7 @@ class IHubGroovyPlugin implements Plugin<Project> {
 
 		project.configurations {
 			maybeCreate('compileOnly').dependencies << project.dependencies
-				.create("org.codehaus.groovy:groovy-all:${findProperty(project, 'org.codehaus.groovy.version', GROOVY_VERSION)}")
+				.create("$GROOVY_GROUP_ID:groovy-all:${getGroovyVersion(project)}")
 			if (project.name == project.rootProject.name || !project.rootProject.plugins.hasPlugin(GroovyPlugin)) {
 				println project.name + ' dependency groovy-all (only compile)'
 			}
@@ -70,6 +71,10 @@ class IHubGroovyPlugin implements Plugin<Project> {
 			dependsOn groovydocTask
 			from groovydocTask.destinationDir
 		}
+	}
+
+	static String getGroovyVersion(Project project) {
+		findProperty project, GROOVY_GROUP_ID + '.version', GROOVY_VERSION
 	}
 
 }

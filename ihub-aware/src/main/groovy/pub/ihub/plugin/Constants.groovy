@@ -24,9 +24,9 @@ import static pub.ihub.plugin.IHubPluginMethods.of
  * 常量
  * @author liheng
  */
-class Constants {
+final class Constants {
 
-	//<editor-fold desc="Settings组件相关">
+	//<editor-fold desc="Settings插件相关">
 
 	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
 		'io.spring.dependency-management'     : '1.0.11.RELEASE',
@@ -38,12 +38,14 @@ class Constants {
 
 	//</editor-fold>
 
-	//<editor-fold desc="Plugins组件相关">
+	//<editor-fold desc="Plugins插件相关">
 
+	static final String GROOVY_GROUP_ID = 'org.codehaus.groovy'
 	static final String GROOVY_VERSION = '3.0.7'
 
 	static final List<Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
-		of('org.codehaus.groovy'				, 'groovy-bom'							, GROOVY_VERSION		),
+		of(GROOVY_GROUP_ID						, 'groovy-bom'							, GROOVY_VERSION		),
+		of('org.spockframework'				, 'spock-bom'							, '2.0-M5-groovy-3.0'	),
 		of('org.springframework.boot'		, 'spring-boot-dependencies'				, '2.4.4'			),
 		of('org.springframework.cloud'		, 'spring-cloud-dependencies'			, '2020.0.2'			),
 		of('org.springframework.security'	, 'spring-security-bom'					, '5.4.5'			),
@@ -60,11 +62,13 @@ class Constants {
 	]
 
 	static final List<Tuple3<String, String, List<String>>> GROUP_DEPENDENCY_VERSION_CONFIG = [
-		of('org.projectlombok'	, '1.18.16'	, ['lombok']),
-		of('javax.xml.bind'		, '2.3.1'	, ['jaxb-api']),
-		of('com.baomidou'		, '3.4.2'	, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),
-		of('com.github.xiaoymin'	, '2.0.8'	, ['knife4j-aggregation-spring-boot-starter']),
-		of('com.alibaba.p3c'		, '2.1.1'	, ['p3c-pmd']),
+		of(GROOVY_GROUP_ID			, GROOVY_VERSION	, ['groovy-all']),
+		of('org.projectlombok'	, '1.18.16'		, ['lombok']),
+		of('javax.xml.bind'		, '2.3.1'		, ['jaxb-api']),
+		of('com.baomidou'		, '3.4.2'		, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),
+		of('com.github.xiaoymin'	, '2.0.8'		, ['knife4j-aggregation-spring-boot-starter']),
+		of('com.alibaba.p3c'		, '2.1.1'		, ['p3c-pmd']),
+		of('com.athaydes'		, '2.0.1-RC3'	, ['spock-reports']),
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [

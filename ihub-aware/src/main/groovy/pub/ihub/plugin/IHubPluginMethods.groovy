@@ -32,8 +32,8 @@ final class IHubPluginMethods {
 
 	/**
 	 * 优先从环境变量查找属性
-	 * @param key
-	 * @param plugin
+	 * @param key key
+	 * @param plugin 插件
 	 * @param defaultValue 默认值
 	 * @return 属性值
 	 */
@@ -93,8 +93,8 @@ final class IHubPluginMethods {
 		}
 	}
 
-	static <T1, T2, T3> Tuple3<T1, T2, T3> of(T1 t1, T2 t2, T3 t3) {
-		new Tuple3<>(t1, t2, t3)
+	static <T1, T2, T3> Tuple3<T1, T2, T3> of(T1 v1, T2 v2, T3 v3) {
+		new Tuple3<>(v1, v2, v3)
 	}
 
 	static Tuple2<String, Integer> tap(String tap, Integer width = null) {
@@ -126,18 +126,18 @@ final class IHubPluginMethods {
 	 */
 	static void printConfigContent(String title, List data, Tuple2<String, Integer>... taps) {
 		def contentWidth = DEFAULT_CONTENT_WIDTH - 4
-		def size = taps.count { !it.second }
-		def tapWidth = size ? ((contentWidth - (taps.sum { it.second ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
-		def tapsList = taps ? taps.collect { it.second ? it : tap(it.first, tapWidth) } : [tap(null, contentWidth)]
-		printBorderline tapsList*.second, '┌─', '───', '─┐'
+		def size = taps.count { !it.v2 }
+		def tapWidth = size ? ((contentWidth - (taps.sum { it.v2 ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
+		def tapsList = taps ? taps.collect { it.v2 ? it : tap(it.v1, tapWidth) } : [tap(null, contentWidth)]
+		printBorderline tapsList*.v2, '┌─', '───', '─┐'
 		printCenter title
-		printBorderline tapsList*.second, '├─', '─┬─', '─┤'
+		printBorderline tapsList*.v2, '├─', '─┬─', '─┤'
 		if (taps) {
-			printTaps tapsList*.second, tapsList*.first, '│ ', ' │ ', ' │'
-			printBorderline tapsList*.second, '├─', '─┼─', '─┤'
+			printTaps tapsList*.v2, tapsList*.v1, '│ ', ' │ ', ' │'
+			printBorderline tapsList*.v2, '├─', '─┼─', '─┤'
 		}
-		data.each { printTaps tapsList*.second, it instanceof List ? it : [it], '│ ', ' │ ', ' │' }
-		printBorderline tapsList*.second, '└─', '─┴─', '─┘'
+		data.each { printTaps tapsList*.v2, it instanceof List ? it : [it], '│ ', ' │ ', ' │' }
+		printBorderline tapsList*.v2, '└─', '─┴─', '─┘'
 	}
 
 	/**

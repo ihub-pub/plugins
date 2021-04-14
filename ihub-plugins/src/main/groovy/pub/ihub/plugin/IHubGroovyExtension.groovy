@@ -71,6 +71,7 @@ class IHubGroovyExtension {
 	enum ModulesType {
 
 		ALL, BASE, EXTENSION
+
 	}
 
 }
