@@ -28,8 +28,6 @@ import org.gradle.api.plugins.PluginAware
  */
 final class IHubPluginMethods {
 
-	private static final int DEFAULT_CONTENT_WIDTH = 100
-
 	/**
 	 * 优先从环境变量查找属性
 	 * @param key key
@@ -125,12 +123,23 @@ final class IHubPluginMethods {
 	 * @param taps 配置栏目描述
 	 */
 	static void printConfigContent(String title, List data, Tuple2<String, Integer>... taps) {
-		def contentWidth = DEFAULT_CONTENT_WIDTH - 4
+		printConfigContent title, data, 100, taps
+	}
+
+	/**
+	 * 打印Map配置信息
+	 * @param title 标题
+	 * @param data 配置信息
+	 * @param printWidth 打印宽度
+	 * @param taps 配置栏目描述
+	 */
+	static void printConfigContent(String title, List data, int printWidth, Tuple2<String, Integer>... taps) {
+		def contentWidth = printWidth - 4
 		def size = taps.count { !it.v2 }
 		def tapWidth = size ? ((contentWidth - (taps.sum { it.v2 ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
 		def tapsList = taps ? taps.collect { it.v2 ? it : tap(it.v1, tapWidth) } : [tap(null, contentWidth)]
 		printBorderline tapsList*.v2, '┌─', '───', '─┐'
-		printCenter title
+		printCenter title, contentWidth
 		printBorderline tapsList*.v2, '├─', '─┬─', '─┤'
 		if (taps) {
 			printTaps tapsList*.v2, tapsList*.v1, '│ ', ' │ ', ' │'
@@ -144,10 +153,9 @@ final class IHubPluginMethods {
 	 * 居中打印
 	 * @param str 字符串
 	 */
-	private static void printCenter(String str) {
-		int width = DEFAULT_CONTENT_WIDTH - 4
-		def strRightBoundary = ((width + str.length()) / 2).intValue()
-		printf "│ %${strRightBoundary}s${' ' * (width - strRightBoundary)} │\n", str
+	private static void printCenter(String str, int contentWidth) {
+		def strRightBoundary = ((contentWidth + str.length()) / 2).intValue()
+		printf "│ %${strRightBoundary}s${' ' * (contentWidth - strRightBoundary)} │\n", str
 	}
 
 	/**

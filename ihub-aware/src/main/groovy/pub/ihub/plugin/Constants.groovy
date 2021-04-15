@@ -44,31 +44,35 @@ final class Constants {
 	static final String GROOVY_VERSION = '3.0.7'
 
 	static final List<Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
-		of(GROOVY_GROUP_ID						, 'groovy-bom'							, GROOVY_VERSION		),
+		of(GROOVY_GROUP_ID						, 'groovy-bom'							, GROOVY_VERSION			),
 		of('org.spockframework'				, 'spock-bom'							, '2.0-M5-groovy-3.0'	),
-		of('org.springframework.boot'		, 'spring-boot-dependencies'				, '2.4.4'			),
+		of('org.springframework.boot'		, 'spring-boot-dependencies'			, '2.4.4'				),
 		of('org.springframework.cloud'		, 'spring-cloud-dependencies'			, '2020.0.2'			),
-		of('org.springframework.security'	, 'spring-security-bom'					, '5.4.5'			),
-		of('com.alibaba.cloud'				, 'spring-cloud-alibaba-dependencies'	, '2.2.5.RELEASE'	),
-		of('com.github.xiaoymin'				, 'knife4j-dependencies'					, '3.0.2'			),
-		of('com.sun.xml.bind'				, 'jaxb-bom-ext'							, '3.0.0'			),
-		of('de.codecentric'					, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'	),
-		of('de.codecentric'					, 'spring-boot-admin-dependencies'		, '2.4.0'			),
+		of('org.springframework.security'	, 'spring-security-bom'					, '5.4.6'				),
+		of('com.alibaba.cloud'				, 'spring-cloud-alibaba-dependencies'	, '2021.1'				),
+		of('com.alibaba.csp'				, 'sentinel-parent'						, '1.8.1'				),
+		of('com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				),
+		of('com.sun.xml.bind'				, 'jaxb-bom-ext'						, '3.0.0'				),
+		of('de.codecentric'					, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		),
+		of('de.codecentric'					, 'spring-boot-admin-dependencies'		, '2.4.0'				),
 	]
 
 	static final Map<String, String> GROUP_MAVEN_VERSION_CONFIG = [
 		'pub.ihub.lib': 'dev-SNAPSHOT',
-		'cn.hutool'   : '5.6.2',
+		'cn.hutool'   : '5.6.3',
 	]
 
 	static final List<Tuple3<String, String, List<String>>> GROUP_DEPENDENCY_VERSION_CONFIG = [
-		of(GROOVY_GROUP_ID			, GROOVY_VERSION	, ['groovy-all']),
-		of('org.projectlombok'	, '1.18.16'		, ['lombok']),
-		of('javax.xml.bind'		, '2.3.1'		, ['jaxb-api']),
-		of('com.baomidou'		, '3.4.2'		, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),
-		of('com.github.xiaoymin'	, '2.0.8'		, ['knife4j-aggregation-spring-boot-starter']),
+		of(GROOVY_GROUP_ID				, GROOVY_VERSION	, ['groovy-all']),
+		of('org.projectlombok'		, '1.18.16'		, ['lombok']),
+		of('com.alibaba'			, '1.2.76'		, ['fastjson']),
+		of('com.alibaba'			, '1.2.5'		, ['druid', 'druid-spring-boot-starter']),
+		of('com.alibaba.nacos'		, '2.0.0'		, ['nacos-api', 'nacos-common', 'nacos-client']),
 		of('com.alibaba.p3c'		, '2.1.1'		, ['p3c-pmd']),
-		of('com.athaydes'		, '2.0.1-RC3'	, ['spock-reports']),
+		of('javax.xml.bind'			, '2.3.1'		, ['jaxb-api']),
+		of('com.baomidou'			, '3.4.2'		, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),
+		of('com.github.xiaoymin'	, '2.0.8'		, ['knife4j-aggregation-spring-boot-starter']),
+		of('com.athaydes'			, '2.0.1-RC3'	, ['spock-reports']),
 	]
 
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [

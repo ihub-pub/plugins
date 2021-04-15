@@ -22,7 +22,7 @@ gradlePlugin {
             id                  = 'pub.ihub.plugin.ihub-aware'
             displayName         = 'IHub Gradle Plugins Aware'
             description         = 'IHub Gradle Plugins Aware'
-            implementationClass = 'pub.ihub.plugin.IHubPluginAware'
+            implementationClass = 'pub.ihub.plugin.IHubPluginMethods'
         }
     }
 }
