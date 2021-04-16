@@ -67,7 +67,7 @@ final class Constants {
 		of('org.projectlombok'		, '1.18.16'		, ['lombok']),
 		of('com.alibaba'			, '1.2.76'		, ['fastjson']),
 		of('com.alibaba'			, '1.2.5'		, ['druid', 'druid-spring-boot-starter']),
-		of('com.alibaba.nacos'		, '2.0.0'		, ['nacos-api', 'nacos-common', 'nacos-client']),
+//		of('com.alibaba.nacos'		, '2.0.0'		, ['nacos-api', 'nacos-common', 'nacos-client']),
 		of('com.alibaba.p3c'		, '2.1.1'		, ['p3c-pmd']),
 		of('javax.xml.bind'			, '2.3.1'		, ['jaxb-api']),
 		of('com.baomidou'			, '3.4.2'		, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),
