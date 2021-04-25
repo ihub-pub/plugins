@@ -4,5 +4,6 @@ plugins {
 
 iHubInclude {
     include 'rest'
-    includeSubprojects 'libs', 'ihub-', '-spring-boot-starter'
+    includes 'service', 'other'
+    includeSubprojects 'libs', 'prefix-', '-suffix'
 }

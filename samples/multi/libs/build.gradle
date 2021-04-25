@@ -1,0 +1,7 @@
+description = '组件集'
+
+subprojects {
+    apply {
+        plugin 'pub.ihub.plugin.ihub-publish'
+    }
+}
