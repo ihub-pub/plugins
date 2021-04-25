@@ -1,0 +1,8 @@
+plugins {
+    id 'pub.ihub.plugin.ihub-settings' version '1.0.0.T13'
+}
+
+iHubInclude {
+    include 'rest'
+    includeSubprojects 'libs', 'ihub-', '-spring-boot-starter'
+}

@@ -1,0 +1,11 @@
+plugins {
+    id 'pub.ihub.plugin'
+}
+
+description = '多项目'
+
+subprojects {
+    apply {
+        plugin 'pub.ihub.plugin.ihub-java'
+    }
+}
