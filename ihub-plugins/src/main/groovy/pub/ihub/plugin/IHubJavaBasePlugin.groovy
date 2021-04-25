@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.plugins.ProjectReportsPlugin
@@ -26,13 +26,32 @@ import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
 
-
-
 /**
  * Java基础插件
  * @author henry
  */
 class IHubJavaBasePlugin implements Plugin<Project> {
+
+	static TaskProvider registerSourcesJar(Project project) {
+		project.tasks.register('sourcesJar', org.gradle.jvm.tasks.Jar) {
+			archiveClassifier.set 'sources'
+			from project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
+		}
+	}
+
+	static TaskProvider registerJavadocsJar(Project project) {
+		project.tasks.register('javadocsJar', org.gradle.jvm.tasks.Jar) {
+			archiveClassifier.set 'javadoc'
+			Task javadocTask = project.tasks.getByName('javadoc').tap {
+				if (JavaVersion.current().java9Compatible) {
+					options.addBooleanOption 'html5', true
+				}
+				options.encoding = 'UTF-8'
+			}
+			dependsOn javadocTask
+			from javadocTask
+		}
+	}
 
 	@Override
 	void apply(Project project) {
@@ -52,27 +71,6 @@ class IHubJavaBasePlugin implements Plugin<Project> {
 					'Created-By': 'Java ' + JavaVersion.current().majorVersion
 				)
 			}
-		}
-	}
-
-	static TaskProvider registerSourcesJar(Project project) {
-		project.tasks.register('sourcesJar', org.gradle.jvm.tasks.Jar) {
-			archiveClassifier.set 'sources'
-			from project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
-		}
-	}
-
-	static TaskProvider registerJavadocsJar(Project project) {
-		project.tasks.register('javadocsJar', org.gradle.jvm.tasks.Jar) {
-			archiveClassifier.set 'javadoc'
-			def javadocTask = project.tasks.getByName('javadoc').tap {
-				if (JavaVersion.current().java9Compatible) {
-					options.addBooleanOption 'html5', true
-				}
-				options.encoding = 'UTF-8'
-			}
-			dependsOn javadocTask
-			from javadocTask
 		}
 	}
 

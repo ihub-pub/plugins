@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-
-
 
 /**
  * IHub Spring Native Plugin
@@ -39,7 +36,6 @@ class IHubNativePlugin implements Plugin<Project> {
 				BP_NATIVE_IMAGE: 'true'
 			]
 		}
-
 	}
 
 }

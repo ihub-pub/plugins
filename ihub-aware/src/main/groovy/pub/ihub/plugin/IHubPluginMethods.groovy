@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
-
 
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginAware
-
-
 
 /**
  * 插件通用方法
@@ -108,10 +104,11 @@ final class IHubPluginMethods {
 	 */
 	static void printConfigContent(String title, Tuple2<String, Integer> key, Tuple2<String, Integer> value, Map map) {
 		printConfigContent title, map.inject([]) { list, k, v ->
-			if (v instanceof List)
+			if (v instanceof List) {
 				v.each { list << [k, it] }
-			else
+			} else {
 				list << [k, v]
+			}
 			list
 		}, key, value
 	}
@@ -134,10 +131,11 @@ final class IHubPluginMethods {
 	 * @param taps 配置栏目描述
 	 */
 	static void printConfigContent(String title, List data, int printWidth, Tuple2<String, Integer>... taps) {
-		def contentWidth = printWidth - 4
-		def size = taps.count { !it.v2 }
-		def tapWidth = size ? ((contentWidth - (taps.sum { it.v2 ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
-		def tapsList = taps ? taps.collect { it.v2 ? it : tap(it.v1, tapWidth) } : [tap(null, contentWidth)]
+		int contentWidth = printWidth - 4
+		Number size = taps.count { !it.v2 }
+		int tapWidth = size ?
+			((contentWidth - (taps.sum { it.v2 ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
+		List tapsList = taps ? taps.collect { it.v2 ? it : tap(it.v1, tapWidth) } : [tap(null, contentWidth)]
 		printBorderline tapsList*.v2, '┌─', '───', '─┐'
 		printCenter title, contentWidth
 		printBorderline tapsList*.v2, '├─', '─┬─', '─┤'
@@ -154,7 +152,7 @@ final class IHubPluginMethods {
 	 * @param str 字符串
 	 */
 	private static void printCenter(String str, int contentWidth) {
-		def strRightBoundary = ((contentWidth + str.length()) / 2).intValue()
+		int strRightBoundary = ((contentWidth + str.length()) / 2).intValue()
 		printf "│ %${strRightBoundary}s${' ' * (contentWidth - strRightBoundary)} │\n", str
 	}
 

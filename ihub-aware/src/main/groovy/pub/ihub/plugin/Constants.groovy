@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
 
 import static pub.ihub.plugin.IHubPluginMethods.of
-
-
 
 /**
  * 常量
@@ -50,7 +47,6 @@ final class Constants {
 		of('org.springframework.cloud'		, 'spring-cloud-dependencies'			, '2020.0.2'			),
 		of('org.springframework.security'	, 'spring-security-bom'					, '5.4.6'				),
 		of('com.alibaba.cloud'				, 'spring-cloud-alibaba-dependencies'	, '2021.1'				),
-//		of('com.alibaba.csp'				, 'sentinel-parent'						, '1.8.1'				),
 		of('com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				),
 		of('com.sun.xml.bind'				, 'jaxb-bom-ext'						, '3.0.0'				),
 		of('de.codecentric'					, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		),
@@ -67,7 +63,6 @@ final class Constants {
 		of('org.projectlombok'		, '1.18.16'		, ['lombok']),
 		of('com.alibaba'			, '1.2.76'		, ['fastjson']),
 		of('com.alibaba'			, '1.2.5'		, ['druid', 'druid-spring-boot-starter']),
-//		of('com.alibaba.nacos'		, '2.0.0'		, ['nacos-api', 'nacos-common', 'nacos-client']),
 		of('com.alibaba.p3c'		, '2.1.1'		, ['p3c-pmd']),
 		of('javax.xml.bind'			, '2.3.1'		, ['jaxb-api']),
 		of('com.baomidou'			, '3.4.2'		, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),

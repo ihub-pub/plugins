@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
-
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 
 import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
@@ -29,7 +25,8 @@ import static pub.ihub.plugin.IHubPluginMethods.of
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.tap
 
-
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
 /**
  * Gradle基础插件
@@ -51,14 +48,20 @@ class IHubPluginsPlugin implements Plugin<Project> {
 		}
 	}
 
+	private static String findVersion(Project project, String group, String defaultVersion) {
+		findProperty project, group + '.version', defaultVersion
+	}
+
 	/**
 	 * 配置项目组件仓库
 	 * @param project 项目
 	 */
 	private void configRepositories(Project project) {
 		project.repositories {
-			def dirs = "$project.rootProject.projectDir/libs"
-			if ((dirs as File).directory) flatDir dirs: dirs
+			String dirs = "$project.rootProject.projectDir/libs"
+			if ((dirs as File).directory) {
+				flatDir dirs: dirs
+			}
 			if (findProperty('mavenLocalEnabled', project, 'false').toBoolean()) {
 				mavenLocal()
 			}
@@ -81,7 +84,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 				url 'https://repo.spring.io/release'
 			}
 			// 添加私有仓库
-			def releaseRepoUrl = findProperty project, 'releaseRepoUrl'
+			String releaseRepoUrl = findProperty project, 'releaseRepoUrl'
 			if (releaseRepoUrl) {
 				maven {
 					name 'ReleaseRepo'
@@ -92,7 +95,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					}
 				}
 			}
-			def snapshotRepoUrl = findProperty project, 'snapshotRepoUrl'
+			String snapshotRepoUrl = findProperty project, 'snapshotRepoUrl'
 			if (snapshotRepoUrl) {
 				maven {
 					name 'SnapshotRepo'
@@ -108,7 +111,9 @@ class IHubPluginsPlugin implements Plugin<Project> {
 				name 'CustomizeRepo'
 				url findProperty(project, 'customizeRepoUrl', 'https://maven.pkg.github.com/ihub-pub/*')
 			}
-			if (!findByName("MavenRepo")) mavenCentral()
+			if (!findByName('MavenRepo')) {
+				mavenCentral()
+			}
 		}
 	}
 
@@ -122,33 +127,40 @@ class IHubPluginsPlugin implements Plugin<Project> {
 
 		project.dependencyManagement {
 			// 导入bom配置
-			def bomVersion = []
+			List bomVersion = []
 			imports {
 				GROUP_MAVEN_BOM_VERSION_CONFIG.each {
-					def version = findVersion project, it.v1, it.v3
-					if (isRoot || version != it.v3) bomVersion << of(it.v1, it.v2, version)
+					String version = findVersion project, it.v1, it.v3
+					if (isRoot || version != it.v3) {
+						bomVersion << of(it.v1, it.v2, version)
+					}
 					mavenBom "$it.v1:$it.v2:$version"
 				}
 			}
-			if (bomVersion) printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
-				tap('Group', 30), tap('Module'), tap('Version', 20)
+			if (bomVersion) {
+				printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
+					tap('Group', 30), tap('Module'), tap('Version', 20)
+			}
 
 			// 配置组件版本
-			def dependenciesVersion = []
+			List<Tuple3<String, String, List<String>>> dependenciesVersion = []
 			dependencies {
 				GROUP_DEPENDENCY_VERSION_CONFIG.each { t3 ->
-					def version = findVersion project, t3.v1, t3.v2
-					if (isRoot || version != t3.v2) dependenciesVersion << of(t3.v1, version, t3.v3)
+					String version = findVersion project, t3.v1, t3.v2
+					if (isRoot || version != t3.v2) {
+						dependenciesVersion << of(t3.v1, version, t3.v3)
+					}
 					dependencySet(group: t3.v1, version: version) {
 						t3.v3.each { entry it }
 					}
 				}
 			}
-			if (dependenciesVersion) printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
-				dependenciesVersion.inject([]) { list, config ->
-					def (group, version, modules) = config
-					list + modules.collect { [group, it, version] }
-				}, tap('Group', 35), tap('Module'), tap('Version', 15)
+			if (dependenciesVersion) {
+				printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
+					dependenciesVersion.inject([]) { list, config ->
+						list + config.v3.collect { [config.v1, it, config.v2] }
+					}, tap('Group', 35), tap('Module'), tap('Version', 15)
+			}
 		}
 
 		project.configurations {
@@ -157,10 +169,12 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					// 配置组件组版本（用于配置无bom组件）
 					eachDependency {
 						String group = it.requested.group
-						def defaultVersion = GROUP_MAVEN_VERSION_CONFIG[group]
+						String defaultVersion = GROUP_MAVEN_VERSION_CONFIG[group]
 						if (group != project.group && defaultVersion) {
-							def version = findVersion project, group, defaultVersion
-							if (version != defaultVersion) println "$project.name group $group use version $version"
+							String version = findVersion project, group, defaultVersion
+							if (version != defaultVersion) {
+								println "$project.name group $group use version $version"
+							}
 							it.useVersion version
 						}
 					}
@@ -174,22 +188,24 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					modules.each { module -> exclude group: group, module: module }
 				}
 			}
-			if (isRoot) printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
-				tap('Group'), tap('Version', 30), GROUP_MAVEN_VERSION_CONFIG
-			if (isRoot) printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
-				tap('Group', 40), tap('Modules'), GROUP_DEPENDENCY_EXCLUDE_MAPPING
+			if (isRoot) {
+				printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
+					tap('Group'), tap('Version', 30), GROUP_MAVEN_VERSION_CONFIG
+			}
+			if (isRoot) {
+				printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
+					tap('Group', 40), tap('Modules'), GROUP_DEPENDENCY_EXCLUDE_MAPPING
+			}
 
 			// 配置默认依赖
 			GROUP_DEFAULT_DEPENDENCIES_MAPPING.each { type, dependencies ->
 				maybeCreate(type).dependencies.addAll dependencies.collect { project.dependencies.create it }
 			}
-			if (isRoot) printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
-				tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
+			if (isRoot) {
+				printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
+					tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
+			}
 		}
-	}
-
-	private static String findVersion(Project project, String group, String defaultVersion) {
-		findProperty project, group + '.version', defaultVersion
 	}
 
 }

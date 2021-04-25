@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
 
-
 import org.gradle.api.publish.maven.MavenPublication
-
-
 
 /**
  * 组件发布属性扩展

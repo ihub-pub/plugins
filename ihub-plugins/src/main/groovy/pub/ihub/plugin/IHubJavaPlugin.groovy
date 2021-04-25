@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
+
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.tasks.compile.AbstractCompile
-
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
-
 
 /**
  * Java插件
@@ -47,7 +44,7 @@ class IHubJavaPlugin implements Plugin<Project> {
 				].collect { project.dependencies.create it })
 			}
 			// 添加lombok依赖
-			def lombok = 'org.projectlombok:lombok'
+			String lombok = 'org.projectlombok:lombok'
 			maybeCreate('compileOnly').dependencies << project.dependencies.create(lombok)
 			maybeCreate('annotationProcessor').dependencies << project.dependencies.create(lombok)
 		}

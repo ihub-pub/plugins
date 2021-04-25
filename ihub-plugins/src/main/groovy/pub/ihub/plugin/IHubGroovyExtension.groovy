@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
 
 import static pub.ihub.plugin.IHubGroovyExtension.ModulesType.ALL
 import static pub.ihub.plugin.IHubGroovyExtension.ModulesType.BASE
 import static pub.ihub.plugin.IHubGroovyExtension.ModulesType.EXTENSION
-
-
 
 /**
  * Groovy插件扩展

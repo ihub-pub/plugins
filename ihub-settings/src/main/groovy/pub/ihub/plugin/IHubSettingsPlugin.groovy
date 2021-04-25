@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
-
-import org.gradle.api.Plugin
-import org.gradle.api.initialization.Settings
 
 import static pub.ihub.plugin.Constants.PLUGINS_DEPENDENCY_VERSION_MAPPING
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.tap
 
-
+import org.gradle.api.Plugin
+import org.gradle.api.initialization.Settings
 
 /**
  * Gradle配置插件
@@ -35,13 +32,15 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 	@Override
 	void apply(Settings settings) {
 		// 配置插件仓库以及解析策略
-		def pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
+		Map pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
 			[(id): findProperty(settings, id + '.version', version)]
 		} as Map<String, String>
 		settings.pluginManagement {
 			repositories {
-				def dirs = "$settings.rootProject.projectDir/gradle/plugins"
-				if ((dirs as File).directory) flatDir dirs: dirs
+				String dirs = "$settings.rootProject.projectDir/gradle/plugins"
+				if ((dirs as File).directory) {
+					flatDir dirs: dirs
+				}
 				maven {
 					name 'AliYunGradlePlugin'
 					url 'https://maven.aliyun.com/repository/gradle-plugin'
@@ -54,14 +53,18 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 					name 'SpringRelease'
 					url 'https://repo.spring.io/release'
 				}
-				if (!findByName("Gradle Central Plugin Repository")) gradlePluginPortal()
+				if (!findByName('Gradle Central Plugin Repository')) {
+					gradlePluginPortal()
+				}
 			}
 			printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
 
 			resolutionStrategy {
 				eachPlugin {
 					pluginVersion.each { id, version ->
-						if (id == requested.id.toString()) useVersion version
+						if (id == requested.id.toString()) {
+							useVersion version
+						}
 					}
 				}
 			}

@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
+
+import static pub.ihub.plugin.IHubGroovyPlugin.registerGroovydocJar
+import static pub.ihub.plugin.IHubJavaBasePlugin.registerJavadocsJar
+import static pub.ihub.plugin.IHubJavaBasePlugin.registerSourcesJar
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -26,13 +30,6 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
-
-import static pub.ihub.plugin.IHubGroovyPlugin.registerGroovydocJar
-import static pub.ihub.plugin.IHubJavaBasePlugin.registerJavadocsJar
-import static pub.ihub.plugin.IHubJavaBasePlugin.registerSourcesJar
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
-
 
 /**
  * 组件发布插件
@@ -53,8 +50,10 @@ class IHubPublishPlugin implements Plugin<Project> {
 					from project.components.getByName('java')
 
 					// release版本时发布sources以及docs包
-					if (isRelease) registerJarTasks(project).each {
-						artifact it
+					if (isRelease) {
+						registerJarTasks(project).each {
+							artifact it
+						}
 					}
 
 					versionMapping {
@@ -96,14 +95,16 @@ class IHubPublishPlugin implements Plugin<Project> {
 					findProperty('signingSecretKey', project), findProperty('signingPassword', project)
 			}
 			project.afterEvaluate {
-				if (required) sign project.extensions.getByType(PublishingExtension).publications.mavenJava
+				if (required) {
+					sign project.extensions.getByType(PublishingExtension).publications.mavenJava
+				}
 			}
 		}
 	}
 
 	private static List<TaskProvider> registerJarTasks(Project project) {
-		def publishDocs = findProperty('publishDocs', 'false').toBoolean()
-		def tasks = [
+		boolean publishDocs = findProperty('publishDocs', 'false').toBoolean()
+		List tasks = [
 			registerSourcesJar(project)
 		]
 		if (publishDocs) {

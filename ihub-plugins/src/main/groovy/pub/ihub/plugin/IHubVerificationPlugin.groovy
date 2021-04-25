@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
+
+import static pub.ihub.plugin.Constants.GROOVY_GROUP_ID
+import static pub.ihub.plugin.IHubGroovyPlugin.getGroovyVersion
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
@@ -27,12 +31,6 @@ import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.api.tasks.testing.Test
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
-
-import static pub.ihub.plugin.Constants.GROOVY_GROUP_ID
-import static pub.ihub.plugin.IHubGroovyPlugin.getGroovyVersion
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
-
 
 /**
  * 代码检查插件
@@ -119,7 +117,7 @@ ruleset {
 	private static void configPmd(Project project) {
 		project.pluginManager.apply PmdPlugin
 		project.extensions.getByType(PmdExtension).identity {
-			def ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
+			String ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
 			if (project.file(ruleset).exists()) {
 				ruleSetFiles = project.files ruleset
 			} else {
@@ -148,7 +146,7 @@ ruleset {
 			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', 'false').toBoolean()
 			toolVersion = findProperty project, 'codenarcVersion', '2.1.0'
 		}
-		def groovyVersion = getGroovyVersion project
+		String groovyVersion = getGroovyVersion project
 		// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
 		if (groovyVersion.startsWith('3.')) {
 			project.configurations {
@@ -177,7 +175,7 @@ ruleset {
 		 * https://github.com/jacoco/jacoco/issues/884
 		 * http://groovy.329449.n5.nabble.com/Groovy-2-5-4-generates-dead-code-td5755188.html
 		 */
-		def jacocoTestCoverageVerification = project.tasks.getByName('jacocoTestCoverageVerification').tap {
+		Task jacocoTestCoverageVerification = project.tasks.getByName('jacocoTestCoverageVerification').tap {
 			violationRules {
 				// rule #1：bundle分支覆盖率
 				rule {
@@ -207,7 +205,7 @@ ruleset {
 		}
 
 		// 覆盖率报告排除main class
-		def jacocoTestReport= project.tasks.getByName('jacocoTestReport').tap {
+		Task jacocoTestReport = project.tasks.getByName('jacocoTestReport').tap {
 			project.afterEvaluate {
 				classDirectories.from = project.files(classDirectories.files.collect { dir ->
 					project.fileTree dir: dir, exclude: findProperty('jacocoReportExclusion', '**/app/**/*.class')

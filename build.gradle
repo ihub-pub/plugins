@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 plugins {
     id 'com.gradle.plugin-publish' version '0.14.0' apply false
 }
 
 subprojects {
-
     apply {
         plugin 'groovy'
         plugin 'maven-publish'
@@ -65,5 +63,4 @@ subprojects {
         description = 'IHub Plugins Gradle Plugin'
         tags        = ['ihub', 'groovy', 'gradle', 'spring', 'boot', 'java', 'native']
     }
-
 }

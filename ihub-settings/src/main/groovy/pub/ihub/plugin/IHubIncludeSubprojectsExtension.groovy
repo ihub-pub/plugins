@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
-
-import org.gradle.api.initialization.Settings
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
-
+import org.gradle.api.initialization.Settings
 
 /**
  * 子项目配置扩展
@@ -44,9 +41,8 @@ class IHubIncludeSubprojectsExtension {
 	 */
 	void include(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
 		println 'include project -> ' + projectPath
-		projectPath = projectPath.with { startsWith(':') ? it : ":$it" }
-		settings.include projectPath
-		settings.project(projectPath).name = namePrefix + projectPath.split(':').last() + nameSuffix
+		settings.include ":$projectPath"
+		settings.project(":$projectPath").name = namePrefix + projectPath.split(':').last() + nameSuffix
 	}
 
 	/**
