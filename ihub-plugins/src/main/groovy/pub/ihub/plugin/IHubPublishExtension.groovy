@@ -39,6 +39,9 @@ class IHubPublishExtension {
 	String pomLicenseDistribution
 	String pomLicenseComments
 
+	String pomOrganizationName = 'Dock'
+	String pomOrganizationUrl = 'https://ihub.pub'
+
 	String pomDeveloperId
 	String pomDeveloperName = 'henry'
 	String pomDeveloperEmail = 'henry.box@outlook.com'
@@ -73,6 +76,11 @@ class IHubPublishExtension {
 					distribution.set pomLicenseDistribution
 					comments.set pomLicenseComments
 				}
+			}
+
+			organization {
+				name.set pomOrganizationName
+				url.set pomOrganizationUrl
 			}
 
 			developers {

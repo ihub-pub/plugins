@@ -27,8 +27,8 @@ final class Constants {
 
 	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
 		'io.spring.dependency-management'     : '1.0.11.RELEASE',
-		'org.springframework.boot'            : '2.4.4',
-		'org.springframework.experimental.aot': '0.9.1',
+		'org.springframework.boot'            : '2.4.5',
+		'org.springframework.experimental.aot': '0.9.2',
 		'com.github.ben-manes.versions'       : '0.38.0',
 		'com.palantir.git-version'            : '0.12.3'
 	]
@@ -43,14 +43,13 @@ final class Constants {
 	static final List<Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		of(GROOVY_GROUP_ID						, 'groovy-bom'							, GROOVY_VERSION			),
 		of('org.spockframework'				, 'spock-bom'							, '2.0-M5-groovy-3.0'	),
-		of('org.springframework.boot'		, 'spring-boot-dependencies'			, '2.4.4'				),
+		of('org.springframework.boot'		, 'spring-boot-dependencies'			, '2.4.5'				),
 		of('org.springframework.cloud'		, 'spring-cloud-dependencies'			, '2020.0.2'			),
 		of('org.springframework.security'	, 'spring-security-bom'					, '5.4.6'				),
 		of('com.alibaba.cloud'				, 'spring-cloud-alibaba-dependencies'	, '2021.1'				),
 		of('com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				),
 		of('com.sun.xml.bind'				, 'jaxb-bom-ext'						, '3.0.0'				),
-		of('de.codecentric'					, 'batch-web-spring-boot-dependencies'	, '2.1.0.RELEASE'		),
-		of('de.codecentric'					, 'spring-boot-admin-dependencies'		, '2.4.0'				),
+		of('de.codecentric'					, 'spring-boot-admin-dependencies'		, '2.4.1'				),
 	]
 
 	static final Map<String, String> GROUP_MAVEN_VERSION_CONFIG = [
@@ -60,9 +59,9 @@ final class Constants {
 
 	static final List<Tuple3<String, String, List<String>>> GROUP_DEPENDENCY_VERSION_CONFIG = [
 		of(GROOVY_GROUP_ID				, GROOVY_VERSION	, ['groovy-all']),
-		of('org.projectlombok'		, '1.18.16'		, ['lombok']),
+		of('org.projectlombok'		, '1.18.20'		, ['lombok']),
 		of('com.alibaba'			, '1.2.76'		, ['fastjson']),
-		of('com.alibaba'			, '1.2.5'		, ['druid', 'druid-spring-boot-starter']),
+		of('com.alibaba'			, '1.2.6'		, ['druid', 'druid-spring-boot-starter']),
 		of('com.alibaba.p3c'		, '2.1.1'		, ['p3c-pmd']),
 		of('javax.xml.bind'			, '2.3.1'		, ['jaxb-api']),
 		of('com.baomidou'			, '3.4.2'		, ['mybatis-plus', 'mybatis-plus-boot-starter', 'mybatis-plus-generator']),
