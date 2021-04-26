@@ -7,6 +7,8 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/ihub-pub/plugins)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ihub-pub/plugins)
 ![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
+[![GitHub](https://img.shields.io/badge/GitHub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
+[![Gitee](https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
 
 Grdle Plugins
