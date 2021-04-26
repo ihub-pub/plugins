@@ -12,7 +12,7 @@
 [![Gitee](https://img.shields.io/badge/Gradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
 
-本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成，使用详见[samples]()，该项目包含插件如下：
+本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成，使用详见[samples](samples)，该项目包含插件如下：
 
 | id | displayName | description |
 |----|-------------|-------------|
