@@ -15,21 +15,15 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
-import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
-import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_CONFIG
-import static pub.ihub.plugin.Constants.GROUP_MAVEN_BOM_VERSION_CONFIG
-import static pub.ihub.plugin.Constants.GROUP_MAVEN_VERSION_CONFIG
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
-import static pub.ihub.plugin.IHubPluginMethods.of
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
  * Gradle基础插件
+ * 配置项目组件仓库
  * @author liheng
  */
 class IHubPluginsPlugin implements Plugin<Project> {
@@ -37,26 +31,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
 		project.version = findProperty 'version', project, project.version.toString()
-		boolean isRoot = project.name == project.rootProject.name
-		configRepositories project
-		if (isRoot) {
-			printConfigContent 'Gradle Project Repos', project.repositories*.displayName
-		}
-		configDependencyManagement project, isRoot
-		project.subprojects {
-			pluginManager.apply IHubPluginsPlugin
-		}
-	}
 
-	private static String findVersion(Project project, String group, String defaultVersion) {
-		findProperty project, group + '.version', defaultVersion
-	}
-
-	/**
-	 * 配置项目组件仓库
-	 * @param project 项目
-	 */
-	private void configRepositories(Project project) {
 		project.repositories {
 			String dirs = "$project.rootProject.projectDir/libs"
 			if ((dirs as File).directory) {
@@ -115,97 +90,17 @@ class IHubPluginsPlugin implements Plugin<Project> {
 				mavenCentral()
 			}
 		}
-	}
 
-	/**
-	 * 配置组件依赖管理
-	 * @param project 项目
-	 * @param isRoot 是否主项目
-	 */
-	private void configDependencyManagement(Project project, boolean isRoot) {
-		project.pluginManager.apply 'io.spring.dependency-management'
-
-		project.dependencyManagement {
-			// 导入bom配置
-			List bomVersion = []
-			imports {
-				GROUP_MAVEN_BOM_VERSION_CONFIG.each {
-					String version = findVersion project, it.v1, it.v3
-					if (isRoot || version != it.v3) {
-						bomVersion << of(it.v1, it.v2, version)
-					}
-					mavenBom "$it.v1:$it.v2:$version"
-				}
-			}
-			if (bomVersion) {
-				printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
-					tap('Group', 30), tap('Module'), tap('Version', 20)
-			}
-
-			// 配置组件版本
-			List<Tuple3<String, String, List<String>>> dependenciesVersion = []
-			dependencies {
-				GROUP_DEPENDENCY_VERSION_CONFIG.each { t3 ->
-					String version = findVersion project, t3.v1, t3.v2
-					if (isRoot || version != t3.v2) {
-						dependenciesVersion << of(t3.v1, version, t3.v3)
-					}
-					dependencySet(group: t3.v1, version: version) {
-						t3.v3.each { entry it }
-					}
-				}
-			}
-			if (dependenciesVersion) {
-				printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
-					dependenciesVersion.inject([]) { list, config ->
-						list + config.v3.collect { [config.v1, it, config.v2] }
-					}, tap('Group', 35), tap('Module'), tap('Version', 15)
-			}
+		if (project.name == project.rootProject.name) {
+			printConfigContent 'Gradle Project Repos', project.repositories*.displayName
 		}
 
-		project.configurations {
-			all {
-				resolutionStrategy {
-					// 配置组件组版本（用于配置无bom组件）
-					eachDependency {
-						String group = it.requested.group
-						String defaultVersion = GROUP_MAVEN_VERSION_CONFIG[group]
-						if (group != project.group && defaultVersion) {
-							String version = findVersion project, group, defaultVersion
-							if (version != defaultVersion) {
-								println "$project.name group $group use version $version"
-							}
-							it.useVersion version
-						}
-					}
-					// 不缓存动态版本
-					cacheDynamicVersionsFor 0, 'seconds'
-					// 不缓存快照模块
-					cacheChangingModulesFor 0, 'seconds'
-				}
-				// 排除组件依赖
-				GROUP_DEPENDENCY_EXCLUDE_MAPPING.each { group, modules ->
-					modules.each { module -> exclude group: group, module: module }
-				}
-			}
-			if (isRoot) {
-				printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
-					tap('Group'), tap('Version', 30), GROUP_MAVEN_VERSION_CONFIG
-			}
-			if (isRoot) {
-				printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
-					tap('Group', 40), tap('Modules'), GROUP_DEPENDENCY_EXCLUDE_MAPPING
-			}
+		if (!findProperty(project, 'bomDisabled', 'false').toBoolean()) {
+			project.pluginManager.apply IHubBomPlugin
+		}
 
-			// 配置默认依赖
-			GROUP_DEFAULT_DEPENDENCIES_MAPPING.each { type, dependencies ->
-				maybeCreate(type).dependencies.addAll dependencies.collect { project.dependencies.create it }
-			}
-			if (isRoot) {
-				printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
-					tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
-			}
+		project.subprojects {
+			pluginManager.apply IHubPluginsPlugin
 		}
 	}
-
 }

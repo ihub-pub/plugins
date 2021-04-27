@@ -105,6 +105,7 @@ ruleset {
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubPluginsPlugin
+		project.pluginManager.apply IHubBomPlugin
 		if (project.plugins.hasPlugin(JavaPlugin)) {
 			configPmd project
 		}

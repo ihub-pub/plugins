@@ -17,7 +17,8 @@
 | id | displayName | description |
 |----|-------------|-------------|
 | pub.ihub.plugin.ihub-settings | 设置插件 | 配置插件仓库以及子项目 |
-| pub.ihub.plugin | 基础插件 | 配置组件仓库以及组件依赖管理 |
+| pub.ihub.plugin | 基础插件 | 配置组件仓库 |
+| pub.ihub.plugin.ihub-bom | 组件依赖管理 | 配置组件默认依赖版本以及兼容性管理 |
 | pub.ihub.plugin.ihub-java-base | Java基础插件 | 配置Jar基础属性 |
 | pub.ihub.plugin.ihub-java | Java插件 | 配置一些默认依赖以及兼容性配置 |
 | pub.ihub.plugin.ihub-groovy | Groovy插件 | 配置Groovy组件依赖 |
