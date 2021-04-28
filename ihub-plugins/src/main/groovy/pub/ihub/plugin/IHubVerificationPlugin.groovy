@@ -138,7 +138,9 @@ ruleset {
 		project.extensions.getByType(CodeNarcExtension).identity {
 			configFile = project.rootProject.with {
 				file("$projectDir/conf/codenarc/codenarc.groovy").with {
-					exists() ? it : file("$projectDir/build/tmp/codenarc.groovy").tap {
+					String tmpPath = "$projectDir/build/tmp"
+					exists() ? it : file("$tmpPath/codenarc.groovy").tap {
+						mkdir tmpPath
 						createNewFile()
 						write CODENARC_DEFAULT_RULESET
 					}

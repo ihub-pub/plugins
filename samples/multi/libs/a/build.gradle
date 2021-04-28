@@ -13,11 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = '组件集'
-
-subprojects {
-    apply {
-        plugin 'pub.ihub.plugin.ihub-groovy'
-        plugin 'pub.ihub.plugin.ihub-publish'
-    }
-}
+description = '组件a'
