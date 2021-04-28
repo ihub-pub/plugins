@@ -41,8 +41,11 @@ class IHubIncludeSubprojectsExtension {
 	 */
 	void include(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
 		println 'include project -> ' + projectPath
-		settings.include ":$projectPath"
-		settings.project(":$projectPath").name = namePrefix + projectPath.split(':').last() + nameSuffix
+		def gradleProjectPath = ":$projectPath"
+		if (!settings.findProject(gradleProjectPath)) {
+			settings.include gradleProjectPath
+			settings.project(gradleProjectPath).name = namePrefix + projectPath.split(':').last() + nameSuffix
+		}
 	}
 
 	/**
