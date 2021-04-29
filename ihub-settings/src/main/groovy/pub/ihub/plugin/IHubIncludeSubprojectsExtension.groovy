@@ -25,6 +25,10 @@ import org.gradle.api.initialization.Settings
  */
 class IHubIncludeSubprojectsExtension {
 
+	private static final List<String> EXCLUDE_DIRS = [
+		'build', 'src', 'conf', 'logs', 'classes', 'target', 'out', 'node_modules'
+	]
+
 	final Settings settings
 
 	IHubIncludeSubprojectsExtension(Settings settings) {
@@ -40,9 +44,13 @@ class IHubIncludeSubprojectsExtension {
 	 * @param nameSuffix 项目名称后缀
 	 */
 	void includeProject(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
-		println 'include project -> ' + projectPath
 		String gradleProjectPath = ":$projectPath"
-		if (!settings.findProject(gradleProjectPath)) {
+		if (settings.findProject(gradleProjectPath)) {
+			println 'included project -> ' + projectPath
+		} else if (projectPath.startsWith('.') || projectPath in EXCLUDE_DIRS) {
+			println 'exclude project -> ' + projectPath
+		} else {
+			println 'include project -> ' + projectPath
 			settings.include gradleProjectPath
 			settings.project(gradleProjectPath).name = namePrefix + projectPath.split(':').last() + nameSuffix
 		}
