@@ -39,7 +39,7 @@ class IHubIncludeSubprojectsExtension {
 	 * @param namePrefix 项目名称前缀
 	 * @param nameSuffix 项目名称后缀
 	 */
-	void include(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
+	void includeProject(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
 		println 'include project -> ' + projectPath
 		String gradleProjectPath = ":$projectPath"
 		if (!settings.findProject(gradleProjectPath)) {
@@ -52,8 +52,8 @@ class IHubIncludeSubprojectsExtension {
 	 * 添加多个项目
 	 * @param projectPaths 项目路径
 	 */
-	void includes(String... projectPaths) {
-		projectPaths.each { include it }
+	void includeProjects(String... projectPaths) {
+		projectPaths.each { includeProject it }
 	}
 
 	/**
@@ -64,10 +64,10 @@ class IHubIncludeSubprojectsExtension {
 	 */
 	void includeSubprojects(String projectPath, String namePrefix = projectPath + '-', String nameSuffix = '') {
 		new File(settings.rootDir, projectPath).identity {
-			include name, ''
+			includeProject name, ''
 			eachDir { dir ->
 				if (!['build', 'src'].contains(dir.name)) {
-					include "$name:$dir.name", namePrefix, nameSuffix
+					includeProject "$name:$dir.name", namePrefix, nameSuffix
 				}
 			}
 		}
@@ -78,7 +78,7 @@ class IHubIncludeSubprojectsExtension {
 	 * @param includeDirs 项目路径，多路径”,“分割
 	 */
 	void setIncludeDirs(String includeDirs) {
-		includes includeDirs?.split(',')
+		includeProjects includeDirs?.split(',')
 	}
 
 	/**
@@ -89,7 +89,7 @@ class IHubIncludeSubprojectsExtension {
 		if (skippedDirs) {
 			settings.rootDir.eachDir {
 				if (!skippedDirs.split(',').contains(it.name)) {
-					include it.name
+					includeProject it.name
 				}
 			}
 		}

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.0.0'
+    id 'pub.ihub.plugin.ihub-settings' version '1.0.1'
 }
 
 iHubInclude {
-    include 'rest'
-    includes 'service', 'other'
+    includeProject 'rest'
+    includeProjects 'service', 'other'
     includeSubprojects 'libs', 'prefix-', '-suffix'
 }
