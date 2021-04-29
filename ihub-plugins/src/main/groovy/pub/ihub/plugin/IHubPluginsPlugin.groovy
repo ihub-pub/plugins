@@ -81,10 +81,22 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					}
 				}
 			}
-			// 添加自定义仓库
+			// TODO 临时使用，相关组件会发布到中心仓库
 			maven {
-				name 'CustomizeRepo'
-				url findProperty(project, 'customizeRepoUrl', 'https://maven.pkg.github.com/ihub-pub/*')
+				name 'IHubRepo'
+				url 'https://maven.pkg.github.com/ihub-pub/*'
+				credentials {
+					username 'henry.git@outlook.com'
+					password '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'
+				}
+			}
+			// 添加自定义仓库
+			String customizeRepoUrl = findProperty project, 'customizeRepoUrl'
+			if (customizeRepoUrl) {
+				maven {
+					name 'CustomizeRepo'
+					url customizeRepoUrl
+				}
 			}
 			if (!findByName('MavenRepo')) {
 				mavenCentral()
