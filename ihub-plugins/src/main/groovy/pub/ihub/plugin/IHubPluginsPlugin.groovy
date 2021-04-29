@@ -60,13 +60,31 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			}
 			// 添加私有仓库
 			String releaseRepoUrl = findProperty project, 'releaseRepoUrl'
+			boolean repoAllowInsecureProtocol = findProperty('repoAllowInsecureProtocol', project, 'false').toBoolean()
+			String repoIncludeGroup = findProperty 'repoIncludeGroup', project
+			String repoIncludeGroupRegex = findProperty 'repoIncludeGroupRegex', project, '.*'
+			String repoUsername = findProperty 'repoUsername', project
+			String repoPassword = findProperty 'repoPassword', project
 			if (releaseRepoUrl) {
 				maven {
 					name 'ReleaseRepo'
 					url releaseRepoUrl
-					credentials {
-						username findProperty('repoUsername', project)
-						password findProperty('repoPassword', project)
+					allowInsecureProtocol repoAllowInsecureProtocol
+					mavenContent {
+						releasesOnly()
+					}
+					content {
+						if (repoIncludeGroup) {
+							includeGroup repoIncludeGroup
+						} else {
+							includeGroupByRegex repoIncludeGroupRegex
+						}
+					}
+					if (repoUsername && repoPassword) {
+						credentials {
+							username repoUsername
+							password repoPassword
+						}
 					}
 				}
 			}
@@ -75,16 +93,32 @@ class IHubPluginsPlugin implements Plugin<Project> {
 				maven {
 					name 'SnapshotRepo'
 					url snapshotRepoUrl
-					credentials {
-						username findProperty('repoUsername', project)
-						password findProperty('repoPassword', project)
+					allowInsecureProtocol repoAllowInsecureProtocol
+					mavenContent {
+						snapshotsOnly()
+					}
+					content {
+						if (repoIncludeGroup) {
+							includeGroup repoIncludeGroup
+						} else {
+							includeGroupByRegex repoIncludeGroupRegex
+						}
+					}
+					if (repoUsername && repoPassword) {
+						credentials {
+							username repoUsername
+							password repoPassword
+						}
 					}
 				}
 			}
-			// TODO 临时使用，相关组件会发布到中心仓库
+			// TODO 临时使用，相关组件会发布到中央仓库
 			maven {
 				name 'IHubRepo'
 				url 'https://maven.pkg.github.com/ihub-pub/*'
+				content {
+					includeGroupByRegex 'pub\\.ihub\\..*'
+				}
 				credentials {
 					username 'henry.git@outlook.com'
 					password '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'
