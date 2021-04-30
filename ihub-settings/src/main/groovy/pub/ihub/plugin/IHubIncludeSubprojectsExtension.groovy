@@ -17,6 +17,7 @@ package pub.ihub.plugin
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
+import org.gradle.api.GradleException
 import org.gradle.api.initialization.Settings
 
 /**
@@ -28,6 +29,8 @@ class IHubIncludeSubprojectsExtension {
 	private static final List<String> EXCLUDE_DIRS = [
 		'build', 'src', 'conf', 'logs', 'classes', 'target', 'out', 'node_modules'
 	]
+
+	private boolean alreadyUsedInclude = false
 
 	final Settings settings
 
@@ -54,6 +57,7 @@ class IHubIncludeSubprojectsExtension {
 			settings.include gradleProjectPath
 			settings.project(gradleProjectPath).name = namePrefix + projectPath.split(':').last() + nameSuffix
 		}
+		alreadyUsedInclude = true
 	}
 
 	/**
@@ -91,10 +95,14 @@ class IHubIncludeSubprojectsExtension {
 
 	/**
 	 * 跳过某些目录添加其他项目
+	 * skippedDirs与include互斥，使用时须首先使用，且只能使用一次
 	 * @param skippedDirs 需要跳过路径，多路径”,“分割
 	 */
 	void setSkippedDirs(String skippedDirs) {
 		if (skippedDirs) {
+			if (alreadyUsedInclude) {
+				throw new GradleException('You can no longer use \'skippedDirs\' if you use \'include\'!')
+			}
 			settings.rootDir.eachDir {
 				if (!skippedDirs.split(',').contains(it.name)) {
 					includeProject it.name
