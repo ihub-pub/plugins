@@ -15,9 +15,6 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-
 import static pub.ihub.plugin.Constants.GROUP_DEFAULT_DEPENDENCIES_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_CONFIG
@@ -28,7 +25,8 @@ import static pub.ihub.plugin.IHubPluginMethods.of
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.tap
 
-
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
 /**
  * BOM（Bill of Materials）组件依赖管理
@@ -126,6 +124,8 @@ class IHubBomPlugin implements Plugin<Project> {
 					tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
 			}
 		}
+
+		project.extensions.create 'iHubBom', IHubBomExtension, project
 	}
 
 	private static String findVersion(Project project, String group, String defaultVersion) {
