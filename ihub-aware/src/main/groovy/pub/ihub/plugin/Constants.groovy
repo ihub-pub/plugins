@@ -26,11 +26,7 @@ final class Constants {
 	//<editor-fold desc="Settings插件相关">
 
 	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
-		'io.spring.dependency-management'     : '1.0.11.RELEASE',
-		'org.springframework.boot'            : '2.4.5',
-		'org.springframework.experimental.aot': '0.9.2',
-		'com.github.ben-manes.versions'       : '0.38.0',
-		'com.palantir.git-version'            : '0.12.3'
+		'com.github.ben-manes.versions': '0.38.0',
 	]
 
 	//</editor-fold>

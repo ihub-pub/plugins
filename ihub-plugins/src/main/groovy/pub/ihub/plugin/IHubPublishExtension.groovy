@@ -15,6 +15,8 @@
  */
 package pub.ihub.plugin
 
+import static java.time.Year.now
+
 import org.gradle.api.publish.maven.MavenPublication
 
 /**
@@ -27,7 +29,7 @@ class IHubPublishExtension {
 	String pomPackaging
 	String pomDescription
 	String pomUrl = 'https://ihub.pub'
-	String pomInceptionYear = '2020'
+	String pomInceptionYear = now().toString()
 
 	String pomScmUrl
 	String pomScmConnection
@@ -46,15 +48,15 @@ class IHubPublishExtension {
 	String pomDeveloperName = 'henry'
 	String pomDeveloperEmail = 'henry.box@outlook.com'
 	String pomDeveloperUrl = 'https://henry-hub.github.io'
-	String pomDeveloperOrganization = 'Dock'
-	String pomDeveloperOrganizationUrl = 'https://ihub.pub'
+	String pomDeveloperOrganization = pomOrganizationName
+	String pomDeveloperOrganizationUrl = pomOrganizationUrl
 	String pomDeveloperRoles
 	String pomDeveloperTimezone
 
 	IHubPublishExtension() {
 	}
 
-	void configPom(MavenPublication publication) {
+	void configPom(MavenPublication publication, versionDetails) {
 		publication.pom {
 			name.set pomName ?: publication.artifactId
 			packaging = pomPackaging
@@ -66,7 +68,7 @@ class IHubPublishExtension {
 				url.set pomScmUrl
 				connection.set pomScmConnection
 				developerConnection.set pomScmDeveloperConnection
-				tag.set pomScmTag
+				tag.set pomScmTag ?: versionDetails.lastTag
 			}
 
 			licenses {

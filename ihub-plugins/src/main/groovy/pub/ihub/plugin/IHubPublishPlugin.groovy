@@ -69,7 +69,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 					it.version = project.version
 					project.afterEvaluate({ IHubPublishExtension ext ->
 						artifactId = project.jar.archiveBaseName.get()
-						ext.configPom it
+						ext.configPom it, project.versionDetails()
 					}.curry(project.extensions.create('iHubPublish', IHubPublishExtension)))
 				}
 			}
