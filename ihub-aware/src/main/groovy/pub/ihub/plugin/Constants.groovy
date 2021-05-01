@@ -23,14 +23,6 @@ import static pub.ihub.plugin.IHubPluginMethods.of
  */
 final class Constants {
 
-	//<editor-fold desc="Settings插件相关">
-
-	static final Map<String, String> PLUGINS_DEPENDENCY_VERSION_MAPPING = [
-		'com.github.ben-manes.versions': '0.38.0',
-	]
-
-	//</editor-fold>
-
 	//<editor-fold desc="Plugins插件相关">
 
 	static final String GROOVY_GROUP_ID = 'org.codehaus.groovy'

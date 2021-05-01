@@ -16,7 +16,10 @@
 package pub.ihub.plugin
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
 
+import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.initialization.Settings
 
@@ -24,7 +27,7 @@ import org.gradle.api.initialization.Settings
  * 子项目配置扩展
  * @author liheng
  */
-class IHubIncludeSubprojectsExtension {
+class IHubSettingsExtension {
 
 	private static final List<String> EXCLUDE_DIRS = [
 		'build', 'src', 'conf', 'logs', 'classes', 'target', 'out', 'node_modules'
@@ -34,7 +37,7 @@ class IHubIncludeSubprojectsExtension {
 
 	final Settings settings
 
-	IHubIncludeSubprojectsExtension(Settings settings) {
+	IHubSettingsExtension(Settings settings) {
 		this.settings = settings
 		includeDirs = findProperty settings, 'includeDirs'
 		skippedDirs = findProperty settings, 'skippedDirs'
@@ -108,6 +111,54 @@ class IHubIncludeSubprojectsExtension {
 					includeProject it.name
 				}
 			}
+		}
+	}
+
+	/**
+	 * 配置插件版本
+	 * @param action 配置
+	 */
+	void pluginVersions(Action<PluginVersionsSpec> action) {
+		List<PluginVersionSpec> pluginVersions = new PluginVersionsSpec().tap { action.execute it }.specs
+		assert pluginVersions, 'plugin versions config not empty!'
+		settings.pluginManagement {
+			resolutionStrategy {
+				eachPlugin {
+					pluginVersions.each { spec ->
+						if (spec.id == requested.id.toString()) {
+							useVersion spec.version
+						}
+					}
+				}
+			}
+		}
+		printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30),
+			pluginVersions.collectEntries { [(it.id): it.version] }
+	}
+
+	private class PluginVersionsSpec {
+
+		private List<PluginVersionSpec> specs = []
+
+		PluginVersionSpec id(String id) {
+			new PluginVersionSpec(id).tap {
+				specs << it
+			}
+		}
+	}
+
+	private class PluginVersionSpec {
+
+		private String id
+		private String version
+
+		PluginVersionSpec(String id) {
+			this.id = id
+		}
+
+		PluginVersionSpec version(String version) {
+			this.version = version
+			this
 		}
 	}
 

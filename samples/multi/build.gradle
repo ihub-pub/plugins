@@ -15,6 +15,7 @@
  */
 plugins {
     id 'pub.ihub.plugin'
+    id 'com.github.ben-manes.versions'
 }
 
 description = '多项目'

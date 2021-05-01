@@ -15,10 +15,8 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.PLUGINS_DEPENDENCY_VERSION_MAPPING
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
 
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
@@ -31,10 +29,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
 	@Override
 	void apply(Settings settings) {
-		// 配置插件仓库以及解析策略
-		Map pluginVersion = PLUGINS_DEPENDENCY_VERSION_MAPPING.collectEntries { id, version ->
-			[(id): findProperty(settings, id + '.version', version)]
-		} as Map<String, String>
+		// 配置插件仓库
 		settings.pluginManagement {
 			repositories {
 				String dirs = "$settings.rootProject.projectDir/gradle/plugins"
@@ -59,17 +54,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 			}
 			printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
 
-			resolutionStrategy {
-				eachPlugin {
-					pluginVersion.each { id, version ->
-						if (id == requested.id.toString()) {
-							useVersion version
-						}
-					}
-				}
-			}
-			printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), pluginVersion
-
 			plugins {
 				id IHubSettingsPlugin.package.name version IHubSettingsPlugin.package.implementationVersion
 			}
@@ -78,8 +62,8 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 		// 配置主项目名称
 		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
 
-		// 配置子项目
-		settings.extensions.create 'iHubInclude', IHubIncludeSubprojectsExtension, settings
+		// 扩展配置配置
+		settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
 	}
 
 }
