@@ -32,7 +32,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		project.pluginManager.apply 'com.palantir.git-version'
 		String version = findProperty 'version', project, project.version.toString()
-		project.version = 'unspecified' != version ? version : project.gitVersion()
+		project.version = 'unspecified' != version ? version : project.versionDetails().lastTag
 
 		project.repositories {
 			String dirs = "$project.rootProject.projectDir/libs"
