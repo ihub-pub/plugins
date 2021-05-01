@@ -147,6 +147,10 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			project.pluginManager.apply IHubBomPlugin
 		}
 
+		project.extensions.add('findProjectProperty') { String key, String defaultValue = null ->
+			findProperty key, project, defaultValue
+		}
+
 		project.subprojects {
 			pluginManager.apply IHubPluginsPlugin
 		}
