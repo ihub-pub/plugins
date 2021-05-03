@@ -15,6 +15,8 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.Constants.VALUE_TRUE
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -33,7 +35,7 @@ class IHubNativePlugin implements Plugin<Project> {
 			builder = 'paketobuildpacks/builder:tiny'
 			environment = [
 				BP_JVM_VERSION : '11',
-				BP_NATIVE_IMAGE: 'true'
+				BP_NATIVE_IMAGE: VALUE_TRUE,
 			]
 		}
 	}

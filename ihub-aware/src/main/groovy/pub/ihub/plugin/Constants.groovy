@@ -23,6 +23,9 @@ import static pub.ihub.plugin.IHubPluginMethods.of
  */
 final class Constants {
 
+	static final String VALUE_TRUE = 'true'
+	static final String VALUE_FALSE = 'false'
+
 	//<editor-fold desc="Plugins插件相关">
 
 	static final String GROOVY_GROUP_ID = 'org.codehaus.groovy'
@@ -42,9 +45,10 @@ final class Constants {
 	]
 
 	static final Map<String, String> GROUP_MAVEN_VERSION_CONFIG = [
-		'cn.hutool': '5.6.3',
+		'cn.hutool': '5.6.4',
 	]
 
+	@SuppressWarnings('DuplicateStringLiteral')
 	static final List<Tuple3<String, String, List<String>>> GROUP_DEPENDENCY_VERSION_CONFIG = [
 		of(GROOVY_GROUP_ID				, GROOVY_VERSION	, ['groovy-all']),
 		of('org.projectlombok'		, '1.18.20'		, ['lombok']),
@@ -65,7 +69,7 @@ final class Constants {
 		'org.apache.logging.log4j': ['log4j-core'],
 		'org.apache.tomcat'       : ['tomcat-jdbc'],
 		'org.slf4j'               : ['slf4j-jcl', 'slf4j-log4j12'],
-		'stax'                    : ['stax-api']
+		'stax'                    : ['stax-api'],
 	]
 
 	static final Map<String, List<String>> GROUP_DEFAULT_DEPENDENCIES_MAPPING = [
@@ -75,7 +79,7 @@ final class Constants {
 		runtimeOnly          : ['org.slf4j:jul-to-slf4j', 'org.slf4j:jcl-over-slf4j', 'org.slf4j:log4j-over-slf4j'],
 		testImplementation   : [],
 		debugImplementation  : [],
-		releaseImplementation: []
+		releaseImplementation: [],
 	]
 
 	//</editor-fold>

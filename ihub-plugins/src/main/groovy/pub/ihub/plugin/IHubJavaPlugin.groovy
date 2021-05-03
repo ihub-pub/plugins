@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.Constants.VALUE_TRUE
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.JavaVersion
@@ -41,7 +42,7 @@ class IHubJavaPlugin implements Plugin<Project> {
 				maybeCreate('runtimeOnly').dependencies.addAll([
 					'javax.xml.bind:jaxb-api',
 					'com.sun.xml.bind:jaxb-core',
-					'com.sun.xml.bind:jaxb-impl'
+					'com.sun.xml.bind:jaxb-impl',
 				].collect { project.dependencies.create it })
 			}
 			// 添加lombok依赖
@@ -56,7 +57,7 @@ class IHubJavaPlugin implements Plugin<Project> {
 				sourceCompatibility = it
 				targetCompatibility = it
 				options.encoding = 'UTF-8'
-				options.incremental = findProperty('gradleCompilationIncremental', project, 'true').toBoolean()
+				options.incremental = findProperty('gradleCompilationIncremental', project, VALUE_TRUE).toBoolean()
 			}
 		}
 

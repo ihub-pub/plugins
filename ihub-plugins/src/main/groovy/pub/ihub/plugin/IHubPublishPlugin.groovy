@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.Constants.VALUE_FALSE
 import static pub.ihub.plugin.IHubGroovyPlugin.registerGroovydocJar
 import static pub.ihub.plugin.IHubJavaBasePlugin.registerJavadocsJar
 import static pub.ihub.plugin.IHubJavaBasePlugin.registerSourcesJar
@@ -86,7 +87,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 
 		project.plugins.apply SigningPlugin
 		project.extensions.getByType(SigningExtension).identity {
-			required = isRelease && findProperty('publishNeedSign', project, 'false').toBoolean()
+			required = isRelease && findProperty('publishNeedSign', project, VALUE_FALSE).toBoolean()
 			// TODO 签名待调试
 			if (OperatingSystem.current().windows) {
 				useGpgCmd()
@@ -103,7 +104,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 	}
 
 	private static List<TaskProvider> registerJarTasks(Project project) {
-		boolean publishDocs = findProperty('publishDocs', 'false').toBoolean()
+		boolean publishDocs = findProperty('publishDocs', VALUE_FALSE).toBoolean()
 		List tasks = [
 			registerSourcesJar(project)
 		]

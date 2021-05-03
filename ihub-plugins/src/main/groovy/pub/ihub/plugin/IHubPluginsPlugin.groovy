@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.Constants.VALUE_FALSE
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
@@ -32,14 +33,14 @@ class IHubPluginsPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		project.pluginManager.apply 'com.palantir.git-version'
 		String version = findProperty 'version', project, project.version.toString()
-		project.version = 'unspecified' != version ? version : project.versionDetails().lastTag
+		project.version = 'unspecified' == version ? project.versionDetails().lastTag : version
 
 		project.repositories {
 			String dirs = "$project.rootProject.projectDir/libs"
 			if ((dirs as File).directory) {
 				flatDir dirs: dirs
 			}
-			if (findProperty('mavenLocalEnabled', project, 'false').toBoolean()) {
+			if (findProperty('mavenLocalEnabled', project, VALUE_FALSE).toBoolean()) {
 				mavenLocal()
 			}
 			maven {
@@ -62,7 +63,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			}
 			// 添加私有仓库
 			String releaseRepoUrl = findProperty project, 'releaseRepoUrl'
-			boolean repoAllowInsecureProtocol = findProperty('repoAllowInsecureProtocol', project, 'false').toBoolean()
+			boolean repoAllowInsecureProtocol = findProperty('repoAllowInsecureProtocol', project, VALUE_FALSE).toBoolean()
 			String repoIncludeGroup = findProperty 'repoIncludeGroup', project
 			String repoIncludeGroupRegex = findProperty 'repoIncludeGroupRegex', project, '.*'
 			String repoUsername = findProperty 'repoUsername', project
@@ -143,7 +144,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			printConfigContent 'Gradle Project Repos', project.repositories*.displayName
 		}
 
-		if (!findProperty(project, 'bomDisabled', 'false').toBoolean()) {
+		if (!findProperty(project, 'bomDisabled', VALUE_FALSE).toBoolean()) {
 			project.pluginManager.apply IHubBomPlugin
 		}
 
@@ -155,4 +156,5 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			pluginManager.apply IHubPluginsPlugin
 		}
 	}
+
 }

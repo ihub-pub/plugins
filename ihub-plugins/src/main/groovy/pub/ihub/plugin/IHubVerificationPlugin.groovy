@@ -16,6 +16,8 @@
 package pub.ihub.plugin
 
 import static pub.ihub.plugin.Constants.GROOVY_GROUP_ID
+import static pub.ihub.plugin.Constants.VALUE_TRUE
+import static pub.ihub.plugin.Constants.VALUE_FALSE
 import static pub.ihub.plugin.IHubGroovyPlugin.getGroovyVersion
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
@@ -124,8 +126,8 @@ ruleset {
 			} else {
 				ruleSets = PMD_DEFAULT_RULESET
 			}
-			consoleOutput = findProperty(project, 'pmdConsoleOutput', 'false').toBoolean()
-			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', 'false').toBoolean()
+			consoleOutput = findProperty(project, 'pmdConsoleOutput', VALUE_FALSE).toBoolean()
+			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', VALUE_FALSE).toBoolean()
 			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
 		}
 		project.configurations {
@@ -146,21 +148,15 @@ ruleset {
 					}
 				}
 			}
-			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', 'false').toBoolean()
+			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', VALUE_FALSE).toBoolean()
 			toolVersion = findProperty project, 'codenarcVersion', '2.1.0'
 		}
 		String groovyVersion = getGroovyVersion project
 		// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
 		if (groovyVersion.startsWith('3.')) {
-			project.configurations {
-				all {
-					resolutionStrategy {
-						eachDependency {
-							if (GROOVY_GROUP_ID == it.requested.group) {
-								it.useVersion groovyVersion
-							}
-						}
-					}
+			project.iHubBom {
+				groupVersions {
+					group GROOVY_GROUP_ID version groovyVersion
 				}
 			}
 		}
@@ -182,7 +178,7 @@ ruleset {
 			violationRules {
 				// rule #1：bundle分支覆盖率
 				rule {
-					enabled = findProperty('jacocoBundleBranchCoverageRuleEnabled', 'true').toBoolean()
+					enabled = findProperty('jacocoBundleBranchCoverageRuleEnabled', VALUE_TRUE).toBoolean()
 					limit {
 						counter = 'BRANCH'
 						value = 'COVEREDRATIO'
@@ -191,14 +187,14 @@ ruleset {
 				}
 				// rule #2：bundle指令覆盖率
 				rule {
-					enabled = findProperty('jacocoBundleInstructionCoverageRuleEnabled', 'true').toBoolean()
+					enabled = findProperty('jacocoBundleInstructionCoverageRuleEnabled', VALUE_TRUE).toBoolean()
 					limit {
 						minimum = findProperty('jacocoBundleInstructionCoveredRatio', '0.9') as BigDecimal
 					}
 				}
 				// rule #3：package指令覆盖率
 				rule {
-					enabled = findProperty('jacocoPackageInstructionCoverageRuleEnabled', 'true').toBoolean()
+					enabled = findProperty('jacocoPackageInstructionCoverageRuleEnabled', VALUE_TRUE).toBoolean()
 					element = 'PACKAGE'
 					limit {
 						minimum = findProperty('jacocoPackageInstructionCoveredRatio', '0.9') as BigDecimal

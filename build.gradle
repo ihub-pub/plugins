@@ -19,7 +19,7 @@ plugins {
 }
 
 subprojects {
-    version 'unspecified' != version ? version : versionDetails().lastTag
+    version 'unspecified' == version ? versionDetails().lastTag : version
 
     apply {
         plugin 'groovy'

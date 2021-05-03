@@ -89,18 +89,19 @@ class IHubBomExtension {
 
 	private class DependencyVersionsSpec {
 
-		private List<DependencyVersionSpec> specs = []
+		private final List<DependencyVersionSpec> specs = []
 
 		DependencyVersionSpec group(String group) {
 			new DependencyVersionSpec(group).tap {
 				specs << it
 			}
 		}
+
 	}
 
 	private class DependencyVersionSpec {
 
-		private String group
+		private final String group
 		private String module
 		private String version
 		private List<String> modules
@@ -127,5 +128,7 @@ class IHubBomExtension {
 		String getCoordinates() {
 			"$group:$module:$version"
 		}
+
 	}
+
 }

@@ -29,7 +29,7 @@ class IHubPublishExtension {
 	String pomPackaging
 	String pomDescription
 	String pomUrl = 'https://ihub.pub'
-	String pomInceptionYear = now().toString()
+	String pomInceptionYear = now().value
 
 	String pomScmUrl
 	String pomScmConnection

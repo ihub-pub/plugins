@@ -16,8 +16,9 @@
 package pub.ihub.plugin
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
+import static pub.ihub.plugin.IHubPluginMethods.idTap
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
+import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
 import org.gradle.api.Action
 import org.gradle.api.GradleException
@@ -30,7 +31,7 @@ import org.gradle.api.initialization.Settings
 class IHubSettingsExtension {
 
 	private static final List<String> EXCLUDE_DIRS = [
-		'build', 'src', 'conf', 'logs', 'classes', 'target', 'out', 'node_modules'
+		'build', 'src', 'conf', 'logs', 'classes', 'target', 'out', 'node_modules',
 	]
 
 	private boolean alreadyUsedInclude = false
@@ -81,9 +82,7 @@ class IHubSettingsExtension {
 		new File(settings.rootDir, projectPath).identity {
 			includeProject name, ''
 			eachDir { dir ->
-				if (!['build', 'src'].contains(dir.name)) {
-					includeProject "$name:$dir.name", namePrefix, nameSuffix
-				}
+				includeProject "$name:$dir.name", namePrefix, nameSuffix
 			}
 		}
 	}
@@ -132,24 +131,25 @@ class IHubSettingsExtension {
 				}
 			}
 		}
-		printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30),
+		printConfigContent 'Gradle Plugin Plugins Version', idTap(), versionTap(),
 			pluginVersions.collectEntries { [(it.id): it.version] }
 	}
 
 	private class PluginVersionsSpec {
 
-		private List<PluginVersionSpec> specs = []
+		private final List<PluginVersionSpec> specs = []
 
 		PluginVersionSpec id(String id) {
 			new PluginVersionSpec(id).tap {
 				specs << it
 			}
 		}
+
 	}
 
 	private class PluginVersionSpec {
 
-		private String id
+		private final String id
 		private String version
 
 		PluginVersionSpec(String id) {
@@ -160,6 +160,7 @@ class IHubSettingsExtension {
 			this.version = version
 			this
 		}
+
 	}
 
 }

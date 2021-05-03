@@ -20,10 +20,14 @@ import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_EXCLUDE_MAPPING
 import static pub.ihub.plugin.Constants.GROUP_DEPENDENCY_VERSION_CONFIG
 import static pub.ihub.plugin.Constants.GROUP_MAVEN_BOM_VERSION_CONFIG
 import static pub.ihub.plugin.Constants.GROUP_MAVEN_VERSION_CONFIG
+import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
+import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
+import static pub.ihub.plugin.IHubPluginMethods.groupTap
+import static pub.ihub.plugin.IHubPluginMethods.moduleTap
 import static pub.ihub.plugin.IHubPluginMethods.of
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
+import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -57,7 +61,7 @@ class IHubBomPlugin implements Plugin<Project> {
 			}
 			if (bomVersion) {
 				printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersion,
-					tap('Group', 30), tap('Module'), tap('Version', 20)
+					groupTap(30), moduleTap(), versionTap(20)
 			}
 
 			// 配置组件版本
@@ -77,7 +81,7 @@ class IHubBomPlugin implements Plugin<Project> {
 				printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
 					dependenciesVersion.inject([]) { list, config ->
 						list + config.v3.collect { [config.v1, it, config.v2] }
-					}, tap('Group', 35), tap('Module'), tap('Version', 15)
+					}, groupTap(35), moduleTap(), versionTap(15)
 			}
 		}
 
@@ -108,11 +112,11 @@ class IHubBomPlugin implements Plugin<Project> {
 			}
 			if (isRoot) {
 				printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
-					tap('Group'), tap('Version', 30), GROUP_MAVEN_VERSION_CONFIG
+					groupTap(), versionTap(), GROUP_MAVEN_VERSION_CONFIG
 			}
 			if (isRoot) {
 				printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
-					tap('Group', 40), tap('Modules'), GROUP_DEPENDENCY_EXCLUDE_MAPPING
+					groupTap(40), moduleTap(), GROUP_DEPENDENCY_EXCLUDE_MAPPING
 			}
 
 			// 配置默认依赖
@@ -121,7 +125,7 @@ class IHubBomPlugin implements Plugin<Project> {
 			}
 			if (isRoot) {
 				printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
-					tap('DependencyType', 30), tap('Dependencies'), GROUP_DEFAULT_DEPENDENCIES_MAPPING
+					dependencyTypeTap(), dependenciesTap(), GROUP_DEFAULT_DEPENDENCIES_MAPPING
 			}
 		}
 
@@ -131,4 +135,5 @@ class IHubBomPlugin implements Plugin<Project> {
 	private static String findVersion(Project project, String group, String defaultVersion) {
 		findProperty project, group + '.version', defaultVersion
 	}
+
 }
