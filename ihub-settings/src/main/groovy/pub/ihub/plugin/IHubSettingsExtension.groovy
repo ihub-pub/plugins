@@ -52,14 +52,15 @@ class IHubSettingsExtension {
 	 */
 	void includeProject(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
 		String gradleProjectPath = ":$projectPath"
+		String projectName = projectPath.split(':').last()
 		if (settings.findProject(gradleProjectPath)) {
 			println 'included project -> ' + projectPath
-		} else if (projectPath.startsWith('.') || projectPath in EXCLUDE_DIRS) {
+		} else if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS) {
 			println 'exclude project -> ' + projectPath
 		} else {
 			println 'include project -> ' + projectPath
 			settings.include gradleProjectPath
-			settings.project(gradleProjectPath).name = namePrefix + projectPath.split(':').last() + nameSuffix
+			settings.project(gradleProjectPath).name = namePrefix + projectName + nameSuffix
 		}
 		alreadyUsedInclude = true
 	}
