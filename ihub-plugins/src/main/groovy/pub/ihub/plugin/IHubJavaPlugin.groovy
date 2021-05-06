@@ -52,10 +52,10 @@ class IHubJavaPlugin implements Plugin<Project> {
 		}
 
 		// 兼容性配置
-		findProperty('javaCompatibility', project)?.with {
+		findProperty('javaCompatibility', project)?.with { version ->
 			project.tasks.withType(AbstractCompile) {
-				sourceCompatibility = it
-				targetCompatibility = it
+				sourceCompatibility = version
+				targetCompatibility = version
 				options.encoding = 'UTF-8'
 				options.incremental = findProperty('gradleCompilationIncremental', project, VALUE_TRUE).toBoolean()
 			}

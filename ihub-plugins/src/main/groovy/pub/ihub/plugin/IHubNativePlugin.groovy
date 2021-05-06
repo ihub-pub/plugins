@@ -15,13 +15,11 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.VALUE_TRUE
-
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * IHub Spring Native Plugin
+ * 原生镜像插件
  * @author henry
  */
 class IHubNativePlugin implements Plugin<Project> {
@@ -31,13 +29,12 @@ class IHubNativePlugin implements Plugin<Project> {
 		project.pluginManager.apply IHubBootPlugin
 		project.pluginManager.apply 'org.springframework.experimental.aot'
 
-		project.bootBuildImage {
-			builder = 'paketobuildpacks/builder:tiny'
-			environment = [
-				BP_JVM_VERSION : '11',
-				BP_NATIVE_IMAGE: VALUE_TRUE,
-			]
-		}
+		project.afterEvaluate({ IHubNativeExtension ext ->
+			project.bootBuildImage {
+				builder = 'paketobuildpacks/builder:tiny'
+				environment = ext.environment
+			}
+		}.curry(project.extensions.create('iHubNative', IHubNativeExtension)))
 	}
 
 }

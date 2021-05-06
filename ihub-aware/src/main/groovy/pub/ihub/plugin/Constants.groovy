@@ -29,7 +29,7 @@ final class Constants {
 	//<editor-fold desc="Plugins插件相关">
 
 	static final String GROOVY_GROUP_ID = 'org.codehaus.groovy'
-	static final String GROOVY_VERSION = '3.0.7'
+	static final String GROOVY_VERSION = '3.0.8'
 
 	static final List<Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
 		of('pub.ihub.lib'					, 'ihub-libs'							, '1.0.0-SNAPSHOT'		),
@@ -40,7 +40,7 @@ final class Constants {
 		of('org.springframework.security'	, 'spring-security-bom'					, '5.4.6'				),
 		of('com.alibaba.cloud'				, 'spring-cloud-alibaba-dependencies'	, '2021.1'				),
 		of('com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				),
-		of('com.sun.xml.bind'				, 'jaxb-bom-ext'						, '3.0.0'				),
+		of('com.sun.xml.bind'				, 'jaxb-bom-ext'						, '3.0.1'				),
 		of('de.codecentric'					, 'spring-boot-admin-dependencies'		, '2.4.1'				),
 	]
 
@@ -76,7 +76,7 @@ final class Constants {
 		compileOnly          : ['cn.hutool:hutool-all'],
 		implementation       : ['org.slf4j:slf4j-api'],
 		api                  : [],
-		runtimeOnly          : ['org.slf4j:jul-to-slf4j', 'org.slf4j:jcl-over-slf4j', 'org.slf4j:log4j-over-slf4j'],
+		runtimeOnly          : ['org.slf4j:jul-to-slf4j', /*'org.slf4j:jcl-over-slf4j', TODO 构建原生镜像有报错 */'org.slf4j:log4j-over-slf4j'],
 		testImplementation   : [],
 		debugImplementation  : [],
 		releaseImplementation: [],
