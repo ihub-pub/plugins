@@ -124,7 +124,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 				}
 				credentials {
 					username 'henry.git@outlook.com'
-					password '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'
+					password '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'
 				}
 			}
 			// 添加自定义仓库
