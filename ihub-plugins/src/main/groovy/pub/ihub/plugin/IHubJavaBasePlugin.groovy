@@ -66,6 +66,17 @@ class IHubJavaBasePlugin implements Plugin<Project> {
 		project.pluginManager.apply ProjectReportsPlugin
 		project.pluginManager.apply BuildDashboardPlugin
 
+		project.configurations {
+			// Java11添加jaxb运行时依赖
+			if (JavaVersion.current().java11) {
+				maybeCreate('runtimeOnly').dependencies.addAll([
+					'javax.xml.bind:jaxb-api',
+					'com.sun.xml.bind:jaxb-core',
+					'com.sun.xml.bind:jaxb-impl',
+				].collect { project.dependencies.create it })
+			}
+		}
+
 		// 兼容性配置
 		findProperty('javaCompatibility', project)?.with { version ->
 			project.tasks.withType(AbstractCompile) {

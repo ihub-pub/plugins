@@ -38,7 +38,7 @@ final class Constants {
 		of('org.springframework.boot'	, 'spring-boot-dependencies'			, '2.4.5'				),
 		of('org.springframework.cloud'	, 'spring-cloud-dependencies'			, '2020.0.2'			),
 		of('com.alibaba.cloud'			, 'spring-cloud-alibaba-dependencies'	, '2021.1'				),
-		of('com.github.xiaoymin'			, 'knife4j-dependencies'				, '3.0.2'				),
+		of('com.github.xiaoymin'		, 'knife4j-dependencies'				, '3.0.2'				),
 		of('com.sun.xml.bind'			, 'jaxb-bom-ext'						, '3.0.1'				),
 		of('de.codecentric'				, 'spring-boot-admin-dependencies'		, '2.4.1'				),
 	]
@@ -58,6 +58,9 @@ final class Constants {
 		of('com.athaydes'			, '2.0.1-RC3'	, ['spock-reports']),
 	]
 
+	/**
+	 * TODO 重构BOM组件管理
+	 */
 	static final Map<String, List<String>> GROUP_DEPENDENCY_EXCLUDE_MAPPING = [
 		'c3p0'                    : ['c3p0'],
 		'commons-logging'         : ['commons-logging'],

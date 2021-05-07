@@ -16,16 +16,14 @@
 package pub.ihub.plugin
 
 import static pub.ihub.plugin.Constants.GROOVY_GROUP_ID
-import static pub.ihub.plugin.Constants.VALUE_TRUE
 import static pub.ihub.plugin.Constants.VALUE_FALSE
+import static pub.ihub.plugin.Constants.VALUE_TRUE
 import static pub.ihub.plugin.IHubGroovyPlugin.getGroovyVersion
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdExtension
@@ -108,10 +106,10 @@ ruleset {
 	void apply(Project project) {
 		project.pluginManager.apply IHubPluginsPlugin
 		project.pluginManager.apply IHubBomPlugin
-		if (project.plugins.hasPlugin(JavaPlugin)) {
+		if (project.plugins.hasPlugin(IHubJavaPlugin)) {
 			configPmd project
 		}
-		if (project.plugins.hasPlugin(GroovyPlugin)) {
+		if (project.plugins.hasPlugin(IHubGroovyPlugin)) {
 			configCodenarc project
 		}
 		configJacoco project

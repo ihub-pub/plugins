@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -31,14 +30,6 @@ class IHubJavaPlugin implements Plugin<Project> {
 		project.pluginManager.apply IHubJavaBasePlugin
 
 		project.configurations {
-			// Java11添加jaxb运行时依赖
-			if (JavaVersion.current().java11) {
-				maybeCreate('runtimeOnly').dependencies.addAll([
-					'javax.xml.bind:jaxb-api',
-					'com.sun.xml.bind:jaxb-core',
-					'com.sun.xml.bind:jaxb-impl',
-				].collect { project.dependencies.create it })
-			}
 			// 添加lombok依赖
 			String lombok = 'org.projectlombok:lombok'
 			maybeCreate('compileOnly').dependencies << project.dependencies.create(lombok)
