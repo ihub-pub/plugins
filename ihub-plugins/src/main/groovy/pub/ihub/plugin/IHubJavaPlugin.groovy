@@ -15,14 +15,9 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.VALUE_TRUE
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.tasks.compile.AbstractCompile
 
 /**
  * Java插件
@@ -34,7 +29,6 @@ class IHubJavaPlugin implements Plugin<Project> {
 	void apply(Project project) {
 		project.pluginManager.apply IHubBomPlugin
 		project.pluginManager.apply IHubJavaBasePlugin
-		project.pluginManager.apply JavaLibraryPlugin
 
 		project.configurations {
 			// Java11添加jaxb运行时依赖
@@ -49,16 +43,6 @@ class IHubJavaPlugin implements Plugin<Project> {
 			String lombok = 'org.projectlombok:lombok'
 			maybeCreate('compileOnly').dependencies << project.dependencies.create(lombok)
 			maybeCreate('annotationProcessor').dependencies << project.dependencies.create(lombok)
-		}
-
-		// 兼容性配置
-		findProperty('javaCompatibility', project)?.with { version ->
-			project.tasks.withType(AbstractCompile) {
-				sourceCompatibility = version
-				targetCompatibility = version
-				options.encoding = 'UTF-8'
-				options.incremental = findProperty('gradleCompilationIncremental', project, VALUE_TRUE).toBoolean()
-			}
 		}
 
 		project.pluginManager.apply IHubVerificationPlugin
