@@ -32,7 +32,7 @@ final class Constants {
 	static final String GROOVY_VERSION = '3.0.8'
 
 	static final List<Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
-		of('pub.ihub.lib'					, 'ihub-libs'							, '1.0.0-SNAPSHOT'		),
+//		of('pub.ihub.lib'					, 'ihub-libs'							, '1.0.0-SNAPSHOT'		), TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
 		of(GROOVY_GROUP_ID						, 'groovy-bom'							, GROOVY_VERSION			),
 		of('org.spockframework'				, 'spock-bom'							, '2.0-M5-groovy-3.0'	),
 		of('org.springframework.boot'		, 'spring-boot-dependencies'			, '2.4.5'				),

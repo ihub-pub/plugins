@@ -115,18 +115,6 @@ class IHubPluginsPlugin implements Plugin<Project> {
 					}
 				}
 			}
-			// TODO 临时使用，相关组件会发布到中央仓库
-			maven {
-				name 'IHubRepo'
-				url 'https://maven.pkg.github.com/ihub-pub/*'
-				content {
-					includeGroupByRegex 'pub\\.ihub\\..*'
-				}
-				credentials {
-					username 'henry.git@outlook.com'
-					password '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'
-				}
-			}
 			// 添加自定义仓库
 			String customizeRepoUrl = findProperty project, 'customizeRepoUrl'
 			if (customizeRepoUrl) {
