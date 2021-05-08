@@ -29,11 +29,11 @@ class IHubJavaPlugin implements Plugin<Project> {
 		project.pluginManager.apply IHubBomPlugin
 		project.pluginManager.apply IHubJavaBasePlugin
 
-		project.configurations {
+		project.extensions.getByType(IHubBomExtension).dependencies {
 			// 添加lombok依赖
 			String lombok = 'org.projectlombok:lombok'
-			maybeCreate('compileOnly').dependencies << project.dependencies.create(lombok)
-			maybeCreate('annotationProcessor').dependencies << project.dependencies.create(lombok)
+			compileOnly lombok
+			annotationProcessor lombok
 		}
 
 		project.pluginManager.apply IHubVerificationPlugin

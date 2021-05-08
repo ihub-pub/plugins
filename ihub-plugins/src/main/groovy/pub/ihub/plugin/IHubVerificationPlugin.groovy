@@ -15,15 +15,16 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.GROOVY_GROUP_ID
 import static pub.ihub.plugin.Constants.VALUE_FALSE
 import static pub.ihub.plugin.Constants.VALUE_TRUE
-import static pub.ihub.plugin.IHubGroovyPlugin.getGroovyVersion
+import static pub.ihub.plugin.Constants.getGROOVY_VERSION
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdExtension
@@ -106,10 +107,10 @@ ruleset {
 	void apply(Project project) {
 		project.pluginManager.apply IHubPluginsPlugin
 		project.pluginManager.apply IHubBomPlugin
-		if (project.plugins.hasPlugin(IHubJavaPlugin)) {
+		if (project.plugins.hasPlugin(JavaPlugin)) {
 			configPmd project
 		}
-		if (project.plugins.hasPlugin(IHubGroovyPlugin)) {
+		if (project.plugins.hasPlugin(GroovyPlugin)) {
 			configCodenarc project
 		}
 		configJacoco project
@@ -128,8 +129,8 @@ ruleset {
 			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', VALUE_FALSE).toBoolean()
 			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
 		}
-		project.configurations {
-			maybeCreate('pmd').dependencies << project.dependencies.create('com.alibaba.p3c:p3c-pmd')
+		project.extensions.getByType(IHubBomExtension).dependencies {
+			compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
 		}
 	}
 
@@ -149,13 +150,11 @@ ruleset {
 			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', VALUE_FALSE).toBoolean()
 			toolVersion = findProperty project, 'codenarcVersion', '2.1.0'
 		}
-		String groovyVersion = getGroovyVersion project
+		String groovyVersion = findProperty project, 'org.codehaus.groovy.version', GROOVY_VERSION
 		// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
 		if (groovyVersion.startsWith('3.')) {
-			project.iHubBom {
-				groupVersions {
-					group GROOVY_GROUP_ID version groovyVersion
-				}
+			project.extensions.getByType(IHubBomExtension).groupVersions {
+				group 'org.codehaus.groovy' version groovyVersion
 			}
 		}
 	}

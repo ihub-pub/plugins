@@ -15,10 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.GROOVY_GROUP_ID
-import static pub.ihub.plugin.Constants.GROOVY_VERSION
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -47,31 +43,13 @@ class IHubGroovyPlugin implements Plugin<Project> {
 		}
 	}
 
-	static String getGroovyVersion(Project project) {
-		findProperty project, GROOVY_GROUP_ID + '.version', GROOVY_VERSION
-	}
-
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubBomPlugin
 		project.pluginManager.apply IHubJavaBasePlugin
 		project.pluginManager.apply GroovyPlugin
 
-		project.configurations {
-			maybeCreate('compileOnly').dependencies << project.dependencies
-				.create("$GROOVY_GROUP_ID:groovy-all:${getGroovyVersion(project)}")
-			if (project.name == project.rootProject.name || !project.rootProject.plugins.hasPlugin(GroovyPlugin)) {
-				println project.name + ' dependency groovy-all (only compile)'
-			}
-		}
-
-		IHubGroovyExtension ext = project.extensions.create 'iHubGroovy', IHubGroovyExtension
-		project.afterEvaluate {
-			project.configurations {
-				maybeCreate('implementation').dependencies.addAll(ext.modules.unique()
-					.collect { project.dependencies.create "org.codehaus.groovy:$it" })
-			}
-		}
+		project.extensions.create 'iHubGroovy', IHubGroovyExtension
 
 		project.pluginManager.apply IHubVerificationPlugin
 	}

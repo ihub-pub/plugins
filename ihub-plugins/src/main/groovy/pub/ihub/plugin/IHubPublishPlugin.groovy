@@ -103,9 +103,8 @@ class IHubPublishPlugin implements Plugin<Project> {
 		}
 
 		// 添加配置元信息
-		project.configurations {
-			maybeCreate('annotationProcessor').dependencies << project
-				.dependencies.create('org.springframework.boot:spring-boot-configuration-processor')
+		project.extensions.getByType(IHubBomExtension).dependencies {
+			annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 		}
 		project.compileJava.inputs.files(project.processResources)
 	}

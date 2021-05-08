@@ -87,10 +87,6 @@ final class IHubPluginMethods {
 		}
 	}
 
-	static <T1, T2, T3> Tuple3<T1, T2, T3> of(T1 v1, T2 v2, T3 v3) {
-		new Tuple3<>(v1, v2, v3)
-	}
-
 	static Tuple2<String, Integer> tap(String tap, Integer width = null) {
 		new Tuple2<>(tap, width)
 	}

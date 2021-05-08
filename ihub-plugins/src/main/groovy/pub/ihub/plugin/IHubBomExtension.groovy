@@ -16,7 +16,6 @@
 package pub.ihub.plugin
 
 import org.gradle.api.Action
-import org.gradle.api.Project
 
 /**
  * BOM插件DSL扩展
@@ -24,25 +23,29 @@ import org.gradle.api.Project
  */
 class IHubBomExtension {
 
-	final Project project
-
-	IHubBomExtension(Project project) {
-		this.project = project
-	}
+	boolean enabledDefaultConfig = true
+	boolean printConfig = true
+	final List<DependencyVersionSpec> bomVersions = []
+	final List<DependencyVersionSpec> dependencyVersions = []
+	final Map<String, String> groupVersions = [:]
+	final Map<String, Set<String>> excludeModules = [:]
+	final Map<String, Set<String>> dependencies = [:]
 
 	/**
 	 * 导入mavenBom
 	 * @param action 配置
 	 */
 	void importBoms(Action<DependencyVersionsSpec> action) {
-		List<DependencyVersionSpec> boms = new DependencyVersionsSpec().tap { action.execute it }.specs
-		assert boms, 'import boms config not empty!'
-		project.dependencyManagement {
-			imports {
-				boms.each { spec ->
-					mavenBom spec.coordinates
-					println "$project.name import bom -> $spec.coordinates"
+		List<DependencyVersionSpec> specs = new DependencyVersionsSpec().tap { action.execute it }.specs
+		assert specs, 'import boms config not empty!'
+		specs.each { spec ->
+			DependencyVersionSpec bom = bomVersions.find { spec.group == it.group && spec.module == it.module }
+			if (bom) {
+				if (!spec.ifAbsent) {
+					bom.version spec.version
 				}
+			} else {
+				bomVersions << spec
 			}
 		}
 	}
@@ -52,18 +55,9 @@ class IHubBomExtension {
 	 * @param action 配置
 	 */
 	void dependencyVersions(Action<DependencyVersionsSpec> action) {
-		List<DependencyVersionSpec> boms = new DependencyVersionsSpec().tap { action.execute it }.specs
-		assert boms, 'dependency versions config not empty!'
-		project.dependencyManagement {
-			dependencies {
-				boms.each { spec ->
-					dependencySet(group: spec.group, version: spec.version) {
-						spec.modules.each { entry it }
-					}
-					println "$project.name dependencies -> $spec.group:$spec.modules:$spec.version"
-				}
-			}
-		}
+		List<DependencyVersionSpec> specs = new DependencyVersionsSpec().tap { action.execute it }.specs
+		assert specs, 'dependency versions config not empty!'
+		dependencyVersions.addAll specs
 	}
 
 	/**
@@ -73,26 +67,47 @@ class IHubBomExtension {
 	void groupVersions(Action<DependencyVersionsSpec> action) {
 		List<DependencyVersionSpec> groupVersions = new DependencyVersionsSpec().tap { action.execute it }.specs
 		assert groupVersions, 'group versions config not empty!'
-		project.configurations {
-			all {
-				resolutionStrategy {
-					eachDependency {
-						groupVersions.find { spec -> spec.group == it.requested.group }?.with { spec ->
-							it.useVersion spec.version
-							println "$project.name strategy -> $spec.group use version $spec.version"
-						}
-					}
-				}
+		groupVersions.each {
+			if (it.ifAbsent) {
+				this.groupVersions.putIfAbsent it.group, it.version
+			} else {
+				this.groupVersions.put it.group, it.version
 			}
+		}
+	}
+
+	/**
+	 * 排除组件依赖
+	 * @param action
+	 */
+	void excludeModules(Action<ExcludeGroupSpec> action) {
+		List<ExcludeModulesSpec> groups = new ExcludeGroupSpec().tap { action.execute it }.groups
+		assert groups, 'excludeModules config not empty!'
+		groups.each {
+			excludeModules.compute(it.group, { key, modules -> modules = modules ?: [] }).addAll it.modules
+		}
+	}
+
+	/**
+	 * 配置组件依赖
+	 * @param action 配置
+	 */
+	void dependencies(Action<DependenciesSpec> action) {
+		Map<String, Set<String>> dependencies = new DependenciesSpec().tap { action.execute it }.dependencies
+		assert dependencies, 'dependencies config not empty!'
+		dependencies.each { type, dependenciesSet ->
+			this.dependencies.compute(type, { key, set -> set = set ?: [] }).addAll dependenciesSet
 		}
 	}
 
 	private class DependencyVersionsSpec {
 
 		private final List<DependencyVersionSpec> specs = []
+		boolean allIfAbsent = false
 
 		DependencyVersionSpec group(String group) {
 			new DependencyVersionSpec(group).tap {
+				ifAbsent allIfAbsent ?: ifAbsent
 				specs << it
 			}
 		}
@@ -101,10 +116,11 @@ class IHubBomExtension {
 
 	private class DependencyVersionSpec {
 
-		private final String group
-		private String module
-		private String version
-		private List<String> modules
+		final String group
+		String module
+		String version
+		Set<String> modules
+		boolean ifAbsent = false
 
 		DependencyVersionSpec(String group) {
 			this.group = group
@@ -125,8 +141,85 @@ class IHubBomExtension {
 			this
 		}
 
-		String getCoordinates() {
-			"$group:$module:$version"
+		DependencyVersionSpec ifAbsent(boolean ifAbsent) {
+			this.ifAbsent = ifAbsent
+			this
+		}
+
+	}
+
+	private class ExcludeGroupSpec {
+
+		private final List<ExcludeModulesSpec> groups = []
+
+		ExcludeModulesSpec group(String group) {
+			assert group, 'exclude group not null!'
+			new ExcludeModulesSpec(group).tap {
+				groups << it
+			}
+		}
+
+	}
+
+	private class ExcludeModulesSpec {
+
+		private final String group
+		private List<String> modules
+
+		ExcludeModulesSpec(String group) {
+			this.group = group
+		}
+
+		void modules(String... modules) {
+			this.modules = modules
+		}
+
+	}
+
+	private class DependenciesSpec {
+
+		private final Map<String, Set<String>> dependencies = [:]
+
+		void compile(String type, String... dependencies) {
+			assert type, 'dependencies type not null!'
+			assert dependencies, type + ' dependencies not empty!'
+			this.dependencies.compute(type, { key, set -> set = set ?: [] }).addAll dependencies
+		}
+
+		void api(String... dependencies) {
+			compile 'api', dependencies
+		}
+
+		void implementation(String... dependencies) {
+			compile 'implementation', dependencies
+		}
+
+		void compileOnly(String... dependencies) {
+			compile 'compileOnly', dependencies
+		}
+
+		void compileOnlyApi(String... dependencies) {
+			compile 'compileOnlyApi', dependencies
+		}
+
+		void runtimeOnly(String... dependencies) {
+			compile 'runtimeOnly', dependencies
+		}
+
+		void testImplementation(String... dependencies) {
+			compile 'testImplementation', dependencies
+		}
+
+		void testCompileOnly(String... dependencies) {
+			compile 'testCompileOnly', dependencies
+		}
+
+		void testRuntimeOnly(String... dependencies) {
+			compile 'testRuntimeOnly', dependencies
+		}
+
+		void annotationProcessor(String... dependencies) {
+			compile 'annotationProcessor', dependencies
 		}
 
 	}
