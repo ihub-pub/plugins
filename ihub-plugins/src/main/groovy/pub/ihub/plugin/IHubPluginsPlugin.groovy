@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.VALUE_FALSE
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
@@ -40,7 +39,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			if ((dirs as File).directory) {
 				flatDir dirs: dirs
 			}
-			if (findProperty('mavenLocalEnabled', project, VALUE_FALSE).toBoolean()) {
+			if (findProperty('mavenLocalEnabled', project, false.toString()).toBoolean()) {
 				mavenLocal()
 			}
 			maven {
@@ -63,7 +62,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			}
 			// 添加私有仓库
 			String releaseRepoUrl = findProperty project, 'releaseRepoUrl'
-			boolean repoAllowInsecureProtocol = findProperty('repoAllowInsecureProtocol', project, VALUE_FALSE).toBoolean()
+			boolean repoAllowInsecureProtocol = findProperty('repoAllowInsecureProtocol', project, false.toString()).toBoolean()
 			String repoIncludeGroup = findProperty 'repoIncludeGroup', project
 			String repoIncludeGroupRegex = findProperty 'repoIncludeGroupRegex', project, '.*'
 			String repoUsername = findProperty 'repoUsername', project
@@ -132,9 +131,7 @@ class IHubPluginsPlugin implements Plugin<Project> {
 			printConfigContent 'Gradle Project Repos', project.repositories*.displayName
 		}
 
-		if (!findProperty(project, 'bomDisabled', VALUE_FALSE).toBoolean()) {
-			project.pluginManager.apply IHubBomPlugin
-		}
+		project.pluginManager.apply IHubBomPlugin
 
 		project.extensions.add('findProjectProperty') { String key, String defaultValue = null ->
 			findProperty key, project, defaultValue

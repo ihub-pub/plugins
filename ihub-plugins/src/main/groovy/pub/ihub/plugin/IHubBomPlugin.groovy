@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.GROOVY_VERSION
 import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
 import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
@@ -33,6 +32,9 @@ import org.gradle.api.Project
  */
 class IHubBomPlugin implements Plugin<Project> {
 
+	private static final String GROOVY_GROUP = 'org.codehaus.groovy'
+	private static final String GROOVY_VERSION = '3.0.8'
+
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubPluginsPlugin
@@ -41,12 +43,15 @@ class IHubBomPlugin implements Plugin<Project> {
 
 		project.afterEvaluate({ IHubBomExtension ext ->
 			if (findProperty(project, 'enabledBomDefaultConfig', ext.enabledDefaultConfig.toString()).toBoolean()) {
+				IHubGroovyExtension groovyExt = project.extensions.findByType IHubGroovyExtension
 				// 配置导入bom
 				ext.importBoms {
 					allIfAbsent = true
 					// TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
 //					group 'pub.ihub.lib' module 'ihub-libs' version '1.0.0-SNAPSHOT'
-					group 'org.codehaus.groovy' module 'groovy-bom' version GROOVY_VERSION
+					if (groovyExt) {
+						group GROOVY_GROUP module 'groovy-bom' version GROOVY_VERSION
+					}
 					group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
 					group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.4.5'
 					group 'org.springframework.cloud' module 'spring-cloud-dependencies' version '2020.0.2'
@@ -57,7 +62,9 @@ class IHubBomPlugin implements Plugin<Project> {
 				}
 				// 配置组件依赖版本
 				ext.dependencyVersions {
-					group 'org.codehaus.groovy' version GROOVY_VERSION modules 'groovy-all'
+					if (groovyExt) {
+						group GROOVY_GROUP version GROOVY_VERSION modules 'groovy-all'
+					}
 					group 'com.alibaba' version '1.2.76' modules 'fastjson'
 					group 'com.alibaba' version '1.2.6' modules 'druid', 'druid-spring-boot-starter'
 					group 'com.alibaba.p3c' version '2.1.1' modules 'p3c-pmd'
@@ -68,6 +75,10 @@ class IHubBomPlugin implements Plugin<Project> {
 				}
 				// 配置组版本策略（建议尽量使用bom）
 				ext.groupVersions {
+					// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
+					if (groovyExt && GROOVY_VERSION.startsWith('3.')) {
+						group GROOVY_GROUP version GROOVY_VERSION ifAbsent true
+					}
 					group 'cn.hutool' version '5.6.4' ifAbsent true
 				}
 				// 配置默认排除项
@@ -88,25 +99,24 @@ class IHubBomPlugin implements Plugin<Project> {
 					runtimeOnly 'org.slf4j:jul-to-slf4j',
 //						'org.slf4j:jcl-over-slf4j', TODO 构建原生镜像有报错
 						'org.slf4j:log4j-over-slf4j'
-					project.extensions.findByType(IHubGroovyExtension)?.with {
-						implementation modules.unique().collect { "org.codehaus.groovy:$it" } as String[]
+					if (groovyExt) {
+						implementation groovyExt.modules.unique().collect { "$GROOVY_GROUP:$it" } as String[]
 					}
 				}
 			}
-
 
 			project.dependencyManagement {
 				// 导入bom配置
 				imports {
 					ext.bomVersions.each {
-						mavenBom "$it.group:$it.module:${findVersion(project, it.group, it.version)}"
+						mavenBom "$it.group:$it.module:${it.getVersion(project)}"
 					}
 				}
 
 				// 配置组件版本
 				dependencies {
 					ext.dependencyVersions.each { config ->
-						dependencySet(group: config.group, version: findVersion(project, config.group, config.version)) {
+						dependencySet(group: config.group, version: config.getVersion(project)) {
 							config.modules.each { entry it }
 						}
 					}
@@ -118,8 +128,7 @@ class IHubBomPlugin implements Plugin<Project> {
 					resolutionStrategy {
 						// 配置组件组版本（用于配置无bom组件）
 						eachDependency {
-							String group = it.requested.group
-							findVersion(project, group, ext.groupVersions[group])?.with { version ->
+							ext.findVersion(project, it.requested.group)?.with { version ->
 								it.useVersion version
 							}
 						}
@@ -158,10 +167,6 @@ class IHubBomPlugin implements Plugin<Project> {
 				}
 			}
 		}.curry(project.extensions.create('iHubBom', IHubBomExtension)))
-	}
-
-	private static String findVersion(Project project, String group, String defaultVersion) {
-		findProperty project, group + '.version', defaultVersion
 	}
 
 }

@@ -46,7 +46,7 @@ class IHubGroovyPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply IHubJavaBasePlugin
+		project.pluginManager.apply IHubJavaPlugin
 		project.pluginManager.apply GroovyPlugin
 
 		project.extensions.create 'iHubGroovy', IHubGroovyExtension

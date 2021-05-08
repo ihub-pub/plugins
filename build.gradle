@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 plugins {
-    id 'com.gradle.plugin-publish'  version '0.14.0' apply false
-    id 'com.palantir.git-version'   version '0.12.3'
+    id 'com.gradle.plugin-publish'  version "$pluginPublishVersion" apply false
+    id 'com.palantir.git-version'   version "$gitVersionVersion"
 }
 
 subprojects {

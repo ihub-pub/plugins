@@ -53,6 +53,8 @@ class IHubPublishExtension {
 	String pomDeveloperRoles
 	String pomDeveloperTimezone
 
+	boolean enabledConfigurationMetadata = true
+
 	IHubPublishExtension() {
 	}
 

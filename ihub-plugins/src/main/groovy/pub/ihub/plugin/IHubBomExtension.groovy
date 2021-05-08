@@ -15,7 +15,10 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.IHubPluginMethods.findVersion
+
 import org.gradle.api.Action
+import org.gradle.api.Project
 
 /**
  * BOM插件DSL扩展
@@ -100,6 +103,10 @@ class IHubBomExtension {
 		}
 	}
 
+	String findVersion(Project project, String group) {
+		findVersion project, group, groupVersions[group]
+	}
+
 	private class DependencyVersionsSpec {
 
 		private final List<DependencyVersionSpec> specs = []
@@ -146,6 +153,9 @@ class IHubBomExtension {
 			this
 		}
 
+		String getVersion(Project project) {
+			findVersion project, group, version
+		}
 	}
 
 	private class ExcludeGroupSpec {

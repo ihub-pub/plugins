@@ -15,9 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.VALUE_FALSE
-import static pub.ihub.plugin.Constants.VALUE_TRUE
-import static pub.ihub.plugin.Constants.getGROOVY_VERSION
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.Plugin
@@ -125,8 +122,8 @@ ruleset {
 			} else {
 				ruleSets = PMD_DEFAULT_RULESET
 			}
-			consoleOutput = findProperty(project, 'pmdConsoleOutput', VALUE_FALSE).toBoolean()
-			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', VALUE_FALSE).toBoolean()
+			consoleOutput = findProperty(project, 'pmdConsoleOutput', false.toString()).toBoolean()
+			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', false.toString()).toBoolean()
 			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
 		}
 		project.extensions.getByType(IHubBomExtension).dependencies {
@@ -147,15 +144,8 @@ ruleset {
 					}
 				}
 			}
-			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', VALUE_FALSE).toBoolean()
+			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', false.toString()).toBoolean()
 			toolVersion = findProperty project, 'codenarcVersion', '2.1.0'
-		}
-		String groovyVersion = findProperty project, 'org.codehaus.groovy.version', GROOVY_VERSION
-		// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
-		if (groovyVersion.startsWith('3.')) {
-			project.extensions.getByType(IHubBomExtension).groupVersions {
-				group 'org.codehaus.groovy' version groovyVersion
-			}
 		}
 	}
 
@@ -175,7 +165,7 @@ ruleset {
 			violationRules {
 				// rule #1：bundle分支覆盖率
 				rule {
-					enabled = findProperty('jacocoBundleBranchCoverageRuleEnabled', VALUE_TRUE).toBoolean()
+					enabled = findProperty('jacocoBundleBranchCoverageRuleEnabled', true.toString()).toBoolean()
 					limit {
 						counter = 'BRANCH'
 						value = 'COVEREDRATIO'
@@ -184,14 +174,14 @@ ruleset {
 				}
 				// rule #2：bundle指令覆盖率
 				rule {
-					enabled = findProperty('jacocoBundleInstructionCoverageRuleEnabled', VALUE_TRUE).toBoolean()
+					enabled = findProperty('jacocoBundleInstructionCoverageRuleEnabled', true.toString()).toBoolean()
 					limit {
 						minimum = findProperty('jacocoBundleInstructionCoveredRatio', '0.9') as BigDecimal
 					}
 				}
 				// rule #3：package指令覆盖率
 				rule {
-					enabled = findProperty('jacocoPackageInstructionCoverageRuleEnabled', VALUE_TRUE).toBoolean()
+					enabled = findProperty('jacocoPackageInstructionCoverageRuleEnabled', true.toString()).toBoolean()
 					element = 'PACKAGE'
 					limit {
 						minimum = findProperty('jacocoPackageInstructionCoveredRatio', '0.9') as BigDecimal

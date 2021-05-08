@@ -15,9 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.VALUE_TRUE
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -29,7 +26,6 @@ import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.compile.AbstractCompile
 
 /**
  * Java基础插件
@@ -65,23 +61,6 @@ class IHubJavaBasePlugin implements Plugin<Project> {
 		project.pluginManager.apply JavaLibraryPlugin
 		project.pluginManager.apply ProjectReportsPlugin
 		project.pluginManager.apply BuildDashboardPlugin
-
-		// Java11添加jaxb运行时依赖
-		if (JavaVersion.current().java11) {
-			project.extensions.getByType(IHubBomExtension).dependencies {
-				runtimeOnly 'javax.xml.bind:jaxb-api', 'com.sun.xml.bind:jaxb-core', 'com.sun.xml.bind:jaxb-impl'
-			}
-		}
-
-		// 兼容性配置
-		findProperty('javaCompatibility', project)?.with { version ->
-			project.tasks.withType(AbstractCompile) {
-				sourceCompatibility = version
-				targetCompatibility = version
-				options.encoding = 'UTF-8'
-				options.incremental = findProperty('gradleCompilationIncremental', project, VALUE_TRUE).toBoolean()
-			}
-		}
 
 		// 配置Jar属性
 		project.tasks.withType(Jar) {

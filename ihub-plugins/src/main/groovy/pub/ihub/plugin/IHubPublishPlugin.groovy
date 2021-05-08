@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.Constants.VALUE_FALSE
 import static pub.ihub.plugin.IHubGroovyPlugin.registerGroovydocJar
 import static pub.ihub.plugin.IHubJavaBasePlugin.registerJavadocsJar
 import static pub.ihub.plugin.IHubJavaBasePlugin.registerSourcesJar
@@ -71,6 +70,13 @@ class IHubPublishPlugin implements Plugin<Project> {
 					project.afterEvaluate({ IHubPublishExtension ext ->
 						artifactId = project.jar.archiveBaseName.get()
 						ext.configPom it, project.versionDetails()
+						// 添加配置元信息
+						if (ext.enabledConfigurationMetadata) {
+							project.extensions.getByType(IHubBomExtension).dependencies {
+								annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+							}
+							project.compileJava.inputs.files(project.processResources)
+						}
 					}.curry(project.extensions.create('iHubPublish', IHubPublishExtension)))
 				}
 			}
@@ -87,7 +93,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 
 		project.plugins.apply SigningPlugin
 		project.extensions.getByType(SigningExtension).identity {
-			required = isRelease && findProperty('publishNeedSign', project, VALUE_FALSE).toBoolean()
+			required = isRelease && findProperty('publishNeedSign', project, false.toString()).toBoolean()
 			// TODO 签名待调试
 			if (OperatingSystem.current().windows) {
 				useGpgCmd()
@@ -101,16 +107,10 @@ class IHubPublishPlugin implements Plugin<Project> {
 				}
 			}
 		}
-
-		// 添加配置元信息
-		project.extensions.getByType(IHubBomExtension).dependencies {
-			annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-		}
-		project.compileJava.inputs.files(project.processResources)
 	}
 
 	private static List<TaskProvider> registerJarTasks(Project project) {
-		boolean publishDocs = findProperty('publishDocs', VALUE_FALSE).toBoolean()
+		boolean publishDocs = findProperty('publishDocs', false.toString()).toBoolean()
 		List tasks = [
 			registerSourcesJar(project)
 		]
