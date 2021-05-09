@@ -20,6 +20,15 @@ jobs:
       security-events: write
       pull-requests: read
 
+    strategy:
+      fail-fast: false
+      matrix:
+        # Override automatic language detection by changing the below list
+        # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
+        language: ['java', 'javascript']
+        # Learn more...
+        # https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#overriding-automatic-language-detection
+
     steps:
       - name: Cache Gradle Modules
         uses: actions/cache@v2
@@ -51,7 +60,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
-          languages: java
+          languages: ${{ matrix.language }}
           config-file: ./.github/ihub/codeql-config.yml
 
       - name: Compile with Gradle
