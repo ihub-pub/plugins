@@ -59,15 +59,13 @@ jobs:
           config-file: ./.github/ihub/codeql-config.yml
 
       - name: Compile with Gradle
-        run: gradle --init-script .github/workflows/codeql-analysis.init.gradle -S testClasses
+        run: ./gradlew --init-script .github/workflows/codeql-analysis.init.gradle -S testClasses
 
       - name: Cleanup Gradle Daemons
-        run: gradle --stop
+        run: ./gradlew --stop
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
-#        with:
-#          config-file: ./.github/codeql/codeql-config.yml
 
       - name: Cleanup Gradle Cache
         # Cleans up the Gradle caches before being cached
