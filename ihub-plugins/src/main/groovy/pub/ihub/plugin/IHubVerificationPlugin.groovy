@@ -126,9 +126,6 @@ ruleset {
 			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', false.toString()).toBoolean()
 			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
 		}
-		project.extensions.getByType(IHubBomExtension).dependencies {
-			compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
-		}
 	}
 
 	private static void configCodenarc(Project project) {

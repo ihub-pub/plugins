@@ -15,7 +15,14 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
+import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.findVersion
+import static pub.ihub.plugin.IHubPluginMethods.groupTap
+import static pub.ihub.plugin.IHubPluginMethods.moduleTap
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
 import org.gradle.api.Action
 import org.gradle.api.Project
@@ -105,6 +112,24 @@ class IHubBomExtension {
 
 	String findVersion(Project project, String group) {
 		findVersion project, group, groupVersions[group]
+	}
+
+	void printConfigContent(Project project) {
+		if (findProperty(project, 'printBomConfig', printConfig.toString()).toBoolean()) {
+			printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersions.collect {
+				[it.group, it.module, it.getVersion(project)]
+			}, groupTap(30), moduleTap(), versionTap(20)
+			printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
+				dependencyVersions.inject([]) { list, config ->
+					list + config.modules.collect { [config.group, it, config.getVersion(project)] }
+				}, groupTap(35), moduleTap(), versionTap(15)
+			printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
+				groupTap(), versionTap(), groupVersions.collectEntries { k, v -> [(k): findVersion(project, k)] }
+			printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
+				groupTap(40), moduleTap(), excludeModules
+			printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
+				dependencyTypeTap(), dependenciesTap(), dependencies
+		}
 	}
 
 	private class DependencyVersionsSpec {

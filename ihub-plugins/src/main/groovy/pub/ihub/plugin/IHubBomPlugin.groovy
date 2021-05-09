@@ -15,16 +15,12 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
-import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
-import static pub.ihub.plugin.IHubPluginMethods.groupTap
-import static pub.ihub.plugin.IHubPluginMethods.moduleTap
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.quality.PmdPlugin
 
 /**
  * BOM（Bill of Materials）组件依赖管理
@@ -42,6 +38,11 @@ class IHubBomPlugin implements Plugin<Project> {
 		project.pluginManager.apply 'io.spring.dependency-management'
 
 		project.afterEvaluate({ IHubBomExtension ext ->
+			boolean isRoot = project.name == project.rootProject.name
+			// 子项目只打印自定义依赖
+			if (!isRoot) {
+				ext.printConfigContent project
+			}
 			if (findProperty(project, 'enabledBomDefaultConfig', ext.enabledDefaultConfig.toString()).toBoolean()) {
 				IHubGroovyExtension groovyExt = project.extensions.findByType IHubGroovyExtension
 				// 配置导入bom
@@ -51,8 +52,8 @@ class IHubBomPlugin implements Plugin<Project> {
 //					group 'pub.ihub.lib' module 'ihub-libs' version '1.0.0-SNAPSHOT'
 					if (groovyExt) {
 						group GROOVY_GROUP module 'groovy-bom' version GROOVY_VERSION
+						group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
 					}
-					group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
 					group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.4.5'
 					group 'org.springframework.cloud' module 'spring-cloud-dependencies' version '2020.0.2'
 					group 'com.alibaba.cloud' module 'spring-cloud-alibaba-dependencies' version '2021.1'
@@ -64,6 +65,7 @@ class IHubBomPlugin implements Plugin<Project> {
 				ext.dependencyVersions {
 					if (groovyExt) {
 						group GROOVY_GROUP version GROOVY_VERSION modules 'groovy-all'
+						group 'com.athaydes' version '2.0.1-RC3' modules 'spock-reports'
 					}
 					group 'com.alibaba' version '1.2.76' modules 'fastjson'
 					group 'com.alibaba' version '1.2.6' modules 'druid', 'druid-spring-boot-starter'
@@ -71,7 +73,6 @@ class IHubBomPlugin implements Plugin<Project> {
 					group 'com.baomidou' version '3.4.2' modules 'mybatis-plus',
 						'mybatis-plus-boot-starter', 'mybatis-plus-generator'
 					group 'com.github.xiaoymin' version '2.0.8' modules 'knife4j-aggregation-spring-boot-starter'
-					group 'com.athaydes' version '2.0.1-RC3' modules 'spock-reports'
 				}
 				// 配置组版本策略（建议尽量使用bom）
 				ext.groupVersions {
@@ -102,7 +103,30 @@ class IHubBomPlugin implements Plugin<Project> {
 					if (groovyExt) {
 						implementation groovyExt.modules.unique().collect { "$GROOVY_GROUP:$it" } as String[]
 					}
+					// Java11添加jaxb运行时依赖
+					if (JavaVersion.current().java11) {
+						runtimeOnly 'javax.xml.bind:jaxb-api', 'com.sun.xml.bind:jaxb-core', 'com.sun.xml.bind:jaxb-impl'
+					}
+					// 添加lombok依赖
+					if (project.plugins.hasPlugin(IHubJavaPlugin)) {
+						String lombok = 'org.projectlombok:lombok'
+						compileOnly lombok
+						annotationProcessor lombok
+					}
+					// 添加pmd依赖
+					if (project.plugins.hasPlugin(PmdPlugin)) {
+						compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
+					}
+					// 添加配置元信息
+					if (project.plugins.hasPlugin(IHubPublishPlugin)) {
+						annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+						project.compileJava.inputs.files project.processResources
+					}
 				}
+			}
+			// 只有主项目打印含默认依赖日志
+			if (isRoot) {
+				ext.printConfigContent project
 			}
 
 			project.dependencyManagement {
@@ -148,22 +172,6 @@ class IHubBomPlugin implements Plugin<Project> {
 						// 支持导入项目
 						project.dependencies.create it.startsWith(':') ? project.project(it) : it
 					}
-				}
-
-				if (findProperty(project, 'printBomConfig', ext.printConfig.toString()).toBoolean()) {
-					printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
-						ext.dependencyVersions.inject([]) { list, config ->
-							list + config.modules.collect { [config.group, it, config.version] }
-						}, groupTap(35), moduleTap(), versionTap(15)
-					printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", ext.bomVersions.collect {
-						[it.group, it.module, it.version]
-					}, groupTap(30), moduleTap(), versionTap(20)
-					printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
-						groupTap(), versionTap(), ext.groupVersions
-					printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
-						groupTap(40), moduleTap(), ext.excludeModules
-					printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
-						dependencyTypeTap(), dependenciesTap(), ext.dependencies
 				}
 			}
 		}.curry(project.extensions.create('iHubBom', IHubBomExtension)))

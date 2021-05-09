@@ -70,13 +70,6 @@ class IHubPublishPlugin implements Plugin<Project> {
 					project.afterEvaluate({ IHubPublishExtension ext ->
 						artifactId = project.jar.archiveBaseName.get()
 						ext.configPom it, project.versionDetails()
-						// 添加配置元信息
-						if (ext.enabledConfigurationMetadata) {
-							project.extensions.getByType(IHubBomExtension).dependencies {
-								annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-							}
-							project.compileJava.inputs.files(project.processResources)
-						}
 					}.curry(project.extensions.create('iHubPublish', IHubPublishExtension)))
 				}
 			}
