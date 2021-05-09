@@ -25,17 +25,6 @@ import org.gradle.api.plugins.PluginAware
 final class IHubPluginMethods {
 
 	/**
-	 * 查找版本号
-	 * @param project 插件
-	 * @param group 组
-	 * @param defaultVersion 默认版本号
-	 * @return 版本号
-	 */
-	static String findVersion(Project project, String group, String defaultVersion) {
-		findProperty project, group + '.version', defaultVersion
-	}
-
-	/**
 	 * 优先从环境变量查找属性
 	 * @param key key
 	 * @param plugin 插件

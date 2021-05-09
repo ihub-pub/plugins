@@ -18,12 +18,12 @@ package pub.ihub.plugin
 import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
 import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
-import static pub.ihub.plugin.IHubPluginMethods.findVersion
 import static pub.ihub.plugin.IHubPluginMethods.groupTap
 import static pub.ihub.plugin.IHubPluginMethods.moduleTap
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
+import groovy.transform.EqualsAndHashCode
 import org.gradle.api.Action
 import org.gradle.api.Project
 
@@ -35,55 +35,51 @@ class IHubBomExtension {
 
 	boolean enabledDefaultConfig = true
 	boolean printConfig = true
-	final List<DependencyVersionSpec> bomVersions = []
-	final List<DependencyVersionSpec> dependencyVersions = []
-	final Map<String, String> groupVersions = [:]
+	final Set<BomVersionSpec> bomVersions = []
+	final List<ModulesVersionSpec> dependencyVersions = []
+	final Set<GroupVersionSpec> groupVersions = []
 	final Map<String, Set<String>> excludeModules = [:]
 	final Map<String, Set<String>> dependencies = [:]
+	final Project project
+
+	IHubBomExtension(Project project) {
+		this.project = project
+	}
 
 	/**
 	 * 导入mavenBom
 	 * @param action 配置
 	 */
-	void importBoms(Action<DependencyVersionsSpec> action) {
-		List<DependencyVersionSpec> specs = new DependencyVersionsSpec().tap { action.execute it }.specs
+	void importBoms(Action<VersionsSpec<BomVersionSpec>> action) {
+		List<BomVersionSpec> specs = new VersionsSpec<BomVersionSpec>({ String group ->
+			new BomVersionSpec(group)
+		}).tap { action.execute it }.specs
 		assert specs, 'import boms config not empty!'
-		specs.each { spec ->
-			DependencyVersionSpec bom = bomVersions.find { spec.group == it.group && spec.module == it.module }
-			if (bom) {
-				if (!spec.ifAbsent) {
-					bom.version spec.version
-				}
-			} else {
-				bomVersions << spec
-			}
-		}
+		specs*.addSet()
 	}
 
 	/**
 	 * 配置依赖默认版本
 	 * @param action 配置
 	 */
-	void dependencyVersions(Action<DependencyVersionsSpec> action) {
-		List<DependencyVersionSpec> specs = new DependencyVersionsSpec().tap { action.execute it }.specs
+	void dependencyVersions(Action<VersionsSpec<ModulesVersionSpec>> action) {
+		List<ModulesVersionSpec> specs = new VersionsSpec<ModulesVersionSpec>({ String group ->
+			new ModulesVersionSpec(group)
+		}).tap { action.execute it }.specs
 		assert specs, 'dependency versions config not empty!'
-		dependencyVersions.addAll specs
+		specs*.addSet()
 	}
 
 	/**
 	 * 配置组版本策略（建议尽量使用bom）
 	 * @param action 配置
 	 */
-	void groupVersions(Action<DependencyVersionsSpec> action) {
-		List<DependencyVersionSpec> groupVersions = new DependencyVersionsSpec().tap { action.execute it }.specs
+	void groupVersions(Action<VersionsSpec<GroupVersionSpec>> action) {
+		List<GroupVersionSpec> groupVersions = new VersionsSpec<GroupVersionSpec>({ String group ->
+			new GroupVersionSpec(group)
+		}).tap { action.execute it }.specs
 		assert groupVersions, 'group versions config not empty!'
-		groupVersions.each {
-			if (it.ifAbsent) {
-				this.groupVersions.putIfAbsent it.group, it.version
-			} else {
-				this.groupVersions.put it.group, it.version
-			}
-		}
+		groupVersions*.addSet()
 	}
 
 	/**
@@ -110,21 +106,50 @@ class IHubBomExtension {
 		}
 	}
 
-	String findVersion(Project project, String group) {
-		findVersion project, group, groupVersions[group]
-	}
-
-	void printConfigContent(Project project) {
-		if (findProperty(project, 'printBomConfig', printConfig.toString()).toBoolean()) {
-			printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", bomVersions.collect {
-				[it.group, it.module, it.getVersion(project)]
+	void printConfigContent() {
+		if (printConfig) {
+			Set<BomVersionSpec> printBomVersions
+			List<ModulesVersionSpec> printDependencyVersions
+			Set<GroupVersionSpec> printGroupVersions
+			if (project.name == project.rootProject.name) {
+				List<IHubBomExtension> subprojectsExt = project.rootProject.subprojects.extensions*.findByType IHubBomExtension
+				printBomVersions = bomVersions.tap {
+					addAll subprojectsExt*.bomVersions.inject { l1, l2 ->
+						l1.intersect(l2) { a, b -> a.compare(b) ? 0 : -1 }
+					}.findAll { !bomVersions.contains(it) }
+				}
+				printDependencyVersions = dependencyVersions.tap {
+					subprojectsExt*.dependencyVersions.inject { l1, l2 ->
+						l1.intersect(l2) { a, b -> a.compare(b) ? 0 : -1 }
+					}*.addSet()
+				}
+				printGroupVersions = groupVersions.tap {
+					addAll subprojectsExt*.groupVersions.inject { l1, l2 ->
+						l1.intersect(l2) { a, b -> a.compare(b) ? 0 : -1 }
+					}.findAll { !groupVersions.contains(it) }
+				}
+			} else {
+				IHubBomExtension rootExt = project.rootProject.extensions.findByType IHubBomExtension
+				printBomVersions = bomVersions.findAll { s ->
+					rootExt.bomVersions.every { r -> !s.compare(r) }
+				}
+				printDependencyVersions = dependencyVersions.findAll { s ->
+					rootExt.dependencyVersions.every { r -> !s.compare(r) }
+				}
+				printGroupVersions = groupVersions.findAll { s ->
+					rootExt.groupVersions.every { r -> !s.compare(r) }
+				}
+			}
+			printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", printBomVersions.collect {
+				[it.group, it.module, it.version]
 			}, groupTap(30), moduleTap(), versionTap(20)
 			printConfigContent "${project.name.toUpperCase()} Group Maven Module Version",
-				dependencyVersions.inject([]) { list, config ->
-					list + config.modules.collect { [config.group, it, config.getVersion(project)] }
+				printDependencyVersions.inject([]) { list, config ->
+					list + config.modules.collect { [config.group, it, config.version] }
 				}, groupTap(35), moduleTap(), versionTap(15)
 			printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
-				groupTap(), versionTap(), groupVersions.collectEntries { k, v -> [(k): findVersion(project, k)] }
+				groupTap(), versionTap(), printGroupVersions.collectEntries { [(it.group): it.version] }
+			// TODO 减少重复日志，后续再做优化
 			printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
 				groupTap(40), moduleTap(), excludeModules
 			printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
@@ -132,13 +157,26 @@ class IHubBomExtension {
 		}
 	}
 
-	private class DependencyVersionsSpec {
+	//<editor-fold desc="DSL扩展相关实体">
 
-		private final List<DependencyVersionSpec> specs = []
+	private interface InstanceSpec<T extends GroupVersionSpec> {
+
+		T instance(String group)
+
+	}
+
+	private class VersionsSpec<T extends GroupVersionSpec> {
+
+		private final InstanceSpec<T> instanceSpec
+		private final List<T> specs = []
 		boolean allIfAbsent = false
 
-		DependencyVersionSpec group(String group) {
-			new DependencyVersionSpec(group).tap {
+		VersionsSpec(InstanceSpec<T> instanceSpec) {
+			this.instanceSpec = instanceSpec
+		}
+
+		T group(String group) {
+			instanceSpec.instance(group).tap {
 				ifAbsent allIfAbsent ?: ifAbsent
 				specs << it
 			}
@@ -146,41 +184,99 @@ class IHubBomExtension {
 
 	}
 
-	private class DependencyVersionSpec {
+	@EqualsAndHashCode(includes = 'group')
+	private class GroupVersionSpec {
 
 		final String group
-		String module
 		String version
-		Set<String> modules
+		/**
+		 * 是否判断版本缺失（如果为true时，不覆盖原有版本）
+		 */
 		boolean ifAbsent = false
 
-		DependencyVersionSpec(String group) {
+		GroupVersionSpec(String group) {
 			this.group = group
 		}
 
-		DependencyVersionSpec module(String module) {
+		GroupVersionSpec version(String version) {
+			this.version = findProperty project, group + '.version', version
+			this
+		}
+
+		void ifAbsent(boolean ifAbsent) {
+			this.ifAbsent = ifAbsent
+		}
+
+		private void addSet() {
+			groupVersions << (!ifAbsent ? this : (groupVersions.find { group == it.group } ?: this))
+		}
+
+		boolean compare(GroupVersionSpec o) {
+			group == o.group && version == o.version
+		}
+
+	}
+
+	@EqualsAndHashCode(callSuper = true, includes = 'module')
+	private class BomVersionSpec extends GroupVersionSpec {
+
+		String module
+
+		BomVersionSpec(String group) {
+			super(group)
+		}
+
+		BomVersionSpec module(String module) {
 			this.module = module
 			this
 		}
 
-		DependencyVersionSpec version(String version) {
-			this.version = version
-			this
+		private void addSet() {
+			bomVersions << (!ifAbsent ? this : (bomVersions.find { group == it.group && module == it.module } ?: this))
 		}
 
-		DependencyVersionSpec modules(String... modules) {
+		boolean compare(BomVersionSpec o) {
+			super.compare(o) && module == o.module
+		}
+
+	}
+
+	@EqualsAndHashCode(callSuper = true, includes = 'modules')
+	private class ModulesVersionSpec extends GroupVersionSpec {
+
+		Set<String> modules
+
+		ModulesVersionSpec(String group) {
+			super(group)
+		}
+
+		ModulesVersionSpec modules(String... modules) {
 			this.modules = modules
 			this
 		}
 
-		DependencyVersionSpec ifAbsent(boolean ifAbsent) {
-			this.ifAbsent = ifAbsent
-			this
+		@Override
+		ModulesVersionSpec version(String version) {
+			super.version(version) as ModulesVersionSpec
 		}
 
-		String getVersion(Project project) {
-			findVersion project, group, version
+		@Override
+		void ifAbsent(boolean ifAbsent) {
 		}
+
+		private void addSet() {
+			ModulesVersionSpec spec = dependencyVersions.find { group == it.group && version == it.version }
+			if (spec) {
+				spec.modules.addAll modules
+			} else {
+				dependencyVersions << this
+			}
+		}
+
+		boolean compare(ModulesVersionSpec o) {
+			super.compare(o) && modules == o.modules
+		}
+
 	}
 
 	private class ExcludeGroupSpec {
@@ -211,7 +307,7 @@ class IHubBomExtension {
 
 	}
 
-	private class DependenciesSpec {
+	private final class DependenciesSpec {
 
 		private final Map<String, Set<String>> dependencies = [:]
 
@@ -258,5 +354,7 @@ class IHubBomExtension {
 		}
 
 	}
+
+	//</editor-fold>
 
 }

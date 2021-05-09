@@ -38,11 +38,6 @@ class IHubBomPlugin implements Plugin<Project> {
 		project.pluginManager.apply 'io.spring.dependency-management'
 
 		project.afterEvaluate({ IHubBomExtension ext ->
-			boolean isRoot = project.name == project.rootProject.name
-			// 子项目只打印自定义依赖
-			if (!isRoot) {
-				ext.printConfigContent project
-			}
 			if (findProperty(project, 'enabledBomDefaultConfig', ext.enabledDefaultConfig.toString()).toBoolean()) {
 				IHubGroovyExtension groovyExt = project.extensions.findByType IHubGroovyExtension
 				// 配置导入bom
@@ -124,23 +119,19 @@ class IHubBomPlugin implements Plugin<Project> {
 					}
 				}
 			}
-			// 只有主项目打印含默认依赖日志
-			if (isRoot) {
-				ext.printConfigContent project
-			}
 
 			project.dependencyManagement {
 				// 导入bom配置
 				imports {
 					ext.bomVersions.each {
-						mavenBom "$it.group:$it.module:${it.getVersion(project)}"
+						mavenBom "$it.group:$it.module:$it.version"
 					}
 				}
 
 				// 配置组件版本
 				dependencies {
 					ext.dependencyVersions.each { config ->
-						dependencySet(group: config.group, version: config.getVersion(project)) {
+						dependencySet(group: config.group, version: config.version) {
 							config.modules.each { entry it }
 						}
 					}
@@ -152,8 +143,8 @@ class IHubBomPlugin implements Plugin<Project> {
 					resolutionStrategy {
 						// 配置组件组版本（用于配置无bom组件）
 						eachDependency {
-							ext.findVersion(project, it.requested.group)?.with { version ->
-								it.useVersion version
+							ext.groupVersions.find { s -> s.group == it.requested.group }?.version?.with { v ->
+								it.useVersion v
 							}
 						}
 						// 不缓存动态版本
@@ -174,7 +165,9 @@ class IHubBomPlugin implements Plugin<Project> {
 					}
 				}
 			}
-		}.curry(project.extensions.create('iHubBom', IHubBomExtension)))
+
+			ext.printConfigContent()
+		}.curry(project.extensions.create('iHubBom', IHubBomExtension, project)))
 	}
 
 }
