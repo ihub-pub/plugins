@@ -30,7 +30,7 @@ jobs:
       # Override language selection by uncommenting this and choosing your languages
       with:
         languages: groovy
-        config-file: ./.github/codeql-config.yml
+        config-file: ./.github/ihub/codeql-config.yml
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@main
