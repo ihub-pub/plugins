@@ -29,10 +29,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: |
-            ~/.gradle/caches/modules-2/
-            ~/.gradle/caches/build-cache-1/
-            ~/.gradle/caches/signatures/
-            ~/.gradle/caches/keyrings/
+            ${{ github.workspace }}/caches/modules-2/
+            ${{ github.workspace }}/caches/build-cache-1/
+            ${{ github.workspace }}/caches/signatures/
+            ${{ github.workspace }}/caches/keyrings/
           key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - name: Disable checksum offloading
@@ -72,5 +72,5 @@ jobs:
       - name: Cleanup Gradle Cache
         # Cleans up the Gradle caches before being cached
         run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+          rm -f ${{ github.workspace }}/caches/modules-2/modules-2.lock
+          rm -f ${{ github.workspace }}/caches/modules-2/gc.properties
