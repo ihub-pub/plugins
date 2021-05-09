@@ -15,6 +15,8 @@
  */
 package pub.ihub.plugin
 
+import org.gradle.api.JavaVersion
+
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.Plugin
@@ -202,6 +204,9 @@ ruleset {
 		project.tasks.withType(Test) {
 			// 这是为了解决在项目根目录上执行test时Jacoco找不到依赖的类的问题
 			systemProperties.'user.dir' = workingDir
+			if (JavaVersion.current().java11) {
+				systemProperties.remove 'java.endorsed.dirs'
+			}
 		}
 	}
 
