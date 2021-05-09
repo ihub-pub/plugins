@@ -43,6 +43,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{ github.workspace }}
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
@@ -52,15 +55,15 @@ jobs:
           config-file: ./.github/ihub/codeql-config.yml
 
       - name: Compile with Gradle
-        run: ./gradlew --init-script .github/workflows/codeql-analysis.init.gradle -S testClasses
+        run: gradle --init-script .github/workflows/codeql-analysis.init.gradle -S testClasses
 
       - name: Cleanup Gradle Daemons
-        run: ./gradlew --stop
+        run: gradle --stop
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
         with:
-          config-file: ./.github/codeql/codeql-config.yml
+          config-file: ./.github/ihub/codeql-config.yml
 
       - name: Cleanup Gradle Cache
         # Cleans up the Gradle caches before being cached
