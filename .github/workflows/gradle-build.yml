@@ -1,7 +1,5 @@
-name: Gradle Publish
-on:
-  release:
-    types: [created]
+name: Gradle Build
+on: push
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,8 +13,5 @@ jobs:
           server-id: github
           settings-path: ${{ github.workspace }}
 
-      - name: Publish to Gradle Plugins
-        run: gradle publishPlugins
-        env:
-          GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
-          GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
+      - name: Build with Gradle
+        run: gradle build
