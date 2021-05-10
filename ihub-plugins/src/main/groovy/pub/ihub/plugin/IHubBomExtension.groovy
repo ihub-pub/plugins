@@ -67,7 +67,7 @@ class IHubBomExtension {
 			new ModulesVersionSpec(group)
 		}).tap { action.execute it }.specs
 		assert specs, 'dependency versions config not empty!'
-		specs*.addSet()
+		specs*.addSet dependencyVersions
 	}
 
 	/**
@@ -114,7 +114,13 @@ class IHubBomExtension {
 			Set<GroupVersionSpec> printGroupVersions
 			Map printExcludeModules
 			Map printDependencies
-			if (project.name == project.rootProject.name) {
+			if (!project.rootProject.childProjects) {
+				printBomVersions = bomVersions
+				printDependencyVersions = dependencyVersions
+				printGroupVersions = groupVersions
+				printExcludeModules = excludeModules
+				printDependencies = dependencies
+			} else if (project.name == project.rootProject.name) {
 				List<IHubBomExtension> subprojectsExt = project.rootProject.subprojects.extensions*.findByType IHubBomExtension
 				printBomVersions = bomVersions.tap {
 					addAll subprojectsExt*.bomVersions.inject { l1, l2 ->
@@ -124,7 +130,7 @@ class IHubBomExtension {
 				printDependencyVersions = dependencyVersions.tap {
 					subprojectsExt*.dependencyVersions.inject { l1, l2 ->
 						l1.intersect(l2) { a, b -> a.compare(b) ? 0 : -1 }
-					}*.addSet()
+					}*.addSet it
 				}
 				printGroupVersions = groupVersions.tap {
 					addAll subprojectsExt*.groupVersions.inject { l1, l2 ->
@@ -275,7 +281,7 @@ class IHubBomExtension {
 		void ifAbsent(boolean ifAbsent) {
 		}
 
-		private void addSet() {
+		private void addSet(List<ModulesVersionSpec> dependencyVersions) {
 			ModulesVersionSpec spec = dependencyVersions.find { group == it.group && version == it.version }
 			if (spec) {
 				spec.modules.addAll modules
