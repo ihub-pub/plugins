@@ -1,16 +1,16 @@
 # IHub Plugins
-![Gradle Build](https://github.com/ihub-pub/plugins/workflows/Gradle%20Publish/badge.svg)
+[![Gradle Build](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
+[![Gradle Publish](https://github.com/ihub-pub/plugins/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-publish.yml)
+[![GitHub](https://img.shields.io/badge/GitHub-ihub--pub-white.svg?style=flat&logo=GitHub&labelColor=181717)](https://github.com/ihub-pub "IHubPub")
+[![Gitee](https://img.shields.io/badge/Gitee-ihub--pub-white.svg?style=flat&logo=Gitee&labelColor=C71D23)](https://gitee.com/ihub-pub "IHubPub")
+[![Gitee](https://img.shields.io/badge/Gradle-henry--gradle-white.svg?style=flat&logo=Gradle&labelColor=02303A)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
+[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
+![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
 ![Version](https://img.shields.io/badge/Gradle-7.0-brightgreen.svg?logo=Gradle)
 ![Version](https://img.shields.io/badge/SpringBoot-2.4.5-6DB33F.svg?logo=Spring&logoColor=white)
 ![GitHub last commit](https://img.shields.io/github/last-commit/ihub-pub/plugins)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/ihub-pub/plugins)
-![GitHub top language](https://img.shields.io/github/languages/top/ihub-pub/plugins)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/ihub-pub/plugins)
-![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
-[![GitHub](https://img.shields.io/badge/GitHub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
-[![Gitee](https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
-[![Gitee](https://img.shields.io/badge/Gradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
-[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
 
 本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成，使用详见[samples](samples)，该项目包含插件如下：
 
