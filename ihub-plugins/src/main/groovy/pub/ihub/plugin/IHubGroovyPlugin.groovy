@@ -20,6 +20,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 
@@ -49,7 +50,30 @@ class IHubGroovyPlugin implements Plugin<Project> {
 		project.pluginManager.apply IHubJavaPlugin
 		project.pluginManager.apply GroovyPlugin
 
-		project.extensions.create 'iHubGroovy', IHubGroovyExtension
+		project.beforeEvaluate({ IHubGroovyExtension ext ->
+			project.extensions.getByType(IHubBomExtension).tap {
+				String groovyGroup = 'org.codehaus.groovy'
+				String groovyVersion = '3.0.8'
+				importBoms {
+					allIfAbsent = true
+					group groovyGroup module 'groovy-bom' version groovyVersion
+					group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
+				}
+				dependencyVersions {
+					group groovyGroup version groovyVersion modules 'groovy-all'
+					group 'com.athaydes' version '2.0.1-RC3' modules 'spock-reports'
+				}
+				// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
+				if (project.plugins.hasPlugin(CodeNarcPlugin) && groovyVersion.startsWith('3.')) {
+					groupVersions {
+						group groovyGroup version groovyVersion ifAbsent true
+					}
+				}
+				dependencies {
+					implementation ext.modules.unique().collect { "$groovyGroup:$it" } as String[]
+				}
+			}
+		}.curry(project.extensions.create('iHubGroovy', IHubGroovyExtension)))
 
 		project.pluginManager.apply IHubVerificationPlugin
 	}

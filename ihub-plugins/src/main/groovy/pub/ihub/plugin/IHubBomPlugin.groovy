@@ -17,10 +17,8 @@ package pub.ihub.plugin
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.quality.PmdPlugin
 
 /**
  * BOM（Bill of Materials）组件依赖管理
@@ -28,27 +26,18 @@ import org.gradle.api.plugins.quality.PmdPlugin
  */
 class IHubBomPlugin implements Plugin<Project> {
 
-	private static final String GROOVY_GROUP = 'org.codehaus.groovy'
-	private static final String GROOVY_VERSION = '3.0.8'
-
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubPluginsPlugin
-
 		project.pluginManager.apply 'io.spring.dependency-management'
 
 		project.afterEvaluate({ IHubBomExtension ext ->
 			if (findProperty(project, 'enabledBomDefaultConfig', ext.enabledDefaultConfig.toString()).toBoolean()) {
-				IHubGroovyExtension groovyExt = project.extensions.findByType IHubGroovyExtension
 				// 配置导入bom
 				ext.importBoms {
 					allIfAbsent = true
 					// TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
 //					group 'pub.ihub.lib' module 'ihub-libs' version '1.0.0-SNAPSHOT'
-					if (groovyExt) {
-						group GROOVY_GROUP module 'groovy-bom' version GROOVY_VERSION
-						group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
-					}
 					group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.4.5'
 					group 'org.springframework.cloud' module 'spring-cloud-dependencies' version '2020.0.2'
 					group 'com.alibaba.cloud' module 'spring-cloud-alibaba-dependencies' version '2021.1'
@@ -58,10 +47,6 @@ class IHubBomPlugin implements Plugin<Project> {
 				}
 				// 配置组件依赖版本
 				ext.dependencyVersions {
-					if (groovyExt) {
-						group GROOVY_GROUP version GROOVY_VERSION modules 'groovy-all'
-						group 'com.athaydes' version '2.0.1-RC3' modules 'spock-reports'
-					}
 					group 'com.alibaba' version '1.2.76' modules 'fastjson'
 					group 'com.alibaba' version '1.2.6' modules 'druid', 'druid-spring-boot-starter'
 					group 'com.alibaba.p3c' version '2.1.1' modules 'p3c-pmd'
@@ -71,10 +56,6 @@ class IHubBomPlugin implements Plugin<Project> {
 				}
 				// 配置组版本策略（建议尽量使用bom）
 				ext.groupVersions {
-					// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
-					if (groovyExt && GROOVY_VERSION.startsWith('3.')) {
-						group GROOVY_GROUP version GROOVY_VERSION ifAbsent true
-					}
 					group 'cn.hutool' version '5.6.4' ifAbsent true
 				}
 				// 配置默认排除项
@@ -95,28 +76,6 @@ class IHubBomPlugin implements Plugin<Project> {
 					runtimeOnly 'org.slf4j:jul-to-slf4j',
 //						'org.slf4j:jcl-over-slf4j', TODO 构建原生镜像有报错
 						'org.slf4j:log4j-over-slf4j'
-					if (groovyExt) {
-						implementation groovyExt.modules.unique().collect { "$GROOVY_GROUP:$it" } as String[]
-					}
-					// Java11添加jaxb运行时依赖
-					if (JavaVersion.current().java11) {
-						runtimeOnly 'javax.xml.bind:jaxb-api', 'com.sun.xml.bind:jaxb-core', 'com.sun.xml.bind:jaxb-impl'
-					}
-					// 添加lombok依赖
-					if (project.plugins.hasPlugin(IHubJavaPlugin)) {
-						String lombok = 'org.projectlombok:lombok'
-						compileOnly lombok
-						annotationProcessor lombok
-					}
-					// 添加pmd依赖
-					if (project.plugins.hasPlugin(PmdPlugin)) {
-						compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
-					}
-					// 添加配置元信息
-					if (project.plugins.hasPlugin(IHubPublishPlugin)) {
-						annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-						project.compileJava.inputs.files project.processResources
-					}
 				}
 			}
 

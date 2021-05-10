@@ -107,10 +107,13 @@ class IHubBomExtension {
 	}
 
 	void printConfigContent() {
+		// TODO 此处逻辑太过臃肿，目前可以排除一些子项目与主项目重复的配置，后续再做优化
 		if (printConfig) {
 			Set<BomVersionSpec> printBomVersions
 			List<ModulesVersionSpec> printDependencyVersions
 			Set<GroupVersionSpec> printGroupVersions
+			Map printExcludeModules
+			Map printDependencies
 			if (project.name == project.rootProject.name) {
 				List<IHubBomExtension> subprojectsExt = project.rootProject.subprojects.extensions*.findByType IHubBomExtension
 				printBomVersions = bomVersions.tap {
@@ -128,6 +131,13 @@ class IHubBomExtension {
 						l1.intersect(l2) { a, b -> a.compare(b) ? 0 : -1 }
 					}.findAll { !groupVersions.contains(it) }
 				}
+				printExcludeModules = excludeModules
+				printDependencies = dependencies.tap {
+					subprojectsExt*.dependencies*.keySet().inject { k1, k2 -> k1.intersect k2 }.each { k ->
+						compute(k, { key, values -> values = values ?: [] }).addAll subprojectsExt*.dependencies*.get(k)
+							.inject { v1, v2 -> v1.intersect v2 }
+					}
+				}
 			} else {
 				IHubBomExtension rootExt = project.rootProject.extensions.findByType IHubBomExtension
 				printBomVersions = bomVersions.findAll { s ->
@@ -139,6 +149,8 @@ class IHubBomExtension {
 				printGroupVersions = groupVersions.findAll { s ->
 					rootExt.groupVersions.every { r -> !s.compare(r) }
 				}
+				printExcludeModules = excludeModules.collectEntries { k, v -> [(k): v - rootExt.excludeModules[k]] }
+				printDependencies = dependencies.collectEntries { k, v -> [(k): v - rootExt.dependencies[k]] }
 			}
 			printConfigContent "${project.name.toUpperCase()} Group Maven Bom Version", printBomVersions.collect {
 				[it.group, it.module, it.version]
@@ -149,11 +161,10 @@ class IHubBomExtension {
 				}, groupTap(35), moduleTap(), versionTap(15)
 			printConfigContent "${project.name.toUpperCase()} Group Maven Default Version",
 				groupTap(), versionTap(), printGroupVersions.collectEntries { [(it.group): it.version] }
-			// TODO 减少重复日志，后续再做优化
 			printConfigContent "${project.name.toUpperCase()} Exclude Group Modules",
-				groupTap(40), moduleTap(), excludeModules
+				groupTap(40), moduleTap(), printExcludeModules
 			printConfigContent "${project.name.toUpperCase()} Config Default Dependencies",
-				dependencyTypeTap(), dependenciesTap(), dependencies
+				dependencyTypeTap(), dependenciesTap(), printDependencies
 		}
 	}
 

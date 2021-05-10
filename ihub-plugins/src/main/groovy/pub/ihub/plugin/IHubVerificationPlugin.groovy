@@ -15,10 +15,9 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.api.JavaVersion
-
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -127,6 +126,9 @@ ruleset {
 			consoleOutput = findProperty(project, 'pmdConsoleOutput', false.toString()).toBoolean()
 			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', false.toString()).toBoolean()
 			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
+		}
+		project.extensions.getByType(IHubBomExtension).dependencies {
+			compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
 		}
 	}
 
