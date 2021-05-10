@@ -59,7 +59,7 @@ jobs:
           config-file: ./.github/ihub/codeql-config.yml
 
       - name: Compile with Gradle
-        run: gradle --init-script .github/workflows/codeql-analysis.init.gradle -S testClasses
+        run: gradle --init-script .github/workflows/codeql-analysis.init.gradle -DcacheNode=us -S testClasses
 
       - name: Cleanup Gradle Daemons
         run: gradle --stop
