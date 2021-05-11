@@ -63,7 +63,13 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
 
 		// 扩展配置配置
-		settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
+		settings.extensions.create('iHubSettings', IHubSettingsExtension, settings).pluginVersions {
+			id 'com.palantir.git-version' version findProperty(settings, 'gitVersionVersion')
+			id 'io.spring.dependency-management' version findProperty(settings, 'springDependencyManagementVersion')
+			id 'org.springframework.boot' version findProperty(settings, 'springBootVersion')
+			id 'org.springframework.experimental.aot' version findProperty(settings, 'springAotVersion')
+			id 'com.gradle.plugin-publish' version findProperty(settings, 'pluginPublishVersion')
+		}
 	}
 
 }
