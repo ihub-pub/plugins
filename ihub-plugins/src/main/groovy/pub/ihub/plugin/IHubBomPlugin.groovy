@@ -32,6 +32,7 @@ class IHubBomPlugin implements Plugin<Project> {
 		project.pluginManager.apply 'io.spring.dependency-management'
 
 		project.afterEvaluate({ IHubBomExtension ext ->
+			// TODO 判断存在问题，可能会导致后续依赖没有版本号
 			if (findProperty(project, 'enabledBomDefaultConfig', ext.enabledDefaultConfig.toString()).toBoolean()) {
 				// 配置导入bom
 				ext.importBoms {
