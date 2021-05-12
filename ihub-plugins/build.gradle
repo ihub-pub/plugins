@@ -19,7 +19,7 @@ dependencies {
     implementation project(':ihub-aware')
     runtimeOnly "com.palantir.gradle.gitversion:gradle-git-version:$gitVersionVersion"
     runtimeOnly "io.spring.gradle:dependency-management-plugin:$springDependencyManagementVersion"
-    runtimeOnly "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     runtimeOnly "org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:$springAotVersion"
 }
 

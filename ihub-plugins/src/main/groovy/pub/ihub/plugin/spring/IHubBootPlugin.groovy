@@ -15,8 +15,13 @@
  */
 package pub.ihub.plugin.spring
 
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
+
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubExtension
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+import org.springframework.boot.gradle.tasks.run.BootRun
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.java.IHubJavaPlugin
 
@@ -24,12 +29,39 @@ import pub.ihub.plugin.java.IHubJavaPlugin
  * IHub Spring Boot Plugin
  * @author henry
  */
-class IHubBootPlugin implements IHubPluginAware<IHubExtension> {
+class IHubBootPlugin implements IHubPluginAware<IHubBootExtension> {
 
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubJavaPlugin
-		project.pluginManager.apply 'org.springframework.boot'
+		project.pluginManager.apply SpringBootPlugin
+
+		createExtension(project, 'iHubBoot', IHubBootExtension, AFTER) { ext ->
+			project.tasks.getByName('bootRun') { BootRun it ->
+				ext.bootRunIncludePropNames.each { propName ->
+					it.systemProperty propName, findProperty(propName, project)
+				}
+				if (ext.bootRunSkippedPropNames) {
+					System.properties.each { entry ->
+						if (!ext.bootRunSkippedPropNames.contains(entry.key)) {
+							it.systemProperty entry.key, entry.value
+						}
+					}
+				}
+				it.systemProperties ext.bootRunProperties
+				new File(project.rootProject.projectDir, ext.bootRunLocalPropertiesFile).with {
+					exists() ? withInputStream { is ->
+						new Properties().tap { load(is) }
+					} : null
+				}?.each { k, v ->
+					it.systemProperties.putIfAbsent k, v
+				}
+			}
+
+			project.tasks.getByName('bootJar') { BootJar it ->
+				it.requiresUnpack ext.bootJarRequiresUnpack
+			}
+		}
 
 		project.bootBuildImage {
 			builder = 'paketobuildpacks/builder:tiny'
