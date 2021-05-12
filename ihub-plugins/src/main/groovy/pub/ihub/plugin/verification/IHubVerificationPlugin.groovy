@@ -109,6 +109,7 @@ ruleset {
 	void apply(Project project) {
 		project.pluginManager.apply IHubPluginsPlugin
 		project.pluginManager.apply IHubBomPlugin
+		project.pluginManager.apply IHubTestPlugin
 		if (project.plugins.hasPlugin(JavaPlugin)) {
 			configPmd project
 		}

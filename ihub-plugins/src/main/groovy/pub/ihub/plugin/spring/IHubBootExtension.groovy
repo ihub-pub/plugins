@@ -39,13 +39,13 @@ class IHubBootExtension implements IHubExtension {
 	 */
 	String bootRunLocalPropertiesFile = '.spring-boot-local.properties'
 	/**
-	 * 包含属性名称
+	 * 包含属性名称（“,”分割）
 	 */
-	List<String> bootRunIncludePropNames = []
+	String bootRunIncludePropNames = ''
 	/**
-	 * 排除属性名称
+	 * 排除属性名称（“,”分割）
 	 */
-	List<String> bootRunSkippedPropNames = []
+	String bootRunSkippedPropNames = ''
 
 	//</editor-fold>
 
@@ -61,6 +61,14 @@ class IHubBootExtension implements IHubExtension {
 
 	String getBootRunLocalPropertiesFile() {
 		findProperty project, 'springbootLocalPropertiesFile', bootRunLocalPropertiesFile
+	}
+
+	String getBootRunIncludePropNames() {
+		findProperty project, 'springbootIncludePropNames', bootRunIncludePropNames
+	}
+
+	String getBootRunSkippedPropNames() {
+		findProperty project, 'springbootSkippedPropNames', bootRunSkippedPropNames
 	}
 
 	String getBootJarRequiresUnpack() {

@@ -1,9 +1,9 @@
 # IHub Plugins
 [![Gradle Build](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
 [![Gradle Publish](https://github.com/ihub-pub/plugins/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-publish.yml)
-[![GitHub](https://img.shields.io/badge/GitHub-ihub--pub-white.svg?style=flat&logo=GitHub&labelColor=181717)](https://github.com/ihub-pub "IHubPub")
-[![Gitee](https://img.shields.io/badge/Gitee-ihub--pub-white.svg?style=flat&logo=Gitee&labelColor=C71D23)](https://gitee.com/ihub-pub "IHubPub")
-[![Gitee](https://img.shields.io/badge/Gradle-henry--gradle-white.svg?style=flat&logo=Gradle&labelColor=02303A)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
+[![GitHub](https://img.shields.io/badge/IHubPub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
+[![Gitee](https://img.shields.io/badge/IHubPub-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
+[![Gitee](https://img.shields.io/badge/IHubGradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
 ![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
 ![Version](https://img.shields.io/badge/Gradle-7.0-brightgreen.svg?logo=Gradle)
@@ -23,6 +23,7 @@
 | pub.ihub.plugin.ihub-java | Java插件 | 配置一些默认依赖以及兼容性配置 |
 | pub.ihub.plugin.ihub-groovy | Groovy插件 | 配置Groovy组件依赖 |
 | pub.ihub.plugin.ihub-publish | 发布插件 | 配置组件发布仓库以及其他个性化组件配置 |
+| pub.ihub.plugin.ihub-test | 测试插件 | 测试相关插件 |
 | pub.ihub.plugin.ihub-verification | 验证插件 | 配置代码静态检查以及测试用例覆盖等 |
 | pub.ihub.plugin.ihub-boot | Boot插件 | 用于镜像个性化配置 |
 | pub.ihub.plugin.ihub-native | Native插件 | 用于原生镜像个性化配置 |
