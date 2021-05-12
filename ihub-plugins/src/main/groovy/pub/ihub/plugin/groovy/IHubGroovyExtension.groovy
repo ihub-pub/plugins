@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.groovy
 
-import static pub.ihub.plugin.IHubGroovyExtension.ModulesType.ALL
-import static pub.ihub.plugin.IHubGroovyExtension.ModulesType.BASE
-import static pub.ihub.plugin.IHubGroovyExtension.ModulesType.EXTENSION
+import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.ALL
+import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.BASE
+import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.EXTENSION
+
+import org.gradle.api.Project
+import pub.ihub.plugin.IHubExtension
 
 /**
  * Groovy插件扩展
  * @author liheng
  */
-class IHubGroovyExtension {
+class IHubGroovyExtension implements IHubExtension {
+
+	final Project project
 
 	static final List<String> BASE_MODULES = [
 		'groovy',
@@ -56,6 +61,10 @@ class IHubGroovyExtension {
 
 	ModulesType modulesType = BASE
 	List<String> modules = []
+
+	IHubGroovyExtension(Project project) {
+		this.project = project
+	}
 
 	List<String> getModules() {
 		switch (modulesType) {

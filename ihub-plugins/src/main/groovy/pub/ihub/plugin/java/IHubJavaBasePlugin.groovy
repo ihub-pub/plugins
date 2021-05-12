@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.java
 
 import org.gradle.api.JavaVersion
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaLibraryPlugin
@@ -26,12 +25,15 @@ import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubPluginsPlugin
 
 /**
  * Java基础插件
  * @author henry
  */
-class IHubJavaBasePlugin implements Plugin<Project> {
+class IHubJavaBasePlugin implements IHubPluginAware<IHubExtension> {
 
 	static TaskProvider registerSourcesJar(Project project) {
 		project.tasks.register('sourcesJar', org.gradle.jvm.tasks.Jar) {

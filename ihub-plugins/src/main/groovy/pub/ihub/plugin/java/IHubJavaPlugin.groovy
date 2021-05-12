@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.java
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.JavaVersion
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.compile.AbstractCompile
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.verification.IHubVerificationPlugin
+import pub.ihub.plugin.bom.IHubBomExtension
+import pub.ihub.plugin.bom.IHubBomPlugin
 
 /**
  * Java插件
  * @author henry
  */
-class IHubJavaPlugin implements Plugin<Project> {
+class IHubJavaPlugin implements IHubPluginAware<IHubExtension> {
 
 	@Override
 	void apply(Project project) {
@@ -43,7 +47,7 @@ class IHubJavaPlugin implements Plugin<Project> {
 			}
 		}
 
-		project.extensions.getByType(IHubBomExtension).dependencies {
+		getExtension(project, IHubBomExtension).dependencies {
 			// Java11添加jaxb运行时依赖
 			if (JavaVersion.current().java11) {
 				runtimeOnly 'javax.xml.bind:jaxb-api', 'com.sun.xml.bind:jaxb-core', 'com.sun.xml.bind:jaxb-impl'

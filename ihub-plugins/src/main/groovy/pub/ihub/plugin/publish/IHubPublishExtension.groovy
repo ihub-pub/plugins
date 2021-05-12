@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.publish
 
 import static java.time.Year.now
 
+import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
+import pub.ihub.plugin.IHubExtension
 
 /**
  * 组件发布属性扩展
  * @author henry
  */
-class IHubPublishExtension {
+class IHubPublishExtension implements IHubExtension {
+
+	final Project project
 
 	String pomName
 	String pomPackaging
@@ -53,7 +57,8 @@ class IHubPublishExtension {
 	String pomDeveloperRoles
 	String pomDeveloperTimezone
 
-	IHubPublishExtension() {
+	IHubPublishExtension(Project project) {
+		this.project = project
 	}
 
 	void configPom(MavenPublication publication, versionDetails) {

@@ -13,19 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
-
-import org.gradle.api.JavaVersion
+package pub.ihub.plugin.spring
 
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
+import org.gradle.api.JavaVersion
+import org.gradle.api.Project
+import pub.ihub.plugin.IHubExtension
 
 
 /**
  * 原生镜像插件扩展
  * @author henry
  */
-class IHubNativeExtension {
+class IHubNativeExtension implements IHubExtension {
+
+	final Project project
 
 	//<editor-fold desc="Build Configuration">
 
@@ -64,6 +67,10 @@ class IHubNativeExtension {
 	String javaToolOptions
 
 	//</editor-fold>
+
+	IHubNativeExtension(Project project) {
+		this.project = project
+	}
 
 	Map<String, String> getEnvironment() {
 		[

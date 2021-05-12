@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.spring
 
-import org.gradle.api.Plugin
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+
 import org.gradle.api.Project
+import pub.ihub.plugin.IHubPluginAware
 
 /**
- * IHub Spring Boot Plugin
+ * 原生镜像插件
  * @author henry
  */
-class IHubBootPlugin implements Plugin<Project> {
+class IHubNativePlugin implements IHubPluginAware<IHubNativeExtension> {
 
 	@Override
 	void apply(Project project) {
-		project.pluginManager.apply IHubJavaPlugin
-		project.pluginManager.apply 'org.springframework.boot'
+		project.pluginManager.apply IHubBootPlugin
+		project.pluginManager.apply 'org.springframework.experimental.aot'
 
-		project.bootBuildImage {
-			builder = 'paketobuildpacks/builder:tiny'
+		createExtension(project, 'iHubNative', IHubNativeExtension, AFTER) { ext ->
+			project.bootBuildImage {
+				builder = 'paketobuildpacks/builder:tiny'
+				environment = ext.environment
+			}
 		}
 	}
 

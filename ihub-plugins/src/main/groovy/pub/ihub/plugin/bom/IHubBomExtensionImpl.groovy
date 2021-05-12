@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.bom
 
 import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
 import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
@@ -25,13 +25,16 @@ import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
 import groovy.transform.EqualsAndHashCode
 import org.gradle.api.Action
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 
+import java.util.function.Function
+
 /**
- * BOM插件DSL扩展
+ * BOM插件DSL扩展实现
  * @author liheng
  */
-class IHubBomExtension {
+class IHubBomExtensionImpl implements IHubBomExtension {
 
 	boolean enabledDefaultConfig = true
 	boolean printConfig = true
@@ -42,68 +45,70 @@ class IHubBomExtension {
 	final Map<String, Set<String>> dependencies = [:]
 	final Project project
 
-	IHubBomExtension(Project project) {
+	IHubBomExtensionImpl(Project project) {
 		this.project = project
 	}
 
-	/**
-	 * 导入mavenBom
-	 * @param action 配置
-	 */
-	void importBoms(Action<VersionsSpec<BomVersionSpec>> action) {
-		List<BomVersionSpec> specs = new VersionsSpec<BomVersionSpec>({ String group ->
+	@Override
+	void importBoms(Action<GroupSpec<ModuleSpec>> action) {
+		bomVersions.addAll actionExecute(action) { String group ->
 			new BomVersionSpec(group)
-		}).tap { action.execute it }.specs
-		assert specs, 'import boms config not empty!'
-		specs*.addSet()
+		}
 	}
 
-	/**
-	 * 配置依赖默认版本
-	 * @param action 配置
-	 */
-	void dependencyVersions(Action<VersionsSpec<ModulesVersionSpec>> action) {
-		List<ModulesVersionSpec> specs = new VersionsSpec<ModulesVersionSpec>({ String group ->
+	@Override
+	void dependencyVersions(Action<GroupSpec<ModulesSpec>> action) {
+		actionExecute(action) { String group ->
 			new ModulesVersionSpec(group)
-		}).tap { action.execute it }.specs
-		assert specs, 'dependency versions config not empty!'
-		specs*.addSet dependencyVersions
+		}*.addSet dependencyVersions
 	}
 
-	/**
-	 * 配置组版本策略（建议尽量使用bom）
-	 * @param action 配置
-	 */
-	void groupVersions(Action<VersionsSpec<GroupVersionSpec>> action) {
-		List<GroupVersionSpec> groupVersions = new VersionsSpec<GroupVersionSpec>({ String group ->
+	@Override
+	void groupVersions(Action<GroupSpec<VersionSpec>> action) {
+		groupVersions.addAll actionExecute(action) { String group ->
 			new GroupVersionSpec(group)
-		}).tap { action.execute it }.specs
-		assert groupVersions, 'group versions config not empty!'
-		groupVersions*.addSet()
+		}
 	}
 
-	/**
-	 * 排除组件依赖
-	 * @param action
-	 */
-	void excludeModules(Action<ExcludeGroupSpec> action) {
-		List<ExcludeModulesSpec> groups = new ExcludeGroupSpec().tap { action.execute it }.groups
-		assert groups, 'excludeModules config not empty!'
-		groups.each {
+	@Override
+	void excludeModules(Action<GroupSpec<ModulesSpec>> action) {
+		actionExecute(action) { String group ->
+			new ExcludeModulesSpec(group)
+		}.each {
 			excludeModules.compute(it.group, { key, modules -> modules = modules ?: [] }).addAll it.modules
 		}
 	}
 
-	/**
-	 * 配置组件依赖
-	 * @param action 配置
-	 */
+	@Override
 	void dependencies(Action<DependenciesSpec> action) {
+		if (!getEnabledDefaultConfig()) {
+			return
+		}
 		Map<String, Set<String>> dependencies = new DependenciesSpec().tap { action.execute it }.dependencies
 		assert dependencies, 'dependencies config not empty!'
 		dependencies.each { type, dependenciesSet ->
 			this.dependencies.compute(type, { key, set -> set = set ?: [] }).addAll dependenciesSet
 		}
+	}
+
+	@Override
+	void enabledDefaultConfig(boolean enabledDefaultConfig) {
+		this.enabledDefaultConfig = enabledDefaultConfig
+	}
+
+	private boolean getEnabledDefaultConfig() {
+		findProperty(project, 'enabledBomDefaultConfig', enabledDefaultConfig.toString()).toBoolean()
+	}
+
+	private <T> List<T> actionExecute(Action<GroupSpec<T>> action, Function<String, T> instanceSpec) {
+		if (!getEnabledDefaultConfig()) {
+			return []
+		}
+		GroupSpecImpl<T> groupSpec = new GroupSpecImpl<>(instanceSpec)
+		action.execute groupSpec
+		List<T> specs = groupSpec.specs
+		assert specs, 'config not empty!'
+		specs
 	}
 
 	void printConfigContent() {
@@ -121,7 +126,7 @@ class IHubBomExtension {
 				printExcludeModules = excludeModules
 				printDependencies = dependencies
 			} else if (project.name == project.rootProject.name) {
-				List<IHubBomExtension> subprojectsExt = project.rootProject.subprojects.extensions*.findByType IHubBomExtension
+				List<IHubBomExtensionImpl> subprojectsExt = project.rootProject.subprojects.extensions*.findByType IHubBomExtensionImpl
 				printBomVersions = bomVersions.tap {
 					addAll subprojectsExt*.bomVersions.inject { l1, l2 ->
 						l1.intersect(l2) { a, b -> a.compare(b) ? 0 : -1 }
@@ -145,7 +150,7 @@ class IHubBomExtension {
 					}
 				}
 			} else {
-				IHubBomExtension rootExt = project.rootProject.extensions.findByType IHubBomExtension
+				IHubBomExtensionImpl rootExt = project.rootProject.extensions.findByType IHubBomExtensionImpl
 				printBomVersions = bomVersions.findAll { s ->
 					rootExt.bomVersions.every { r -> !s.compare(r) }
 				}
@@ -176,25 +181,18 @@ class IHubBomExtension {
 
 	//<editor-fold desc="DSL扩展相关实体">
 
-	private interface InstanceSpec<T extends GroupVersionSpec> {
+	private class GroupSpecImpl<T> implements GroupSpec<T> {
 
-		T instance(String group)
+		private Function<String, T> instanceSpec
+		final List<T> specs = []
 
-	}
-
-	private class VersionsSpec<T extends GroupVersionSpec> {
-
-		private final InstanceSpec<T> instanceSpec
-		private final List<T> specs = []
-		boolean allIfAbsent = false
-
-		VersionsSpec(InstanceSpec<T> instanceSpec) {
+		GroupSpecImpl(Function<String, T> instanceSpec) {
 			this.instanceSpec = instanceSpec
 		}
 
+		@Override
 		T group(String group) {
-			instanceSpec.instance(group).tap {
-				ifAbsent allIfAbsent ?: ifAbsent
+			instanceSpec.apply(group).tap {
 				specs << it
 			}
 		}
@@ -202,30 +200,19 @@ class IHubBomExtension {
 	}
 
 	@EqualsAndHashCode(includes = 'group')
-	private class GroupVersionSpec {
+	private class GroupVersionSpec implements VersionSpec {
 
 		final String group
 		String version
-		/**
-		 * 是否判断版本缺失（如果为true时，不覆盖原有版本）
-		 */
-		boolean ifAbsent = false
 
 		GroupVersionSpec(String group) {
 			this.group = group
 		}
 
+		@Override
 		GroupVersionSpec version(String version) {
 			this.version = findProperty project, group + '.version', version
 			this
-		}
-
-		void ifAbsent(boolean ifAbsent) {
-			this.ifAbsent = ifAbsent
-		}
-
-		private void addSet() {
-			groupVersions << (!ifAbsent ? this : (groupVersions.find { group == it.group } ?: this))
 		}
 
 		boolean compare(GroupVersionSpec o) {
@@ -235,7 +222,7 @@ class IHubBomExtension {
 	}
 
 	@EqualsAndHashCode(callSuper = true, includes = 'module')
-	private class BomVersionSpec extends GroupVersionSpec {
+	private class BomVersionSpec extends GroupVersionSpec implements ModuleSpec {
 
 		String module
 
@@ -243,13 +230,10 @@ class IHubBomExtension {
 			super(group)
 		}
 
+		@Override
 		BomVersionSpec module(String module) {
 			this.module = module
 			this
-		}
-
-		private void addSet() {
-			bomVersions << (!ifAbsent ? this : (bomVersions.find { group == it.group && module == it.module } ?: this))
 		}
 
 		boolean compare(BomVersionSpec o) {
@@ -259,7 +243,7 @@ class IHubBomExtension {
 	}
 
 	@EqualsAndHashCode(callSuper = true, includes = 'modules')
-	private class ModulesVersionSpec extends GroupVersionSpec {
+	private class ModulesVersionSpec extends GroupVersionSpec implements ModulesSpec {
 
 		Set<String> modules
 
@@ -267,6 +251,7 @@ class IHubBomExtension {
 			super(group)
 		}
 
+		@Override
 		ModulesVersionSpec modules(String... modules) {
 			this.modules = modules
 			this
@@ -275,10 +260,6 @@ class IHubBomExtension {
 		@Override
 		ModulesVersionSpec version(String version) {
 			super.version(version) as ModulesVersionSpec
-		}
-
-		@Override
-		void ifAbsent(boolean ifAbsent) {
 		}
 
 		private void addSet(List<ModulesVersionSpec> dependencyVersions) {
@@ -296,78 +277,24 @@ class IHubBomExtension {
 
 	}
 
-	private class ExcludeGroupSpec {
+	private class ExcludeModulesSpec implements ModulesSpec {
 
-		private final List<ExcludeModulesSpec> groups = []
-
-		ExcludeModulesSpec group(String group) {
-			assert group, 'exclude group not null!'
-			new ExcludeModulesSpec(group).tap {
-				groups << it
-			}
-		}
-
-	}
-
-	private class ExcludeModulesSpec {
-
-		private final String group
-		private List<String> modules
+		final String group
+		List<String> modules
 
 		ExcludeModulesSpec(String group) {
 			this.group = group
 		}
 
-		void modules(String... modules) {
+		@Override
+		ModulesSpec version(String version) {
+			throw new GradleException('Does not support \'version\' method!')
+		}
+
+		@Override
+		ExcludeModulesSpec modules(String... modules) {
 			this.modules = modules
-		}
-
-	}
-
-	private final class DependenciesSpec {
-
-		private final Map<String, Set<String>> dependencies = [:]
-
-		void compile(String type, String... dependencies) {
-			assert type, 'dependencies type not null!'
-			assert dependencies, type + ' dependencies not empty!'
-			this.dependencies.compute(type, { key, set -> set = set ?: [] }).addAll dependencies
-		}
-
-		void api(String... dependencies) {
-			compile 'api', dependencies
-		}
-
-		void implementation(String... dependencies) {
-			compile 'implementation', dependencies
-		}
-
-		void compileOnly(String... dependencies) {
-			compile 'compileOnly', dependencies
-		}
-
-		void compileOnlyApi(String... dependencies) {
-			compile 'compileOnlyApi', dependencies
-		}
-
-		void runtimeOnly(String... dependencies) {
-			compile 'runtimeOnly', dependencies
-		}
-
-		void testImplementation(String... dependencies) {
-			compile 'testImplementation', dependencies
-		}
-
-		void testCompileOnly(String... dependencies) {
-			compile 'testCompileOnly', dependencies
-		}
-
-		void testRuntimeOnly(String... dependencies) {
-			compile 'testRuntimeOnly', dependencies
-		}
-
-		void annotationProcessor(String... dependencies) {
-			compile 'annotationProcessor', dependencies
+			this
 		}
 
 	}

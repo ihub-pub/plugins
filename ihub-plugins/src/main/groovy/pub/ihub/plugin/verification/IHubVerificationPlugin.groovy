@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.verification
 
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.JavaVersion
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
@@ -30,12 +30,17 @@ import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.api.tasks.testing.Test
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubPluginsPlugin
+import pub.ihub.plugin.bom.IHubBomExtension
+import pub.ihub.plugin.bom.IHubBomPlugin
 
 /**
  * 代码检查插件
  * @author liheng
  */
-class IHubVerificationPlugin implements Plugin<Project> {
+class IHubVerificationPlugin implements IHubPluginAware<IHubExtension> {
 
 	//<editor-fold desc="默认检查规则">
 
@@ -114,9 +119,9 @@ ruleset {
 		configJacoco project
 	}
 
-	private static void configPmd(Project project) {
+	private void configPmd(Project project) {
 		project.pluginManager.apply PmdPlugin
-		project.extensions.getByType(PmdExtension).identity {
+		getExtension(project, PmdExtension).identity {
 			String ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
 			if (project.file(ruleset).exists()) {
 				ruleSetFiles = project.files ruleset
@@ -127,14 +132,16 @@ ruleset {
 			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', false.toString()).toBoolean()
 			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
 		}
-		project.extensions.getByType(IHubBomExtension).dependencies {
-			compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
+		getExtension(project, IHubBomExtension, BEFORE) {
+			it.dependencies {
+				compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
+			}
 		}
 	}
 
-	private static void configCodenarc(Project project) {
+	private void configCodenarc(Project project) {
 		project.pluginManager.apply CodeNarcPlugin
-		project.extensions.getByType(CodeNarcExtension).identity {
+		getExtension(project, CodeNarcExtension).identity {
 			configFile = project.rootProject.with {
 				file("$projectDir/conf/codenarc/codenarc.groovy").with {
 					String tmpPath = "$projectDir/build/tmp"
@@ -150,9 +157,9 @@ ruleset {
 		}
 	}
 
-	private static void configJacoco(Project project) {
+	private void configJacoco(Project project) {
 		project.pluginManager.apply JacocoPlugin
-		project.extensions.getByType(JacocoPluginExtension).identity {
+		getExtension(project, JacocoPluginExtension).identity {
 			toolVersion = findProperty project, 'jacoco.version', '0.8.6'
 		}
 

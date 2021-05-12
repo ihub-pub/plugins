@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.publish
 
-import static pub.ihub.plugin.IHubGroovyPlugin.registerGroovydocJar
-import static pub.ihub.plugin.IHubJavaBasePlugin.registerJavadocsJar
-import static pub.ihub.plugin.IHubJavaBasePlugin.registerSourcesJar
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
+import static pub.ihub.plugin.groovy.IHubGroovyPlugin.registerGroovydocJar
+import static pub.ihub.plugin.java.IHubJavaBasePlugin.registerJavadocsJar
+import static pub.ihub.plugin.java.IHubJavaBasePlugin.registerSourcesJar
 
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.publish.PublishingExtension
@@ -30,12 +31,15 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
+import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.bom.IHubBomExtension
+import pub.ihub.plugin.java.IHubJavaBasePlugin
 
 /**
  * 组件发布插件
  * @author liheng
  */
-class IHubPublishPlugin implements Plugin<Project> {
+class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
 	@Override
 	void apply(Project project) {
@@ -44,7 +48,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 		boolean isRelease = project.version ==~ /(\d+\.)+\d+/
 
 		project.pluginManager.apply MavenPublishPlugin
-		project.extensions.getByType(PublishingExtension).identity {
+		getExtension(project, PublishingExtension).identity {
 			publications {
 				create('mavenJava', MavenPublication) {
 					from project.components.getByName('java')
@@ -67,10 +71,10 @@ class IHubPublishPlugin implements Plugin<Project> {
 
 					it.groupId = project.group
 					it.version = project.version
-					project.afterEvaluate({ IHubPublishExtension ext ->
+					createExtension(project, 'iHubPublish', IHubPublishExtension, EvaluateStage.AFTER) { ext ->
 						artifactId = project.jar.archiveBaseName.get()
 						ext.configPom it, project.versionDetails()
-					}.curry(project.extensions.create('iHubPublish', IHubPublishExtension)))
+					}
 				}
 			}
 			repositories {
@@ -85,7 +89,7 @@ class IHubPublishPlugin implements Plugin<Project> {
 		}
 
 		project.plugins.apply SigningPlugin
-		project.extensions.getByType(SigningExtension).identity {
+		getExtension(project, SigningExtension).identity {
 			required = isRelease && findProperty('publishNeedSign', project, false.toString()).toBoolean()
 			// TODO 签名待调试
 			if (OperatingSystem.current().windows) {
@@ -94,16 +98,18 @@ class IHubPublishPlugin implements Plugin<Project> {
 				useInMemoryPgpKeys findProperty('signingKeyId', project),
 					findProperty('signingSecretKey', project), findProperty('signingPassword', project)
 			}
-			project.afterEvaluate {
+			getExtension(project, PublishingExtension, AFTER) {
 				if (required) {
-					sign project.extensions.getByType(PublishingExtension).publications.mavenJava
+					sign it.publications.mavenJava
 				}
 			}
 		}
 
 		// 添加配置元信息
-		project.extensions.getByType(IHubBomExtension).dependencies {
-			annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+		getExtension(project, IHubBomExtension, BEFORE) {
+			it.dependencies {
+				annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+			}
 		}
 		project.compileJava.inputs.files project.processResources
 	}

@@ -13,21 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.groovy
+
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 
 import org.gradle.api.JavaVersion
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
+import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.bom.IHubBomExtension
+import pub.ihub.plugin.bom.IHubBomPlugin
+import pub.ihub.plugin.java.IHubJavaPlugin
+import pub.ihub.plugin.verification.IHubVerificationPlugin
 
 /**
  * Groovy插件
  * @author liheng
  */
-class IHubGroovyPlugin implements Plugin<Project> {
+class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
 
 	static TaskProvider registerGroovydocJar(Project project) {
 		project.tasks.register('groovydocJar', Jar) {
@@ -49,7 +55,7 @@ class IHubGroovyPlugin implements Plugin<Project> {
 		project.pluginManager.apply IHubJavaPlugin
 		project.pluginManager.apply GroovyPlugin
 
-		project.extensions.getByType(IHubBomExtension).tap {
+		getExtension(project, IHubBomExtension).tap {
 			String groovyGroup = 'org.codehaus.groovy'
 			String groovyVersion = '3.0.8'
 			importBoms {
@@ -66,11 +72,11 @@ class IHubGroovyPlugin implements Plugin<Project> {
 					group groovyGroup version groovyVersion
 				}
 			}
-			project.beforeEvaluate({ IHubGroovyExtension ext ->
+			createExtension(project, 'iHubGroovy', IHubGroovyExtension, BEFORE) { ext ->
 				dependencies {
 					implementation ext.modules.unique().collect { "$groovyGroup:$it" } as String[]
 				}
-			}.curry(project.extensions.create('iHubGroovy', IHubGroovyExtension)))
+			}
 		}
 
 		project.pluginManager.apply IHubVerificationPlugin

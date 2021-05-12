@@ -18,15 +18,15 @@ package pub.ihub.plugin
 import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
-import org.gradle.api.Plugin
 import org.gradle.api.Project
+import pub.ihub.plugin.bom.IHubBomPlugin
 
 /**
  * Gradle基础插件
  * 配置项目组件仓库
  * @author liheng
  */
-class IHubPluginsPlugin implements Plugin<Project> {
+class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
 
 	@Override
 	void apply(Project project) {
