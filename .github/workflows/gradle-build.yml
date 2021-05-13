@@ -25,3 +25,9 @@ jobs:
 
       - name: Build with Gradle
         run: gradle build
+
+      - name: Cleanup Gradle Cache
+        # Cleans up the Gradle caches before being cached
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
