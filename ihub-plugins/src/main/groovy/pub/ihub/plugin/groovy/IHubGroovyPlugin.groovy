@@ -60,11 +60,9 @@ class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
 			String groovyVersion = '3.0.8'
 			importBoms {
 				group groovyGroup module 'groovy-bom' version groovyVersion
-				group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
 			}
 			dependencyVersions {
 				group groovyGroup version groovyVersion modules 'groovy-all'
-				group 'com.athaydes' version '2.0.1-RC3' modules 'spock-reports'
 			}
 			// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本 TODO 判断不太准确
 			if (groovyVersion.startsWith('3.')) {

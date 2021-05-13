@@ -14,50 +14,20 @@
  * limitations under the License.
  */
 plugins {
-    id 'com.gradle.plugin-publish'  version "$pluginPublishVersion" apply false
-    id 'com.palantir.git-version'   version "$gitVersionVersion"
+    id 'pub.ihub.plugin'
+    id 'com.gradle.plugin-publish' apply false
 }
 
 subprojects {
-    version 'unspecified' == version ? versionDetails().lastTag : version
-
     apply {
         plugin 'groovy'
-        plugin 'maven-publish'
+        plugin 'pub.ihub.plugin.ihub-publish'
         plugin 'java-gradle-plugin'
         plugin 'com.gradle.plugin-publish'
     }
 
-    repositories {
-        maven { url 'https://maven.aliyun.com/repository/public' }
-        maven { url 'https://repo.spring.io/release' }
-        mavenCentral()
-    }
-
     dependencies {
         implementation gradleApi()
-    }
-
-    jar {
-        manifest {
-            attributes(
-                'Implementation-Title'      : project.name,
-                'Automatic-Module-Name'     : project.name.replaceAll('-', '.'),
-                'Implementation-Version'    : project.version,
-                'Implementation-Vendor'     : 'IHub',
-                'Created-By'                : 'Java ' + JavaVersion.current().majorVersion
-            )
-        }
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                groupId project.group
-                artifactId project.name
-                from components.java
-            }
-        }
     }
 
     pluginBundle {

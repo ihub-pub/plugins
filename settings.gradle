@@ -13,15 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    repositories {
-        mavenLocal()
-        gradlePluginPortal()
-    }
-}
-
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.0.4'
+    id 'pub.ihub.plugin.ihub-settings' version '1.0.5'
 }
 
 iHubSettings {

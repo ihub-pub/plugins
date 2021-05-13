@@ -32,6 +32,12 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
 	@Override
 	void apply(Project project) {
 		getExtension(project, IHubBomExtension, BEFORE) {
+			it.importBoms {
+				group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
+			}
+			it.dependencyVersions {
+				group 'com.athaydes' version '2.0.1-RC3' modules 'spock-reports'
+			}
 			it.dependencies {
 				testImplementation 'org.spockframework:spock-spring'
 				testRuntimeOnly 'com.athaydes:spock-reports'
