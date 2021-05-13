@@ -57,6 +57,11 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
 					it.logger.lifecycle event.message
 				}
 			}
+
+			project.tasks.withType(Test) {
+				// 这是为了解决在项目根目录上执行test时Jacoco找不到依赖的类的问题
+				systemProperties.'user.dir' = workingDir
+			}
 		}
 	}
 

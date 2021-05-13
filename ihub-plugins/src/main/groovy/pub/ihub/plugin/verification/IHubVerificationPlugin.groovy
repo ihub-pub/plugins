@@ -26,7 +26,6 @@ import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdExtension
 import org.gradle.api.plugins.quality.PmdPlugin
-import org.gradle.api.tasks.testing.Test
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import pub.ihub.plugin.IHubExtension
@@ -210,10 +209,6 @@ ruleset {
 		// 一些任务依赖和属性设置
 		project.check.dependsOn jacocoTestCoverageVerification
 		project.test.finalizedBy jacocoTestReport, jacocoTestCoverageVerification
-		project.tasks.withType(Test) {
-			// 这是为了解决在项目根目录上执行test时Jacoco找不到依赖的类的问题
-			systemProperties.'user.dir' = workingDir
-		}
 	}
 
 }

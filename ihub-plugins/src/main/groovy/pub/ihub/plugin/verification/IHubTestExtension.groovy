@@ -46,15 +46,15 @@ class IHubTestExtension implements IHubExtension {
 	}
 
 	String getTestClasses() {
-		findProperty project, 'testClasses', testClasses
+		findProperty project, 'test.classes', testClasses
 	}
 
 	int getTestForkEvery() {
-		findProperty(project, 'testForkEvery', testForkEvery.toString()).toInteger()
+		findProperty(project, 'test.forkEvery', testForkEvery.toString()).toInteger()
 	}
 
 	int getTestMaxParallelForks() {
-		findProperty(project, 'testMaxParallelForks', testMaxParallelForks.toString()).toInteger()
+		findProperty(project, 'test.maxParallelForks', testMaxParallelForks.toString()).toInteger()
 	}
 
 }
