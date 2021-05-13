@@ -4,12 +4,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Cache Gradle packages
+      - name: Cache Gradle Modules
         uses: actions/cache@v2
         with:
           path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
+            ~/.gradle/caches/modules-2/
+            ~/.gradle/caches/build-cache-1/
+            ~/.gradle/caches/signatures/
+            ~/.gradle/caches/keyrings/
+          key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - uses: actions/checkout@v2
       - name: Set up JDK 11
