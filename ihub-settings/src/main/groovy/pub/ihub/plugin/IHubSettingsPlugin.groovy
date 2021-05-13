@@ -64,11 +64,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
 		// 扩展配置配置
 		settings.extensions.create('iHubSettings', IHubSettingsExtension, settings).pluginVersions {
-			id 'com.palantir.git-version' version '0.12.3'
-			id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-			id 'org.springframework.boot' version '2.4.5'
-			id 'org.springframework.experimental.aot' version '0.9.2'
-			id 'com.gradle.plugin-publish' version '0.14.0'
+			id 'com.github.ben-manes.versions' version '0.38.0'
 		}
 	}
 

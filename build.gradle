@@ -15,7 +15,7 @@
  */
 plugins {
     id 'pub.ihub.plugin'
-    id 'com.gradle.plugin-publish' apply false
+    id 'com.gradle.plugin-publish' version "$pluginPublishVersion" apply false
 }
 
 subprojects {
