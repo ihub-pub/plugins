@@ -15,8 +15,6 @@
  */
 package pub.ihub.plugin.verification
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubExtension
 
@@ -25,8 +23,6 @@ import pub.ihub.plugin.IHubExtension
  * @author henry
  */
 class IHubTestExtension implements IHubExtension {
-
-	final Project project
 
 	/**
 	 * 包含属性名称（“,”分割）
@@ -42,19 +38,19 @@ class IHubTestExtension implements IHubExtension {
 	int testMaxParallelForks = Runtime.runtime.availableProcessors() + 2
 
 	IHubTestExtension(Project project) {
-		this.project = project
+		pub_ihub_plugin_IHubExtension__project = project
 	}
 
 	String getTestClasses() {
-		findProperty project, 'test.classes', testClasses
+		findEnvProperty 'test.classes', testClasses
 	}
 
 	int getTestForkEvery() {
-		findProperty(project, 'test.forkEvery', testForkEvery.toString()).toInteger()
+		findEnvProperty('test.forkEvery', testForkEvery.toString()).toInteger()
 	}
 
 	int getTestMaxParallelForks() {
-		findProperty(project, 'test.maxParallelForks', testMaxParallelForks.toString()).toInteger()
+		findEnvProperty('test.maxParallelForks', testMaxParallelForks.toString()).toInteger()
 	}
 
 }

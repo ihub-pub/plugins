@@ -17,7 +17,6 @@ package pub.ihub.plugin.bom
 
 import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
 import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.groupTap
 import static pub.ihub.plugin.IHubPluginMethods.moduleTap
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
@@ -43,10 +42,9 @@ class IHubBomExtensionImpl implements IHubBomExtension {
 	final Set<GroupVersionSpec> groupVersions = []
 	final Map<String, Set<String>> excludeModules = [:]
 	final Map<String, Set<String>> dependencies = [:]
-	final Project project
 
 	IHubBomExtensionImpl(Project project) {
-		this.project = project
+		pub_ihub_plugin_IHubExtension__project = project
 	}
 
 	@Override
@@ -97,7 +95,7 @@ class IHubBomExtensionImpl implements IHubBomExtension {
 	}
 
 	private boolean getEnabledDefaultConfig() {
-		findProperty(project, 'enabledBomDefaultConfig', enabledDefaultConfig.toString()).toBoolean()
+		findProperty('enabledBomDefaultConfig', enabledDefaultConfig.toString()).toBoolean()
 	}
 
 	private <T> List<T> actionExecute(Action<GroupSpec<T>> action, Function<String, T> instanceSpec) {
@@ -211,7 +209,7 @@ class IHubBomExtensionImpl implements IHubBomExtension {
 
 		@Override
 		GroupVersionSpec version(String version) {
-			this.version = findProperty project, group + '.version', version
+			this.version = findProperty group + '.version', version
 			this
 		}
 

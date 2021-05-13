@@ -15,20 +15,15 @@
  */
 package pub.ihub.plugin.spring
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubExtension
-
 
 /**
  * 原生镜像插件扩展
  * @author henry
  */
 class IHubNativeExtension implements IHubExtension {
-
-	final Project project
 
 	//<editor-fold desc="Build Configuration">
 
@@ -69,7 +64,7 @@ class IHubNativeExtension implements IHubExtension {
 	//</editor-fold>
 
 	IHubNativeExtension(Project project) {
-		this.project = project
+		pub_ihub_plugin_IHubExtension__project = project
 	}
 
 	Map<String, String> getEnvironment() {
@@ -80,7 +75,7 @@ class IHubNativeExtension implements IHubExtension {
 			BPL_JVM_HEAD_ROOM              : bplJvmHeadRoom,
 			BPL_JVM_LOADED_CLASS_COUNT     : bplJvmLoadedClassCount,
 			BPL_JVM_THREAD_COUNT           : bplJvmThreadCount,
-			JAVA_TOOL_OPTIONS              : javaToolOptions ?: findProperty('JAVA_TOOL_OPTIONS'),
+			JAVA_TOOL_OPTIONS              : findEnvProperty('JAVA_TOOL_OPTIONS', javaToolOptions),
 		].findAll { it.value }
 	}
 

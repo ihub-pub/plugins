@@ -24,6 +24,7 @@ import org.gradle.api.Project
 
 /**
  * IHub插件特征
+ * TODO 整合Project以及属性方法
  * @author liheng
  */
 trait IHubPluginAware<T extends IHubExtension> implements Plugin<Project> {

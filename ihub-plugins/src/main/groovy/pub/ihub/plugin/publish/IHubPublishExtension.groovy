@@ -27,8 +27,6 @@ import pub.ihub.plugin.IHubExtension
  */
 class IHubPublishExtension implements IHubExtension {
 
-	final Project project
-
 	String pomName
 	String pomPackaging
 	String pomDescription
@@ -58,7 +56,7 @@ class IHubPublishExtension implements IHubExtension {
 	String pomDeveloperTimezone
 
 	IHubPublishExtension(Project project) {
-		this.project = project
+		pub_ihub_plugin_IHubExtension__project = project
 	}
 
 	void configPom(MavenPublication publication, versionDetails) {

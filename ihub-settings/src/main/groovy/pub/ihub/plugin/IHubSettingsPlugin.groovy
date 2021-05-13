@@ -62,10 +62,8 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 		// 配置主项目名称
 		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
 
-		// 扩展配置配置
-		settings.extensions.create('iHubSettings', IHubSettingsExtension, settings).pluginVersions {
-			id 'com.github.ben-manes.versions' version '0.38.0'
-		}
+		// 扩展配置
+		settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
 	}
 
 }

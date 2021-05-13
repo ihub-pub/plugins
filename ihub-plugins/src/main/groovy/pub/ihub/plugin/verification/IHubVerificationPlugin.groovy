@@ -15,8 +15,10 @@
  */
 package pub.ihub.plugin.verification
 
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
+import static pub.ihub.plugin.verification.IHubVerificationExtension.CODENARC_DEFAULT_RULESET
+import static pub.ihub.plugin.verification.IHubVerificationExtension.PMD_DEFAULT_RULESET
 
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -28,7 +30,6 @@ import org.gradle.api.plugins.quality.PmdExtension
 import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
-import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
@@ -38,77 +39,15 @@ import pub.ihub.plugin.bom.IHubBomPlugin
  * 代码检查插件
  * @author liheng
  */
-class IHubVerificationPlugin implements IHubPluginAware<IHubExtension> {
-
-	//<editor-fold desc="默认检查规则">
-
-	static final List<String> PMD_DEFAULT_RULESET = [
-		'rulesets/java/ali-comment.xml',
-		'rulesets/java/ali-concurrent.xml',
-		'rulesets/java/ali-constant.xml',
-		'rulesets/java/ali-exception.xml',
-		'rulesets/java/ali-flowcontrol.xml',
-		'rulesets/java/ali-naming.xml',
-		'rulesets/java/ali-oop.xml',
-		'rulesets/java/ali-orm.xml',
-		'rulesets/java/ali-other.xml',
-		'rulesets/java/ali-set.xml',
-		'rulesets/vm/ali-other.xml',
-	]
-
-	static final String CODENARC_DEFAULT_RULESET = '''// 全局默认CodeNarc规则集
-ruleset {
-	description '全局默认CodeNarc规则集'
-
-	ruleset('rulesets/basic.xml')
-	ruleset('rulesets/braces.xml')
-	ruleset('rulesets/comments.xml')
-	ruleset('rulesets/concurrency.xml')
-	ruleset('rulesets/convention.xml')
-	ruleset('rulesets/design.xml') {
-		'Instanceof' priority: 4
-	}
-	ruleset('rulesets/dry.xml') {
-		'DuplicateMapLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-		'DuplicateNumberLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-		'DuplicateStringLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-	}
-	ruleset('rulesets/enhanced.xml')
-	ruleset('rulesets/exceptions.xml')
-	ruleset('rulesets/formatting.xml') {
-		'LineLength' ignoreLineRegex: /.*'.*'.*|.*".*".*|.*测试.*|class .*/
-		'ConsecutiveBlankLines' enabled: false
-		'SpaceAroundMapEntryColon' characterBeforeColonRegex: /\\s|\\w|\\)|'|"|[\\u4e00-\\u9fa5]/, characterAfterColonRegex: /\\s/
-	}
-	ruleset('rulesets/generic.xml')
-	ruleset('rulesets/grails.xml')
-	ruleset('rulesets/groovyism.xml')
-	ruleset('rulesets/imports.xml') {
-		'MisorderedStaticImports' comesBefore: false
-	}
-	ruleset('rulesets/jdbc.xml')
-	ruleset('rulesets/junit.xml')
-	ruleset('rulesets/logging.xml')
-	ruleset('rulesets/naming.xml') {
-		'FieldName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*', ignoreFieldNames: 'serialVersionUID'
-		'MethodName' ignoreMethodNames: '*测试*,*test*'
-		'PropertyName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*'
-	}
-	ruleset('rulesets/security.xml')
-	ruleset('rulesets/serialization.xml')
-	ruleset('rulesets/size.xml')
-	ruleset('rulesets/unnecessary.xml')
-	ruleset('rulesets/unused.xml')
-}
-'''
-
-	//</editor-fold>
+class IHubVerificationPlugin implements IHubPluginAware<IHubVerificationExtension> {
 
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubPluginsPlugin
 		project.pluginManager.apply IHubBomPlugin
 		project.pluginManager.apply IHubTestPlugin
+
+		createExtension project, 'iHubVerification', IHubVerificationExtension
 		if (project.plugins.hasPlugin(JavaPlugin)) {
 			configPmd project
 		}
@@ -120,95 +59,101 @@ ruleset {
 
 	private void configPmd(Project project) {
 		project.pluginManager.apply PmdPlugin
-		getExtension(project, PmdExtension).identity {
-			String ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
-			if (project.file(ruleset).exists()) {
-				ruleSetFiles = project.files ruleset
-			} else {
-				ruleSets = PMD_DEFAULT_RULESET
-			}
-			consoleOutput = findProperty(project, 'pmdConsoleOutput', false.toString()).toBoolean()
-			ignoreFailures = findProperty(project, 'pmdIgnoreFailures', false.toString()).toBoolean()
-			toolVersion = findProperty project, 'pmdVersion', '6.31.0'
-		}
 		getExtension(project, IHubBomExtension, BEFORE) {
 			it.dependencies {
 				compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
+			}
+		}
+		getExtension(project, IHubVerificationExtension, AFTER) { ext ->
+			getExtension(project, PmdExtension).identity {
+				String ruleset = ext.pmdRulesetFile
+				if (project.file(ruleset).exists()) {
+					ruleSetFiles = project.files ruleset
+				} else {
+					ruleSets = PMD_DEFAULT_RULESET
+				}
+				consoleOutput = ext.pmdConsoleOutput
+				ignoreFailures = ext.pmdIgnoreFailures
+				toolVersion = ext.pmdVersion
 			}
 		}
 	}
 
 	private void configCodenarc(Project project) {
 		project.pluginManager.apply CodeNarcPlugin
-		getExtension(project, CodeNarcExtension).identity {
-			configFile = project.rootProject.with {
-				file("$projectDir/conf/codenarc/codenarc.groovy").with {
-					String tmpPath = "$projectDir/build/tmp"
-					exists() ? it : file("$tmpPath/codenarc.groovy").tap {
-						mkdir tmpPath
-						createNewFile()
-						write CODENARC_DEFAULT_RULESET
+		getExtension(project, IHubVerificationExtension, AFTER) { ext ->
+			getExtension(project, CodeNarcExtension).identity {
+				configFile = project.rootProject.with {
+					file(ext.codenarcFile).with {
+						String tmpPath = "$projectDir/build/tmp"
+						exists() ? it : file("$tmpPath/codenarc.groovy").tap {
+							mkdir tmpPath
+							createNewFile()
+							write CODENARC_DEFAULT_RULESET
+						}
 					}
 				}
+				ignoreFailures = ext.codenarcIgnoreFailures
+				toolVersion = ext.codenarcVersion
 			}
-			ignoreFailures = findProperty(project, 'codenarcIgnoreFailures', false.toString()).toBoolean()
-			toolVersion = findProperty project, 'codenarcVersion', '2.1.0'
 		}
 	}
 
 	private void configJacoco(Project project) {
 		project.pluginManager.apply JacocoPlugin
-		getExtension(project, JacocoPluginExtension).identity {
-			toolVersion = findProperty project, 'jacoco.version', '0.8.6'
-		}
+		getExtension(project, IHubVerificationExtension, AFTER) { ext ->
+			getExtension(project, JacocoPluginExtension).identity {
+				toolVersion = ext.jacocoVersion
+			}
 
-		/**
-		 * 分支覆盖率达到100%
-		 * 由于groovy在编译时会生成无效字节码，所以指令覆盖率无法达到100%，等待官方修复，详见
-		 * https://github.com/jacoco/jacoco/issues/884
-		 * http://groovy.329449.n5.nabble.com/Groovy-2-5-4-generates-dead-code-td5755188.html
-		 */
-		Task jacocoTestCoverageVerification = project.tasks.getByName('jacocoTestCoverageVerification').tap {
-			violationRules {
-				// rule #1：bundle分支覆盖率
-				rule {
-					enabled = findProperty('jacocoBundleBranchCoverageRuleEnabled', true.toString()).toBoolean()
-					limit {
-						counter = 'BRANCH'
-						value = 'COVEREDRATIO'
-						minimum = findProperty('jacocoBundleBranchCoveredRatio', '1.0') as BigDecimal
+			/**
+			 * 分支覆盖率达到100%
+			 * 由于groovy在编译时会生成无效字节码，所以指令覆盖率无法达到100%，等待官方修复，详见
+			 * https://github.com/jacoco/jacoco/issues/884
+			 * http://groovy.329449.n5.nabble.com/Groovy-2-5-4-generates-dead-code-td5755188.html
+			 */
+			Task jacocoTestCoverageVerification = project.tasks.getByName('jacocoTestCoverageVerification').tap {
+				violationRules {
+					// rule #1：bundle分支覆盖率
+					rule {
+						enabled = ext.jacocoBundleBranchCoverageRuleEnabled
+						limit {
+							counter = 'BRANCH'
+							value = 'COVEREDRATIO'
+							minimum = ext.jacocoBundleBranchCoveredRatio.toBigDecimal()
+						}
 					}
-				}
-				// rule #2：bundle指令覆盖率
-				rule {
-					enabled = findProperty('jacocoBundleInstructionCoverageRuleEnabled', true.toString()).toBoolean()
-					limit {
-						minimum = findProperty('jacocoBundleInstructionCoveredRatio', '0.9') as BigDecimal
+					// rule #2：bundle指令覆盖率
+					rule {
+						enabled = ext.jacocoBundleInstructionCoverageRuleEnabled
+						limit {
+							minimum = ext.jacocoBundleInstructionCoveredRatio.toBigDecimal()
+						}
 					}
-				}
-				// rule #3：package指令覆盖率
-				rule {
-					enabled = findProperty('jacocoPackageInstructionCoverageRuleEnabled', true.toString()).toBoolean()
-					element = 'PACKAGE'
-					limit {
-						minimum = findProperty('jacocoPackageInstructionCoveredRatio', '0.9') as BigDecimal
+					// rule #3：package指令覆盖率
+					rule {
+						enabled = ext.jacocoPackageInstructionCoverageRuleEnabled
+						element = 'PACKAGE'
+						limit {
+							minimum = ext.jacocoPackageInstructionCoveredRatio.toBigDecimal()
+						}
 					}
 				}
 			}
-		}
 
-		// 覆盖率报告排除main class
-		Task jacocoTestReport = project.tasks.getByName('jacocoTestReport').tap {
-			project.afterEvaluate {
-				classDirectories.from = project.files(classDirectories.files.collect { dir ->
-					project.fileTree dir: dir, exclude: findProperty('jacocoReportExclusion', '**/app/**/*.class')
-				})
+			// 覆盖率报告排除main class
+			Task jacocoTestReport = project.tasks.getByName('jacocoTestReport').tap {
+				project.afterEvaluate {
+					classDirectories.from = project.files(classDirectories.files.collect { dir ->
+						project.fileTree dir: dir, exclude: ext.jacocoReportExclusion
+					})
+				}
 			}
-		}
 
-		// 一些任务依赖和属性设置
-		project.check.dependsOn jacocoTestCoverageVerification
-		project.test.finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+			// 一些任务依赖和属性设置
+			project.check.dependsOn jacocoTestCoverageVerification
+			project.test.finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+		}
 	}
 
 }

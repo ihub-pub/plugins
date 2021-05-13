@@ -15,8 +15,6 @@
  */
 package pub.ihub.plugin.spring
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubExtension
 
@@ -25,8 +23,6 @@ import pub.ihub.plugin.IHubExtension
  * @author henry
  */
 class IHubBootExtension implements IHubExtension {
-
-	final Project project
 
 	//<editor-fold desc="BootRun Configuration">
 
@@ -56,23 +52,23 @@ class IHubBootExtension implements IHubExtension {
 	//</editor-fold>
 
 	IHubBootExtension(Project project) {
-		this.project = project
+		pub_ihub_plugin_IHubExtension__project = project
 	}
 
 	String getBootRunLocalPropertiesFile() {
-		findProperty project, 'springbootLocalPropertiesFile', bootRunLocalPropertiesFile
+		findProperty 'springbootLocalPropertiesFile', bootRunLocalPropertiesFile
 	}
 
 	String getBootRunIncludePropNames() {
-		findProperty project, 'springbootIncludePropNames', bootRunIncludePropNames
+		findProperty 'springbootIncludePropNames', bootRunIncludePropNames
 	}
 
 	String getBootRunSkippedPropNames() {
-		findProperty project, 'springbootSkippedPropNames', bootRunSkippedPropNames
+		findProperty 'springbootSkippedPropNames', bootRunSkippedPropNames
 	}
 
 	String getBootJarRequiresUnpack() {
-		findProperty project, 'springbootRequiresUnpack', bootJarRequiresUnpack
+		findProperty 'springbootRequiresUnpack', bootJarRequiresUnpack
 	}
 
 }

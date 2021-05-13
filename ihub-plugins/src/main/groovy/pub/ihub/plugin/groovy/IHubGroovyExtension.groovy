@@ -28,8 +28,6 @@ import pub.ihub.plugin.IHubExtension
  */
 class IHubGroovyExtension implements IHubExtension {
 
-	final Project project
-
 	static final List<String> BASE_MODULES = [
 		'groovy',
 		'groovy-astbuilder',
@@ -63,7 +61,7 @@ class IHubGroovyExtension implements IHubExtension {
 	List<String> modules = []
 
 	IHubGroovyExtension(Project project) {
-		this.project = project
+		pub_ihub_plugin_IHubExtension__project = project
 	}
 
 	List<String> getModules() {

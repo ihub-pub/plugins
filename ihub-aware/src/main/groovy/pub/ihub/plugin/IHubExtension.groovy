@@ -15,11 +15,24 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
+
+import org.gradle.api.Project
+
 /**
  * IHub扩展特征
- * TODO 整合Project以及属性方法
  * @author liheng
  */
 trait IHubExtension {
+
+	Project project
+
+	def <T> T findProperty(String key, T defaultValue = null) {
+		findProperty(project, key, String.valueOf(defaultValue)) as T
+	}
+
+	def <T> T findEnvProperty(String key, T defaultValue = null) {
+		findProperty(key, project, String.valueOf(defaultValue)) as T
+	}
 
 }
