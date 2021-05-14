@@ -36,6 +36,10 @@ class IHubTestExtension implements IHubExtension {
 	 * 最多启动进程数
 	 */
 	int testMaxParallelForks = 2
+	/**
+	 * 包含属性名称（“,”分割）
+	 */
+	String testRunIncludePropNames = ''
 
 	IHubTestExtension(Project project) {
 		pub_ihub_plugin_IHubExtension__project = project
@@ -51,6 +55,10 @@ class IHubTestExtension implements IHubExtension {
 
 	int getTestMaxParallelForks() {
 		findEnvProperty('test.maxParallelForks', testMaxParallelForks.toString()).toInteger()
+	}
+
+	String getTestRunIncludePropNames() {
+		findEnvProperty 'testRunIncludePropNames', testRunIncludePropNames
 	}
 
 }

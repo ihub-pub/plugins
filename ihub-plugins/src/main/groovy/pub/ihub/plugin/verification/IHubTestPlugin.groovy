@@ -57,8 +57,14 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
 				it.forkEvery = ext.testForkEvery
 				it.maxParallelForks = ext.testMaxParallelForks
 
-				it.systemProperties = System.properties as Map
-
+				if (ext.testRunIncludePropNames) {
+					ext.testRunIncludePropNames.split(',').each { propName ->
+						it.systemProperty propName, System.getProperty(propName)
+					}
+				}
+				ext.localProperties.each { k, v ->
+					it.systemProperties.putIfAbsent k, v
+				}
 				it.onOutput { descriptor, event ->
 					it.logger.lifecycle event.message
 				}

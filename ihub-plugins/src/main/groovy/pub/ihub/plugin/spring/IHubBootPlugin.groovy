@@ -38,24 +38,13 @@ class IHubBootPlugin implements IHubPluginAware<IHubBootExtension> {
 
 		createExtension(project, 'iHubBoot', IHubBootExtension, AFTER) { ext ->
 			project.tasks.getByName('bootRun') { BootRun it ->
+				it.systemProperties ext.bootRunProperties
 				if (ext.bootRunIncludePropNames) {
 					ext.bootRunIncludePropNames.split(',').each { propName ->
-						it.systemProperty propName, findProperty(propName, project)
+						it.systemProperty propName, System.getProperty(propName)
 					}
 				}
-				if (ext.bootRunSkippedPropNames) {
-					System.properties.each { entry ->
-						if (!ext.bootRunSkippedPropNames.contains(entry.key)) {
-							it.systemProperty entry.key, entry.value
-						}
-					}
-				}
-				it.systemProperties ext.bootRunProperties
-				new File(project.rootProject.projectDir, ext.bootRunLocalPropertiesFile).with {
-					exists() ? withInputStream { is ->
-						new Properties().tap { load(is) }
-					} : null
-				}?.each { k, v ->
+				ext.localProperties.each { k, v ->
 					it.systemProperties.putIfAbsent k, v
 				}
 			}

@@ -35,4 +35,12 @@ trait IHubExtension {
 		findProperty(key, project, String.valueOf(defaultValue)) as T
 	}
 
+	Map<String, Object> getLocalProperties() {
+		new File(project.rootProject.projectDir, '.java-local.properties').with {
+			exists() ? withInputStream { is ->
+				new Properties().tap { load(is) }
+			} : [:]
+		} as Map
+	}
+
 }
