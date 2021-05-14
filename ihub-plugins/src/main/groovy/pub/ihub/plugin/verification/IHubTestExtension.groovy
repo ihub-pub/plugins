@@ -33,9 +33,9 @@ class IHubTestExtension implements IHubExtension {
 	 */
 	int testForkEvery = 100
 	/**
-	 * 最多启动（可用处理器数+2）个进程
+	 * 最多启动进程数
 	 */
-	int testMaxParallelForks = Runtime.runtime.availableProcessors() + 2
+	int testMaxParallelForks = 2
 
 	IHubTestExtension(Project project) {
 		pub_ihub_plugin_IHubExtension__project = project
