@@ -29,7 +29,7 @@ subprojects {
             group 'cn.hutool' module 'hutool-bom' version '5.6.4'
         }
         dependencyVersions {
-            group 'cn.hutool' version '5.6.4' modules 'core', 'aop'
+            group 'cn.hutool' modules 'core', 'aop' version '5.6.4'
         }
         groupVersions {
             group 'cn.hutool' version '5.6.4'

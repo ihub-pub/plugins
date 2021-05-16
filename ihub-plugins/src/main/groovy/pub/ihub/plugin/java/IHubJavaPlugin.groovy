@@ -15,16 +15,14 @@
  */
 package pub.ihub.plugin.java
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.tasks.compile.AbstractCompile
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubPluginAware
-import pub.ihub.plugin.verification.IHubVerificationPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
+import pub.ihub.plugin.verification.IHubTestPlugin
+import pub.ihub.plugin.verification.IHubVerificationPlugin
 
 /**
  * Java插件
@@ -36,16 +34,6 @@ class IHubJavaPlugin implements IHubPluginAware<IHubExtension> {
 	void apply(Project project) {
 		project.pluginManager.apply IHubBomPlugin
 		project.pluginManager.apply IHubJavaBasePlugin
-
-		// 兼容性配置
-		findProperty('javaCompatibility', project)?.with { version ->
-			project.tasks.withType(AbstractCompile) {
-				sourceCompatibility = version
-				targetCompatibility = version
-				options.encoding = 'UTF-8'
-				options.incremental = findProperty('gradleCompilationIncremental', project, true.toString()).toBoolean()
-			}
-		}
 
 		getExtension(project, IHubBomExtension).dependencies {
 			// Java11添加jaxb运行时依赖
@@ -59,6 +47,7 @@ class IHubJavaPlugin implements IHubPluginAware<IHubExtension> {
 			annotationProcessor lombok
 		}
 
+		project.pluginManager.apply IHubTestPlugin
 		project.pluginManager.apply IHubVerificationPlugin
 	}
 

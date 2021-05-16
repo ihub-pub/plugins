@@ -15,14 +15,15 @@
  */
 package pub.ihub.plugin.verification
 
-import org.gradle.api.Project
+import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubExtension
 
 /**
  * 代码检查插件扩展
  * @author henry
  */
-class IHubVerificationExtension implements IHubExtension {
+@TupleConstructor(includeSuperFields = true)
+class IHubVerificationExtension extends IHubExtension {
 
 	//<editor-fold desc="默认检查规则">
 
@@ -90,7 +91,7 @@ ruleset {
 
 	//<editor-fold desc="PMD Configuration">
 
-	String pmdRulesetFile = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
+	String pmdRulesetFile
 	boolean pmdConsoleOutput = false
 	boolean pmdIgnoreFailures = false
 	String pmdVersion = '6.31.0'
@@ -99,7 +100,7 @@ ruleset {
 
 	//<editor-fold desc="Codenarc Configuration">
 
-	String codenarcFile = "$project.rootProject.projectDir/conf/codenarc/codenarc.groovy"
+	String codenarcFile
 	boolean codenarcIgnoreFailures = false
 	String codenarcVersion = '2.1.0'
 
@@ -118,20 +119,16 @@ ruleset {
 
 	//</editor-fold>
 
-	IHubVerificationExtension(Project project) {
-		pub_ihub_plugin_IHubExtension__project = project
-	}
-
 	String getPmdRulesetFile() {
-		findProperty 'pmdRulesetFile', pmdRulesetFile
+		findProperty 'pmdRulesetFile', pmdRulesetFile ?: "$rootDir/conf/pmd/ruleset.xml"
 	}
 
 	boolean getPmdConsoleOutput() {
-		findProperty 'pmdConsoleOutput', pmdConsoleOutput
+		findBooleanProperty 'pmdConsoleOutput', pmdConsoleOutput
 	}
 
 	boolean getPmdIgnoreFailures() {
-		findProperty 'pmdIgnoreFailures', pmdIgnoreFailures
+		findBooleanProperty 'pmdIgnoreFailures', pmdIgnoreFailures
 	}
 
 	String getPmdVersion() {
@@ -139,11 +136,11 @@ ruleset {
 	}
 
 	String getCodenarcFile() {
-		findProperty 'codenarcFile', codenarcFile
+		findProperty 'codenarcFile', codenarcFile ?: "$rootDir/conf/codenarc/codenarc.groovy"
 	}
 
 	boolean getCodenarcIgnoreFailures() {
-		findProperty 'codenarcIgnoreFailures', codenarcIgnoreFailures
+		findBooleanProperty 'codenarcIgnoreFailures', codenarcIgnoreFailures
 	}
 
 	String getCodenarcVersion() {

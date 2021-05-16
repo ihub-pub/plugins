@@ -107,8 +107,10 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
 		// 添加配置元信息
 		getExtension(project, IHubBomExtension, BEFORE) {
-			it.dependencies {
-				annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+			if (it.enabledDefaultConfig) {
+				it.dependencies {
+					annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+				}
 			}
 		}
 		project.compileJava.inputs.files project.processResources

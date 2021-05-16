@@ -16,7 +16,6 @@
 package pub.ihub.plugin.verification
 
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -31,12 +30,12 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
 
 	@Override
 	void apply(Project project) {
-		getExtension(project, IHubBomExtension, BEFORE) {
+		getExtension(project, IHubBomExtension) {
 			it.importBoms {
 				group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
 			}
 			it.dependencyVersions {
-				group 'com.athaydes' version '2.0.1-RC3' modules 'spock-reports'
+				group 'com.athaydes' modules 'spock-reports' version '2.0.1-RC3'
 			}
 			it.dependencies {
 				testImplementation 'org.spockframework:spock-spring'

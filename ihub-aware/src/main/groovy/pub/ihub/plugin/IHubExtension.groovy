@@ -23,20 +23,48 @@ import org.gradle.api.Project
  * IHub扩展特征
  * @author liheng
  */
-trait IHubExtension {
+abstract class IHubExtension {
 
-	Project project
+	protected Project project
 
-	def <T> T findProperty(String key, T defaultValue = null) {
-		findProperty(project, key, String.valueOf(defaultValue)) as T
+	protected String getProjectName() {
+		project.name
 	}
 
-	def <T> T findEnvProperty(String key, T defaultValue = null) {
-		findProperty(key, project, String.valueOf(defaultValue)) as T
+	protected Project getRootProject() {
+		project.rootProject
 	}
 
-	Map<String, Object> getLocalProperties() {
-		new File(project.rootProject.projectDir, '.java-local.properties').with {
+	protected boolean isRoot() {
+		projectName == rootProject.name
+	}
+
+	protected File getRootDir() {
+		rootProject.projectDir
+	}
+
+	protected String findProperty(String key, String defaultValue = null) {
+		findProperty project, key, defaultValue
+	}
+
+	protected boolean findBooleanProperty(String key, boolean defaultValue) {
+		findProperty(key, String.valueOf(defaultValue)).toBoolean()
+	}
+
+	protected String findEnvProperty(String key, String defaultValue = null) {
+		findProperty key, project, defaultValue
+	}
+
+	protected boolean findEnvProperty(String key, boolean defaultValue) {
+		findEnvProperty(key, String.valueOf(defaultValue)).toBoolean()
+	}
+
+	protected int findEnvProperty(String key, int defaultValue) {
+		findEnvProperty(key, String.valueOf(defaultValue)).toInteger()
+	}
+
+	protected Map<String, Object> getLocalProperties() {
+		new File(rootDir, '.java-local.properties').with {
 			exists() ? withInputStream { is ->
 				new Properties().tap { load(is) }
 			} : [:]

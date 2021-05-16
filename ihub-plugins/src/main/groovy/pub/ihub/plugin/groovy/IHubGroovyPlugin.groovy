@@ -26,7 +26,8 @@ import org.gradle.jvm.tasks.Jar
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
-import pub.ihub.plugin.java.IHubJavaPlugin
+import pub.ihub.plugin.java.IHubJavaBasePlugin
+import pub.ihub.plugin.verification.IHubTestPlugin
 import pub.ihub.plugin.verification.IHubVerificationPlugin
 
 /**
@@ -52,31 +53,32 @@ class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply IHubJavaPlugin
+		project.pluginManager.apply IHubJavaBasePlugin
 		project.pluginManager.apply GroovyPlugin
 
-		getExtension(project, IHubBomExtension).tap {
+		getExtension(project, IHubBomExtension) {
 			String groovyGroup = 'org.codehaus.groovy'
 			String groovyVersion = '3.0.8'
-			importBoms {
+			it.importBoms {
 				group groovyGroup module 'groovy-bom' version groovyVersion
 			}
-			dependencyVersions {
-				group groovyGroup version groovyVersion modules 'groovy-all'
+			it.dependencyVersions {
+				group groovyGroup modules 'groovy-all' version groovyVersion
 			}
 			// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本 TODO 判断不太准确
 			if (groovyVersion.startsWith('3.')) {
-				groupVersions {
+				it.groupVersions {
 					group groovyGroup version groovyVersion
 				}
 			}
 			createExtension(project, 'iHubGroovy', IHubGroovyExtension, BEFORE) { ext ->
-				dependencies {
+				it.dependencies {
 					implementation ext.modules.unique().collect { "$groovyGroup:$it" } as String[]
 				}
 			}
 		}
 
+		project.pluginManager.apply IHubTestPlugin
 		project.pluginManager.apply IHubVerificationPlugin
 	}
 

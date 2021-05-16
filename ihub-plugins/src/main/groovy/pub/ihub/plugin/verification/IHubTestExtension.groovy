@@ -15,14 +15,15 @@
  */
 package pub.ihub.plugin.verification
 
-import org.gradle.api.Project
+import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubExtension
 
 /**
  * 测试插件扩展
  * @author henry
  */
-class IHubTestExtension implements IHubExtension {
+@TupleConstructor(includeSuperFields = true)
+class IHubTestExtension extends IHubExtension {
 
 	/**
 	 * 包含属性名称（“,”分割）
@@ -41,20 +42,16 @@ class IHubTestExtension implements IHubExtension {
 	 */
 	String testRunIncludePropNames = ''
 
-	IHubTestExtension(Project project) {
-		pub_ihub_plugin_IHubExtension__project = project
-	}
-
 	String getTestClasses() {
 		findEnvProperty 'test.classes', testClasses
 	}
 
 	int getTestForkEvery() {
-		findEnvProperty('test.forkEvery', testForkEvery.toString()).toInteger()
+		findEnvProperty 'test.forkEvery', testForkEvery
 	}
 
 	int getTestMaxParallelForks() {
-		findEnvProperty('test.maxParallelForks', testMaxParallelForks.toString()).toInteger()
+		findEnvProperty 'test.maxParallelForks', testMaxParallelForks
 	}
 
 	String getTestRunIncludePropNames() {

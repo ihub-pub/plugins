@@ -15,14 +15,15 @@
  */
 package pub.ihub.plugin.spring
 
-import org.gradle.api.Project
+import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubExtension
 
 /**
  * IHub Spring Boot Plugin Extension
  * @author henry
  */
-class IHubBootExtension implements IHubExtension {
+@TupleConstructor(includeSuperFields = true)
+class IHubBootExtension extends IHubExtension {
 
 	//<editor-fold desc="BootRun Configuration">
 
@@ -42,10 +43,6 @@ class IHubBootExtension implements IHubExtension {
 	String bootJarRequiresUnpack = ''
 
 	//</editor-fold>
-
-	IHubBootExtension(Project project) {
-		pub_ihub_plugin_IHubExtension__project = project
-	}
 
 	String getBootRunIncludePropNames() {
 		findProperty 'springbootIncludePropNames', bootRunIncludePropNames

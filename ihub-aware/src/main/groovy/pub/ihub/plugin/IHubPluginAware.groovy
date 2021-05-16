@@ -58,6 +58,8 @@ trait IHubPluginAware<T extends IHubExtension> implements Plugin<Project> {
 			project.beforeEvaluate {
 				action.execute extension
 			}
+		} else {
+			action?.execute extension
 		}
 	}
 

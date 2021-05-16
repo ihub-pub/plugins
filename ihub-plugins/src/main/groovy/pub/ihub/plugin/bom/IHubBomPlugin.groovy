@@ -16,6 +16,7 @@
 package pub.ihub.plugin.bom
 
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubPluginAware
@@ -32,7 +33,11 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 		project.pluginManager.apply IHubPluginsPlugin
 		project.pluginManager.apply 'io.spring.dependency-management'
 
-		createExtension(project, 'iHubBom', IHubBomExtensionImpl, AFTER) { ext ->
+		boolean isRoot = project.name == project.rootProject.name
+		createExtension(project, 'iHubBom', IHubBomExtension, isRoot ? AFTER : BEFORE) { ext ->
+			if (!ext.enabledDefaultConfig) {
+				return
+			}
 			// 配置导入bom
 			ext.importBoms {
 				// TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
@@ -46,12 +51,12 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 			}
 			// 配置组件依赖版本
 			ext.dependencyVersions {
-				group 'com.alibaba' version '1.2.76' modules 'fastjson'
-				group 'com.alibaba' version '1.2.6' modules 'druid', 'druid-spring-boot-starter'
-				group 'com.alibaba.p3c' version '2.1.1' modules 'p3c-pmd'
-				group 'com.baomidou' version '3.4.2' modules 'mybatis-plus',
-					'mybatis-plus-boot-starter', 'mybatis-plus-generator'
-				group 'com.github.xiaoymin' version '2.0.8' modules 'knife4j-aggregation-spring-boot-starter'
+				group 'com.alibaba' modules 'fastjson' version '1.2.76'
+				group 'com.alibaba' modules 'druid', 'druid-spring-boot-starter' version '1.2.6'
+				group 'com.alibaba.p3c' modules 'p3c-pmd' version '2.1.1'
+				group 'com.baomidou' modules 'mybatis-plus', 'mybatis-plus-boot-starter',
+					'mybatis-plus-generator' version '3.4.2'
+				group 'com.github.xiaoymin' modules 'knife4j-aggregation-spring-boot-starter' version '2.0.8'
 			}
 			// 配置组版本策略（建议尽量使用bom）
 			ext.groupVersions {
@@ -76,7 +81,9 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 //						'org.slf4j:jcl-over-slf4j', TODO 构建原生镜像有报错
 					'org.slf4j:log4j-over-slf4j'
 			}
+		}
 
+		getExtension(project, IHubBomExtension, AFTER) { ext ->
 			project.dependencyManagement {
 				// 导入bom配置
 				imports {
@@ -110,13 +117,13 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 						cacheChangingModulesFor 0, 'seconds'
 					}
 					// 排除组件依赖
-					ext.excludeModules.each { group, modules ->
-						modules.each { module -> exclude group: group, module: module }
+					ext.excludeModules.each {
+						it.modules.each { module -> exclude group: it.group, module: module }
 					}
 				}
 				// 配置组件依赖
-				ext.dependencies.each { type, dependencies ->
-					maybeCreate(type).dependencies.addAll dependencies.collect {
+				ext.dependencies.each { spec ->
+					maybeCreate(spec.type).dependencies.addAll spec.dependencies.collect {
 						// 支持导入项目
 						project.dependencies.create it.startsWith(':') ? project.project(it) : it
 					}

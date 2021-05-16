@@ -19,14 +19,15 @@ import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.ALL
 import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.BASE
 import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.EXTENSION
 
-import org.gradle.api.Project
+import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubExtension
 
 /**
  * Groovy插件扩展
  * @author liheng
  */
-class IHubGroovyExtension implements IHubExtension {
+@TupleConstructor(includeSuperFields = true)
+class IHubGroovyExtension extends IHubExtension {
 
 	static final List<String> BASE_MODULES = [
 		'groovy',
@@ -59,10 +60,6 @@ class IHubGroovyExtension implements IHubExtension {
 
 	ModulesType modulesType = BASE
 	List<String> modules = []
-
-	IHubGroovyExtension(Project project) {
-		pub_ihub_plugin_IHubExtension__project = project
-	}
 
 	List<String> getModules() {
 		switch (modulesType) {

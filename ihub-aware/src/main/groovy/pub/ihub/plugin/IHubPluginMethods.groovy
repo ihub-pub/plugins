@@ -140,7 +140,7 @@ final class IHubPluginMethods {
 	 * @param taps 配置栏目描述
 	 */
 	static void printConfigContent(String title, List data, Tuple2<String, Integer>... taps) {
-		printConfigContent title, data, 100, taps
+		printConfigContent title, data - null, 100, taps
 	}
 
 	/**

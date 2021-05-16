@@ -15,6 +15,8 @@
  */
 package pub.ihub.plugin.java
 
+import static pub.ihub.plugin.IHubPluginMethods.findProperty
+
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -25,6 +27,7 @@ import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
+import org.gradle.api.tasks.compile.AbstractCompile
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.IHubPluginsPlugin
@@ -63,6 +66,16 @@ class IHubJavaBasePlugin implements IHubPluginAware<IHubExtension> {
 		project.pluginManager.apply JavaLibraryPlugin
 		project.pluginManager.apply ProjectReportsPlugin
 		project.pluginManager.apply BuildDashboardPlugin
+
+		// 兼容性配置
+		findProperty('javaCompatibility', project)?.with { version ->
+			project.tasks.withType(AbstractCompile) {
+				sourceCompatibility = version
+				targetCompatibility = version
+				options.encoding = 'UTF-8'
+				options.incremental = findProperty('gradleCompilationIncremental', project, true.toString()).toBoolean()
+			}
+		}
 
 		// 配置Jar属性
 		project.tasks.withType(Jar) {

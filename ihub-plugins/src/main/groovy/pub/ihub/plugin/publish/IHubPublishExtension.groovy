@@ -15,9 +15,10 @@
  */
 package pub.ihub.plugin.publish
 
+import groovy.transform.TupleConstructor
+
 import static java.time.Year.now
 
-import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
 import pub.ihub.plugin.IHubExtension
 
@@ -25,7 +26,8 @@ import pub.ihub.plugin.IHubExtension
  * 组件发布属性扩展
  * @author henry
  */
-class IHubPublishExtension implements IHubExtension {
+@TupleConstructor(includeSuperFields = true)
+class IHubPublishExtension extends IHubExtension {
 
 	String pomName
 	String pomPackaging
@@ -54,10 +56,6 @@ class IHubPublishExtension implements IHubExtension {
 	String pomDeveloperOrganizationUrl = pomOrganizationUrl
 	String pomDeveloperRoles
 	String pomDeveloperTimezone
-
-	IHubPublishExtension(Project project) {
-		pub_ihub_plugin_IHubExtension__project = project
-	}
 
 	void configPom(MavenPublication publication, versionDetails) {
 		publication.pom {

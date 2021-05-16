@@ -15,15 +15,16 @@
  */
 package pub.ihub.plugin.spring
 
+import groovy.transform.TupleConstructor
 import org.gradle.api.JavaVersion
-import org.gradle.api.Project
 import pub.ihub.plugin.IHubExtension
 
 /**
  * 原生镜像插件扩展
  * @author henry
  */
-class IHubNativeExtension implements IHubExtension {
+@TupleConstructor(includeSuperFields = true)
+class IHubNativeExtension extends IHubExtension {
 
 	//<editor-fold desc="Build Configuration">
 
@@ -62,10 +63,6 @@ class IHubNativeExtension implements IHubExtension {
 	String javaToolOptions
 
 	//</editor-fold>
-
-	IHubNativeExtension(Project project) {
-		pub_ihub_plugin_IHubExtension__project = project
-	}
 
 	Map<String, String> getEnvironment() {
 		[

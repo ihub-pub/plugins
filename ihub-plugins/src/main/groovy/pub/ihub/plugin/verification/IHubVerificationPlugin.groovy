@@ -16,7 +16,6 @@
 package pub.ihub.plugin.verification
 
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 import static pub.ihub.plugin.verification.IHubVerificationExtension.CODENARC_DEFAULT_RULESET
 import static pub.ihub.plugin.verification.IHubVerificationExtension.PMD_DEFAULT_RULESET
 
@@ -31,7 +30,6 @@ import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import pub.ihub.plugin.IHubPluginAware
-import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
@@ -43,9 +41,7 @@ class IHubVerificationPlugin implements IHubPluginAware<IHubVerificationExtensio
 
 	@Override
 	void apply(Project project) {
-		project.pluginManager.apply IHubPluginsPlugin
 		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply IHubTestPlugin
 
 		createExtension project, 'iHubVerification', IHubVerificationExtension
 		if (project.plugins.hasPlugin(JavaPlugin)) {
@@ -59,10 +55,8 @@ class IHubVerificationPlugin implements IHubPluginAware<IHubVerificationExtensio
 
 	private void configPmd(Project project) {
 		project.pluginManager.apply PmdPlugin
-		getExtension(project, IHubBomExtension, BEFORE) {
-			it.dependencies {
-				compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
-			}
+		getExtension(project, IHubBomExtension).dependencies {
+			compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
 		}
 		getExtension(project, IHubVerificationExtension, AFTER) { ext ->
 			getExtension(project, PmdExtension).identity {
