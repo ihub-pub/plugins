@@ -26,7 +26,7 @@ import org.gradle.jvm.tasks.Jar
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
-import pub.ihub.plugin.java.IHubJavaBasePlugin
+import pub.ihub.plugin.java.IHubJavaPlugin
 import pub.ihub.plugin.verification.IHubTestPlugin
 import pub.ihub.plugin.verification.IHubVerificationPlugin
 
@@ -53,7 +53,7 @@ class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply IHubJavaBasePlugin
+		project.pluginManager.apply IHubJavaPlugin
 		project.pluginManager.apply GroovyPlugin
 
 		getExtension(project, IHubBomExtension) {
