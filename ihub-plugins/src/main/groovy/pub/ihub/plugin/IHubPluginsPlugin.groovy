@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
 import org.gradle.api.Project
@@ -26,20 +25,23 @@ import pub.ihub.plugin.bom.IHubBomPlugin
  * 配置项目组件仓库
  * @author liheng
  */
-class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
+class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
 
 	@Override
 	void apply(Project project) {
+		IHubPluginsExtension ext = createExtension project, 'iHub', IHubPluginsExtension
+
 		project.pluginManager.apply 'com.palantir.git-version'
-		String version = findProperty 'version', project, project.version.toString()
-		project.version = 'unspecified' == version ? project.versionDetails().lastTag : version
+		project.version = project.version.toString().with {
+			'unspecified' == it ? project.versionDetails().lastTag : it
+		}
 
 		project.repositories {
 			String dirs = "$project.rootProject.projectDir/libs"
 			if ((dirs as File).directory) {
 				flatDir dirs: dirs
 			}
-			if (findProperty('mavenLocalEnabled', project, false.toString()).toBoolean()) {
+			if (ext.mavenLocalEnabled) {
 				mavenLocal()
 			}
 			maven {
@@ -61,17 +63,15 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
 				url 'https://repo.spring.io/release'
 			}
 			// 添加私有仓库
-			String releaseRepoUrl = findProperty project, 'releaseRepoUrl'
-			boolean repoAllowInsecureProtocol = findProperty('repoAllowInsecureProtocol', project, false.toString()).toBoolean()
-			String repoIncludeGroup = findProperty 'repoIncludeGroup', project
-			String repoIncludeGroupRegex = findProperty 'repoIncludeGroupRegex', project, '.*'
-			String repoUsername = findProperty 'repoUsername', project
-			String repoPassword = findProperty 'repoPassword', project
+			String releaseRepoUrl = ext.releaseRepoUrl
+			String repoIncludeGroup = ext.repoIncludeGroup
+			String repoUsername = ext.repoUsername
+			String repoPassword = ext.repoPassword
 			if (releaseRepoUrl) {
 				maven {
 					name 'ReleaseRepo'
 					url releaseRepoUrl
-					allowInsecureProtocol repoAllowInsecureProtocol
+					allowInsecureProtocol ext.repoAllowInsecureProtocol
 					mavenContent {
 						releasesOnly()
 					}
@@ -79,7 +79,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
 						if (repoIncludeGroup) {
 							includeGroup repoIncludeGroup
 						} else {
-							includeGroupByRegex repoIncludeGroupRegex
+							includeGroupByRegex ext.repoIncludeGroupRegex
 						}
 					}
 					if (repoUsername && repoPassword) {
@@ -90,12 +90,12 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
 					}
 				}
 			}
-			String snapshotRepoUrl = findProperty project, 'snapshotRepoUrl'
+			String snapshotRepoUrl = ext.snapshotRepoUrl
 			if (snapshotRepoUrl) {
 				maven {
 					name 'SnapshotRepo'
 					url snapshotRepoUrl
-					allowInsecureProtocol repoAllowInsecureProtocol
+					allowInsecureProtocol ext.repoAllowInsecureProtocol
 					mavenContent {
 						snapshotsOnly()
 					}
@@ -103,7 +103,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
 						if (repoIncludeGroup) {
 							includeGroup repoIncludeGroup
 						} else {
-							includeGroupByRegex repoIncludeGroupRegex
+							includeGroupByRegex ext.repoIncludeGroupRegex
 						}
 					}
 					if (repoUsername && repoPassword) {
@@ -115,8 +115,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
 				}
 			}
 			// 添加自定义仓库
-			String customizeRepoUrl = findProperty project, 'customizeRepoUrl'
-			if (customizeRepoUrl) {
+			ext.customizeRepoUrl?.with { customizeRepoUrl ->
 				maven {
 					name 'CustomizeRepo'
 					url customizeRepoUrl
@@ -132,10 +131,6 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubExtension> {
 		}
 
 		project.pluginManager.apply IHubBomPlugin
-
-		project.extensions.add('findProjectProperty') { String key, String defaultValue = null ->
-			findProperty key, project, defaultValue
-		}
 
 		project.subprojects {
 			pluginManager.apply IHubPluginsPlugin

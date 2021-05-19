@@ -15,77 +15,11 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.api.Project
-import org.gradle.api.plugins.PluginAware
-
 /**
  * 插件通用方法
  * @author henry
  */
 final class IHubPluginMethods {
-
-	/**
-	 * 优先从环境变量查找属性
-	 * @param key key
-	 * @param plugin 插件
-	 * @param defaultValue 默认值
-	 * @return 属性值
-	 */
-	static String findProperty(String key, PluginAware plugin, String defaultValue = null) {
-		findProperty(key) ?: findProperty(plugin, key, defaultValue)
-	}
-
-	/**
-	 * 从任务插件查找属性
-	 * @param project 插件
-	 * @param key key
-	 * @param defaultValue 默认值
-	 * @return 属性值
-	 */
-	static String findProperty(Project project, String key, String defaultValue = null) {
-		findProperty(key, defaultValue) { String k -> project.findProperty k }
-	}
-
-	/**
-	 * 从插件查找属性
-	 * @param plugin 插件
-	 * @param key key
-	 * @param defaultValue 默认值
-	 * @return 属性值
-	 */
-	static String findProperty(PluginAware plugin, String key, String defaultValue = null) {
-		findProperty(key, defaultValue) { String k -> plugin.hasProperty(k) ? plugin."$k" : null }
-	}
-
-	/**
-	 * 从环境变量查找属性
-	 * @param key key
-	 * @param defaultValue 默认值
-	 * @return 属性值
-	 */
-	static String findProperty(String key, String defaultValue = null) {
-		findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: System.getenv(k) }
-	}
-
-	/**
-	 * 查找属性
-	 *
-	 * 按如下优先级变换key查询：
-	 * demoKey(原值) -> demo_key -> DEMO_KEY -> demo.key -> demo-key
-	 *
-	 * @param key key
-	 * @param defaultValue 默认值
-	 * @param closure 查询闭包
-	 * @return 属性值
-	 */
-	static String findProperty(String key, String defaultValue = null, Closure closure) {
-		closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').toLowerCase().with {
-			closure(it) ?: closure(it.toUpperCase())
-				?: closure(it.replaceAll('_', '.'))
-				?: closure(it.replaceAll('_', '-'))
-				?: defaultValue
-		}
-	}
 
 	static Tuple2<String, Integer> tap(String tap, Integer width = null) {
 		new Tuple2<>(tap, width)

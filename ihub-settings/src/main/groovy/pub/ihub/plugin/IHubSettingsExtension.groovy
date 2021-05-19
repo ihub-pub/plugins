@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.idTap
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.versionTap
@@ -28,10 +27,10 @@ import org.gradle.api.initialization.Settings
  * 子项目配置扩展
  * @author liheng
  */
-class IHubSettingsExtension {
+class IHubSettingsExtension implements IHubExtension {
 
 	private static final List<String> EXCLUDE_DIRS = [
-		'build', 'src', 'conf', 'logs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
+		'build', 'src', 'conf', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
 	]
 
 	private boolean alreadyUsedInclude = false
@@ -40,8 +39,16 @@ class IHubSettingsExtension {
 
 	IHubSettingsExtension(Settings settings) {
 		this.settings = settings
-		includeDirs = findProperty settings, 'includeDirs'
-		skippedDirs = findProperty settings, 'skippedDirs'
+		includeDirs = findProperty 'includeDirs'
+		skippedDirs = findProperty 'skippedDirs'
+	}
+
+	/**
+	 * 主项目名称
+	 * @return 主项目名称
+	 */
+	String getProjectName() {
+		findProperty 'projectName', settings.rootProject.name
 	}
 
 	/**
@@ -134,6 +141,11 @@ class IHubSettingsExtension {
 		}
 		printConfigContent 'Gradle Plugin Plugins Version', idTap(), versionTap(),
 			pluginVersions.collectEntries { [(it.id): it.version] }
+	}
+
+	@Override
+	String findProjectProperty(String key) {
+		settings.hasProperty(key) ? settings."$key" : null
 	}
 
 	private class PluginVersionsSpec {

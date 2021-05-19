@@ -17,14 +17,14 @@ package pub.ihub.plugin.spring
 
 import groovy.transform.TupleConstructor
 import org.gradle.api.JavaVersion
-import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtension
 
 /**
  * 原生镜像插件扩展
  * @author henry
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubNativeExtension extends IHubExtension {
+class IHubNativeExtension extends IHubProjectExtension {
 
 	//<editor-fold desc="Build Configuration">
 
@@ -72,7 +72,7 @@ class IHubNativeExtension extends IHubExtension {
 			BPL_JVM_HEAD_ROOM              : bplJvmHeadRoom,
 			BPL_JVM_LOADED_CLASS_COUNT     : bplJvmLoadedClassCount,
 			BPL_JVM_THREAD_COUNT           : bplJvmThreadCount,
-			JAVA_TOOL_OPTIONS              : findEnvProperty('JAVA_TOOL_OPTIONS', javaToolOptions),
+			JAVA_TOOL_OPTIONS              : findSystemProperty('JAVA_TOOL_OPTIONS', javaToolOptions),
 		].findAll { it.value }
 	}
 

@@ -23,43 +23,44 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * IHub插件特征
- * TODO 整合Project以及属性方法
- * @author liheng
+ * IHub项目插件特征
+ * @author henry
  */
-trait IHubPluginAware<T extends IHubExtension> implements Plugin<Project> {
-
-	T createExtension(Project project, String extName, Class<T> clazz, EvaluateStage evaluate, Action<T> action) {
-		project.extensions.create(extName, clazz, project).tap {
-			executeAction project, it, evaluate, action
-		}
-	}
+trait IHubPluginAware<T extends IHubProjectExtension> implements Plugin<Project> {
 
 	T createExtension(Project project, String extName, Class<T> clazz, Action<T> action = null) {
-		createExtension project, extName, clazz, null, action
-	}
-
-	def <E> E getExtension(Project project, Class<E> clazz, EvaluateStage evaluate, Action<E> action) {
-		project.extensions.getByType(clazz).tap {
-			executeAction project, it, evaluate, action
+		project.extensions.create(extName, clazz, project).tap {
+			action?.execute it
 		}
 	}
 
 	def <E> E getExtension(Project project, Class<E> clazz, Action<E> action = null) {
-		getExtension project, clazz, null, action
+		project.extensions.getByType(clazz).tap {
+			action?.execute it
+		}
 	}
 
-	private <E> void executeAction(Project project, E extension, EvaluateStage evaluate, Action<E> action) {
-		if (action && AFTER == evaluate) {
-			project.afterEvaluate {
+	T createExtension(Project project, String extName, Class<T> clazz, EvaluateStage evaluate, Action<T> action) {
+		createExtension project, extName, clazz, getAction(project, evaluate, action)
+	}
+
+	def <E> E getExtension(Project project, Class<E> clazz, EvaluateStage evaluate, Action<E> action) {
+		getExtension project, clazz, getAction(project, evaluate, action)
+	}
+
+	private <E> Action<E> getAction(Project project, EvaluateStage evaluate, Action<E> action) {
+		{ E extension ->
+			if (action && AFTER == evaluate) {
+				project.afterEvaluate {
+					action.execute extension
+				}
+			} else if (action && BEFORE == evaluate) {
+				project.beforeEvaluate {
+					action.execute extension
+				}
+			} else {
 				action.execute extension
 			}
-		} else if (action && BEFORE == evaluate) {
-			project.beforeEvaluate {
-				action.execute extension
-			}
-		} else {
-			action?.execute extension
 		}
 	}
 

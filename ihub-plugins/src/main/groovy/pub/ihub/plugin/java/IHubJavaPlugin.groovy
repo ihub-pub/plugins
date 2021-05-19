@@ -15,10 +15,9 @@
  */
 package pub.ihub.plugin.java
 
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.verification.IHubTestPlugin
@@ -28,7 +27,7 @@ import pub.ihub.plugin.verification.IHubVerificationPlugin
  * Java插件
  * @author henry
  */
-class IHubJavaPlugin implements IHubPluginAware<IHubExtension> {
+class IHubJavaPlugin implements IHubPluginAware<IHubProjectExtension> {
 
 	@Override
 	void apply(Project project) {
@@ -36,11 +35,6 @@ class IHubJavaPlugin implements IHubPluginAware<IHubExtension> {
 		project.pluginManager.apply IHubJavaBasePlugin
 
 		getExtension(project, IHubBomExtension).dependencies {
-			// Java11添加jaxb运行时依赖
-			if (JavaVersion.current().java11) {
-				runtimeOnly 'javax.xml.bind:jaxb-api', 'com.sun.xml.bind:jaxb-core', 'com.sun.xml.bind:jaxb-impl'
-			}
-
 			// 添加lombok依赖
 			String lombok = 'org.projectlombok:lombok'
 			compileOnly lombok

@@ -16,14 +16,14 @@
 package pub.ihub.plugin.verification
 
 import groovy.transform.TupleConstructor
-import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtension
 
 /**
  * 测试插件扩展
  * @author henry
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubTestExtension extends IHubExtension {
+class IHubTestExtension extends IHubProjectExtension {
 
 	/**
 	 * 包含属性名称（“,”分割）
@@ -43,19 +43,19 @@ class IHubTestExtension extends IHubExtension {
 	String testRunIncludePropNames = ''
 
 	String getTestClasses() {
-		findEnvProperty 'test.classes', testClasses
+		findSystemProperty 'test.classes', testClasses
 	}
 
 	int getTestForkEvery() {
-		findEnvProperty 'test.forkEvery', testForkEvery
+		findSystemProperty 'test.forkEvery', testForkEvery
 	}
 
 	int getTestMaxParallelForks() {
-		findEnvProperty 'test.maxParallelForks', testMaxParallelForks
+		findSystemProperty 'test.maxParallelForks', testMaxParallelForks
 	}
 
 	String getTestRunIncludePropNames() {
-		findEnvProperty 'testRunIncludePropNames', testRunIncludePropNames
+		findSystemProperty 'testRunIncludePropNames', testRunIncludePropNames
 	}
 
 }

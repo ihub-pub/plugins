@@ -15,60 +15,51 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
-import org.gradle.api.Project
-
 /**
  * IHub扩展特征
- * @author liheng
+ * @author henry
  */
-abstract class IHubExtension {
+trait IHubExtension {
 
-	protected Project project
+	abstract String findProjectProperty(String key)
 
-	protected String getProjectName() {
-		project.name
+	/**
+	 * 查找属性
+	 *
+	 * 按如下优先级变换key查询：
+	 * demoKey(原值) -> demo_key -> demo.key -> demo-key
+	 *
+	 * @param key key
+	 * @param defaultValue 默认值
+	 * @param closure 查询闭包
+	 * @return 属性值
+	 */
+	String findProperty(String key, String defaultValue = null, Closure closure) {
+		closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').toLowerCase().with {
+			closure(it) ?: closure(it.replaceAll('_', '.'))
+				?: closure(it.replaceAll('_', '-'))
+				?: defaultValue
+		}
 	}
 
-	protected Project getRootProject() {
-		project.rootProject
+	String findProperty(String key, String defaultValue = null) {
+		findProperty(key, defaultValue) { String k -> findProjectProperty k }
 	}
 
-	protected boolean isRoot() {
-		projectName == rootProject.name
-	}
-
-	protected File getRootDir() {
-		rootProject.projectDir
-	}
-
-	protected String findProperty(String key, String defaultValue = null) {
-		findProperty project, key, defaultValue
-	}
-
-	protected boolean findBooleanProperty(String key, boolean defaultValue) {
+	boolean findProperty(String key, boolean defaultValue) {
 		findProperty(key, String.valueOf(defaultValue)).toBoolean()
 	}
 
-	protected String findEnvProperty(String key, String defaultValue = null) {
-		findProperty key, project, defaultValue
+	String findSystemProperty(String key, String defaultValue = null) {
+		findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: findProjectProperty(k) }
 	}
 
-	protected boolean findEnvProperty(String key, boolean defaultValue) {
-		findEnvProperty(key, String.valueOf(defaultValue)).toBoolean()
+	boolean findSystemProperty(String key, boolean defaultValue) {
+		findSystemProperty(key, String.valueOf(defaultValue)).toBoolean()
 	}
 
-	protected int findEnvProperty(String key, int defaultValue) {
-		findEnvProperty(key, String.valueOf(defaultValue)).toInteger()
-	}
-
-	protected Map<String, Object> getLocalProperties() {
-		new File(rootDir, '.java-local.properties').with {
-			exists() ? withInputStream { is ->
-				new Properties().tap { load(is) }
-			} : [:]
-		} as Map
+	int findSystemProperty(String key, int defaultValue) {
+		findSystemProperty(key, String.valueOf(defaultValue)).toInteger()
 	}
 
 }

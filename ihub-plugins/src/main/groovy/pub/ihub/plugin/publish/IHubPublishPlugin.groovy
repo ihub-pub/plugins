@@ -17,7 +17,6 @@ package pub.ihub.plugin.publish
 
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.groovy.IHubGroovyPlugin.registerGroovydocJar
 import static pub.ihub.plugin.java.IHubJavaBasePlugin.registerJavadocsJar
 import static pub.ihub.plugin.java.IHubJavaBasePlugin.registerSourcesJar
@@ -27,10 +26,10 @@ import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
+import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaBasePlugin
@@ -45,6 +44,7 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 	void apply(Project project) {
 		project.pluginManager.apply IHubJavaBasePlugin
 
+		IHubPluginsExtension iHubExt = getExtension project, IHubPluginsExtension
 		boolean isRelease = project.version ==~ /(\d+\.)+\d+/
 
 		project.pluginManager.apply MavenPublishPlugin
@@ -55,7 +55,17 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
 					// release版本时发布sources以及docs包
 					if (isRelease) {
-						registerJarTasks(project).each {
+						boolean publishDocs = iHubExt.publishDocs
+						List tasks = [
+							registerSourcesJar(project)
+						]
+						if (publishDocs) {
+							tasks << registerJavadocsJar(project)
+						}
+						if (publishDocs && project.plugins.hasPlugin(GroovyPlugin)) {
+							tasks << registerGroovydocJar(project)
+						}
+						tasks.each {
 							artifact it
 						}
 					}
@@ -77,12 +87,16 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 					}
 				}
 			}
+			String repoUsername = iHubExt.repoUsername
+			String repoPassword = iHubExt.repoPassword
 			repositories {
 				maven {
-					url findProperty(project, isRelease ? 'releaseRepoUrl' : 'snapshotRepoUrl')
-					credentials {
-						username findProperty('repoUsername', project)
-						password findProperty('repoPassword', project)
+					url isRelease ? iHubExt.releaseRepoUrl : iHubExt.snapshotRepoUrl
+					if (repoUsername && repoPassword) {
+						credentials {
+							username repoUsername
+							password repoPassword
+						}
 					}
 				}
 			}
@@ -90,13 +104,12 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
 		project.plugins.apply SigningPlugin
 		getExtension(project, SigningExtension).identity {
-			required = isRelease && findProperty('publishNeedSign', project, false.toString()).toBoolean()
+			required = isRelease && iHubExt.publishNeedSign
 			// TODO 签名待调试
 			if (OperatingSystem.current().windows) {
 				useGpgCmd()
 			} else {
-				useInMemoryPgpKeys findProperty('signingKeyId', project),
-					findProperty('signingSecretKey', project), findProperty('signingPassword', project)
+				useInMemoryPgpKeys iHubExt.signingKeyId, iHubExt.signingSecretKey, iHubExt.signingPassword
 			}
 			getExtension(project, PublishingExtension, AFTER) {
 				if (required) {
@@ -114,20 +127,6 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 			}
 		}
 		project.compileJava.inputs.files project.processResources
-	}
-
-	private static List<TaskProvider> registerJarTasks(Project project) {
-		boolean publishDocs = findProperty('publishDocs', false.toString()).toBoolean()
-		List tasks = [
-			registerSourcesJar(project)
-		]
-		if (publishDocs) {
-			tasks << registerJavadocsJar(project)
-		}
-		if (publishDocs && project.plugins.hasPlugin(GroovyPlugin)) {
-			tasks << registerGroovydocJar(project)
-		}
-		tasks
 	}
 
 }

@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
 import org.gradle.api.Plugin
@@ -59,11 +58,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 			}
 		}
 
-		// 配置主项目名称
-		settings.rootProject.name = findProperty settings, 'projectName', settings.rootProject.name
-
 		// 扩展配置
-		settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
+		IHubSettingsExtension ext = settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
+
+		// 配置主项目名称
+		settings.rootProject.name = ext.projectName
 	}
 
 }

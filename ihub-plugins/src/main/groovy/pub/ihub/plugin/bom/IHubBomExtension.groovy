@@ -27,18 +27,17 @@ import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.GROUP
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
 
 import groovy.transform.EqualsAndHashCode
-import groovy.transform.ToString
 import groovy.transform.TupleConstructor
 import org.gradle.api.Action
 import org.gradle.api.GradleException
-import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtension
 
 /**
  * BOM插件DSL扩展
  * @author liheng
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubBomExtension extends IHubExtension {
+class IHubBomExtension extends IHubProjectExtension {
 
 	boolean enabledDefaultConfig = true
 	final Set<BomSpecImpl> bomVersions = []
@@ -95,7 +94,7 @@ class IHubBomExtension extends IHubExtension {
 	}
 
 	boolean getEnabledDefaultConfig() {
-		findBooleanProperty 'enabledBomDefaultConfig', enabledDefaultConfig
+		findProperty 'enabledBomDefaultConfig', enabledDefaultConfig
 	}
 
 	private <T> Collection<T> actionExecute(Action<ActionSpec<T>> action, ActionSpec<T> spec) {
@@ -219,7 +218,6 @@ class IHubBomExtension extends IHubExtension {
 	}
 
 	@TupleConstructor(includes = 'type,group')
-	@ToString
 	private class BomSpecImpl implements ModuleSpec, ModulesSpec, Comparable<BomSpecImpl> {
 
 		final VersionType type
@@ -291,7 +289,6 @@ class IHubBomExtension extends IHubExtension {
 
 	@TupleConstructor
 	@EqualsAndHashCode(includes = 'type')
-	@ToString
 	private final class DepSpecImpl implements Comparable<DepSpecImpl> {
 
 		String type

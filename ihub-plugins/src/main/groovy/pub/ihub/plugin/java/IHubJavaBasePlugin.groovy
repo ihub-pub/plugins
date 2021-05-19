@@ -15,8 +15,6 @@
  */
 package pub.ihub.plugin.java
 
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -28,15 +26,17 @@ import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
-import pub.ihub.plugin.IHubExtension
-import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubPluginsExtension
+import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.IHubPluginsPlugin
+import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.bom.IHubBomExtension
 
 /**
  * Java基础插件
  * @author henry
  */
-class IHubJavaBasePlugin implements IHubPluginAware<IHubExtension> {
+class IHubJavaBasePlugin implements IHubPluginAware<IHubProjectExtension> {
 
 	static TaskProvider registerSourcesJar(Project project) {
 		project.tasks.register('sourcesJar', org.gradle.jvm.tasks.Jar) {
@@ -67,13 +67,22 @@ class IHubJavaBasePlugin implements IHubPluginAware<IHubExtension> {
 		project.pluginManager.apply ProjectReportsPlugin
 		project.pluginManager.apply BuildDashboardPlugin
 
+		IHubPluginsExtension iHubExt = getExtension project, IHubPluginsExtension
+
 		// 兼容性配置
-		findProperty('javaCompatibility', project)?.with { version ->
+		iHubExt.javaCompatibility?.with { version ->
 			project.tasks.withType(AbstractCompile) {
 				sourceCompatibility = version
 				targetCompatibility = version
 				options.encoding = 'UTF-8'
-				options.incremental = findProperty('gradleCompilationIncremental', project, true.toString()).toBoolean()
+				options.incremental = iHubExt.gradleCompilationIncremental
+			}
+		}
+
+		// Java11添加jaxb运行时依赖
+		if (JavaVersion.current().java11) {
+			getExtension(project, IHubBomExtension).dependencies {
+				runtimeOnly 'javax.xml.bind:jaxb-api', 'com.sun.xml.bind:jaxb-core', 'com.sun.xml.bind:jaxb-impl'
 			}
 		}
 

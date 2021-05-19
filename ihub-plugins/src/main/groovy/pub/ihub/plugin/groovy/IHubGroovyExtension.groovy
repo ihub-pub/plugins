@@ -20,14 +20,14 @@ import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.BASE
 import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.EXTENSION
 
 import groovy.transform.TupleConstructor
-import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtension
 
 /**
  * Groovy插件扩展
  * @author liheng
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubGroovyExtension extends IHubExtension {
+class IHubGroovyExtension extends IHubProjectExtension {
 
 	static final List<String> BASE_MODULES = [
 		'groovy',

@@ -16,14 +16,13 @@
 package pub.ihub.plugin.spring
 
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubPluginMethods.findProperty
 
 import org.gradle.api.Project
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 import pub.ihub.plugin.IHubPluginAware
-import pub.ihub.plugin.java.IHubJavaPlugin
+import pub.ihub.plugin.java.IHubJavaBasePlugin
 
 /**
  * IHub Spring Boot Plugin
@@ -33,7 +32,7 @@ class IHubBootPlugin implements IHubPluginAware<IHubBootExtension> {
 
 	@Override
 	void apply(Project project) {
-		project.pluginManager.apply IHubJavaPlugin
+		project.pluginManager.apply IHubJavaBasePlugin
 		project.pluginManager.apply SpringBootPlugin
 
 		createExtension(project, 'iHubBoot', IHubBootExtension, AFTER) { ext ->

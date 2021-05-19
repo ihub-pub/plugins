@@ -19,8 +19,8 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.IHubPluginsPlugin
+import pub.ihub.plugin.IHubPluginAware
 
 /**
  * BOM（Bill of Materials）组件依赖管理

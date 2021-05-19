@@ -16,14 +16,14 @@
 package pub.ihub.plugin.verification
 
 import groovy.transform.TupleConstructor
-import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtension
 
 /**
  * 代码检查插件扩展
  * @author henry
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubVerificationExtension extends IHubExtension {
+class IHubVerificationExtension extends IHubProjectExtension {
 
 	//<editor-fold desc="默认检查规则">
 
@@ -124,11 +124,11 @@ ruleset {
 	}
 
 	boolean getPmdConsoleOutput() {
-		findBooleanProperty 'pmdConsoleOutput', pmdConsoleOutput
+		findProperty 'pmdConsoleOutput', pmdConsoleOutput
 	}
 
 	boolean getPmdIgnoreFailures() {
-		findBooleanProperty 'pmdIgnoreFailures', pmdIgnoreFailures
+		findProperty 'pmdIgnoreFailures', pmdIgnoreFailures
 	}
 
 	String getPmdVersion() {
@@ -140,7 +140,7 @@ ruleset {
 	}
 
 	boolean getCodenarcIgnoreFailures() {
-		findBooleanProperty 'codenarcIgnoreFailures', codenarcIgnoreFailures
+		findProperty 'codenarcIgnoreFailures', codenarcIgnoreFailures
 	}
 
 	String getCodenarcVersion() {
@@ -152,31 +152,31 @@ ruleset {
 	}
 
 	boolean getJacocoBundleBranchCoverageRuleEnabled() {
-		findEnvProperty 'jacocoBundleBranchCoverageRuleEnabled', jacocoBundleBranchCoverageRuleEnabled
+		findSystemProperty 'jacocoBundleBranchCoverageRuleEnabled', jacocoBundleBranchCoverageRuleEnabled
 	}
 
 	String getJacocoBundleBranchCoveredRatio() {
-		findEnvProperty 'jacocoBundleBranchCoveredRatio', jacocoBundleBranchCoveredRatio
+		findSystemProperty 'jacocoBundleBranchCoveredRatio', jacocoBundleBranchCoveredRatio
 	}
 
 	boolean getJacocoBundleInstructionCoverageRuleEnabled() {
-		findEnvProperty 'jacocoBundleInstructionCoverageRuleEnabled', jacocoBundleInstructionCoverageRuleEnabled
+		findSystemProperty 'jacocoBundleInstructionCoverageRuleEnabled', jacocoBundleInstructionCoverageRuleEnabled
 	}
 
 	String getJacocoBundleInstructionCoveredRatio() {
-		findEnvProperty 'jacocoBundleInstructionCoveredRatio', jacocoBundleInstructionCoveredRatio
+		findSystemProperty 'jacocoBundleInstructionCoveredRatio', jacocoBundleInstructionCoveredRatio
 	}
 
 	boolean getJacocoPackageInstructionCoverageRuleEnabled() {
-		findEnvProperty 'jacocoPackageInstructionCoverageRuleEnabled', jacocoPackageInstructionCoverageRuleEnabled
+		findSystemProperty 'jacocoPackageInstructionCoverageRuleEnabled', jacocoPackageInstructionCoverageRuleEnabled
 	}
 
 	String getJacocoPackageInstructionCoveredRatio() {
-		findEnvProperty 'jacocoPackageInstructionCoveredRatio', jacocoPackageInstructionCoveredRatio
+		findSystemProperty 'jacocoPackageInstructionCoveredRatio', jacocoPackageInstructionCoveredRatio
 	}
 
 	String getJacocoReportExclusion() {
-		findEnvProperty 'jacocoReportExclusion', jacocoReportExclusion
+		findSystemProperty 'jacocoReportExclusion', jacocoReportExclusion
 	}
 
 }

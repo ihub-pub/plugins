@@ -20,14 +20,14 @@ import groovy.transform.TupleConstructor
 import static java.time.Year.now
 
 import org.gradle.api.publish.maven.MavenPublication
-import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtension
 
 /**
  * 组件发布属性扩展
  * @author henry
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubPublishExtension extends IHubExtension {
+class IHubPublishExtension extends IHubProjectExtension {
 
 	String pomName
 	String pomPackaging

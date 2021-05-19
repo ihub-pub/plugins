@@ -16,14 +16,14 @@
 package pub.ihub.plugin.spring
 
 import groovy.transform.TupleConstructor
-import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtension
 
 /**
  * IHub Spring Boot Plugin Extension
  * @author henry
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubBootExtension extends IHubExtension {
+class IHubBootExtension extends IHubProjectExtension {
 
 	//<editor-fold desc="BootRun Configuration">
 
