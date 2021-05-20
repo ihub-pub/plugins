@@ -1,9 +1,9 @@
 name: Gitee Repo Sync
 
 on:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   schedule:
     - cron: '0 1 * * *'
 
