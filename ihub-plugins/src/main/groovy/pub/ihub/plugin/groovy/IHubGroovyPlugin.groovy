@@ -27,8 +27,6 @@ import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.java.IHubJavaBasePlugin
-import pub.ihub.plugin.verification.IHubTestPlugin
-import pub.ihub.plugin.verification.IHubVerificationPlugin
 
 /**
  * Groovy插件
@@ -77,9 +75,6 @@ class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
 				}
 			}
 		}
-
-		project.pluginManager.apply IHubTestPlugin
-		project.pluginManager.apply IHubVerificationPlugin
 	}
 
 }

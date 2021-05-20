@@ -20,8 +20,6 @@ import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
-import pub.ihub.plugin.verification.IHubTestPlugin
-import pub.ihub.plugin.verification.IHubVerificationPlugin
 
 /**
  * Java插件
@@ -40,9 +38,6 @@ class IHubJavaPlugin implements IHubPluginAware<IHubProjectExtension> {
 			compileOnly lombok
 			annotationProcessor lombok
 		}
-
-		project.pluginManager.apply IHubTestPlugin
-		project.pluginManager.apply IHubVerificationPlugin
 	}
 
 }
