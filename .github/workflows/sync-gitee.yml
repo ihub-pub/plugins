@@ -16,5 +16,5 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
         with:
-          source-repo: git@github.com:${{ github.repository }}.git
-          destination-repo: git@gitee.com:${{ github.repository }}.git
+          source-repo: git@github.com:ihub-pub/plugins.git
+          destination-repo: git@gitee.com:ihub-pub/plugins.git
