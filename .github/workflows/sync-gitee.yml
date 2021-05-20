@@ -1,9 +1,9 @@
 name: Gitee Repo Sync
 
 on: 
-#   push:
-#     branches:
-#       - main
+  push:
+    branches:
+      - main
   schedule: 
     - cron: '0 1 * * *'
 
@@ -11,11 +11,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Mirror the Github organization repos to Gitee.
-        uses: Yikun/hub-mirror-action@master
+      - name: Sync to Gitee
+        uses: wearerequired/git-mirror-action@master
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
         with:
-          src: github/ihub-pub
-          dst: gitee/ihub-pub
-          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
-          dst_token: ${{ secrets.GITEE_TOKEN }}
-          static_list: "plugins"
+          source-repo: git@github.com:${{ github.repository }}.git
+          destination-repo: git@gitee.com:${{ github.repository }}.git
