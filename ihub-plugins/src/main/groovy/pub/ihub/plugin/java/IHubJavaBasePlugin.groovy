@@ -81,8 +81,13 @@ class IHubJavaBasePlugin implements IHubPluginAware<IHubProjectExtension> {
 
 		// Java11添加jaxb运行时依赖
 		if (JavaVersion.current().java11) {
-			getExtension(project, IHubBomExtension).dependencies {
-				runtimeOnly 'javax.xml.bind:jaxb-api', 'com.sun.xml.bind:jaxb-core', 'com.sun.xml.bind:jaxb-impl'
+			getExtension(project, IHubBomExtension) {
+				it.excludeModules {
+					group 'com.sun.xml.bind' modules 'jaxb-core'
+				}
+				it.dependencies {
+					runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
+				}
 			}
 		}
 
