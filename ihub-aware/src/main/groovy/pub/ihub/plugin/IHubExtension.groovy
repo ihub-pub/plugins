@@ -35,7 +35,7 @@ trait IHubExtension {
 	 * @return 属性值
 	 */
 	String findProperty(String key, String defaultValue = null, Closure closure) {
-		closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').toLowerCase().with {
+		closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').replaceAll(/[.-]/, '_').toLowerCase().with {
 			closure(it) ?: closure(it.replaceAll('_', '.'))
 				?: closure(it.replaceAll('_', '-'))
 				?: defaultValue
