@@ -33,6 +33,10 @@ abstract class IHubProjectExtension implements IHubExtension {
 		project.rootProject
 	}
 
+	boolean isRelease() {
+		project.version ==~ /(\d+\.)+\d+/
+	}
+
 	protected boolean isRoot() {
 		projectName == rootProject.name
 	}

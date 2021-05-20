@@ -32,7 +32,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
 		IHubPluginsExtension ext = createExtension project, 'iHub', IHubPluginsExtension
 
 		project.pluginManager.apply 'com.palantir.git-version'
-		project.version = project.version.toString().with {
+		project.version = ext.version.with {
 			'unspecified' == it ? project.versionDetails().lastTag : it
 		}
 

@@ -17,12 +17,8 @@ package pub.ihub.plugin.groovy
 
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.tasks.TaskProvider
-import org.gradle.jvm.tasks.Jar
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
@@ -33,20 +29,6 @@ import pub.ihub.plugin.java.IHubJavaBasePlugin
  * @author liheng
  */
 class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
-
-	static TaskProvider registerGroovydocJar(Project project) {
-		project.tasks.register('groovydocJar', Jar) {
-			archiveClassifier.set 'groovydoc'
-			Task groovydocTask = project.tasks.getByName('groovydoc').tap {
-				if (JavaVersion.current().java9Compatible) {
-					options.addBooleanOption 'html5', true
-				}
-				options.encoding = 'UTF-8'
-			}
-			dependsOn groovydocTask
-			from groovydocTask.destinationDir
-		}
-	}
 
 	@Override
 	void apply(Project project) {

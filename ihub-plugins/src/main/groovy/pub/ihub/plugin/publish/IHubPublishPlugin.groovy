@@ -17,20 +17,22 @@ package pub.ihub.plugin.publish
 
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
-import static pub.ihub.plugin.groovy.IHubGroovyPlugin.registerGroovydocJar
-import static pub.ihub.plugin.java.IHubJavaBasePlugin.registerJavadocsJar
-import static pub.ihub.plugin.java.IHubJavaBasePlugin.registerSourcesJar
 
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.internal.os.OperatingSystem
+import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
-import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
@@ -40,12 +42,46 @@ import pub.ihub.plugin.java.IHubJavaBasePlugin
  */
 class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
+	private static TaskProvider registerSourcesJar(Project project) {
+		project.tasks.register('sourcesJar', Jar) {
+			archiveClassifier.set 'sources'
+			from project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
+		}
+	}
+
+	private static TaskProvider registerJavadocsJar(Project project) {
+		project.tasks.register('javadocsJar', Jar) {
+			archiveClassifier.set 'javadoc'
+			Task javadocTask = project.tasks.getByName('javadoc').tap {
+				if (JavaVersion.current().java9Compatible) {
+					options.addBooleanOption 'html5', true
+				}
+				options.encoding = 'UTF-8'
+			}
+			dependsOn javadocTask
+			from javadocTask
+		}
+	}
+
+	private static TaskProvider registerGroovydocJar(Project project) {
+		project.tasks.register('groovydocJar', Jar) {
+			archiveClassifier.set 'groovydoc'
+			Task groovydocTask = project.tasks.getByName('groovydoc').tap {
+				if (JavaVersion.current().java9Compatible) {
+					options.addBooleanOption 'html5', true
+				}
+				options.encoding = 'UTF-8'
+			}
+			dependsOn groovydocTask
+			from groovydocTask.destinationDir
+		}
+	}
+
 	@Override
 	void apply(Project project) {
 		project.pluginManager.apply IHubJavaBasePlugin
 
 		IHubPluginsExtension iHubExt = getExtension project, IHubPluginsExtension
-		boolean isRelease = project.version ==~ /(\d+\.)+\d+/
 
 		project.pluginManager.apply MavenPublishPlugin
 		getExtension(project, PublishingExtension).identity {
@@ -54,7 +90,7 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 					from project.components.getByName('java')
 
 					// release版本时发布sources以及docs包
-					if (isRelease) {
+					if (iHubExt.release) {
 						boolean publishDocs = iHubExt.publishDocs
 						List tasks = [
 							registerSourcesJar(project)
@@ -91,7 +127,7 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 			String repoPassword = iHubExt.repoPassword
 			repositories {
 				maven {
-					url isRelease ? iHubExt.releaseRepoUrl : iHubExt.snapshotRepoUrl
+					url iHubExt.release ? iHubExt.releaseRepoUrl : iHubExt.snapshotRepoUrl
 					if (repoUsername && repoPassword) {
 						credentials {
 							username repoUsername
@@ -104,7 +140,7 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
 		project.plugins.apply SigningPlugin
 		getExtension(project, SigningExtension).identity {
-			required = isRelease && iHubExt.publishNeedSign
+			required = iHubExt.release && iHubExt.publishNeedSign
 			// TODO 签名待调试
 			if (OperatingSystem.current().windows) {
 				useGpgCmd()

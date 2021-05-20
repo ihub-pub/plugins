@@ -24,6 +24,14 @@ import groovy.transform.TupleConstructor
 @TupleConstructor(includeSuperFields = true)
 class IHubPluginsExtension extends IHubProjectExtension {
 
+	/**
+	 * 项目版本
+	 * @return 项目版本
+	 */
+	String getVersion() {
+		findSystemProperty 'version', project.version.toString()
+	}
+
 	//<editor-fold desc="组件仓库相关扩展属性">
 
 	/**
@@ -107,7 +115,7 @@ class IHubPluginsExtension extends IHubProjectExtension {
 	 * @return 兼容版本
 	 */
 	String getJavaCompatibility() {
-		findEnvProperty 'javaCompatibility'
+		findSystemProperty 'javaCompatibility'
 	}
 
 	/**
@@ -115,7 +123,7 @@ class IHubPluginsExtension extends IHubProjectExtension {
 	 * @return gradle增量编译
 	 */
 	boolean getGradleCompilationIncremental() {
-		findProperty 'gradleCompilationIncremental', true
+		findSystemProperty 'gradleCompilationIncremental', true
 	}
 
 	//</editor-fold>
@@ -127,7 +135,7 @@ class IHubPluginsExtension extends IHubProjectExtension {
 	 * @return 是否需要签名
 	 */
 	boolean getPublishNeedSign() {
-		findProperty 'publishNeedSign', false
+		findSystemProperty 'publishNeedSign', false
 	}
 
 	/**
@@ -158,8 +166,8 @@ class IHubPluginsExtension extends IHubProjectExtension {
 	 * 是否发布文档
 	 * @return 是否发布文档
 	 */
-	String getPublishDocs() {
-		findProperty 'publishDocs', false
+	boolean getPublishDocs() {
+		findSystemProperty 'publishDocs', false
 	}
 
 	//</editor-fold>
