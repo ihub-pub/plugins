@@ -39,8 +39,6 @@ class IHubSettingsExtension implements IHubExtension {
 
 	IHubSettingsExtension(Settings settings) {
 		this.settings = settings
-		includeDirs = findProperty 'includeDirs'
-		skippedDirs = findProperty 'skippedDirs'
 	}
 
 	/**
@@ -99,7 +97,7 @@ class IHubSettingsExtension implements IHubExtension {
 	 * 通过环境配置添加多个项目
 	 * @param includeDirs 项目路径，多路径”,“分割
 	 */
-	void setIncludeDirs(String includeDirs) {
+	void setIncludeDirs(String includeDirs = findProperty('includeDirs')) {
 		includeProjects includeDirs?.split(',')
 	}
 
@@ -108,7 +106,7 @@ class IHubSettingsExtension implements IHubExtension {
 	 * skippedDirs与include互斥，使用时须首先使用，且只能使用一次
 	 * @param skippedDirs 需要跳过路径，多路径”,“分割
 	 */
-	void setSkippedDirs(String skippedDirs) {
+	void setSkippedDirs(String skippedDirs = findProperty('skippedDirs')) {
 		if (skippedDirs) {
 			if (alreadyUsedInclude) {
 				throw new GradleException('You can no longer use \'skippedDirs\' if you use \'include\'!')

@@ -63,6 +63,10 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
 		// 配置主项目名称
 		settings.rootProject.name = ext.projectName
+
+		// 配置子项目
+		ext.setIncludeDirs()
+		ext.setSkippedDirs()
 	}
 
 }
