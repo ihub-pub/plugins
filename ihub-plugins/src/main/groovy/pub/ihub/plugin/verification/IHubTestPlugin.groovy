@@ -44,26 +44,30 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
 		}
 		createExtension(project, 'iHubTest', IHubTestExtension, AFTER) { ext ->
 			project.tasks.getByName('test') { Test it ->
-				it.useJUnitPlatform()
-				if (ext.testClasses) {
-					ext.testClasses.tokenize(',').each { testClass ->
-						it.include testClass
-					}
-				} else {
-					it.include '**/*Test*', '**/*FT*', '**/*UT*'
-				}
-
-				it.forkEvery = ext.testForkEvery
-				it.maxParallelForks = ext.testMaxParallelForks
-
-				if (ext.testRunIncludePropNames) {
-					ext.testRunIncludePropNames.split(',').each { propName ->
+				if (ext.runIncludePropNames) {
+					ext.runIncludePropNames.split(',').each { propName ->
 						it.systemProperty propName, System.getProperty(propName)
 					}
 				}
 				ext.localProperties.each { k, v ->
 					it.systemProperties.putIfAbsent k, v
 				}
+
+				it.useJUnitPlatform()
+				if (ext.classes) {
+					ext.classes.tokenize(',').each { testClass ->
+						it.include testClass
+					}
+				} else {
+					it.include '**/*Test*', '**/*FT*', '**/*UT*'
+				}
+
+				it.forkEvery = ext.forkEvery
+				it.maxParallelForks = ext.maxParallelForks
+				it.enabled = ext.enabled
+				it.debug = ext.debug
+				it.failFast = ext.failFast
+
 				it.onOutput { descriptor, event ->
 					it.logger.lifecycle event.message
 				}

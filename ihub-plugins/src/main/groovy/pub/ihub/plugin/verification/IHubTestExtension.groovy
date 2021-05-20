@@ -26,36 +26,60 @@ import pub.ihub.plugin.IHubProjectExtension
 class IHubTestExtension extends IHubProjectExtension {
 
 	/**
+	 * 启用测试
+	 */
+	boolean enabled = true
+	/**
 	 * 包含属性名称（“,”分割）
 	 */
-	String testClasses = ''
+	String classes = ''
 	/**
 	 * 每跑100个测试类后重启fork进程
 	 */
-	int testForkEvery = 100
+	int forkEvery = 100
 	/**
 	 * 最多启动进程数
 	 */
-	int testMaxParallelForks = 2
+	int maxParallelForks = 2
 	/**
 	 * 包含属性名称（“,”分割）
 	 */
-	String testRunIncludePropNames = ''
+	String runIncludePropNames = ''
+	/**
+	 * 启用测试调试
+	 */
+	boolean debug = false
+	/**
+	 * 只要有一个测试失败就停止测试
+	 */
+	boolean failFast = false
 
-	String getTestClasses() {
-		findSystemProperty 'test.classes', testClasses
+	boolean getEnabled() {
+		findSystemProperty 'iHubTestEnabled', enabled
 	}
 
-	int getTestForkEvery() {
-		findSystemProperty 'test.forkEvery', testForkEvery
+	String getClasses() {
+		findSystemProperty 'iHubTestClasses', classes
 	}
 
-	int getTestMaxParallelForks() {
-		findSystemProperty 'test.maxParallelForks', testMaxParallelForks
+	int getForkEvery() {
+		findSystemProperty 'iHubTestForkEvery', forkEvery
 	}
 
-	String getTestRunIncludePropNames() {
-		findSystemProperty 'testRunIncludePropNames', testRunIncludePropNames
+	int getMaxParallelForks() {
+		findSystemProperty 'iHubTestMaxParallelForks', maxParallelForks
+	}
+
+	String getRunIncludePropNames() {
+		findSystemProperty 'iHubTestRunIncludePropNames', runIncludePropNames
+	}
+
+	boolean getDebug() {
+		findSystemProperty 'iHubTestDebug', debug
+	}
+
+	boolean getFailFast() {
+		findSystemProperty 'iHubTestFailFast', failFast
 	}
 
 }
