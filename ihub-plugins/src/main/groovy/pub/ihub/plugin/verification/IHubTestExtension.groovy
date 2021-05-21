@@ -40,7 +40,7 @@ class IHubTestExtension extends IHubProjectExtension {
 	/**
 	 * 最多启动进程数
 	 */
-	int maxParallelForks = 2
+	int maxParallelForks = 1
 	/**
 	 * 包含属性名称（“,”分割）
 	 */
