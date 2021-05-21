@@ -30,7 +30,7 @@ import org.gradle.api.initialization.Settings
 class IHubSettingsExtension implements IHubExtension {
 
 	private static final List<String> EXCLUDE_DIRS = [
-		'build', 'src', 'conf', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
+		'build', 'src', 'conf', 'libs', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
 	]
 
 	private boolean alreadyUsedInclude = false
