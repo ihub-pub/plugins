@@ -15,7 +15,7 @@
  */
 package pub.ihub.plugin.java
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -46,7 +46,7 @@ class IHubJavaBasePlugin implements IHubPluginAware<IHubProjectExtension> {
 		project.pluginManager.apply ProjectReportsPlugin
 		project.pluginManager.apply BuildDashboardPlugin
 
-		getExtension(project, IHubPluginsExtension, AFTER) { iHubExt ->
+		getExtension(project, IHubPluginsExtension, BEFORE) { iHubExt ->
 			if (!project.plugins.hasPlugin(IHubJavaPlugin) && !project.plugins.hasPlugin(IHubGroovyPlugin)) {
 				return
 			}
