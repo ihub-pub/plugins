@@ -141,12 +141,7 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 		project.plugins.apply SigningPlugin
 		getExtension(project, SigningExtension).identity {
 			required = iHubExt.release && iHubExt.publishNeedSign
-			// TODO 签名待调试
-			if (OperatingSystem.current().windows) {
-				useGpgCmd()
-			} else {
-				useInMemoryPgpKeys iHubExt.signingKeyId, iHubExt.signingSecretKey, iHubExt.signingPassword
-			}
+			useInMemoryPgpKeys iHubExt.signingKeyId, iHubExt.signingSecretKey, iHubExt.signingPassword
 			getExtension(project, PublishingExtension, AFTER) {
 				if (required) {
 					sign it.publications.mavenJava

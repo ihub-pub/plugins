@@ -77,9 +77,7 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 			ext.dependencies {
 				compileOnly 'cn.hutool:hutool-all'
 				implementation 'org.slf4j:slf4j-api'
-				runtimeOnly 'org.slf4j:jul-to-slf4j',
-//						'org.slf4j:jcl-over-slf4j', TODO 构建原生镜像有报错
-					'org.slf4j:log4j-over-slf4j'
+				runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
 			}
 		}
 
