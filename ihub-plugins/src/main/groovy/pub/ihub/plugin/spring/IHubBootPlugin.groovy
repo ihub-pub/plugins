@@ -40,7 +40,9 @@ class IHubBootPlugin implements IHubPluginAware<IHubBootExtension> {
 				it.systemProperties ext.bootRunProperties
 				if (ext.bootRunIncludePropNames) {
 					ext.bootRunIncludePropNames.split(',').each { propName ->
-						it.systemProperty propName, System.getProperty(propName)
+						System.getProperty(propName)?.with {prop->
+							it.systemProperty propName, prop
+						}
 					}
 				}
 				ext.localProperties.each { k, v ->
