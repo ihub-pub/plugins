@@ -35,6 +35,10 @@ class IHubBootExtension extends IHubProjectExtension {
 	 * 包含属性名称（“,”分割）
 	 */
 	String bootRunIncludePropNames = ''
+	/**
+	 * 启用本地属性
+	 */
+	boolean enabledLocalProperties = true
 
 	//</editor-fold>
 
@@ -44,7 +48,13 @@ class IHubBootExtension extends IHubProjectExtension {
 
 	//</editor-fold>
 
-	String getBootRunIncludePropNames() {
+	@Override
+	protected Map<String, String> getRunProperties() {
+		bootRunProperties
+	}
+
+	@Override
+	protected String getRunIncludePropNames() {
 		findProperty 'springbootIncludePropNames', bootRunIncludePropNames
 	}
 

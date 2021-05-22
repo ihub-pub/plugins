@@ -46,6 +46,10 @@ class IHubTestExtension extends IHubProjectExtension {
 	 */
 	String runIncludePropNames = ''
 	/**
+	 * 启用本地属性
+	 */
+	boolean enabledLocalProperties = false
+	/**
 	 * 启用测试调试
 	 */
 	boolean debug = false
@@ -70,7 +74,8 @@ class IHubTestExtension extends IHubProjectExtension {
 		findSystemProperty 'iHubTestMaxParallelForks', maxParallelForks
 	}
 
-	String getRunIncludePropNames() {
+	@Override
+	protected String getRunIncludePropNames() {
 		findSystemProperty 'iHubTestRunIncludePropNames', runIncludePropNames
 	}
 

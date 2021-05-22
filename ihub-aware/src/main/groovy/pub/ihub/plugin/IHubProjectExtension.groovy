@@ -16,6 +16,7 @@
 package pub.ihub.plugin
 
 import org.gradle.api.Project
+import org.gradle.process.JavaForkOptions
 
 /**
  * IHub项目扩展特征
@@ -50,12 +51,48 @@ abstract class IHubProjectExtension implements IHubExtension {
 		project.findProperty key
 	}
 
-	Map<String, Object> getLocalProperties() {
+	protected Map<String, String> getRunProperties() {
+		[:]
+	}
+
+	protected String getRunIncludePropNames() {
+		findSystemProperty 'runIncludePropNames', ''
+	}
+
+	/**
+	 * 启用本地属性
+	 * @return 启用本地属性
+	 */
+	protected boolean getEnabledLocalProperties() {
+		false
+	}
+
+	/**
+	 * 获取本地Java属性配置
+	 * @return 本地Java属性
+	 */
+	protected Map<String, Object> getLocalProperties() {
 		new File(rootDir, '.java-local.properties').with {
 			exists() ? withInputStream { is ->
 				new Properties().tap { load(is) }
 			} : [:]
 		} as Map
+	}
+
+	void systemProperties(JavaForkOptions task, String runIncludePropNames = this.runIncludePropNames) {
+		task.systemProperties runProperties
+		if (runIncludePropNames) {
+			runIncludePropNames.split(',').each { propName ->
+				System.getProperty(propName)?.with { prop ->
+					task.systemProperty propName, prop
+				}
+			}
+		}
+		if (enabledLocalProperties) {
+			localProperties.each { k, v ->
+				task.systemProperties.putIfAbsent k, v
+			}
+		}
 	}
 
 }

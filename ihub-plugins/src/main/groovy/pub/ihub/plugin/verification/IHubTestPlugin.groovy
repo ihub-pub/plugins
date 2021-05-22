@@ -44,16 +44,7 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
 		}
 		createExtension(project, 'iHubTest', IHubTestExtension, AFTER) { ext ->
 			project.tasks.getByName('test') { Test it ->
-				if (ext.runIncludePropNames) {
-					ext.runIncludePropNames.split(',').each { propName ->
-						System.getProperty(propName)?.with {prop->
-							it.systemProperty propName, prop
-						}
-					}
-				}
-				ext.localProperties.each { k, v ->
-					it.systemProperties.putIfAbsent k, v
-				}
+				ext.systemProperties it
 
 				it.useJUnitPlatform()
 				if (ext.classes) {
