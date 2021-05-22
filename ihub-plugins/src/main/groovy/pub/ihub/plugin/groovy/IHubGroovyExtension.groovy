@@ -29,7 +29,7 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubGroovyExtension extends IHubProjectExtension {
 
-	static final List<String> BASE_MODULES = [
+	private static final List<String> BASE_MODULES = [
 		'groovy',
 		'groovy-astbuilder',
 		'groovy-datetime',
@@ -42,7 +42,7 @@ class IHubGroovyExtension extends IHubProjectExtension {
 		'groovy-xml',
 	]
 
-	static final List<String> EXTENSION_MODULES = BASE_MODULES + [
+	private static final List<String> EXTENSION_MODULES = BASE_MODULES + [
 		'groovy-ant',
 		'groovy-console',
 		'groovy-cli-picocli',
