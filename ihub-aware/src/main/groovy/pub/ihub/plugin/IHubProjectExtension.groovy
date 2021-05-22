@@ -51,12 +51,28 @@ abstract class IHubProjectExtension implements IHubExtension {
 		project.findProperty key
 	}
 
+	/**
+	 * 任务运行时属性
+	 * @return 任务运行时属性
+	 */
 	protected Map<String, String> getRunProperties() {
 		[:]
 	}
 
+	/**
+	 * 包含属性名称（“,”分割）
+	 * @return 包含属性名称
+	 */
 	protected String getRunIncludePropNames() {
-		findSystemProperty 'runIncludePropNames', ''
+		findSystemProperty 'runIncludePropNames'
+	}
+
+	/**
+	 * 排除属性名称（“,”分割）
+	 * @return 排除属性名称
+	 */
+	protected String getRunSkippedPropNames() {
+		findSystemProperty 'runSkippedPropNames'
 	}
 
 	/**
@@ -79,14 +95,10 @@ abstract class IHubProjectExtension implements IHubExtension {
 		} as Map
 	}
 
-	void systemProperties(JavaForkOptions task, String runIncludePropNames = this.runIncludePropNames) {
-		task.systemProperties runProperties
-		if (runIncludePropNames) {
-			runIncludePropNames.split(',').each { propName ->
-				System.getProperty(propName)?.with { prop ->
-					task.systemProperty propName, prop
-				}
-			}
+	void systemProperties(JavaForkOptions task) {
+		task.systemProperties System.properties.subMap(runIncludePropNames?.split(',')) ?: runProperties
+		runSkippedPropNames?.split(',')?.each {
+			task.systemProperties.remove it
 		}
 		if (enabledLocalProperties) {
 			localProperties.each { k, v ->

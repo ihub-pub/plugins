@@ -42,9 +42,17 @@ class IHubTestExtension extends IHubProjectExtension {
 	 */
 	int maxParallelForks = 1
 	/**
+	 * 任务运行时属性
+	 */
+	Map<String, String> runProperties = System.properties as Map<String, String>
+	/**
 	 * 包含属性名称（“,”分割）
 	 */
-	String runIncludePropNames = ''
+	String runIncludePropNames
+	/**
+	 * 排除属性名称（“,”分割）
+	 */
+	String runSkippedPropNames
 	/**
 	 * 启用本地属性
 	 */
@@ -77,6 +85,11 @@ class IHubTestExtension extends IHubProjectExtension {
 	@Override
 	protected String getRunIncludePropNames() {
 		findSystemProperty 'iHubTestRunIncludePropNames', runIncludePropNames
+	}
+
+	@Override
+	protected String getRunSkippedPropNames() {
+		findSystemProperty 'iHubTestRunSkippedPropNames', runSkippedPropNames
 	}
 
 	boolean getDebug() {

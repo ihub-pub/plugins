@@ -34,7 +34,11 @@ class IHubBootExtension extends IHubProjectExtension {
 	/**
 	 * 包含属性名称（“,”分割）
 	 */
-	String bootRunIncludePropNames = ''
+	String bootRunIncludePropNames
+	/**
+	 * 排除属性名称（“,”分割）
+	 */
+	String bootRunSkippedPropNames
 	/**
 	 * 启用本地属性
 	 */
@@ -56,6 +60,11 @@ class IHubBootExtension extends IHubProjectExtension {
 	@Override
 	protected String getRunIncludePropNames() {
 		findProperty 'springbootIncludePropNames', bootRunIncludePropNames
+	}
+
+	@Override
+	protected String getRunSkippedPropNames() {
+		findProperty 'springbootSkippedPropNames', bootRunSkippedPropNames
 	}
 
 	String getBootJarRequiresUnpack() {
