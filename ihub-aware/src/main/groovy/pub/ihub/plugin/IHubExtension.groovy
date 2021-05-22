@@ -50,6 +50,10 @@ trait IHubExtension {
 		findProperty(key, String.valueOf(defaultValue)).toBoolean()
 	}
 
+	String findVersion(String key, String defaultValue) {
+		findProperty key + '.version', defaultValue
+	}
+
 	String findSystemProperty(String key, String defaultValue = null) {
 		findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: findProjectProperty(k) }
 	}

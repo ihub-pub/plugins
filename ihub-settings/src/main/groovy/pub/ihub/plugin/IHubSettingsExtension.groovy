@@ -15,12 +15,8 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginMethods.idTap
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.versionTap
-
+import groovy.transform.TupleConstructor
 import org.gradle.api.Action
-import org.gradle.api.GradleException
 import org.gradle.api.initialization.Settings
 
 /**
@@ -33,12 +29,15 @@ class IHubSettingsExtension implements IHubExtension {
 		'build', 'src', 'conf', 'libs', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
 	]
 
-	private boolean alreadyUsedInclude = false
-
 	final Settings settings
+	final Map<String, String> pluginVersions = [:]
+	final Map<String, ProjectSpec> projectSpecs = [:]
+	final String[] skippedDirs = findProperty('skippedDirs')?.split(',')
 
 	IHubSettingsExtension(Settings settings) {
 		this.settings = settings
+		// 通过项目属性配置子项目
+		includeProjects findProperty('includeDirs')?.split(',')
 	}
 
 	/**
@@ -50,95 +49,27 @@ class IHubSettingsExtension implements IHubExtension {
 	}
 
 	/**
-	 * 添加项目
-	 * @param projectPath 项目路径
-	 * @param namePrefix 项目名称前缀
-	 * @param nameSuffix 项目名称后缀
+	 * 配置插件版本
+	 * @param action 配置
 	 */
-	void includeProject(String projectPath, String namePrefix = settings.rootProject.name + '-', String nameSuffix = '') {
-		String gradleProjectPath = ":$projectPath"
-		String projectName = projectPath.split(':').last()
-		if (settings.findProject(gradleProjectPath)) {
-			println 'included project -> ' + projectPath
-		} else if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS) {
-			println 'exclude project -> ' + projectPath
-		} else {
-			println 'include project -> ' + projectPath
-			settings.include gradleProjectPath
-			settings.project(gradleProjectPath).name = namePrefix + projectName + nameSuffix
+	void pluginVersions(Action<PluginVersionsSpec> action) {
+		List<PluginVersionSpec> versions = new PluginVersionsSpec().tap { action.execute it }.specs
+		assert versions, 'plugin versions config not empty!'
+		versions.each {
+			pluginVersions.put it.id, it.version
 		}
-		alreadyUsedInclude = true
 	}
 
 	/**
 	 * 添加多个项目
 	 * @param projectPaths 项目路径
 	 */
-	void includeProjects(String... projectPaths) {
-		projectPaths.each { includeProject it }
-	}
-
-	/**
-	 * 添加子项目
-	 * @param projectPath 项目路径
-	 * @param namePrefix 项目名称前缀
-	 * @param nameSuffix 项目名称后缀
-	 */
-	void includeSubprojects(String projectPath, String namePrefix = projectPath + '-', String nameSuffix = '') {
-		new File(settings.rootDir, projectPath).identity {
-			includeProject name, ''
-			eachDir { dir ->
-				includeProject "$name:$dir.name", namePrefix, nameSuffix
+	ProjectSpec includeProjects(String... projectPaths) {
+		new ProjectSpec().tap {
+			projectPaths.each { projectPath ->
+				projectSpecs.put projectPath, it
 			}
 		}
-	}
-
-	/**
-	 * 通过环境配置添加多个项目
-	 * @param includeDirs 项目路径，多路径”,“分割
-	 */
-	void setIncludeDirs(String includeDirs = findProperty('includeDirs')) {
-		includeProjects includeDirs?.split(',')
-	}
-
-	/**
-	 * 跳过某些目录添加其他项目
-	 * skippedDirs与include互斥，使用时须首先使用，且只能使用一次
-	 * @param skippedDirs 需要跳过路径，多路径”,“分割
-	 */
-	void setSkippedDirs(String skippedDirs = findProperty('skippedDirs')) {
-		if (skippedDirs) {
-			if (alreadyUsedInclude) {
-				throw new GradleException('You can no longer use \'skippedDirs\' if you use \'include\'!')
-			}
-			settings.rootDir.eachDir {
-				if (!skippedDirs.split(',').contains(it.name)) {
-					includeProject it.name
-				}
-			}
-		}
-	}
-
-	/**
-	 * 配置插件版本
-	 * @param action 配置
-	 */
-	void pluginVersions(Action<PluginVersionsSpec> action) {
-		List<PluginVersionSpec> pluginVersions = new PluginVersionsSpec().tap { action.execute it }.specs
-		assert pluginVersions, 'plugin versions config not empty!'
-		settings.pluginManagement {
-			resolutionStrategy {
-				eachPlugin {
-					pluginVersions.each { spec ->
-						if (spec.id == requested.id.toString()) {
-							useVersion spec.version
-						}
-					}
-				}
-			}
-		}
-		printConfigContent 'Gradle Plugin Plugins Version', idTap(), versionTap(),
-			pluginVersions.collectEntries { [(it.id): it.version] }
 	}
 
 	@Override
@@ -146,7 +77,54 @@ class IHubSettingsExtension implements IHubExtension {
 		settings.hasProperty(key) ? settings."$key" : null
 	}
 
-	private class PluginVersionsSpec {
+	class ProjectSpec {
+
+		String namePrefix = settings.rootProject.name + '-'
+		String nameSuffix = ''
+		boolean include = true
+		ProjectSpec subprojectSpec
+
+		ProjectSpec namePrefix(String namePrefix) {
+			this.namePrefix = namePrefix
+			this
+		}
+
+		ProjectSpec nameSuffix(String nameSuffix) {
+			this.nameSuffix = nameSuffix
+			this
+		}
+
+		ProjectSpec include(boolean include) {
+			this.include = include
+			this
+		}
+
+		ProjectSpec subprojectSpec(boolean include) {
+			new ProjectSpec().tap {
+				this.subprojectSpec = it
+				it.namePrefix = this.namePrefix
+				it.nameSuffix = this.nameSuffix
+				it.include = include
+			}
+		}
+
+		String includeProject(String projectPath, File dir) {
+			String gradleProjectPath = ":$projectPath"
+			String projectName = projectPath.split(':').last()
+			if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || projectName in skippedDirs ||
+				settings.findProject(gradleProjectPath)) {
+				return null
+			}
+			settings.include gradleProjectPath
+			settings.project(gradleProjectPath).tap {
+				name = namePrefix + projectPath.replaceAll(':', '-') + nameSuffix
+				projectDir = dir
+			}.name
+		}
+
+	}
+
+	class PluginVersionsSpec {
 
 		private final List<PluginVersionSpec> specs = []
 
@@ -158,18 +136,14 @@ class IHubSettingsExtension implements IHubExtension {
 
 	}
 
-	private class PluginVersionSpec {
+	@TupleConstructor(includes = 'id')
+	class PluginVersionSpec {
 
-		private final String id
-		private String version
+		final String id
+		String version
 
-		PluginVersionSpec(String id) {
-			this.id = id
-		}
-
-		PluginVersionSpec version(String version) {
-			this.version = version
-			this
+		void version(String version) {
+			this.version = findVersion id, version
 		}
 
 	}

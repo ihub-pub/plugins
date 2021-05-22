@@ -46,7 +46,7 @@ class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
 				group groovyGroup modules 'groovy-all' version groovyVersion
 			}
 			// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
-			if (it.findProperty(groovyGroup + '.version', groovyVersion).startsWith('3.')) {
+			if (it.findVersion(groovyGroup, groovyVersion).startsWith('3.')) {
 				it.groupVersions {
 					group groovyGroup version groovyVersion
 				}

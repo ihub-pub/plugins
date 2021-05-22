@@ -229,7 +229,7 @@ class IHubBomExtension extends IHubProjectExtension {
 		@Override
 		void version(String version) {
 			if (EXCLUDE == type) throw new GradleException('Does not support \'version\' method!')
-			this.version = findProperty group + '.version', version
+			this.version = findVersion group, version
 		}
 
 		@Override

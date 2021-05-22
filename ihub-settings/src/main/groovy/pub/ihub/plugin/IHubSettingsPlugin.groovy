@@ -15,7 +15,10 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.IHubPluginMethods.idTap
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
+import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
@@ -74,9 +77,38 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 		// 配置主项目名称
 		settings.rootProject.name = ext.projectName
 
-		// 配置子项目
-		ext.setIncludeDirs()
-		ext.setSkippedDirs()
+		settings.gradle.settingsEvaluated {
+			settings.pluginManagement {
+				resolutionStrategy {
+					eachPlugin {
+						ext.pluginVersions.each { id, version ->
+							if (id == requested.id.toString()) {
+								useVersion version
+							}
+						}
+					}
+				}
+			}
+			printConfigContent 'Gradle Plugin Plugins Version', idTap(), versionTap(), ext.pluginVersions
+
+			Map<String, List<String>> projectSpecs = [:]
+			settings.rootDir.eachDir { dir ->
+				String path = dir.name
+				ext.projectSpecs[path]?.with { spec ->
+					List<String> names = []
+					if (spec.include) {
+						names << spec.includeProject(path, dir)
+					}
+					spec.subprojectSpec?.with { subSpec ->
+						dir.eachDir { subDir ->
+							names << subSpec.includeProject("${spec.include ? path + ':' : ''}$subDir.name", subDir)
+						}
+					}
+					projectSpecs.put path, names - null
+				}
+			}
+			printConfigContent 'Include Gradle Projects', tap('Path', 35), tap('Projects'), projectSpecs
+		}
 	}
 
 }
