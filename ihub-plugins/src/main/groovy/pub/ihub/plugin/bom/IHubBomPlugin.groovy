@@ -130,7 +130,7 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 
 			ext.refreshCommonSpecs()
 
-			project.gradle.buildFinished {
+			project.gradle.taskGraph.whenReady {
 				ext.printConfigContent()
 			}
 		}
