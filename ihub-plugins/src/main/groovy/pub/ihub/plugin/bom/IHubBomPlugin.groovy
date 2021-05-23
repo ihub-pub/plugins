@@ -19,8 +19,8 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
 
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubPluginsPlugin
 
 /**
  * BOM（Bill of Materials）组件依赖管理
@@ -86,14 +86,14 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 				// 导入bom配置
 				imports {
 					ext.bomVersions.each {
-						mavenBom "$it.group:$it.module:$it.version"
+						mavenBom "$it.id:$it.module:$it.version"
 					}
 				}
 
 				// 配置组件版本
 				dependencies {
 					ext.dependencyVersions.each { config ->
-						dependencySet(group: config.group, version: config.version) {
+						dependencySet(group: config.id, version: config.version) {
 							config.modules.each { entry it }
 						}
 					}
@@ -105,7 +105,7 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 					resolutionStrategy {
 						// 配置组件组版本（用于配置无bom组件）
 						eachDependency {
-							ext.groupVersions.find { s -> s.group == it.requested.group }?.version?.with { v ->
+							ext.groupVersions.find { s -> s.id == it.requested.group }?.version?.with { v ->
 								it.useVersion v
 							}
 						}
@@ -116,19 +116,23 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 					}
 					// 排除组件依赖
 					ext.excludeModules.each {
-						it.modules.each { module -> exclude group: it.group, module: module }
+						it.modules.each { module -> exclude group: it.id, module: module }
 					}
 				}
 				// 配置组件依赖
 				ext.dependencies.each { spec ->
-					maybeCreate(spec.type).dependencies.addAll spec.dependencies.collect {
+					maybeCreate(spec.id).dependencies.addAll spec.modules.collect {
 						// 支持导入项目
 						project.dependencies.create it.startsWith(':') ? project.project(it) : it
 					}
 				}
 			}
 
-			ext.printConfigContent()
+			ext.refreshCommonSpecs()
+
+			project.gradle.buildFinished {
+				ext.printConfigContent()
+			}
 		}
 	}
 
