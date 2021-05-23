@@ -95,13 +95,10 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 			settings.rootDir.eachDir { dir ->
 				String path = dir.name
 				ext.projectSpecs[path]?.with { spec ->
-					List<String> names = []
-					if (spec.include) {
-						names << spec.includeProject(path, dir)
-					}
+					List<String> names = [spec.includeProject(path)]
 					spec.subprojectSpec?.with { subSpec ->
 						dir.eachDir { subDir ->
-							names << subSpec.includeProject("${spec.include ? path + ':' : ''}$subDir.name", subDir)
+							names << subSpec.includeProject("$path:$subDir.name")
 						}
 					}
 					projectSpecs.put path, names - null

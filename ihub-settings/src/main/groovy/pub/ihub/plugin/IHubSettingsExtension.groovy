@@ -81,7 +81,6 @@ class IHubSettingsExtension implements IHubExtension {
 
 		String namePrefix = settings.rootProject.name + '-'
 		String nameSuffix = ''
-		boolean include = true
 		ProjectSpec subprojectSpec
 
 		ProjectSpec namePrefix(String namePrefix) {
@@ -94,21 +93,15 @@ class IHubSettingsExtension implements IHubExtension {
 			this
 		}
 
-		ProjectSpec include(boolean include) {
-			this.include = include
-			this
-		}
-
-		ProjectSpec subprojectSpec(boolean include) {
+		ProjectSpec subproject(String nameSuffix = this.nameSuffix) {
 			new ProjectSpec().tap {
 				this.subprojectSpec = it
 				it.namePrefix = this.namePrefix
-				it.nameSuffix = this.nameSuffix
-				it.include = include
+				it.nameSuffix = nameSuffix
 			}
 		}
 
-		String includeProject(String projectPath, File dir) {
+		String includeProject(String projectPath) {
 			String gradleProjectPath = ":$projectPath"
 			String projectName = projectPath.split(':').last()
 			if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || projectName in skippedDirs ||
@@ -118,7 +111,6 @@ class IHubSettingsExtension implements IHubExtension {
 			settings.include gradleProjectPath
 			settings.project(gradleProjectPath).tap {
 				name = namePrefix + projectPath.replaceAll(':', '-') + nameSuffix
-				projectDir = dir
 			}.name
 		}
 
