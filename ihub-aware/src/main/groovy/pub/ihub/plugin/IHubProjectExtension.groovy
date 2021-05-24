@@ -96,7 +96,7 @@ abstract class IHubProjectExtension implements IHubExtension {
 	}
 
 	void systemProperties(JavaForkOptions task) {
-		task.systemProperties System.properties.subMap(runIncludePropNames?.split(',')) ?: runProperties
+		task.systemProperties System.properties.subMap(runIncludePropNames?.split(',') ?: []) ?: runProperties
 		runSkippedPropNames?.split(',')?.each {
 			task.systemProperties.remove it
 		}
