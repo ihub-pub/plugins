@@ -64,7 +64,7 @@ abstract class IHubProjectExtension implements IHubExtension {
 	 * @return 包含属性名称
 	 */
 	protected String getRunIncludePropNames() {
-		findSystemProperty 'runIncludePropNames'
+		null
 	}
 
 	/**
@@ -72,7 +72,7 @@ abstract class IHubProjectExtension implements IHubExtension {
 	 * @return 排除属性名称
 	 */
 	protected String getRunSkippedPropNames() {
-		findSystemProperty 'runSkippedPropNames'
+		null
 	}
 
 	/**
