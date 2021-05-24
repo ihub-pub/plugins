@@ -105,7 +105,7 @@ class IHubBomExtension extends IHubProjectExtension {
 	private List getSpecsPrintData(VersionType type, Set<BomSpecImpl> specs, BiConsumer<List, BomSpecImpl> consumer) {
 		IHubBomExtension rootExt = rootProject.extensions.findByType IHubBomExtension
 		Set<BomSpecImpl> commonSpecs = rootExt.commonSpecs[type]
-		(root ? commonSpecs.tap { specs*.rightShift it } :
+		(root ? commonSpecs?.tap { specs*.rightShift it } :
 			specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
 			consumer.accept set, type in [EXCLUDE, DEPENDENCY] ? new BomSpecImpl(type, spec.id).modules(spec.modules -
 				(root ? [] : commonSpecs.find { r -> spec.id == r.id }?.modules) as String[]) : spec
