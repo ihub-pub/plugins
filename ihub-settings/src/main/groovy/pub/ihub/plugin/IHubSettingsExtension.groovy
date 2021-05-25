@@ -32,12 +32,14 @@ class IHubSettingsExtension implements IHubExtension {
 	final Settings settings
 	final Map<String, String> pluginVersions = [:]
 	final Map<String, ProjectSpec> projectSpecs = [:]
-	final String[] skippedDirs = findProperty('skippedDirs')?.split(',')
+
+	private final String[] skippedDirs
 
 	IHubSettingsExtension(Settings settings) {
 		this.settings = settings
 		// 通过项目属性配置子项目
 		includeProjects findProperty('includeDirs')?.split(',')
+		skippedDirs = findProperty('skippedDirs')?.split ','
 	}
 
 	/**
@@ -72,6 +74,10 @@ class IHubSettingsExtension implements IHubExtension {
 		}
 	}
 
+	ProjectSpec getProjectSpec(String path) {
+		skippedDirs ? path in skippedDirs ? new ProjectSpec() : null : projectSpecs[path]
+	}
+
 	@Override
 	String findProjectProperty(String key) {
 		settings.hasProperty(key) ? settings."$key" : null
@@ -104,8 +110,7 @@ class IHubSettingsExtension implements IHubExtension {
 		String includeProject(String projectPath) {
 			String gradleProjectPath = ":$projectPath"
 			String projectName = projectPath.split(':').last()
-			if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || projectName in skippedDirs ||
-				settings.findProject(gradleProjectPath)) {
+			if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || settings.findProject(gradleProjectPath)) {
 				return null
 			}
 			settings.include gradleProjectPath

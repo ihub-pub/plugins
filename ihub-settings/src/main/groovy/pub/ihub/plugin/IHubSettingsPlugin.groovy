@@ -94,7 +94,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 			Map<String, List<String>> projectSpecs = [:]
 			settings.rootDir.eachDir { dir ->
 				String path = dir.name
-				ext.projectSpecs[path]?.with { spec ->
+				ext.getProjectSpec(path)?.with { spec ->
 					List<String> names = [spec.includeProject(path)]
 					spec.subprojectSpec?.with { subSpec ->
 						dir.eachDir { subDir ->
