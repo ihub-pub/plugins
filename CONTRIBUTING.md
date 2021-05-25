@@ -1,50 +1,32 @@
-# Contributing
+# Contributing to Open Source Guides
 
-## Issues
+Thanks for checking out the Open Source Guides! We're excited to hear and learn from you. Your experiences will benefit others who read and use these guides.
 
-Issues are very valuable to this project.
+We've put together the following guidelines to help you figure out where you can best be helpful.
 
-* Ideas are a valuable source of contributions others can make
-* Problems show where this project is lacking
-* With a question you show where contributors can improve the user experience
+## Table of Contents
 
-Thank you for creating them.
+0. [Ground rules & expectations](#ground-rules--expectations)
+0. [How to contribute](#how-to-contribute)
+0. [Community](#community)
 
-## Pull Requests
+## Ground rules & expectations
 
-Pull requests are, a great way to get your ideas into this repository.
+Before we get started, here are a few things we expect from you (and that you should expect from others):
 
-When deciding if I merge in a pull request I look at the following things:
+* Be kind and thoughtful in your conversations around this project. We all come from different backgrounds and projects, which means we likely have different perspectives on "how open source is done." Try to listen to others rather than convince them that your way is correct.
+* Open Source Guides are released with a [Contributor Code of Conduct](./CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
+* If you open a pull request, please ensure that your contribution passes all tests. If there are test failures, you will need to address them before we can merge your contribution.
+* When adding content, please consider if it is widely valuable. Please don't add references or links to things you or your employer have created as others will do so if they appreciate it.
 
-### Does it state intent
+## How to contribute
 
-You should be clear which problem you're trying to solve with your contribution.
+If you'd like to contribute, start by searching through the [issues](https://github.com/ihub-pub/plugins/issues) and [pull requests](https://github.com/ihub-pub/plugins/pulls) to see whether someone else has raised a similar idea or question.
 
-For example:
+If you don't see your idea listed, and you think it fits into the goals of this guide, open a pull request.
 
-> Add link to code of conduct in README.md
+## Community
 
-Doesn't tell me anything about why you're doing that
+Discussions about the Open Source Guides take place on this repository's [Issues](https://github.com/ihub-pub/plugins/issues) and [Pull Requests](https://github.com/ihub-pub/plugins/pulls) sections. Anybody is welcome to join these conversations.
 
-> Add link to code of conduct in README.md because users don't always look in the CONTRIBUTING.md
-
-Tells me the problem that you have found, and the pull request shows me the action you have taken to solve it.
-
-
-### Is it of good quality
-
-* There are no spelling mistakes
-* It reads well
-* For english language contributions: Has a good score on [Grammarly](grammarly.com) or [Hemingway App](http://www.hemingwayapp.com/)
-
-### Does it move this repository closer to my vision for the repository
-
-The aim of this repository is:
-
-* To provide a README.md and assorted documents anyone can copy and paste, into their project
-* The content is usable by someone who hasn't written something like this before
-* Foster a culture of respect and gratitude in the open source community.
-
-### Does it follow the contributor covenant
-
-This repository has a [code of conduct](CODE_OF_CONDUCT.md), This repository has a code of conduct, I will remove things that do not respect it.
+Wherever possible, do not take these conversations to private channels, including contacting the maintainers directly. Keeping communication public means everybody can benefit and learn from the conversation.
