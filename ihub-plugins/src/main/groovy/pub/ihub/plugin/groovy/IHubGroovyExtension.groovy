@@ -15,10 +15,6 @@
  */
 package pub.ihub.plugin.groovy
 
-import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.ALL
-import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.BASE
-import static pub.ihub.plugin.groovy.IHubGroovyExtension.ModulesType.EXTENSION
-
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubProjectExtension
 
@@ -29,9 +25,8 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubGroovyExtension extends IHubProjectExtension {
 
-	private static final List<String> BASE_MODULES = [
+	List<String> modules = [
 		'groovy',
-		'groovy-astbuilder',
 		'groovy-datetime',
 		'groovy-dateutil',
 		'groovy-groovydoc',
@@ -42,37 +37,10 @@ class IHubGroovyExtension extends IHubProjectExtension {
 		'groovy-xml',
 	]
 
-	private static final List<String> EXTENSION_MODULES = BASE_MODULES + [
-		'groovy-ant',
-		'groovy-console',
-		'groovy-cli-picocli',
-		'groovy-docgenerator',
-		'groovy-groovysh',
-		'groovy-jmx',
-		'groovy-jsr223',
-		'groovy-macro',
-		'groovy-servlet',
-		'groovy-swing',
-		'groovy-test',
-		'groovy-test-junit5',
-		'groovy-testng',
-	]
-
-	ModulesType modulesType = BASE
-	List<String> modules = []
+	boolean allModules = false
 
 	List<String> getModules() {
-		switch (modulesType) {
-			case ALL: return ['groovy-all']
-			case EXTENSION: return EXTENSION_MODULES + modules
-			case BASE: return BASE_MODULES + modules
-		}
-	}
-
-	enum ModulesType {
-
-		ALL, BASE, EXTENSION
-
+		findProperty('groovyAllModules', allModules) ? ['groovy-all'] : modules
 	}
 
 }
