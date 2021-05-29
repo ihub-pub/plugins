@@ -116,7 +116,11 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
 					}
 					// 排除组件依赖
 					ext.excludeModules.each {
-						it.modules.each { module -> exclude group: it.id, module: module }
+						if (it.modules.contains('all')) {
+							exclude group: it.id
+						} else {
+							it.modules.each { module -> exclude group: it.id, module: module }
+						}
 					}
 				}
 				// 配置组件依赖

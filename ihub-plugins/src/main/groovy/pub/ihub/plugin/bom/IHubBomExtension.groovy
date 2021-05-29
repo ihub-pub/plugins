@@ -283,6 +283,9 @@ class IHubBomExtension extends IHubProjectExtension {
 		}
 
 		void rightShift(Set<BomSpecImpl> specs) {
+			if (EXCLUDE == type && !modules) {
+				modules = ['all']
+			}
 			specs << (type in [BOM, GROUP] ? this : specs.find { this == it }
 				?.tap { it.modules.addAll this.modules } ?: this)
 		}
