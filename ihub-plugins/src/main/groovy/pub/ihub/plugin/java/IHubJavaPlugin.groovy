@@ -21,23 +21,25 @@ import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
+
+
 /**
  * Java插件
  * @author henry
  */
 class IHubJavaPlugin implements IHubPluginAware<IHubProjectExtension> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply IHubJavaBasePlugin
+    @Override
+    void apply(Project project) {
+        project.pluginManager.apply IHubBomPlugin
+        project.pluginManager.apply IHubJavaBasePlugin
 
-		getExtension(project, IHubBomExtension).dependencies {
-			// 添加lombok依赖
-			String lombok = 'org.projectlombok:lombok'
-			compileOnly lombok
-			annotationProcessor lombok
-		}
-	}
+        getExtension(project, IHubBomExtension).dependencies {
+            // 添加lombok依赖
+            String lombok = 'org.projectlombok:lombok'
+            compileOnly lombok
+            annotationProcessor lombok
+        }
+    }
 
 }

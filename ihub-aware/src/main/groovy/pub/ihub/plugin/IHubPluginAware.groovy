@@ -15,59 +15,62 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
-
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
+
+
 
 /**
  * IHub项目插件特征
  * @author henry
  */
+@SuppressWarnings('FactoryMethodName')
 trait IHubPluginAware<T extends IHubProjectExtension> implements Plugin<Project> {
 
-	T createExtension(Project project, String extName, Class<T> clazz, Action<T> action = null) {
-		project.extensions.create(extName, clazz, project).tap {
-			action?.execute it
-		}
-	}
+    T createExtension(Project project, String extName, Class<T> clazz, Action<T> action = null) {
+        project.extensions.create(extName, clazz, project).tap {
+            action?.execute it
+        }
+    }
 
-	def <E> E getExtension(Project project, Class<E> clazz, Action<E> action = null) {
-		project.extensions.getByType(clazz).tap {
-			action?.execute it
-		}
-	}
+    def <E> E getExtension(Project project, Class<E> clazz, Action<E> action = null) {
+        project.extensions.getByType(clazz).tap {
+            action?.execute it
+        }
+    }
 
-	T createExtension(Project project, String extName, Class<T> clazz, EvaluateStage evaluate, Action<T> action) {
-		createExtension project, extName, clazz, getAction(project, evaluate, action)
-	}
+    T createExtension(Project project, String extName, Class<T> clazz, EvaluateStage evaluate, Action<T> action) {
+        createExtension project, extName, clazz, getAction(project, evaluate, action)
+    }
 
-	def <E> E getExtension(Project project, Class<E> clazz, EvaluateStage evaluate, Action<E> action) {
-		getExtension project, clazz, getAction(project, evaluate, action)
-	}
+    def <E> E getExtension(Project project, Class<E> clazz, EvaluateStage evaluate, Action<E> action) {
+        getExtension project, clazz, getAction(project, evaluate, action)
+    }
 
-	private <E> Action<E> getAction(Project project, EvaluateStage evaluate, Action<E> action) {
-		{ E extension ->
-			if (action && AFTER == evaluate) {
-				project.afterEvaluate {
-					action.execute extension
-				}
-			} else if (action && BEFORE == evaluate) {
-				project.beforeEvaluate {
-					action.execute extension
-				}
-			} else {
-				action.execute extension
-			}
-		}
-	}
+    private <E> Action<E> getAction(Project project, EvaluateStage evaluate, Action<E> action) {
+        { E extension ->
+            if (action && AFTER == evaluate) {
+                project.afterEvaluate {
+                    action.execute extension
+                }
+            } else if (action && BEFORE == evaluate) {
+                project.beforeEvaluate {
+                    action.execute extension
+                }
+            } else {
+                action.execute extension
+            }
+        }
+    }
 
-	enum EvaluateStage {
+    enum EvaluateStage {
 
-		AFTER, BEFORE
+        AFTER, BEFORE
 
-	}
+    }
 
 }

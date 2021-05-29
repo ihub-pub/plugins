@@ -15,69 +15,72 @@
  */
 package pub.ihub.plugin.verification
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.testing.Test
 import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+
+
+
 /**
  * 测试插件
  * @author henry
  */
+@SuppressWarnings('UnnecessaryObjectReferences')
 class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
 
-	@Override
-	void apply(Project project) {
-		getExtension(project, IHubBomExtension) {
-			if (project.plugins.hasPlugin(GroovyPlugin)) {
-				it.importBoms {
-					group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
-				}
-				it.dependencyVersions {
-					group 'com.athaydes' modules 'spock-reports' version '2.0.1-RC3'
-				}
-				it.dependencies {
-					testImplementation 'org.spockframework:spock-spring'
-					testRuntimeOnly 'com.athaydes:spock-reports'
-				}
-			} else {
-				it.dependencies {
-					testImplementation 'org.junit.jupiter:junit-jupiter'
-				}
-			}
-		}
-		createExtension(project, 'iHubTest', IHubTestExtension, AFTER) { ext ->
-			project.tasks.getByName('test') { Test it ->
-				ext.systemProperties it
+    @Override
+    void apply(Project project) {
+        getExtension(project, IHubBomExtension) {
+            if (project.plugins.hasPlugin(GroovyPlugin)) {
+                it.importBoms {
+                    group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
+                }
+                it.dependencyVersions {
+                    group 'com.athaydes' modules 'spock-reports' version '2.0.1-RC3'
+                }
+                it.dependencies {
+                    testImplementation 'org.spockframework:spock-spring'
+                    testRuntimeOnly 'com.athaydes:spock-reports'
+                }
+            } else {
+                it.dependencies {
+                    testImplementation 'org.junit.jupiter:junit-jupiter'
+                }
+            }
+        }
+        createExtension(project, 'iHubTest', IHubTestExtension, AFTER) { ext ->
+            project.tasks.getByName('test') { Test it ->
+                ext.systemProperties it
 
-				it.useJUnitPlatform()
-				if (ext.classes) {
-					ext.classes.tokenize(',').each { testClass ->
-						it.include testClass
-					}
-				} else {
-					it.include '**/*Test*', '**/*FT*', '**/*UT*'
-				}
+                it.useJUnitPlatform()
+                if (ext.classes) {
+                    ext.classes.tokenize(',').each { testClass ->
+                        it.include testClass
+                    }
+                } else {
+                    it.include '**/*Test*', '**/*FT*', '**/*UT*'
+                }
 
-				it.forkEvery = ext.forkEvery
-				it.maxParallelForks = ext.maxParallelForks
-				it.enabled = ext.enabled
-				it.debug = ext.debug
-				it.failFast = ext.failFast
+                it.forkEvery = ext.forkEvery
+                it.maxParallelForks = ext.maxParallelForks
+                it.enabled = ext.enabled
+                it.debug = ext.debug
+                it.failFast = ext.failFast
 
-				it.onOutput { descriptor, event ->
-					it.logger.lifecycle event.message
-				}
-			}
+                it.onOutput { descriptor, event ->
+                    it.logger.lifecycle event.message
+                }
+            }
 
-			project.tasks.withType(Test) {
-				// 这是为了解决在项目根目录上执行test时Jacoco找不到依赖的类的问题
-				systemProperties.'user.dir' = workingDir
-			}
-		}
-	}
+            project.tasks.withType(Test) {
+                // 这是为了解决在项目根目录上执行test时Jacoco找不到依赖的类的问题
+                systemProperties.'user.dir' = workingDir
+            }
+        }
+    }
 
 }

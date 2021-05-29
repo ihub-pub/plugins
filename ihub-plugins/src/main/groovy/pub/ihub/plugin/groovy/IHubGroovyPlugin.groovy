@@ -15,8 +15,6 @@
  */
 package pub.ihub.plugin.groovy
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
-
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import pub.ihub.plugin.IHubPluginAware
@@ -24,39 +22,43 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
+
+
+
 /**
  * Groovy插件
  * @author liheng
  */
 class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply IHubJavaBasePlugin
-		project.pluginManager.apply GroovyPlugin
+    @Override
+    void apply(Project project) {
+        project.pluginManager.apply IHubBomPlugin
+        project.pluginManager.apply IHubJavaBasePlugin
+        project.pluginManager.apply GroovyPlugin
 
-		getExtension(project, IHubBomExtension) {
-			String groovyGroup = 'org.codehaus.groovy'
-			String groovyVersion = '3.0.8'
-			it.importBoms {
-				group groovyGroup module 'groovy-bom' version groovyVersion
-			}
-			it.dependencyVersions {
-				group groovyGroup modules 'groovy-all' version groovyVersion
-			}
-			// 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
-			if (it.findVersion(groovyGroup, groovyVersion).startsWith('3.')) {
-				it.groupVersions {
-					group groovyGroup version groovyVersion
-				}
-			}
-			createExtension(project, 'iHubGroovy', IHubGroovyExtension, BEFORE) { ext ->
-				it.dependencies {
-					implementation ext.modules.unique().collect { "$groovyGroup:$it" } as String[]
-				}
-			}
-		}
-	}
+        getExtension(project, IHubBomExtension) {
+            String groovyGroup = 'org.codehaus.groovy'
+            String groovyVersion = '3.0.8'
+            it.importBoms {
+                group groovyGroup module 'groovy-bom' version groovyVersion
+            }
+            it.dependencyVersions {
+                group groovyGroup modules 'groovy-all' version groovyVersion
+            }
+            // 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
+            if (it.findVersion(groovyGroup, groovyVersion).startsWith('3.')) {
+                it.groupVersions {
+                    group groovyGroup version groovyVersion
+                }
+            }
+            createExtension(project, 'iHubGroovy', IHubGroovyExtension, BEFORE) { ext ->
+                it.dependencies {
+                    implementation ext.modules.unique().collect { "$groovyGroup:$it" } as String[]
+                }
+            }
+        }
+    }
 
 }

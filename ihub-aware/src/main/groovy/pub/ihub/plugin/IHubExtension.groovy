@@ -21,49 +21,49 @@ package pub.ihub.plugin
  */
 trait IHubExtension {
 
-	abstract String findProjectProperty(String key)
+    abstract String findProjectProperty(String key)
 
-	/**
-	 * 查找属性
-	 *
-	 * 按如下优先级变换key查询：
-	 * demoKey(原值) -> demo_key -> demo.key -> demo-key
-	 *
-	 * @param key key
-	 * @param defaultValue 默认值
-	 * @param closure 查询闭包
-	 * @return 属性值
-	 */
-	String findProperty(String key, String defaultValue = null, Closure closure) {
-		closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').replaceAll(/[.-]/, '_').toLowerCase().with {
-			closure(it) ?: closure(it.replaceAll('_', '.'))
-				?: closure(it.replaceAll('_', '-'))
-				?: defaultValue
-		}
-	}
+    /**
+     * 查找属性
+     *
+     * 按如下优先级变换key查询：
+     * demoKey(原值) -> demo_key -> demo.key -> demo-key
+     *
+     * @param key key
+     * @param defaultValue 默认值
+     * @param closure 查询闭包
+     * @return 属性值
+     */
+    String findProperty(String key, String defaultValue = null, Closure closure) {
+        closure(key) ?: key.replaceAll(/([A-Z])/, '_$1').replaceAll(/[.-]/, '_').toLowerCase().with {
+            closure(it) ?: closure(it.replaceAll('_', '.'))
+                ?: closure(it.replaceAll('_', '-'))
+                ?: defaultValue
+        }
+    }
 
-	String findProperty(String key, String defaultValue = null) {
-		findProperty(key, defaultValue) { String k -> findProjectProperty k }
-	}
+    String findProperty(String key, String defaultValue = null) {
+        findProperty(key, defaultValue) { String k -> findProjectProperty k }
+    }
 
-	boolean findProperty(String key, boolean defaultValue) {
-		findProperty(key, String.valueOf(defaultValue)).toBoolean()
-	}
+    boolean findProperty(String key, boolean defaultValue) {
+        findProperty(key, String.valueOf(defaultValue)).toBoolean()
+    }
 
-	String findVersion(String key, String defaultValue) {
-		findProperty key + '.version', defaultValue
-	}
+    String findVersion(String key, String defaultValue) {
+        findProperty key + '.version', defaultValue
+    }
 
-	String findSystemProperty(String key, String defaultValue = null) {
-		findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: findProjectProperty(k) }
-	}
+    String findSystemProperty(String key, String defaultValue = null) {
+        findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: findProjectProperty(k) }
+    }
 
-	boolean findSystemProperty(String key, boolean defaultValue) {
-		findSystemProperty(key, String.valueOf(defaultValue)).toBoolean()
-	}
+    boolean findSystemProperty(String key, boolean defaultValue) {
+        findSystemProperty(key, String.valueOf(defaultValue)).toBoolean()
+    }
 
-	int findSystemProperty(String key, int defaultValue) {
-		findSystemProperty(key, String.valueOf(defaultValue)).toInteger()
-	}
+    int findSystemProperty(String key, int defaultValue) {
+        findSystemProperty(key, String.valueOf(defaultValue)).toInteger()
+    }
 
 }

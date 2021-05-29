@@ -15,10 +15,13 @@
  */
 package pub.ihub.plugin
 
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
 import org.gradle.api.Project
 import pub.ihub.plugin.bom.IHubBomPlugin
+
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+
+
 
 /**
  * Gradle基础插件
@@ -27,114 +30,85 @@ import pub.ihub.plugin.bom.IHubBomPlugin
  */
 class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
 
-	@Override
-	void apply(Project project) {
-		IHubPluginsExtension ext = createExtension project, 'iHub', IHubPluginsExtension
+    @Override
+    void apply(Project project) {
+        IHubPluginsExtension ext = createExtension project, 'iHub', IHubPluginsExtension
 
-		project.pluginManager.apply 'com.palantir.git-version'
-		project.version = ext.version.with {
-			'unspecified' == it ? project.versionDetails().lastTag : it
-		}
+        project.pluginManager.apply 'com.palantir.git-version'
+        project.version = ext.version.with {
+            'unspecified' == it ? project.versionDetails().lastTag : it
+        }
 
-		project.repositories {
-			String dirs = "$project.rootProject.projectDir/libs"
-			if ((dirs as File).directory) {
-				flatDir dirs: dirs
-			}
-			if (ext.mavenLocalEnabled) {
-				mavenLocal()
-			}
-			maven {
-				name 'AliYunPublic'
-				url 'https://maven.aliyun.com/repository/public'
-			}
-			maven {
-				name 'AliYunGoogle'
-				url 'https://maven.aliyun.com/repository/google'
-				artifactUrls 'https://maven.google.com'
-			}
-			maven {
-				name 'AliYunSpring'
-				url 'https://maven.aliyun.com/repository/spring'
-				artifactUrls 'https://repo.spring.io/release'
-			}
-			maven {
-				name 'SpringRelease'
-				url 'https://repo.spring.io/release'
-			}
-			// 添加私有仓库
-			String releaseRepoUrl = ext.releaseRepoUrl
-			String repoIncludeGroup = ext.repoIncludeGroup
-			String repoUsername = ext.repoUsername
-			String repoPassword = ext.repoPassword
-			if (releaseRepoUrl) {
-				maven {
-					name 'ReleaseRepo'
-					url releaseRepoUrl
-					allowInsecureProtocol ext.repoAllowInsecureProtocol
-					mavenContent {
-						releasesOnly()
-					}
-					content {
-						if (repoIncludeGroup) {
-							includeGroup repoIncludeGroup
-						} else {
-							includeGroupByRegex ext.repoIncludeGroupRegex
-						}
-					}
-					if (repoUsername && repoPassword) {
-						credentials {
-							username repoUsername
-							password repoPassword
-						}
-					}
-				}
-			}
-			String snapshotRepoUrl = ext.snapshotRepoUrl
-			if (snapshotRepoUrl) {
-				maven {
-					name 'SnapshotRepo'
-					url snapshotRepoUrl
-					allowInsecureProtocol ext.repoAllowInsecureProtocol
-					mavenContent {
-						snapshotsOnly()
-					}
-					content {
-						if (repoIncludeGroup) {
-							includeGroup repoIncludeGroup
-						} else {
-							includeGroupByRegex ext.repoIncludeGroupRegex
-						}
-					}
-					if (repoUsername && repoPassword) {
-						credentials {
-							username repoUsername
-							password repoPassword
-						}
-					}
-				}
-			}
-			// 添加自定义仓库
-			ext.customizeRepoUrl?.with { customizeRepoUrl ->
-				maven {
-					name 'CustomizeRepo'
-					url customizeRepoUrl
-				}
-			}
-			if (!findByName('MavenRepo')) {
-				mavenCentral()
-			}
-		}
+        project.repositories {
+            String dirs = "$project.rootProject.projectDir/libs"
+            if ((dirs as File).directory) {
+                flatDir dirs: dirs
+            }
+            if (ext.mavenLocalEnabled) {
+                mavenLocal()
+            }
+            maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public')
+            maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
+                'https://maven.google.com')
+            maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',
+                'https://repo.spring.io/release')
+            maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
+            // 添加私有仓库
+            ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) }
+            ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) }
+            // 添加自定义仓库
+            ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
+            if (!findByName('MavenRepo')) {
+                mavenCentral()
+            }
+        }
 
-		if (project.name == project.rootProject.name) {
-			printConfigContent 'Gradle Project Repos', project.repositories*.displayName
-		}
+        if (project.name == project.rootProject.name) {
+            printConfigContent 'Gradle Project Repos', project.repositories*.displayName
+        }
 
-		project.pluginManager.apply IHubBomPlugin
+        project.pluginManager.apply IHubBomPlugin
 
-		project.subprojects {
-			pluginManager.apply IHubPluginsPlugin
-		}
-	}
+        project.subprojects {
+            pluginManager.apply IHubPluginsPlugin
+        }
+    }
+
+    private Closure mavenRepo(String repoName, String repoUrl, String repoArtifactUrls = null) {
+        return {
+            name repoName
+            url repoUrl
+            if (repoArtifactUrls) {
+                artifactUrls repoArtifactUrls
+            }
+        }
+    }
+
+    private Closure mavenRepo(String repoName, String repoUrl, IHubPluginsExtension ext) {
+        String repoIncludeGroup = ext.repoIncludeGroup
+        String repoUsername = ext.repoUsername
+        String repoPassword = ext.repoPassword
+        return {
+            name repoName
+            url repoUrl
+            allowInsecureProtocol ext.repoAllowInsecureProtocol
+            mavenContent {
+                snapshotsOnly()
+            }
+            content {
+                if (repoIncludeGroup) {
+                    includeGroup repoIncludeGroup
+                } else {
+                    includeGroupByRegex ext.repoIncludeGroupRegex
+                }
+            }
+            if (repoUsername && repoPassword) {
+                credentials {
+                    username repoUsername
+                    password repoPassword
+                }
+            }
+        }
+    }
 
 }

@@ -19,130 +19,133 @@ import groovy.transform.TupleConstructor
 import org.gradle.api.Action
 import org.gradle.api.initialization.Settings
 
+
+
 /**
  * 子项目配置扩展
  * @author liheng
  */
+@SuppressWarnings(['JUnitPublicNonTestMethod', 'JUnitPublicProperty'])
 class IHubSettingsExtension implements IHubExtension {
 
-	private static final List<String> EXCLUDE_DIRS = [
-		'build', 'src', 'conf', 'libs', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
-	]
+    private static final List<String> EXCLUDE_DIRS = [
+        'build', 'src', 'conf', 'libs', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
+    ]
 
-	final Settings settings
-	final Map<String, String> pluginVersions = [:]
-	final Map<String, ProjectSpec> projectSpecs = [:]
+    final Settings settings
+    final Map<String, String> pluginVersionSpecs = [:]
+    final Map<String, ProjectSpec> projectSpecs = [:]
 
-	private final String[] skippedDirs
+    private final String[] skippedDirs
 
-	IHubSettingsExtension(Settings settings) {
-		this.settings = settings
-		// 通过项目属性配置子项目
-		includeProjects findProperty('includeDirs')?.split(',')
-		skippedDirs = findProperty('skippedDirs')?.split ','
-	}
+    IHubSettingsExtension(Settings settings) {
+        this.settings = settings
+        // 通过项目属性配置子项目
+        includeProjects findProperty('includeDirs')?.split(',')
+        skippedDirs = findProperty('skippedDirs')?.split ','
+    }
 
-	/**
-	 * 主项目名称
-	 * @return 主项目名称
-	 */
-	String getProjectName() {
-		findProperty 'projectName', settings.rootProject.name
-	}
+    /**
+     * 主项目名称
+     * @return 主项目名称
+     */
+    String getProjectName() {
+        findProperty 'projectName', settings.rootProject.name
+    }
 
-	/**
-	 * 配置插件版本
-	 * @param action 配置
-	 */
-	void pluginVersions(Action<PluginVersionsSpec> action) {
-		List<PluginVersionSpec> versions = new PluginVersionsSpec().tap { action.execute it }.specs
-		assert versions, 'plugin versions config not empty!'
-		versions.each {
-			pluginVersions.put it.id, it.version
-		}
-	}
+    /**
+     * 配置插件版本
+     * @param action 配置
+     */
+    void pluginVersions(Action<PluginVersionsSpec> action) {
+        List<PluginVersionSpec> versions = new PluginVersionsSpec().tap { action.execute it }.specs
+        assert versions, 'plugin versions config not empty!'
+        versions.each {
+            pluginVersionSpecs.put it.id, it.pluginVersion
+        }
+    }
 
-	/**
-	 * 添加多个项目
-	 * @param projectPaths 项目路径
-	 */
-	ProjectSpec includeProjects(String... projectPaths) {
-		new ProjectSpec().tap {
-			projectPaths.each { projectPath ->
-				projectSpecs.put projectPath, it
-			}
-		}
-	}
+    /**
+     * 添加多个项目
+     * @param projectPaths 项目路径
+     */
+    ProjectSpec includeProjects(String... projectPaths) {
+        new ProjectSpec().tap {
+            projectPaths.each { projectPath ->
+                projectSpecs.put projectPath, it
+            }
+        }
+    }
 
-	ProjectSpec getProjectSpec(String path) {
-		skippedDirs ? path in skippedDirs ? new ProjectSpec() : null : projectSpecs[path]
-	}
+    ProjectSpec getProjectSpec(String path) {
+        skippedDirs ? path in skippedDirs ? new ProjectSpec() : null : projectSpecs[path]
+    }
 
-	@Override
-	String findProjectProperty(String key) {
-		settings.hasProperty(key) ? settings."$key" : null
-	}
+    @Override
+    String findProjectProperty(String key) {
+        settings.hasProperty(key) ? settings."$key" : null
+    }
 
-	class ProjectSpec {
+    class ProjectSpec {
 
-		String namePrefix = settings.rootProject.name + '-'
-		String nameSuffix = ''
-		ProjectSpec subprojectSpec
+        private String namePrefix = settings.rootProject.name + '-'
+        private String nameSuffix = ''
+        ProjectSpec subprojectSpec
 
-		ProjectSpec namePrefix(String namePrefix) {
-			this.namePrefix = namePrefix
-			this
-		}
+        ProjectSpec prefix(String namePrefix) {
+            this.namePrefix = namePrefix
+            this
+        }
 
-		ProjectSpec nameSuffix(String nameSuffix) {
-			this.nameSuffix = nameSuffix
-			this
-		}
+        ProjectSpec suffix(String nameSuffix) {
+            this.nameSuffix = nameSuffix
+            this
+        }
 
-		ProjectSpec subproject(String nameSuffix = this.nameSuffix) {
-			new ProjectSpec().tap {
-				this.subprojectSpec = it
-				it.namePrefix = this.namePrefix
-				it.nameSuffix = nameSuffix
-			}
-		}
+        ProjectSpec subproject(String nameSuffix = this.nameSuffix) {
+            new ProjectSpec().tap {
+                this.subprojectSpec = it
+                it.namePrefix = this.namePrefix
+                it.nameSuffix = nameSuffix
+            }
+        }
 
-		String includeProject(String projectPath) {
-			String gradleProjectPath = ":$projectPath"
-			String projectName = projectPath.split(':').last()
-			if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || settings.findProject(gradleProjectPath)) {
-				return null
-			}
-			settings.include gradleProjectPath
-			settings.project(gradleProjectPath).tap {
-				name = namePrefix + projectPath.replaceAll(':', '-') + nameSuffix
-			}.name
-		}
+        String includeProject(String projectPath) {
+            String gradleProjectPath = ":$projectPath"
+            String projectName = projectPath.split(':').last()
+            if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || settings.findProject(gradleProjectPath)) {
+                return null
+            }
+            settings.include gradleProjectPath
+            settings.project(gradleProjectPath).tap {
+                name = namePrefix + projectPath.replaceAll(':', '-') + nameSuffix
+            }.name
+        }
 
-	}
+    }
 
-	class PluginVersionsSpec {
+    class PluginVersionsSpec {
 
-		private final List<PluginVersionSpec> specs = []
+        private final List<PluginVersionSpec> specs = []
 
-		PluginVersionSpec id(String id) {
-			new PluginVersionSpec(id).tap {
-				specs << it
-			}
-		}
+        PluginVersionSpec id(String id) {
+            new PluginVersionSpec(id).tap {
+                specs << it
+            }
+        }
 
-	}
+    }
 
-	@TupleConstructor(includes = 'id')
-	class PluginVersionSpec {
+    @TupleConstructor(includeFields = true, includes = 'id')
+    class PluginVersionSpec {
 
-		final String id
-		String version
+        private final String id
+        private String pluginVersion
 
-		void version(String version) {
-			this.version = findVersion id, version
-		}
+        void version(String version) {
+            pluginVersion = findVersion id, version
+        }
 
-	}
+    }
 
 }

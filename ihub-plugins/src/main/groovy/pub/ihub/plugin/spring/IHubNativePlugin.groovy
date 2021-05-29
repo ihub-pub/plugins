@@ -15,10 +15,12 @@
  */
 package pub.ihub.plugin.spring
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubPluginAware
+
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+
+
 
 /**
  * 原生镜像插件
@@ -26,17 +28,17 @@ import pub.ihub.plugin.IHubPluginAware
  */
 class IHubNativePlugin implements IHubPluginAware<IHubNativeExtension> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply IHubBootPlugin
-		project.pluginManager.apply 'org.springframework.experimental.aot'
+    @Override
+    void apply(Project project) {
+        project.pluginManager.apply IHubBootPlugin
+        project.pluginManager.apply 'org.springframework.experimental.aot'
 
-		createExtension(project, 'iHubNative', IHubNativeExtension, AFTER) { ext ->
-			project.bootBuildImage {
-				builder = 'paketobuildpacks/builder:tiny'
-				environment = ext.environment
-			}
-		}
-	}
+        createExtension(project, 'iHubNative', IHubNativeExtension, AFTER) { ext ->
+            project.bootBuildImage {
+                builder = 'paketobuildpacks/builder:tiny'
+                environment = ext.environment
+            }
+        }
+    }
 
 }

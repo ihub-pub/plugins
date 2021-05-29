@@ -18,6 +18,8 @@ package pub.ihub.plugin.groovy
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubProjectExtension
 
+
+
 /**
  * Groovy插件扩展
  * @author liheng
@@ -25,22 +27,22 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubGroovyExtension extends IHubProjectExtension {
 
-	List<String> modules = [
-		'groovy',
-		'groovy-datetime',
-		'groovy-dateutil',
-		'groovy-groovydoc',
-		'groovy-json',
-		'groovy-nio',
-		'groovy-sql',
-		'groovy-templates',
-		'groovy-xml',
-	]
+    List<String> modules = [
+        'groovy',
+        'groovy-datetime',
+        'groovy-dateutil',
+        'groovy-groovydoc',
+        'groovy-json',
+        'groovy-nio',
+        'groovy-sql',
+        'groovy-templates',
+        'groovy-xml',
+    ]
 
-	boolean allModules = false
+    boolean allModules = false
 
-	List<String> getModules() {
-		findProperty('groovyAllModules', allModules) ? ['groovy-all'] : modules
-	}
+    List<String> getModules() {
+        findProperty('groovyAllModules', allModules) ? ['groovy-all'] : modules
+    }
 
 }

@@ -18,6 +18,8 @@ package pub.ihub.plugin.spring
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubProjectExtension
 
+
+
 /**
  * IHub Spring Boot Plugin Extension
  * @author henry
@@ -25,50 +27,50 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubBootExtension extends IHubProjectExtension {
 
-	//<editor-fold desc="BootRun Configuration">
+    //<editor-fold desc="BootRun Configuration">
 
-	/**
-	 * bootRun属性
-	 */
-	Map<String, String> bootRunProperties = [:]
-	/**
-	 * 包含属性名称（“,”分割）
-	 */
-	String bootRunIncludePropNames
-	/**
-	 * 排除属性名称（“,”分割）
-	 */
-	String bootRunSkippedPropNames
-	/**
-	 * 启用本地属性
-	 */
-	boolean enabledLocalProperties = true
+    /**
+     * bootRun属性
+     */
+    Map<String, String> bootRunProperties = [:]
+    /**
+     * 包含属性名称（“,”分割）
+     */
+    String bootRunIncludePropNames
+    /**
+     * 排除属性名称（“,”分割）
+     */
+    String bootRunSkippedPropNames
+    /**
+     * 启用本地属性
+     */
+    boolean enabledLocalProperties = true
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="BootJar Configuration">
+    //<editor-fold desc="BootJar Configuration">
 
-	String bootJarRequiresUnpack = ''
+    String bootJarRequiresUnpack = ''
 
-	//</editor-fold>
+    //</editor-fold>
 
-	@Override
-	protected Map<String, String> getRunProperties() {
-		bootRunProperties
-	}
+    @Override
+    protected Map<String, String> getRunProperties() {
+        bootRunProperties
+    }
 
-	@Override
-	protected String getRunIncludePropNames() {
-		findProperty 'springbootIncludePropNames', bootRunIncludePropNames
-	}
+    @Override
+    protected String getRunIncludePropNames() {
+        findProperty 'springbootIncludePropNames', bootRunIncludePropNames
+    }
 
-	@Override
-	protected String getRunSkippedPropNames() {
-		findProperty 'springbootSkippedPropNames', bootRunSkippedPropNames
-	}
+    @Override
+    protected String getRunSkippedPropNames() {
+        findProperty 'springbootSkippedPropNames', bootRunSkippedPropNames
+    }
 
-	String getBootJarRequiresUnpack() {
-		findProperty 'springbootRequiresUnpack', bootJarRequiresUnpack
-	}
+    String getBootJarRequiresUnpack() {
+        findProperty 'springbootRequiresUnpack', bootJarRequiresUnpack
+    }
 
 }

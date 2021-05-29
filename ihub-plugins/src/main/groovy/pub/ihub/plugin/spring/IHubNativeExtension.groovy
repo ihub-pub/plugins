@@ -19,6 +19,8 @@ import groovy.transform.TupleConstructor
 import org.gradle.api.JavaVersion
 import pub.ihub.plugin.IHubProjectExtension
 
+
+
 /**
  * 原生镜像插件扩展
  * @author henry
@@ -26,54 +28,54 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubNativeExtension extends IHubProjectExtension {
 
-	//<editor-fold desc="Build Configuration">
+    //<editor-fold desc="Build Configuration">
 
-	/**
-	 * JVM版本
-	 */
-	String bpJvmVersion
-	/**
-	 * 是否启用原生映像构建
-	 */
-	boolean bpNativeImage = true
-	/**
-	 * 传递给原生映像命令的参数
-	 */
-	String bpNativeImageBuildArguments
+    /**
+     * JVM版本
+     */
+    String bpJvmVersion
+    /**
+     * 是否启用原生映像构建
+     */
+    boolean bpNativeImage = true
+    /**
+     * 传递给原生映像命令的参数
+     */
+    String bpNativeImageBuildArguments
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="Launch Configuration">
+    //<editor-fold desc="Launch Configuration">
 
-	/**
-	 * JVM内存
-	 */
-	String bplJvmHeadRoom = '8G'
-	/**
-	 * JVM运行时已加载类的数量，默认“35% of classes"
-	 */
-	String bplJvmLoadedClassCount
-	/**
-	 * JVM运行时用户线程数，默认“250”
-	 */
-	String bplJvmThreadCount
-	/**
-	 * JVM环境变量
-	 */
-	String javaToolOptions
+    /**
+     * JVM内存
+     */
+    String bplJvmHeadRoom = '8G'
+    /**
+     * JVM运行时已加载类的数量，默认“35% of classes"
+     */
+    String bplJvmLoadedClassCount
+    /**
+     * JVM运行时用户线程数，默认“250”
+     */
+    String bplJvmThreadCount
+    /**
+     * JVM环境变量
+     */
+    String javaToolOptions
 
-	//</editor-fold>
+    //</editor-fold>
 
-	Map<String, String> getEnvironment() {
-		[
-			BP_JVM_VERSION                 : bpJvmVersion ?: JavaVersion.current().majorVersion,
-			BP_NATIVE_IMAGE                : bpNativeImage.toString(),
-			BP_NATIVE_IMAGE_BUILD_ARGUMENTS: bpNativeImageBuildArguments,
-			BPL_JVM_HEAD_ROOM              : bplJvmHeadRoom,
-			BPL_JVM_LOADED_CLASS_COUNT     : bplJvmLoadedClassCount,
-			BPL_JVM_THREAD_COUNT           : bplJvmThreadCount,
-			JAVA_TOOL_OPTIONS              : findSystemProperty('JAVA_TOOL_OPTIONS', javaToolOptions),
-		].findAll { it.value }
-	}
+    Map<String, String> getEnvironment() {
+        [
+            BP_JVM_VERSION                 : bpJvmVersion ?: JavaVersion.current().majorVersion,
+            BP_NATIVE_IMAGE                : bpNativeImage.toString(),
+            BP_NATIVE_IMAGE_BUILD_ARGUMENTS: bpNativeImageBuildArguments,
+            BPL_JVM_HEAD_ROOM              : bplJvmHeadRoom,
+            BPL_JVM_LOADED_CLASS_COUNT     : bplJvmLoadedClassCount,
+            BPL_JVM_THREAD_COUNT           : bplJvmThreadCount,
+            JAVA_TOOL_OPTIONS              : findSystemProperty('JAVA_TOOL_OPTIONS', javaToolOptions),
+        ].findAll { it.value }
+    }
 
 }

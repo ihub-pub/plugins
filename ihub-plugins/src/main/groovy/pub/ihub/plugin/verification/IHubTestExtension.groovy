@@ -18,6 +18,8 @@ package pub.ihub.plugin.verification
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubProjectExtension
 
+
+
 /**
  * 测试插件扩展
  * @author henry
@@ -25,79 +27,79 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubTestExtension extends IHubProjectExtension {
 
-	/**
-	 * 启用测试
-	 */
-	boolean enabled = true
-	/**
-	 * 包含属性名称（“,”分割）
-	 */
-	String classes = ''
-	/**
-	 * 每跑100个测试类后重启fork进程
-	 */
-	int forkEvery = 100
-	/**
-	 * 最多启动进程数
-	 */
-	int maxParallelForks = 1
-	/**
-	 * 任务运行时属性
-	 */
-	Map<String, String> runProperties = System.properties as Map<String, String>
-	/**
-	 * 包含属性名称（“,”分割）
-	 */
-	String runIncludePropNames
-	/**
-	 * 排除属性名称（“,”分割）
-	 */
-	String runSkippedPropNames
-	/**
-	 * 启用本地属性
-	 */
-	boolean enabledLocalProperties = false
-	/**
-	 * 启用测试调试
-	 */
-	boolean debug = false
-	/**
-	 * 只要有一个测试失败就停止测试
-	 */
-	boolean failFast = false
+    /**
+     * 启用测试
+     */
+    boolean enabled = true
+    /**
+     * 包含属性名称（“,”分割）
+     */
+    String classes = ''
+    /**
+     * 每跑100个测试类后重启fork进程
+     */
+    int forkEvery = 100
+    /**
+     * 最多启动进程数
+     */
+    int maxParallelForks = 1
+    /**
+     * 任务运行时属性
+     */
+    Map<String, String> runProperties = System.properties as Map<String, String>
+    /**
+     * 包含属性名称（“,”分割）
+     */
+    String runIncludePropNames
+    /**
+     * 排除属性名称（“,”分割）
+     */
+    String runSkippedPropNames
+    /**
+     * 启用本地属性
+     */
+    boolean enabledLocalProperties = false
+    /**
+     * 启用测试调试
+     */
+    boolean debug = false
+    /**
+     * 只要有一个测试失败就停止测试
+     */
+    boolean failFast = false
 
-	boolean getEnabled() {
-		findSystemProperty 'iHubTestEnabled', enabled
-	}
+    boolean getEnabled() {
+        findSystemProperty 'iHubTestEnabled', enabled
+    }
 
-	String getClasses() {
-		findSystemProperty 'iHubTestClasses', classes
-	}
+    String getClasses() {
+        findSystemProperty 'iHubTestClasses', classes
+    }
 
-	int getForkEvery() {
-		findSystemProperty 'iHubTestForkEvery', forkEvery
-	}
+    int getForkEvery() {
+        findSystemProperty 'iHubTestForkEvery', forkEvery
+    }
 
-	int getMaxParallelForks() {
-		findSystemProperty 'iHubTestMaxParallelForks', maxParallelForks
-	}
+    int getMaxParallelForks() {
+        findSystemProperty 'iHubTestMaxParallelForks', maxParallelForks
+    }
 
-	@Override
-	protected String getRunIncludePropNames() {
-		findSystemProperty 'iHubTestRunIncludePropNames', runIncludePropNames
-	}
+    @Override
+    protected String getRunIncludePropNames() {
+        findSystemProperty 'iHubTestRunIncludePropNames', runIncludePropNames
+    }
 
-	@Override
-	protected String getRunSkippedPropNames() {
-		findSystemProperty 'iHubTestRunSkippedPropNames', runSkippedPropNames
-	}
+    @Override
+    protected String getRunSkippedPropNames() {
+        findSystemProperty 'iHubTestRunSkippedPropNames', runSkippedPropNames
+    }
 
-	boolean getDebug() {
-		findSystemProperty 'iHubTestDebug', debug
-	}
+    boolean getDebug() {
+        findSystemProperty 'iHubTestDebug', debug
+    }
 
-	boolean getFailFast() {
-		findSystemProperty 'iHubTestFailFast', failFast
-	}
+    boolean getFailFast() {
+        findSystemProperty 'iHubTestFailFast', failFast
+    }
 
 }

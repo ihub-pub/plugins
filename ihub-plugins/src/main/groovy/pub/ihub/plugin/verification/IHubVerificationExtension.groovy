@@ -18,6 +18,8 @@ package pub.ihub.plugin.verification
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubProjectExtension
 
+
+
 /**
  * 代码检查插件扩展
  * @author henry
@@ -25,31 +27,29 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubVerificationExtension extends IHubProjectExtension {
 
-	//<editor-fold desc="默认检查规则">
+    //<editor-fold desc="默认检查规则">
 
-	static final List<String> PMD_DEFAULT_RULESET = [
-		'rulesets/java/ali-comment.xml',
-		'rulesets/java/ali-concurrent.xml',
-		'rulesets/java/ali-constant.xml',
-		'rulesets/java/ali-exception.xml',
-		'rulesets/java/ali-flowcontrol.xml',
-		'rulesets/java/ali-naming.xml',
-		'rulesets/java/ali-oop.xml',
-		'rulesets/java/ali-orm.xml',
-		'rulesets/java/ali-other.xml',
-		'rulesets/java/ali-set.xml',
-		'rulesets/vm/ali-other.xml',
-	]
+    static final List<String> PMD_DEFAULT_RULESET = [
+        'rulesets/java/ali-comment.xml',
+        'rulesets/java/ali-concurrent.xml',
+        'rulesets/java/ali-constant.xml',
+        'rulesets/java/ali-exception.xml',
+        'rulesets/java/ali-flowcontrol.xml',
+        'rulesets/java/ali-naming.xml',
+        'rulesets/java/ali-oop.xml',
+        'rulesets/java/ali-orm.xml',
+        'rulesets/java/ali-other.xml',
+        'rulesets/java/ali-set.xml',
+        'rulesets/vm/ali-other.xml',
+    ]
 
-	static final String CODENARC_DEFAULT_RULESET = '''// 全局默认CodeNarc规则集
-ruleset {
+    static final String CODENARC_DEFAULT_RULESET = '''ruleset {
 	description '全局默认CodeNarc规则集'
 
 	ruleset('rulesets/basic.xml')
 	ruleset('rulesets/braces.xml')
 	ruleset('rulesets/comments.xml')
 	ruleset('rulesets/concurrency.xml')
-	ruleset('rulesets/convention.xml')
 	ruleset('rulesets/design.xml') {
 		'Instanceof' priority: 4
 	}
@@ -87,96 +87,96 @@ ruleset {
 }
 '''
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="PMD Configuration">
+    //<editor-fold desc="PMD Configuration">
 
-	String pmdRulesetFile
-	boolean pmdConsoleOutput = false
-	boolean pmdIgnoreFailures = false
-	String pmdVersion = '6.31.0'
+    String pmdRulesetFile
+    boolean pmdConsoleOutput = false
+    boolean pmdIgnoreFailures = false
+    String pmdVersion = '6.31.0'
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="Codenarc Configuration">
+    //<editor-fold desc="Codenarc Configuration">
 
-	String codenarcFile
-	boolean codenarcIgnoreFailures = false
-	String codenarcVersion = '2.1.0'
+    String codenarcFile
+    boolean codenarcIgnoreFailures = false
+    String codenarcVersion = '2.1.0'
 
-	//</editor-fold>
+    //</editor-fold>
 
-	//<editor-fold desc="Jacoco Configuration">
+    //<editor-fold desc="Jacoco Configuration">
 
-	String jacocoVersion = '0.8.6'
-	boolean jacocoBundleBranchCoverageRuleEnabled = true
-	String jacocoBundleBranchCoveredRatio = '1.0'
-	boolean jacocoBundleInstructionCoverageRuleEnabled = true
-	String jacocoBundleInstructionCoveredRatio = '0.9'
-	boolean jacocoPackageInstructionCoverageRuleEnabled = true
-	String jacocoPackageInstructionCoveredRatio = '0.9'
-	String jacocoReportExclusion = '**/app/**/*.class'
+    String jacocoVersion = '0.8.6'
+    boolean jacocoBundleBranchCoverageRuleEnabled = true
+    String jacocoBundleBranchCoveredRatio = '1.0'
+    boolean jacocoBundleInstructionCoverageRuleEnabled = true
+    String jacocoBundleInstructionCoveredRatio = '0.9'
+    boolean jacocoPackageInstructionCoverageRuleEnabled = true
+    String jacocoPackageInstructionCoveredRatio = '0.9'
+    String jacocoReportExclusion = '**/app/**/*.class'
 
-	//</editor-fold>
+    //</editor-fold>
 
-	String getPmdRulesetFile() {
-		findProperty 'pmdRulesetFile', pmdRulesetFile ?: "$rootDir/conf/pmd/ruleset.xml"
-	}
+    String getPmdRulesetFile() {
+        findProperty 'pmdRulesetFile', pmdRulesetFile ?: "$rootDir/conf/pmd/ruleset.xml"
+    }
 
-	boolean getPmdConsoleOutput() {
-		findProperty 'pmdConsoleOutput', pmdConsoleOutput
-	}
+    boolean getPmdConsoleOutput() {
+        findProperty 'pmdConsoleOutput', pmdConsoleOutput
+    }
 
-	boolean getPmdIgnoreFailures() {
-		findProperty 'pmdIgnoreFailures', pmdIgnoreFailures
-	}
+    boolean getPmdIgnoreFailures() {
+        findProperty 'pmdIgnoreFailures', pmdIgnoreFailures
+    }
 
-	String getPmdVersion() {
-		findProperty 'pmdVersion', pmdVersion
-	}
+    String getPmdVersion() {
+        findProperty 'pmdVersion', pmdVersion
+    }
 
-	String getCodenarcFile() {
-		findProperty 'codenarcFile', codenarcFile ?: "$rootDir/conf/codenarc/codenarc.groovy"
-	}
+    String getCodenarcFile() {
+        findProperty 'codenarcFile', codenarcFile ?: "$rootDir/conf/codenarc/codenarc.groovy"
+    }
 
-	boolean getCodenarcIgnoreFailures() {
-		findProperty 'codenarcIgnoreFailures', codenarcIgnoreFailures
-	}
+    boolean getCodenarcIgnoreFailures() {
+        findProperty 'codenarcIgnoreFailures', codenarcIgnoreFailures
+    }
 
-	String getCodenarcVersion() {
-		findProperty 'codenarcVersion', codenarcVersion
-	}
+    String getCodenarcVersion() {
+        findProperty 'codenarcVersion', codenarcVersion
+    }
 
-	String getJacocoVersion() {
-		findProperty 'jacocoVersion', jacocoVersion
-	}
+    String getJacocoVersion() {
+        findProperty 'jacocoVersion', jacocoVersion
+    }
 
-	boolean getJacocoBundleBranchCoverageRuleEnabled() {
-		findSystemProperty 'jacocoBundleBranchCoverageRuleEnabled', jacocoBundleBranchCoverageRuleEnabled
-	}
+    boolean getJacocoBundleBranchCoverageRuleEnabled() {
+        findSystemProperty 'jacocoBundleBranchCoverageRuleEnabled', jacocoBundleBranchCoverageRuleEnabled
+    }
 
-	String getJacocoBundleBranchCoveredRatio() {
-		findSystemProperty 'jacocoBundleBranchCoveredRatio', jacocoBundleBranchCoveredRatio
-	}
+    String getJacocoBundleBranchCoveredRatio() {
+        findSystemProperty 'jacocoBundleBranchCoveredRatio', jacocoBundleBranchCoveredRatio
+    }
 
-	boolean getJacocoBundleInstructionCoverageRuleEnabled() {
-		findSystemProperty 'jacocoBundleInstructionCoverageRuleEnabled', jacocoBundleInstructionCoverageRuleEnabled
-	}
+    boolean getJacocoBundleInstructionCoverageRuleEnabled() {
+        findSystemProperty 'jacocoBundleInstructionCoverageRuleEnabled', jacocoBundleInstructionCoverageRuleEnabled
+    }
 
-	String getJacocoBundleInstructionCoveredRatio() {
-		findSystemProperty 'jacocoBundleInstructionCoveredRatio', jacocoBundleInstructionCoveredRatio
-	}
+    String getJacocoBundleInstructionCoveredRatio() {
+        findSystemProperty 'jacocoBundleInstructionCoveredRatio', jacocoBundleInstructionCoveredRatio
+    }
 
-	boolean getJacocoPackageInstructionCoverageRuleEnabled() {
-		findSystemProperty 'jacocoPackageInstructionCoverageRuleEnabled', jacocoPackageInstructionCoverageRuleEnabled
-	}
+    boolean getJacocoPackageInstructionCoverageRuleEnabled() {
+        findSystemProperty 'jacocoPackageInstructionCoverageRuleEnabled', jacocoPackageInstructionCoverageRuleEnabled
+    }
 
-	String getJacocoPackageInstructionCoveredRatio() {
-		findSystemProperty 'jacocoPackageInstructionCoveredRatio', jacocoPackageInstructionCoveredRatio
-	}
+    String getJacocoPackageInstructionCoveredRatio() {
+        findSystemProperty 'jacocoPackageInstructionCoveredRatio', jacocoPackageInstructionCoveredRatio
+    }
 
-	String getJacocoReportExclusion() {
-		findSystemProperty 'jacocoReportExclusion', jacocoReportExclusion
-	}
+    String getJacocoReportExclusion() {
+        findSystemProperty 'jacocoReportExclusion', jacocoReportExclusion
+    }
 
 }

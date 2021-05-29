@@ -16,11 +16,12 @@
 package pub.ihub.plugin.publish
 
 import groovy.transform.TupleConstructor
+import org.gradle.api.publish.maven.MavenPublication
+import pub.ihub.plugin.IHubProjectExtension
 
 import static java.time.Year.now
 
-import org.gradle.api.publish.maven.MavenPublication
-import pub.ihub.plugin.IHubProjectExtension
+
 
 /**
  * 组件发布属性扩展
@@ -29,76 +30,76 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubPublishExtension extends IHubProjectExtension {
 
-	String pomName
-	String pomPackaging
-	String pomDescription
-	String pomUrl = 'https://ihub.pub'
-	String pomInceptionYear = now().value
+    String pomName
+    String pomPackaging
+    String pomDescription
+    String pomUrl = 'https://ihub.pub'
+    String pomInceptionYear = now().value
 
-	String pomScmUrl
-	String pomScmConnection
-	String pomScmDeveloperConnection
-	String pomScmTag
+    String pomScmUrl
+    String pomScmConnection
+    String pomScmDeveloperConnection
+    String pomScmTag
 
-	String pomLicenseName
-	String pomLicenseUrl
-	String pomLicenseDistribution
-	String pomLicenseComments
+    String pomLicenseName
+    String pomLicenseUrl
+    String pomLicenseDistribution
+    String pomLicenseComments
 
-	String pomOrganizationName = 'Dock'
-	String pomOrganizationUrl = 'https://ihub.pub'
+    String pomOrganizationName = 'Dock'
+    String pomOrganizationUrl = 'https://ihub.pub'
 
-	String pomDeveloperId
-	String pomDeveloperName = 'henry'
-	String pomDeveloperEmail = 'henry.box@outlook.com'
-	String pomDeveloperUrl = 'https://henry-hub.github.io'
-	String pomDeveloperOrganization = pomOrganizationName
-	String pomDeveloperOrganizationUrl = pomOrganizationUrl
-	String pomDeveloperRoles
-	String pomDeveloperTimezone
+    String pomDeveloperId
+    String pomDeveloperName = 'henry'
+    String pomDeveloperEmail = 'henry.box@outlook.com'
+    String pomDeveloperUrl = 'https://henry-hub.github.io'
+    String pomDeveloperOrganization = pomOrganizationName
+    String pomDeveloperOrganizationUrl = pomOrganizationUrl
+    String pomDeveloperRoles
+    String pomDeveloperTimezone
 
-	void configPom(MavenPublication publication, versionDetails) {
-		publication.pom {
-			name.set pomName ?: publication.artifactId
-			packaging = pomPackaging
-			description.set pomDescription
-			url.set pomUrl
-			inceptionYear.set pomInceptionYear
+    void configPom(MavenPublication publication, versionDetails) {
+        publication.pom {
+            name.set pomName ?: publication.artifactId
+            packaging = pomPackaging
+            description.set pomDescription
+            url.set pomUrl
+            inceptionYear.set pomInceptionYear
 
-			scm {
-				url.set pomScmUrl
-				connection.set pomScmConnection
-				developerConnection.set pomScmDeveloperConnection
-				tag.set pomScmTag ?: versionDetails.lastTag
-			}
+            scm {
+                url.set pomScmUrl
+                connection.set pomScmConnection
+                developerConnection.set pomScmDeveloperConnection
+                tag.set pomScmTag ?: versionDetails.lastTag
+            }
 
-			licenses {
-				license {
-					name.set pomLicenseName
-					url.set pomLicenseUrl
-					distribution.set pomLicenseDistribution
-					comments.set pomLicenseComments
-				}
-			}
+            licenses {
+                license {
+                    name.set pomLicenseName
+                    url.set pomLicenseUrl
+                    distribution.set pomLicenseDistribution
+                    comments.set pomLicenseComments
+                }
+            }
 
-			organization {
-				name.set pomOrganizationName
-				url.set pomOrganizationUrl
-			}
+            organization {
+                name.set pomOrganizationName
+                url.set pomOrganizationUrl
+            }
 
-			developers {
-				developer {
-					id.set pomDeveloperId
-					name.set pomDeveloperName
-					email.set pomDeveloperEmail
-					url.set pomDeveloperUrl
-					organization.set pomDeveloperOrganization
-					organizationUrl.set pomDeveloperOrganizationUrl
-					roles.set pomDeveloperRoles?.split(',')?.toList() ?: []
-					timezone.set pomDeveloperTimezone
-				}
-			}
-		}
-	}
+            developers {
+                developer {
+                    id.set pomDeveloperId
+                    name.set pomDeveloperName
+                    email.set pomDeveloperEmail
+                    url.set pomDeveloperUrl
+                    organization.set pomDeveloperOrganization
+                    organizationUrl.set pomDeveloperOrganizationUrl
+                    roles.set pomDeveloperRoles?.split(',')?.toList() ?: []
+                    timezone.set pomDeveloperTimezone
+                }
+            }
+        }
+    }
 
 }

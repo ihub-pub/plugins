@@ -15,8 +15,6 @@
  */
 package pub.ihub.plugin.java
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
-
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
@@ -32,59 +30,63 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.groovy.IHubGroovyPlugin
 
+import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
+
+
+
 /**
  * Java基础插件
  * @author henry
  */
 class IHubJavaBasePlugin implements IHubPluginAware<IHubProjectExtension> {
 
-	@Override
-	void apply(Project project) {
-		project.pluginManager.apply IHubBomPlugin
-		project.pluginManager.apply JavaPlugin
-		project.pluginManager.apply JavaLibraryPlugin
-		project.pluginManager.apply ProjectReportsPlugin
-		project.pluginManager.apply BuildDashboardPlugin
+    @Override
+    void apply(Project project) {
+        project.pluginManager.apply IHubBomPlugin
+        project.pluginManager.apply JavaPlugin
+        project.pluginManager.apply JavaLibraryPlugin
+        project.pluginManager.apply ProjectReportsPlugin
+        project.pluginManager.apply BuildDashboardPlugin
 
-		getExtension(project, IHubPluginsExtension, BEFORE) { iHubExt ->
-			if (!project.plugins.hasPlugin(IHubJavaPlugin) && !project.plugins.hasPlugin(IHubGroovyPlugin)) {
-				return
-			}
-			// 兼容性配置
-			iHubExt.javaCompatibility?.with { version ->
-				project.tasks.withType(AbstractCompile) {
-					sourceCompatibility = version
-					targetCompatibility = version
-					options.encoding = 'UTF-8'
-					options.incremental = iHubExt.gradleCompilationIncremental
-				}
-			}
+        getExtension(project, IHubPluginsExtension, BEFORE) { iHubExt ->
+            if (!project.plugins.hasPlugin(IHubJavaPlugin) && !project.plugins.hasPlugin(IHubGroovyPlugin)) {
+                return
+            }
+            // 兼容性配置
+            iHubExt.javaCompatibility?.with { version ->
+                project.tasks.withType(AbstractCompile) {
+                    sourceCompatibility = version
+                    targetCompatibility = version
+                    options.encoding = 'UTF-8'
+                    options.incremental = iHubExt.gradleCompilationIncremental
+                }
+            }
 
-			// Java11添加jaxb运行时依赖
-			if (JavaVersion.current().java11) {
-				getExtension(project, IHubBomExtension) {
-					it.excludeModules {
-						group 'com.sun.xml.bind' modules 'jaxb-core'
-					}
-					it.dependencies {
-						runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
-					}
-				}
-			}
-		}
+            // Java11添加jaxb运行时依赖
+            if (JavaVersion.current().java11) {
+                getExtension(project, IHubBomExtension) {
+                    it.excludeModules {
+                        group 'com.sun.xml.bind' modules 'jaxb-core'
+                    }
+                    it.dependencies {
+                        runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
+                    }
+                }
+            }
+        }
 
-		// 配置Jar属性
-		project.tasks.withType(Jar) {
-			manifest {
-				attributes(
-					'Implementation-Title': project.name,
-					'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-					'Implementation-Version': project.version,
-					'Implementation-Vendor': 'IHub',
-					'Created-By': 'Java ' + JavaVersion.current().majorVersion
-				)
-			}
-		}
-	}
+        // 配置Jar属性
+        project.tasks.withType(Jar) {
+            manifest {
+                attributes(
+                    'Implementation-Title': project.name,
+                    'Automatic-Module-Name': project.name.replaceAll('-', '.'),
+                    'Implementation-Version': project.version,
+                    'Implementation-Vendor': 'IHub',
+                    'Created-By': 'Java ' + JavaVersion.current().majorVersion
+                )
+            }
+        }
+    }
 
 }
