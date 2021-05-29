@@ -54,8 +54,8 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
                 'https://repo.spring.io/release')
             maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
             // 添加私有仓库
-            ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) }
-            ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) }
+            ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
+            ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
             // 添加自定义仓库
             ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
             if (!findByName('MavenRepo')) {
@@ -84,7 +84,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
         }
     }
 
-    private Closure mavenRepo(String repoName, String repoUrl, IHubPluginsExtension ext) {
+    private Closure mavenRepo(String repoName, String repoUrl, IHubPluginsExtension ext, Closure mavenContentConfig) {
         String repoIncludeGroup = ext.repoIncludeGroup
         String repoUsername = ext.repoUsername
         String repoPassword = ext.repoPassword
@@ -92,9 +92,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
             name repoName
             url repoUrl
             allowInsecureProtocol ext.repoAllowInsecureProtocol
-            mavenContent {
-                snapshotsOnly()
-            }
+            mavenContent mavenContentConfig
             content {
                 if (repoIncludeGroup) {
                     includeGroup repoIncludeGroup
