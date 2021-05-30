@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.0.6'
+    id 'pub.ihub.plugin.ihub-settings' version '1.0.10'
 }
 
 iHubSettings {
-    pluginVersions {
-        id 'com.github.ben-manes.versions' version '0.38.0'
-    }
-    includeProject 'rest'
-    includeProjects 'service', 'other'
-    includeSubprojects 'libs', 'prefix-', '-suffix'
+    includeProjects 'rest', 'service', 'other'
+    includeProjects 'libs' prefix 'prefix-' suffix '-suffix'
 }

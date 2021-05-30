@@ -21,6 +21,8 @@ plugins {
 subprojects {
     apply {
         plugin 'groovy'
+        plugin 'pub.ihub.plugin.ihub-test'
+        plugin 'pub.ihub.plugin.ihub-verification'
         plugin 'pub.ihub.plugin.ihub-publish'
         plugin 'java-gradle-plugin'
         plugin 'com.gradle.plugin-publish'

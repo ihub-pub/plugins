@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.0.9'
+    id 'pub.ihub.plugin.ihub-settings' version '1.0.10'
 }
 
 iHubSettings {
-    includeProjects 'ihub-aware', 'ihub-plugins', 'ihub-settings' namePrefix ''
+    includeProjects 'ihub-aware', 'ihub-plugins', 'ihub-settings' prefix ''
 }
