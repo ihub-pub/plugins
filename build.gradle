@@ -38,4 +38,18 @@ subprojects {
         description = 'IHub Plugins Gradle Plugin'
         tags        = ['ihub', 'groovy', 'gradle', 'spring', 'boot', 'java', 'native']
     }
+
+    iHubBom {
+        groupVersions {
+            // TODO Gradle7.0.2Groovy版本与Spock版本冲突，指定Groovy版本为3.0.7
+            group 'org.codehaus.groovy' version orgCodehausGroovyVersion
+        }
+    }
+
+    // Jacoco暂时支持TestKit，详见：https://github.com/gradle/gradle/issues/1465
+    iHubVerification {
+        jacocoBundleBranchCoverageRuleEnabled = false
+        jacocoBundleInstructionCoverageRuleEnabled = false
+        jacocoPackageInstructionCoverageRuleEnabled = false
+    }
 }
