@@ -34,10 +34,11 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
     void apply(Project project) {
         IHubPluginsExtension ext = createExtension project, 'iHub', IHubPluginsExtension
 
-        project.pluginManager.apply 'com.palantir.git-version'
-        project.version = ext.version.with {
-            'unspecified' == it ? project.versionDetails().lastTag : it
-        }
+        // TODO
+//        project.pluginManager.apply 'com.palantir.git-version'
+//        project.version = ext.version.with {
+//            'unspecified' == it ? project.versionDetails().lastTag : it
+//        }
 
         project.repositories {
             String dirs = "$project.rootProject.projectDir/libs"

@@ -40,6 +40,7 @@ import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
  * BOM插件DSL扩展
  * @author liheng
  */
+@SuppressWarnings(['ConfusingMethodName', 'JUnitPublicNonTestMethod'])
 @TupleConstructor(includeSuperFields = true)
 class IHubBomExtension extends IHubProjectExtension {
 
@@ -134,20 +135,21 @@ class IHubBomExtension extends IHubProjectExtension {
 
     void printConfigContent() {
         String projectName = projectName.toUpperCase()
-        printConfigContent "${projectName} Group Maven Bom Version", getSpecsPrintData(BOM, bomVersions,
-            { specs, spec -> specs << [spec.id, spec.module, spec.version] }),
-            groupTap(30), moduleTap(), versionTap(20)
-        printConfigContent "${projectName} Group Maven Module Version", getSpecsPrintData(MODULES, dependencyVersions,
-            { specs, spec -> specs.addAll spec.modules.collect { [spec.id, it, spec.version] } }),
-            groupTap(35), moduleTap(), versionTap(15)
-        printConfigContent "${projectName} Group Maven Default Version", getSpecsPrintData(GROUP, groupVersions,
-            { specs, spec -> specs << [spec.id, spec.version] }), groupTap(), versionTap()
-        printConfigContent "${projectName} Exclude Group Modules", getSpecsPrintData(EXCLUDE, excludeModules,
-            { specs, spec -> specs.addAll(spec.modules.collect { [spec.id, it] }) }),
-            groupTap(40), moduleTap()
-        printConfigContent "${projectName} Config Default Dependencies", getSpecsPrintData(DEPENDENCY, dependencies,
-            { specs, spec -> specs.addAll(spec.modules.collect { [spec.id, it] }) }),
-            dependencyTypeTap(), dependenciesTap()
+        printConfigContent "${projectName} Group Maven Bom Version", getSpecsPrintData(BOM, bomVersions) {
+            specs, spec -> specs << [spec.id, spec.module, spec.version]
+        }, groupTap(30), moduleTap(), versionTap(20)
+        printConfigContent "${projectName} Group Maven Module Version", getSpecsPrintData(MODULES, dependencyVersions) {
+            specs, spec -> specs.addAll spec.modules.collect { [spec.id, it, spec.version] }
+        }, groupTap(35), moduleTap(), versionTap(15)
+        printConfigContent "${projectName} Group Maven Default Version", getSpecsPrintData(GROUP, groupVersions) {
+            specs, spec -> specs << [spec.id, spec.version]
+        }, groupTap(), versionTap()
+        printConfigContent "${projectName} Exclude Group Modules", getSpecsPrintData(EXCLUDE, excludeModules) {
+            specs, spec -> specs.addAll(spec.modules.collect { [spec.id, it] })
+        }, groupTap(40), moduleTap()
+        printConfigContent "${projectName} Config Default Dependencies", getSpecsPrintData(DEPENDENCY, dependencies) {
+            specs, spec -> specs.addAll(spec.modules.collect { [spec.id, it] })
+        }, dependencyTypeTap(), dependenciesTap()
     }
 
     //<editor-fold desc="DSL扩展相关实体">
@@ -264,7 +266,9 @@ class IHubBomExtension extends IHubProjectExtension {
 
         @Override
         void version(String version) {
-            if (EXCLUDE == type) throw new GradleException('Does not support \'version\' method!')
+            if (EXCLUDE == type) {
+                throw new GradleException('Does not support \'version\' method!')
+            }
             this.version = findVersion id, version
         }
 
@@ -294,8 +298,12 @@ class IHubBomExtension extends IHubProjectExtension {
 
         @Override
         boolean equals(o) {
-            if (this.is(o)) return true
-            if (!(o instanceof BomSpecImpl)) return false
+            if (this.is(o)) {
+                return true
+            }
+            if (!(o instanceof BomSpecImpl)) {
+                return false
+            }
             type == o.type && id == o.id &&
                 (BOM != type || module == o.module) && (MODULES != type || version == o.version)
         }
@@ -304,8 +312,12 @@ class IHubBomExtension extends IHubProjectExtension {
         int hashCode() {
             int result
             result = 31 * type.hashCode() + id.hashCode()
-            if (BOM == type) result = 31 * result + module.hashCode()
-            if (MODULES == type) result = 31 * result + version.hashCode()
+            if (BOM == type) {
+                result = 31 * result + module.hashCode()
+            }
+            if (MODULES == type) {
+                result = 31 * result + version.hashCode()
+            }
             result
         }
 
