@@ -78,7 +78,7 @@ class IHubSettingsExtension implements IHubExtension {
     }
 
     ProjectSpec getProjectSpec(String path) {
-        skippedDirs ? path in skippedDirs ? new ProjectSpec() : null : projectSpecs[path]
+        skippedDirs ? path in skippedDirs ? null : new ProjectSpec() : projectSpecs[path]
     }
 
     @Override
