@@ -22,7 +22,6 @@ import org.gradle.internal.impldep.org.junit.Rule
 import org.gradle.internal.impldep.org.junit.Test
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
-import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Title
 
@@ -39,17 +38,14 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 class IHubPluginsPluginTest extends Specification {
 
     @Rule
-    @Shared
     private TemporaryFolder testProjectDir = new TemporaryFolder()
     private File buildFile
 
     @Before
-    def setupSpec() {
-        testProjectDir.create()
-    }
-
-    @Before
     def setup() {
+        testProjectDir.create()
+        testProjectDir.newFile('gradle.properties') << getClass().classLoader
+            .getResourceAsStream('testkit-gradle.properties').readLines().join('\n')
         buildFile = testProjectDir.newFile('build.gradle')
         buildFile << """
             plugins {
@@ -60,11 +56,6 @@ class IHubPluginsPluginTest extends Specification {
 
     @After
     def cleanup() {
-        buildFile.delete()
-    }
-
-    @After
-    def cleanupSpec() {
         testProjectDir.delete()
     }
 
@@ -82,7 +73,14 @@ class IHubPluginsPluginTest extends Specification {
 
     @Test
     def 'test repositories'() {
-        when:
+        when:buildFile << """
+            apply {
+                plugin 'pub.ihub.plugin.ihub-groovy'
+                plugin 'pub.ihub.plugin.ihub-test'
+                plugin 'pub.ihub.plugin.ihub-verification'
+                plugin 'pub.ihub.plugin.ihub-native'
+            }
+        """
         testProjectDir.newFolder 'libs'
         def result = GradleRunner.create()
             .withProjectDir(testProjectDir.root)
