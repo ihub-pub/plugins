@@ -16,6 +16,7 @@
 plugins {
     id 'pub.ihub.plugin'
     id 'com.gradle.plugin-publish' version "$pluginPublishVersion" apply false
+    id 'pl.droidsonroids.jacoco.testkit' version '1.0.8'
 }
 
 subprojects {
@@ -26,6 +27,7 @@ subprojects {
         plugin 'pub.ihub.plugin.ihub-publish'
         plugin 'java-gradle-plugin'
         plugin 'com.gradle.plugin-publish'
+        plugin 'pl.droidsonroids.jacoco.testkit'
     }
 
     dependencies {
@@ -47,9 +49,9 @@ subprojects {
     }
 
     // Jacoco暂时支持TestKit，详见：https://github.com/gradle/gradle/issues/1465
-    iHubVerification {
-        jacocoBundleBranchCoverageRuleEnabled = false
-        jacocoBundleInstructionCoverageRuleEnabled = false
-        jacocoPackageInstructionCoverageRuleEnabled = false
-    }
+//    iHubVerification {
+//        jacocoBundleBranchCoverageRuleEnabled = false
+//        jacocoBundleInstructionCoverageRuleEnabled = false
+//        jacocoPackageInstructionCoverageRuleEnabled = false
+//    }
 }
