@@ -58,7 +58,7 @@ class IHubPublishExtension extends IHubProjectExtension {
     String pomDeveloperRoles
     String pomDeveloperTimezone
 
-    void configPom(MavenPublication publication, versionDetails) {
+    void configPom(MavenPublication publication) {
         publication.pom {
             name.set pomName ?: publication.artifactId
             packaging = pomPackaging
@@ -70,7 +70,7 @@ class IHubPublishExtension extends IHubProjectExtension {
                 url.set pomScmUrl
                 connection.set pomScmConnection
                 developerConnection.set pomScmDeveloperConnection
-                tag.set pomScmTag ?: versionDetails.lastTag
+                tag.set pomScmTag
             }
 
             licenses {
