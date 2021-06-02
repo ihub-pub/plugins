@@ -67,12 +67,7 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
     private static TaskProvider registerGroovydocJar(Project project) {
         project.tasks.register('groovydocJar', Jar) {
             archiveClassifier.set 'groovydoc'
-            Task groovydocTask = project.tasks.getByName('groovydoc').tap {
-                if (JavaVersion.current().java9Compatible) {
-                    options.addBooleanOption 'html5', true
-                }
-                options.encoding = 'UTF-8'
-            }
+            Task groovydocTask = project.tasks.getByName 'groovydoc'
             dependsOn groovydocTask
             from groovydocTask.destinationDir
         }
@@ -136,7 +131,7 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
                     it.version = project.version
                     createExtension(project, 'iHubPublish', IHubPublishExtension, EvaluateStage.AFTER) { ext ->
                         artifactId = project.jar.archiveBaseName.get()
-                        ext.configPom it, project.versionDetails()
+                        ext.configPom it
                     }
                 }
             }

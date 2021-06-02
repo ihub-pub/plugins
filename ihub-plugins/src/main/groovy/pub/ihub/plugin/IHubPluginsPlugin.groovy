@@ -39,6 +39,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
 //        project.version = ext.version.with {
 //            'unspecified' == it ? project.versionDetails().lastTag : it
 //        }
+        project.version = ext.version
 
         project.repositories {
             String dirs = "$project.rootProject.projectDir/libs"
@@ -59,9 +60,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
             ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
             // 添加自定义仓库
             ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
-            if (!findByName('MavenRepo')) {
-                mavenCentral()
-            }
+            mavenCentral()
         }
 
         if (project.name == project.rootProject.name) {
@@ -86,25 +85,23 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
     }
 
     private Closure mavenRepo(String repoName, String repoUrl, IHubPluginsExtension ext, Closure mavenContentConfig) {
-        String repoIncludeGroup = ext.repoIncludeGroup
-        String repoUsername = ext.repoUsername
-        String repoPassword = ext.repoPassword
         return {
             name repoName
             url repoUrl
             allowInsecureProtocol ext.repoAllowInsecureProtocol
             mavenContent mavenContentConfig
             content {
+                String repoIncludeGroup = ext.repoIncludeGroup
                 if (repoIncludeGroup) {
                     includeGroup repoIncludeGroup
                 } else {
                     includeGroupByRegex ext.repoIncludeGroupRegex
                 }
             }
-            if (repoUsername && repoPassword) {
+            ext.repoUsername?.with { repoUsername ->
                 credentials {
                     username repoUsername
-                    password repoPassword
+                    password ext.repoPassword
                 }
             }
         }
