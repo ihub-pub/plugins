@@ -40,17 +40,13 @@ class IHubSettingsExtension implements IHubExtension {
 
     IHubSettingsExtension(Settings settings) {
         this.settings = settings
+
+        // 配置主项目名称
+        settings.rootProject.name = findProperty 'projectName', settings.rootProject.name
+
         // 通过项目属性配置子项目
         includeProjects findProperty('includeDirs')?.split(',')
         skippedDirs = findProperty('skippedDirs')?.split ','
-    }
-
-    /**
-     * 主项目名称
-     * @return 主项目名称
-     */
-    String getProjectName() {
-        findProperty 'projectName', settings.rootProject.name
     }
 
     /**
@@ -59,7 +55,6 @@ class IHubSettingsExtension implements IHubExtension {
      */
     void pluginVersions(Action<PluginVersionsSpec> action) {
         List<PluginVersionSpec> versions = new PluginVersionsSpec().tap { action.execute it }.specs
-        assert versions, 'plugin versions config not empty!'
         versions.each {
             pluginVersionSpecs.put it.id, it.pluginVersion
         }
