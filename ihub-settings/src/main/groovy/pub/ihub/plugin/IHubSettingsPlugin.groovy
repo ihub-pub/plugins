@@ -49,21 +49,20 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             id 'com.github.ben-manes.versions' version '0.38.0'
         }
 
-        // 配置主项目名称
-        settings.rootProject.name = ext.projectName
-
         // 配置自定义扩展
         settings.gradle.settingsEvaluated {
+            // 配置插件版本
             settings.pluginManagement {
-                resolutionStrategy {
-                    eachPlugin {
-                        ext.pluginVersionSpecs.findAll { it.key == requested.id.toString() }
-                            .each { id, version -> useVersion version }
+                plugins {
+                    id IHubSettingsPlugin.package.name version IHubSettingsPlugin.package.implementationVersion
+                    ext.pluginVersionSpecs.each { key, value ->
+                        id key version value
                     }
                 }
             }
             printConfigContent 'Gradle Plugin Plugins Version', idTap(), versionTap(), ext.pluginVersionSpecs
 
+            // 配置子项目
             Map<String, List<String>> projectSpecs = [:]
             settings.rootDir.eachDir { dir ->
                 String path = dir.name
@@ -100,15 +99,8 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     name 'SpringRelease'
                     url 'https://repo.spring.io/release'
                 }
-                if (!findByName('Gradle Central Plugin Repository')) {
-                    gradlePluginPortal()
-                }
             }
             printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
-
-            plugins {
-                id IHubSettingsPlugin.package.name version IHubSettingsPlugin.package.implementationVersion
-            }
         }
     }
 

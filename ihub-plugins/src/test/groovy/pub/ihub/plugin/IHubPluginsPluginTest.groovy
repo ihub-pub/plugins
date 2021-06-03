@@ -16,10 +16,7 @@
 package pub.ihub.plugin
 
 import groovy.util.logging.Slf4j
-import org.gradle.internal.impldep.org.junit.After
-import org.gradle.internal.impldep.org.junit.Before
 import org.gradle.internal.impldep.org.junit.Rule
-import org.gradle.internal.impldep.org.junit.Test
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
 import spock.lang.Specification
@@ -35,7 +32,7 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
  */
 @Slf4j
 @Title('IHubPluginsPlugin测试套件')
-@SuppressWarnings('PrivateFieldCouldBeFinal')
+@SuppressWarnings(['PrivateFieldCouldBeFinal', 'JUnitPublicNonTestMethod'])
 class IHubPluginsPluginTest extends Specification {
 
     @Rule
@@ -43,7 +40,6 @@ class IHubPluginsPluginTest extends Specification {
     private File buildFile
     private File propertiesFile
 
-    @Before
     def setup() {
         testProjectDir.create()
         propertiesFile = testProjectDir.newFile('gradle.properties')
@@ -56,12 +52,10 @@ class IHubPluginsPluginTest extends Specification {
         """
     }
 
-    @After
     def cleanup() {
         testProjectDir.delete()
     }
 
-    @Test
     def 'basic build test'() {
         when:
         def result = GradleRunner.create()
@@ -73,7 +67,6 @@ class IHubPluginsPluginTest extends Specification {
         result.output.contains('BUILD SUCCESSFUL')
     }
 
-    @Test
     def 'complete build test'() {
         when:
         testProjectDir.newFile('settings.gradle') << 'include \'a\', \'b\', \'c\''
