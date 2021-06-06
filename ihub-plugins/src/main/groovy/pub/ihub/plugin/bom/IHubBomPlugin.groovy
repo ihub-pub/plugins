@@ -15,12 +15,14 @@
  */
 package pub.ihub.plugin.bom
 
+import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+import org.gradle.api.Plugin
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubPluginAware
 import pub.ihub.plugin.IHubPluginsPlugin
+import pub.ihub.plugin.IHubProjectPlugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 
 
 
@@ -29,17 +31,16 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
  * @author henry
  */
 @SuppressWarnings('NestedBlockDepth')
-class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
+class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubPluginsPlugin, DependencyManagementPlugin]
+    String extensionName = 'iHubBom'
 
     @Override
-    void apply(Project project) {
-        project.pluginManager.apply IHubPluginsPlugin
-        project.pluginManager.apply 'io.spring.dependency-management'
-
+    void apply() {
         // 添加默认配置
-        boolean isRoot = project.name == project.rootProject.name
-        createExtension(project, 'iHubBom', IHubBomExtension, isRoot ? AFTER : BEFORE) { ext ->
-            defaultConfig ext
+        withExtension(project.name == project.rootProject.name ? AFTER : BEFORE) {
+            defaultConfig it
         }
 
         // 配置项目依赖
@@ -94,7 +95,7 @@ class IHubBomPlugin implements IHubPluginAware<IHubBomExtension> {
     }
 
     private void configProject(Project project) {
-        getExtension(project, IHubBomExtension, AFTER) { ext ->
+        withExtension(AFTER) { ext ->
             project.dependencyManagement {
                 // 导入bom配置
                 imports {

@@ -30,7 +30,7 @@ import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
  * @author henry
  */
 @Slf4j
-@Title('IHubPluginsPlugin测试套件')
+@Title('IHubSettingsPlugin测试套件')
 @SuppressWarnings(['PrivateFieldCouldBeFinal', 'JUnitPublicNonTestMethod'])
 class IHubSettingsPluginTest extends Specification {
 

@@ -16,6 +16,7 @@
 package pub.ihub.plugin.java
 
 import org.gradle.api.JavaVersion
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -23,14 +24,14 @@ import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
-import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.groovy.IHubGroovyPlugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 
 
 
@@ -38,33 +39,31 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
  * Java基础插件
  * @author henry
  */
-class IHubJavaBasePlugin implements IHubPluginAware<IHubProjectExtension> {
+class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [
+        IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin, BuildDashboardPlugin
+    ]
 
     @Override
-    void apply(Project project) {
-        project.pluginManager.apply IHubBomPlugin
-        project.pluginManager.apply JavaPlugin
-        project.pluginManager.apply JavaLibraryPlugin
-        project.pluginManager.apply ProjectReportsPlugin
-        project.pluginManager.apply BuildDashboardPlugin
-
-        getExtension(project, IHubPluginsExtension, BEFORE) { iHubExt ->
+    void apply() {
+        withExtension(IHubPluginsExtension, BEFORE) { iHubExt ->
             if (!project.plugins.hasPlugin(IHubJavaPlugin) && !project.plugins.hasPlugin(IHubGroovyPlugin)) {
                 return
             }
             // 兼容性配置
             iHubExt.javaCompatibility?.with { version ->
-                project.tasks.withType(AbstractCompile) {
-                    sourceCompatibility = version
-                    targetCompatibility = version
-                    options.encoding = 'UTF-8'
-                    options.incremental = iHubExt.gradleCompilationIncremental
+                withTask(AbstractCompile) {
+                    it.sourceCompatibility = version
+                    it.targetCompatibility = version
+                    it.options.encoding = 'UTF-8'
+                    it.options.incremental = iHubExt.gradleCompilationIncremental
                 }
             }
 
             // Java11添加jaxb运行时依赖
             if (JavaVersion.current().java11) {
-                getExtension(project, IHubBomExtension) {
+                withExtension(IHubBomExtension) {
                     it.excludeModules {
                         group 'com.sun.xml.bind' modules 'jaxb-core'
                     }
@@ -76,8 +75,8 @@ class IHubJavaBasePlugin implements IHubPluginAware<IHubProjectExtension> {
         }
 
         // 配置Jar属性
-        project.tasks.withType(Jar) {
-            manifest {
+        withTask(Jar) {
+            it.manifest {
                 attributes(
                     'Implementation-Title': project.name,
                     'Automatic-Module-Name': project.name.replaceAll('-', '.'),

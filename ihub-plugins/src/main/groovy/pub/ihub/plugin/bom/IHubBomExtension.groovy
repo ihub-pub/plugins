@@ -18,16 +18,22 @@ package pub.ihub.plugin.bom
 import groovy.transform.TupleConstructor
 import org.gradle.api.Action
 import org.gradle.api.GradleException
+import org.gradle.api.plugins.ExtensionContainer
 import pub.ihub.plugin.IHubProjectExtension
 
 import java.util.function.BiConsumer
 
-import static pub.ihub.plugin.IHubPluginMethods.dependenciesTap
-import static pub.ihub.plugin.IHubPluginMethods.dependencyTypeTap
-import static pub.ihub.plugin.IHubPluginMethods.groupTap
-import static pub.ihub.plugin.IHubPluginMethods.moduleTap
+import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.API_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.COMPILE_ONLY_API_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.RUNTIME_ONLY_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.TEST_COMPILE_ONLY_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.versionTap
+import static pub.ihub.plugin.IHubPluginMethods.tap
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.BOM
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.DEPENDENCY
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.EXCLUDE
@@ -106,7 +112,7 @@ class IHubBomExtension extends IHubProjectExtension {
     }
 
     private List getSpecsPrintData(VersionType type, Set<BomSpecImpl> specs, BiConsumer<List, BomSpecImpl> consumer) {
-        IHubBomExtension rootExt = rootProject.extensions.findByType IHubBomExtension
+        IHubBomExtension rootExt = rootExtensions.findByType IHubBomExtension
         Set<BomSpecImpl> commonSpecs = rootExt.commonSpecs[type]
         (root ? commonSpecs?.tap { specs*.rightShift it } :
             specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
@@ -118,7 +124,7 @@ class IHubBomExtension extends IHubProjectExtension {
 
     private void setCommonSpecs(VersionType type, Set<BomSpecImpl> specs) {
         if (!root) {
-            IHubBomExtension rootExt = rootProject.extensions.findByType IHubBomExtension
+            IHubBomExtension rootExt = rootExtensions.findByType IHubBomExtension
             rootExt.commonSpecs.put type, rootExt.commonSpecs[type].with {
                 null == it ? specs : it.findAll { specs.any { s -> it.compare s } }
             }
@@ -150,6 +156,38 @@ class IHubBomExtension extends IHubProjectExtension {
         printConfigContent "${projectName} Config Default Dependencies", getSpecsPrintData(DEPENDENCY, dependencies) {
             specs, spec -> specs.addAll(spec.modules.collect { [spec.id, it] })
         }, dependencyTypeTap(), dependenciesTap()
+    }
+
+    String getProjectName() {
+        project.name
+    }
+
+    boolean isRoot() {
+        projectName == project.rootProject.name
+    }
+
+    ExtensionContainer getRootExtensions() {
+        project.rootProject.extensions
+    }
+
+    private static Tuple2<String, Integer> groupTap(Integer width = null) {
+        tap 'Group', width
+    }
+
+    private static Tuple2<String, Integer> versionTap(Integer width = 30) {
+        tap 'Version', width
+    }
+
+    private static Tuple2<String, Integer> moduleTap(Integer width = null) {
+        tap 'Module', width
+    }
+
+    private static Tuple2<String, Integer> dependencyTypeTap() {
+        tap 'DependencyType', 30
+    }
+
+    private static Tuple2<String, Integer> dependenciesTap() {
+        tap 'Dependencies'
     }
 
     //<editor-fold desc="DSL扩展相关实体">
@@ -189,39 +227,39 @@ class IHubBomExtension extends IHubProjectExtension {
         void compile(String type, String... dependencies)
 
         default void api(String... dependencies) {
-            compile 'api', dependencies
+            compile API_CONFIGURATION_NAME, dependencies
         }
 
         default void implementation(String... dependencies) {
-            compile 'implementation', dependencies
+            compile IMPLEMENTATION_CONFIGURATION_NAME, dependencies
         }
 
         default void compileOnly(String... dependencies) {
-            compile 'compileOnly', dependencies
+            compile COMPILE_ONLY_CONFIGURATION_NAME, dependencies
         }
 
         default void compileOnlyApi(String... dependencies) {
-            compile 'compileOnlyApi', dependencies
+            compile COMPILE_ONLY_API_CONFIGURATION_NAME, dependencies
         }
 
         default void runtimeOnly(String... dependencies) {
-            compile 'runtimeOnly', dependencies
+            compile RUNTIME_ONLY_CONFIGURATION_NAME, dependencies
         }
 
         default void testImplementation(String... dependencies) {
-            compile 'testImplementation', dependencies
+            compile TEST_IMPLEMENTATION_CONFIGURATION_NAME, dependencies
         }
 
         default void testCompileOnly(String... dependencies) {
-            compile 'testCompileOnly', dependencies
+            compile TEST_COMPILE_ONLY_CONFIGURATION_NAME, dependencies
         }
 
         default void testRuntimeOnly(String... dependencies) {
-            compile 'testRuntimeOnly', dependencies
+            compile TEST_RUNTIME_ONLY_CONFIGURATION_NAME, dependencies
         }
 
         default void annotationProcessor(String... dependencies) {
-            compile 'annotationProcessor', dependencies
+            compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, dependencies
         }
 
     }

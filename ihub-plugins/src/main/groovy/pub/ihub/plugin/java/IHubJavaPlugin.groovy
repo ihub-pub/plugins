@@ -15,8 +15,9 @@
  */
 package pub.ihub.plugin.java
 
+import org.gradle.api.Plugin
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
@@ -27,14 +28,13 @@ import pub.ihub.plugin.bom.IHubBomPlugin
  * Java插件
  * @author henry
  */
-class IHubJavaPlugin implements IHubPluginAware<IHubProjectExtension> {
+class IHubJavaPlugin extends IHubProjectPlugin<IHubProjectExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin, IHubJavaBasePlugin]
 
     @Override
-    void apply(Project project) {
-        project.pluginManager.apply IHubBomPlugin
-        project.pluginManager.apply IHubJavaBasePlugin
-
-        getExtension(project, IHubBomExtension).dependencies {
+    void apply() {
+        withExtension(IHubBomExtension).dependencies {
             // 添加lombok依赖
             String lombok = 'org.projectlombok:lombok'
             compileOnly lombok

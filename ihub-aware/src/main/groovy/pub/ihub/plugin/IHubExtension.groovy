@@ -15,10 +15,15 @@
  */
 package pub.ihub.plugin
 
+import groovy.transform.CompileStatic
+
+
+
 /**
  * IHub扩展特征
  * @author henry
  */
+@CompileStatic
 trait IHubExtension {
 
     abstract String findProjectProperty(String key)
@@ -46,24 +51,8 @@ trait IHubExtension {
         findProperty(key, defaultValue) { String k -> findProjectProperty k }
     }
 
-    boolean findProperty(String key, boolean defaultValue) {
-        findProperty(key, String.valueOf(defaultValue)).toBoolean()
-    }
-
     String findVersion(String key, String defaultValue) {
         findProperty key + '.version', defaultValue
-    }
-
-    String findSystemProperty(String key, String defaultValue = null) {
-        findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: findProjectProperty(k) }
-    }
-
-    boolean findSystemProperty(String key, boolean defaultValue) {
-        findSystemProperty(key, String.valueOf(defaultValue)).toBoolean()
-    }
-
-    int findSystemProperty(String key, int defaultValue) {
-        findSystemProperty(key, String.valueOf(defaultValue)).toInteger()
     }
 
 }

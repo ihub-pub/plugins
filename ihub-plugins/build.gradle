@@ -25,61 +25,61 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        ihubPlugins {
+        iHubPlugins {
             id                  = 'pub.ihub.plugin'
             displayName         = 'IHub Plugins Gradle Plugin'
             description         = 'IHub Plugins Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
         }
-        ihubBom {
+        iHubBom {
             id                  = 'pub.ihub.plugin.ihub-bom'
             displayName         = 'IHub Bom Plugin'
             description         = 'IHub Bom Plugin'
             implementationClass = 'pub.ihub.plugin.bom.IHubBomPlugin'
         }
-        ihubJavaBase {
+        iHubJavaBase {
             id                  = 'pub.ihub.plugin.ihub-java-base'
             displayName         = 'IHub Java Base Gradle Plugin'
             description         = 'IHub Java Base Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.java.IHubJavaBasePlugin'
         }
-        ihubJava {
+        iHubJava {
             id                  = 'pub.ihub.plugin.ihub-java'
             displayName         = 'IHub Java Gradle Plugin'
             description         = 'IHub Java Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.java.IHubJavaPlugin'
         }
-        ihubGroovy {
+        iHubGroovy {
             id                  = 'pub.ihub.plugin.ihub-groovy'
             displayName         = 'IHub Groovy Gradle Plugin'
             description         = 'IHub Groovy Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.groovy.IHubGroovyPlugin'
         }
-        ihubPublish {
+        iHubPublish {
             id                  = 'pub.ihub.plugin.ihub-publish'
             displayName         = 'IHub Publish Gradle Plugin'
             description         = 'IHub Publish Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.publish.IHubPublishPlugin'
         }
-        ihubTest {
+        iHubTest {
             id                  = 'pub.ihub.plugin.ihub-test'
             displayName         = 'IHub Test Gradle Plugin'
             description         = 'IHub Test Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.verification.IHubTestPlugin'
         }
-        ihubVerification {
+        iHubVerification {
             id                  = 'pub.ihub.plugin.ihub-verification'
             displayName         = 'IHub Verification Gradle Plugin'
             description         = 'IHub Verification Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.verification.IHubVerificationPlugin'
         }
-        ihubBoot {
+        iHubBoot {
             id                  = 'pub.ihub.plugin.ihub-boot'
             displayName         = 'IHub Boot Gradle Plugin'
             description         = 'IHub Boot Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.spring.IHubBootPlugin'
         }
-        ihubNative {
+        iHubNative {
             id                  = 'pub.ihub.plugin.ihub-native'
             displayName         = 'IHub Native Gradle Plugin'
             description         = 'IHub Native Gradle Plugin'

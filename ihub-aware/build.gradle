@@ -17,7 +17,7 @@ description = 'IHub Gradle Plugins Aware'
 
 gradlePlugin {
     plugins {
-        ihubSettings {
+        ihubAware {
             id                  = 'pub.ihub.plugin.ihub-aware'
             displayName         = 'IHub Gradle Plugins Aware'
             description         = 'IHub Gradle Plugins Aware'

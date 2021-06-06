@@ -15,14 +15,15 @@
  */
 package pub.ihub.plugin.spring
 
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
-import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 
 
 
@@ -30,19 +31,19 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
  * IHub Spring Boot Plugin
  * @author henry
  */
-class IHubBootPlugin implements IHubPluginAware<IHubBootExtension> {
+class IHubBootPlugin extends IHubProjectPlugin<IHubBootExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin, SpringBootPlugin]
+    String extensionName = 'iHubBoot'
 
     @Override
-    void apply(Project project) {
-        project.pluginManager.apply IHubJavaBasePlugin
-        project.pluginManager.apply SpringBootPlugin
-
-        createExtension(project, 'iHubBoot', IHubBootExtension, AFTER) { ext ->
-            project.tasks.getByName('bootRun') { BootRun it ->
+    void apply() {
+        withExtension(AFTER) { ext ->
+            withTask(BootRun) {
                 ext.systemProperties it
             }
 
-            project.tasks.getByName('bootJar') { BootJar it ->
+            withTask(BootJar) {
                 it.requiresUnpack ext.bootJarRequiresUnpack
             }
         }

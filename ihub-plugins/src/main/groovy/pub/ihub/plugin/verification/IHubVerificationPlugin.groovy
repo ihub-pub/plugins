@@ -15,8 +15,8 @@
  */
 package pub.ihub.plugin.verification
 
+import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
@@ -25,13 +25,13 @@ import org.gradle.api.plugins.quality.PmdExtension
 import org.gradle.api.plugins.quality.PmdPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
-import pub.ihub.plugin.IHubPluginAware
+import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
+import org.gradle.testing.jacoco.tasks.JacocoReport
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.verification.IHubVerificationExtension.CODENARC_DEFAULT_RULESET
-import static pub.ihub.plugin.verification.IHubVerificationExtension.PMD_DEFAULT_RULESET
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 
 
 
@@ -39,13 +39,13 @@ import static pub.ihub.plugin.verification.IHubVerificationExtension.PMD_DEFAULT
  * 代码检查插件
  * @author liheng
  */
-class IHubVerificationPlugin implements IHubPluginAware<IHubVerificationExtension> {
+class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin]
+    String extensionName = 'iHubVerification'
 
     @Override
-    void apply(Project project) {
-        project.pluginManager.apply IHubBomPlugin
-
-        createExtension project, 'iHubVerification', IHubVerificationExtension
+    void apply() {
         if (project.plugins.hasPlugin(JavaPlugin)) {
             configPmd project
         }
@@ -56,50 +56,50 @@ class IHubVerificationPlugin implements IHubPluginAware<IHubVerificationExtensio
     }
 
     private void configPmd(Project project) {
-        project.pluginManager.apply PmdPlugin
-        getExtension(project, IHubBomExtension).dependencies {
+        applyPlugin PmdPlugin
+        withExtension(IHubBomExtension).dependencies {
             compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
         }
-        getExtension(project, IHubVerificationExtension, AFTER) { ext ->
-            getExtension(project, PmdExtension).identity {
+        withExtension(AFTER) { ext ->
+            withExtension(PmdExtension) {
                 String ruleset = ext.pmdRulesetFile
                 if (project.file(ruleset).exists()) {
-                    ruleSetFiles = project.files ruleset
+                    it.ruleSetFiles = project.files ruleset
                 } else {
-                    ruleSets = PMD_DEFAULT_RULESET
+                    it.ruleSets = IHubVerificationExtension.PMD_DEFAULT_RULESET
                 }
-                consoleOutput = ext.pmdConsoleOutput
-                ignoreFailures = ext.pmdIgnoreFailures
-                toolVersion = ext.pmdVersion
+                it.consoleOutput = ext.pmdConsoleOutput
+                it.ignoreFailures = ext.pmdIgnoreFailures
+                it.toolVersion = ext.pmdVersion
             }
         }
     }
 
     private void configCodenarc(Project project) {
-        project.pluginManager.apply CodeNarcPlugin
-        getExtension(project, IHubVerificationExtension, AFTER) { ext ->
-            getExtension(project, CodeNarcExtension).identity {
-                configFile = project.rootProject.with {
+        applyPlugin CodeNarcPlugin
+        withExtension(AFTER) { ext ->
+            withExtension(CodeNarcExtension) {
+                it.configFile = project.rootProject.with {
                     file(ext.codenarcFile).with {
                         String tmpPath = "$projectDir/build/tmp"
                         exists() ? it : file("$tmpPath/codenarc.groovy").tap {
                             mkdir tmpPath
                             createNewFile()
-                            write CODENARC_DEFAULT_RULESET
+                            write IHubVerificationExtension.CODENARC_DEFAULT_RULESET
                         }
                     }
                 }
-                ignoreFailures = ext.codenarcIgnoreFailures
-                toolVersion = ext.codenarcVersion
+                it.ignoreFailures = ext.codenarcIgnoreFailures
+                it.toolVersion = ext.codenarcVersion
             }
         }
     }
 
     private void configJacoco(Project project) {
-        project.pluginManager.apply JacocoPlugin
-        getExtension(project, IHubVerificationExtension, AFTER) { ext ->
-            getExtension(project, JacocoPluginExtension).identity {
-                toolVersion = ext.jacocoVersion
+        applyPlugin JacocoPlugin
+        withExtension(AFTER) { ext ->
+            withExtension(JacocoPluginExtension) {
+                it.toolVersion = ext.jacocoVersion
             }
 
             /**
@@ -108,8 +108,8 @@ class IHubVerificationPlugin implements IHubPluginAware<IHubVerificationExtensio
              * https://github.com/jacoco/jacoco/issues/884
              * http://groovy.329449.n5.nabble.com/Groovy-2-5-4-generates-dead-code-td5755188.html
              */
-            Task jacocoTestCoverageVerification = project.tasks.getByName('jacocoTestCoverageVerification').tap {
-                violationRules {
+            JacocoCoverageVerification jacocoCoverageVerification = withTask('jacocoTestCoverageVerification') {
+                it.violationRules {
                     // rule #1：bundle分支覆盖率
                     rule {
                         enabled = ext.jacocoBundleBranchCoverageRuleEnabled
@@ -138,17 +138,17 @@ class IHubVerificationPlugin implements IHubPluginAware<IHubVerificationExtensio
             }
 
             // 覆盖率报告排除main class
-            Task jacocoTestReport = project.tasks.getByName('jacocoTestReport').tap {
-                project.afterEvaluate {
-                    classDirectories.from = project.files(classDirectories.files.collect { dir ->
+            JacocoReport jacocoTestReport = withTask('jacocoTestReport') { task ->
+                afterEvaluate {
+                    task.classDirectories.from = project.files(task.classDirectories.files.collect { dir ->
                         project.fileTree dir: dir, exclude: ext.jacocoReportExclusion
                     })
                 }
             }
 
             // 一些任务依赖和属性设置
-            project.check.dependsOn jacocoTestCoverageVerification
-            project.test.finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+            withTask('check').dependsOn jacocoCoverageVerification
+            withTask('test').finalizedBy jacocoTestReport, jacocoCoverageVerification
         }
     }
 
