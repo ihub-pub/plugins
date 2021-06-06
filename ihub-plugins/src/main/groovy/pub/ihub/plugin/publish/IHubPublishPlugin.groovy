@@ -16,6 +16,7 @@
 package pub.ihub.plugin.publish
 
 import org.gradle.api.JavaVersion
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
@@ -27,13 +28,13 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
-import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 
 
 
@@ -41,50 +42,21 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
  * 组件发布插件
  * @author liheng
  */
-class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
+class IHubPublishPlugin extends IHubProjectPlugin<IHubPublishExtension> {
 
-    private static TaskProvider registerSourcesJar(Project project) {
-        project.tasks.register('sourcesJar', Jar) {
-            archiveClassifier.set 'sources'
-            from project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
-        }
-    }
-
-    private static TaskProvider registerJavadocsJar(Project project) {
-        project.tasks.register('javadocsJar', Jar) {
-            archiveClassifier.set 'javadoc'
-            Task javadocTask = project.tasks.getByName('javadoc').tap {
-                if (JavaVersion.current().java9Compatible) {
-                    options.addBooleanOption 'html5', true
-                }
-                options.encoding = 'UTF-8'
-            }
-            dependsOn javadocTask
-            from javadocTask
-        }
-    }
-
-    private static TaskProvider registerGroovydocJar(Project project) {
-        project.tasks.register('groovydocJar', Jar) {
-            archiveClassifier.set 'groovydoc'
-            Task groovydocTask = project.tasks.getByName 'groovydoc'
-            dependsOn groovydocTask
-            from groovydocTask.destinationDir
-        }
-    }
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin]
+    String extensionName = 'iHubPublish'
 
     @Override
-    void apply(Project project) {
-        project.pluginManager.apply IHubJavaBasePlugin
-
-        IHubPluginsExtension iHubExt = getExtension project, IHubPluginsExtension
+    void apply() {
+        IHubPluginsExtension iHubExt = withExtension IHubPluginsExtension
 
         configPublish project, iHubExt
 
         configSigning project, iHubExt
 
         // 添加配置元信息
-        getExtension(project, IHubBomExtension, BEFORE) {
+        withExtension(IHubBomExtension, BEFORE) {
             if (it.enabledDefaultConfig) {
                 it.dependencies {
                     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -95,23 +67,23 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
     }
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
-        project.pluginManager.apply MavenPublishPlugin
-        getExtension(project, PublishingExtension).identity {
-            publications {
+        applyPlugin MavenPublishPlugin
+        withExtension(PublishingExtension) {
+            it.publications {
                 create('mavenJava', MavenPublication) {
                     from project.components.getByName('java')
 
                     // release版本时发布sources以及docs包
-                    if (iHubExt.release) {
+                    if (release) {
                         boolean publishDocs = iHubExt.publishDocs
                         List tasks = [
-                            registerSourcesJar(project)
+                            this.registerSourcesJar()
                         ]
                         if (publishDocs) {
-                            tasks << registerJavadocsJar(project)
+                            tasks << this.registerJavadocsJar()
                         }
                         if (publishDocs && project.plugins.hasPlugin(GroovyPlugin)) {
-                            tasks << registerGroovydocJar(project)
+                            tasks << this.registerGroovydocJar()
                         }
                         tasks.each {
                             artifact it
@@ -129,21 +101,19 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
                     it.groupId = project.group
                     it.version = project.version
-                    createExtension(project, 'iHubPublish', IHubPublishExtension, EvaluateStage.AFTER) { ext ->
+                    this.withExtension(EvaluateStage.AFTER) { ext ->
                         artifactId = project.jar.archiveBaseName.get()
                         ext.configPom it
                     }
                 }
             }
-            String repoUsername = iHubExt.repoUsername
-            String repoPassword = iHubExt.repoPassword
-            repositories {
+            it.repositories {
                 maven {
-                    url iHubExt.release ? iHubExt.releaseRepoUrl : iHubExt.snapshotRepoUrl
-                    if (repoUsername && repoPassword) {
+                    url release ? iHubExt.releaseRepoUrl : iHubExt.snapshotRepoUrl
+                    iHubExt.repoUsername?.with { repoUsername ->
                         credentials {
                             username repoUsername
-                            password repoPassword
+                            password iHubExt.repoPassword
                         }
                     }
                 }
@@ -153,14 +123,48 @@ class IHubPublishPlugin implements IHubPluginAware<IHubPublishExtension> {
 
     private void configSigning(Project project, IHubPluginsExtension iHubExt) {
         project.plugins.apply SigningPlugin
-        getExtension(project, SigningExtension).identity {
-            required = iHubExt.release && iHubExt.publishNeedSign
-            useInMemoryPgpKeys iHubExt.signingKeyId, iHubExt.signingSecretKey, iHubExt.signingPassword
-            getExtension(project, PublishingExtension, AFTER) {
-                if (required) {
-                    sign it.publications.mavenJava
+        withExtension(SigningExtension) { ext ->
+            ext.required = release && iHubExt.publishNeedSign
+            ext.useInMemoryPgpKeys iHubExt.signingKeyId, iHubExt.signingSecretKey, iHubExt.signingPassword
+            withExtension(PublishingExtension, AFTER) {
+                if (ext.required) {
+                    ext.sign it.publications.mavenJava
                 }
             }
+        }
+    }
+
+    private boolean isRelease() {
+        project.version ==~ /(\d+\.)+\d+/
+    }
+
+    private TaskProvider registerSourcesJar() {
+        registerTask('sourcesJar', Jar) {
+            it.archiveClassifier.set 'sources'
+            it.from it.project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
+        }
+    }
+
+    private TaskProvider registerJavadocsJar() {
+        registerTask('javadocsJar', Jar) {
+            it.archiveClassifier.set 'javadoc'
+            Task javadocTask = it.project.tasks.getByName('javadoc').tap {
+                if (JavaVersion.current().java9Compatible) {
+                    options.addBooleanOption 'html5', true
+                }
+                options.encoding = 'UTF-8'
+            }
+            it.dependsOn javadocTask
+            it.from javadocTask
+        }
+    }
+
+    private TaskProvider registerGroovydocJar() {
+        registerTask('groovydocJar', Jar) {
+            it.archiveClassifier.set 'groovydoc'
+            Task groovydocTask = it.project.tasks.getByName 'groovydoc'
+            it.dependsOn groovydocTask
+            it.from groovydocTask.destinationDir
         }
     }
 

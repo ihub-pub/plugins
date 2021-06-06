@@ -18,10 +18,8 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 
-import static pub.ihub.plugin.IHubPluginMethods.idTap
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.tap
-import static pub.ihub.plugin.IHubPluginMethods.versionTap
 
 
 
@@ -60,7 +58,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     }
                 }
             }
-            printConfigContent 'Gradle Plugin Plugins Version', idTap(), versionTap(), ext.pluginVersionSpecs
+            printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), ext.pluginVersionSpecs
 
             // 配置子项目
             Map<String, List<String>> projectSpecs = [:]

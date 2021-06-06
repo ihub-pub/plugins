@@ -13,34 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin.spring
+package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.springframework.aot.gradle.SpringAotGradlePlugin
-import pub.ihub.plugin.IHubProjectPlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
 
 
 
 /**
- * 原生镜像插件
  * @author henry
  */
-class IHubNativePlugin extends IHubProjectPlugin<IHubNativeExtension> {
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBootPlugin, SpringAotGradlePlugin]
-    String extensionName = 'iHubNative'
+class IHubDemoPlugin implements Plugin<Project> {
 
     @Override
-    void apply() {
-        withExtension(AFTER) { ext ->
-            project.bootBuildImage {
-                builder = 'paketobuildpacks/builder:tiny'
-                environment = ext.environment
-            }
-        }
+    void apply(Project project) {
+        IHubDemoExtension ext = project.extensions.create 'iHubDemo', IHubDemoExtension
+
+        System.setProperty 'demo.a.version', '1.0.0'
+        System.setProperty 'demo_b_version', '1.0.0'
+        System.setProperty 'demo-c-version', '1.0.0'
+        System.setProperty 'demoDVersion', '1.0.0'
+
+        printConfigContent 'demo test print', tap('demo'), tap('version', 30), [
+            'demo.a', 'demo.b', 'demo.c', 'demo.d', 'demo.e'
+        ].collectEntries { [(it): ext.findVersion(it, '1.0.1')] }
     }
 
 }

@@ -15,7 +15,7 @@
  */
 package pub.ihub.plugin
 
-
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import pub.ihub.plugin.bom.IHubBomPlugin
 
@@ -28,12 +28,14 @@ import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
  * 配置项目组件仓库
  * @author liheng
  */
-class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
+class IHubPluginsPlugin extends IHubProjectPlugin<IHubPluginsExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = []
+    String extensionName = 'iHub'
 
     @Override
-    void apply(Project project) {
-        IHubPluginsExtension ext = createExtension project, 'iHub', IHubPluginsExtension
-
+    void apply() {
+        IHubPluginsExtension ext = extension
         // TODO
 //        project.pluginManager.apply 'com.palantir.git-version'
 //        project.version = ext.version.with {
@@ -67,7 +69,7 @@ class IHubPluginsPlugin implements IHubPluginAware<IHubPluginsExtension> {
             printConfigContent 'Gradle Project Repos', project.repositories*.displayName
         }
 
-        project.pluginManager.apply IHubBomPlugin
+        applyPlugin IHubBomPlugin
 
         project.subprojects {
             pluginManager.apply IHubPluginsPlugin

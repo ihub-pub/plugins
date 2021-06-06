@@ -26,30 +26,6 @@ final class IHubPluginMethods {
         new Tuple2<>(tap, width)
     }
 
-    static Tuple2<String, Integer> idTap() {
-        tap 'ID'
-    }
-
-    static Tuple2<String, Integer> groupTap(Integer width = null) {
-        tap 'Group', width
-    }
-
-    static Tuple2<String, Integer> versionTap(Integer width = 30) {
-        tap 'Version', width
-    }
-
-    static Tuple2<String, Integer> moduleTap(Integer width = null) {
-        tap 'Module', width
-    }
-
-    static Tuple2<String, Integer> dependencyTypeTap() {
-        tap 'DependencyType', 30
-    }
-
-    static Tuple2<String, Integer> dependenciesTap() {
-        tap 'Dependencies'
-    }
-
     /**
      * 打印Map配置信息
      * @param title 标题

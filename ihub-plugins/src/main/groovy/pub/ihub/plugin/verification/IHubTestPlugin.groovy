@@ -15,13 +15,15 @@
  */
 package pub.ihub.plugin.verification
 
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.testing.Test
-import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
+import pub.ihub.plugin.bom.IHubBomPlugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 
 
 
@@ -30,11 +32,14 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.AFTER
  * @author henry
  */
 @SuppressWarnings('UnnecessaryObjectReferences')
-class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
+class IHubTestPlugin extends IHubProjectPlugin<IHubTestExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin]
+    String extensionName = 'iHubTest'
 
     @Override
-    void apply(Project project) {
-        getExtension(project, IHubBomExtension) {
+    void apply() {
+        withExtension(IHubBomExtension) {
             if (project.plugins.hasPlugin(GroovyPlugin)) {
                 it.importBoms {
                     group 'org.spockframework' module 'spock-bom' version '2.0-M4-groovy-3.0'
@@ -52,8 +57,8 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
                 }
             }
         }
-        createExtension(project, 'iHubTest', IHubTestExtension, AFTER) { ext ->
-            project.tasks.getByName('test') { Test it ->
+        withExtension(AFTER) { ext ->
+            withTask('test') { Test it ->
                 ext.systemProperties it
 
                 it.useJUnitPlatform()
@@ -76,9 +81,9 @@ class IHubTestPlugin implements IHubPluginAware<IHubTestExtension> {
                 }
             }
 
-            project.tasks.withType(Test) {
+            withTask(Test) {
                 // 这是为了解决在项目根目录上执行test时Jacoco找不到依赖的类的问题
-                systemProperties.'user.dir' = workingDir
+                it.systemProperties.'user.dir' = it.workingDir
             }
         }
     }

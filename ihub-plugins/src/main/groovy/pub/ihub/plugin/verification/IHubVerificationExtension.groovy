@@ -119,6 +119,10 @@ class IHubVerificationExtension extends IHubProjectExtension {
 
     //</editor-fold>
 
+    File getRootDir() {
+        project.rootProject.projectDir
+    }
+
     String getPmdRulesetFile() {
         findProperty 'pmdRulesetFile', pmdRulesetFile ?: "$rootDir/conf/pmd/ruleset.xml"
     }

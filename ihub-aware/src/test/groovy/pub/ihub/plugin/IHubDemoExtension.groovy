@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = 'IHub Gradle Plugins Settings'
+package pub.ihub.plugin
 
-dependencies {
-    implementation project(':ihub-aware')
-}
+/**
+ * @author henry
+ */
+class IHubDemoExtension implements IHubExtension {
 
-gradlePlugin {
-    plugins {
-        iHubSettings {
-            id                  = 'pub.ihub.plugin.ihub-settings'
-            displayName         = 'IHub Gradle Plugins Settings'
-            description         = 'IHub Gradle Plugins Settings'
-            implementationClass = 'pub.ihub.plugin.IHubSettingsPlugin'
-        }
+    @Override
+    String findProjectProperty(String key) {
+        System.getProperty key
     }
+
 }

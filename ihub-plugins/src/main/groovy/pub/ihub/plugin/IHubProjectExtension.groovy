@@ -21,36 +21,32 @@ import org.gradle.process.JavaForkOptions
 
 
 /**
- * IHub项目扩展特征
+ * IHub项目扩展
  * @author liheng
  */
 class IHubProjectExtension implements IHubExtension {
 
     protected Project project
 
-    protected String getProjectName() {
-        project.name
-    }
-
-    protected Project getRootProject() {
-        project.rootProject
-    }
-
-    boolean isRelease() {
-        project.version ==~ /(\d+\.)+\d+/
-    }
-
-    protected boolean isRoot() {
-        projectName == rootProject.name
-    }
-
-    protected File getRootDir() {
-        rootProject.projectDir
-    }
-
     @Override
     String findProjectProperty(String key) {
         project.findProperty key
+    }
+
+    boolean findProperty(String key, boolean defaultValue) {
+        findProperty(key, String.valueOf(defaultValue)).toBoolean()
+    }
+
+    String findSystemProperty(String key, String defaultValue = null) {
+        findProperty(key, defaultValue) { String k -> System.getProperty(k) ?: findProjectProperty(k) }
+    }
+
+    boolean findSystemProperty(String key, boolean defaultValue) {
+        findSystemProperty(key, String.valueOf(defaultValue)).toBoolean()
+    }
+
+    int findSystemProperty(String key, int defaultValue) {
+        findSystemProperty(key, String.valueOf(defaultValue)).toInteger()
     }
 
     /**
@@ -90,7 +86,7 @@ class IHubProjectExtension implements IHubExtension {
      * @return 本地Java属性
      */
     protected Map<String, Object> getLocalProperties() {
-        rootProject.file('.java-local.properties').with {
+        project.rootProject.file('.java-local.properties').with {
             exists() ? withInputStream { is ->
                 new Properties().tap { load(is) }
             } : [:]

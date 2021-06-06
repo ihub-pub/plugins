@@ -15,14 +15,15 @@
  */
 package pub.ihub.plugin.groovy
 
+import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
-import pub.ihub.plugin.IHubPluginAware
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
-import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 
 
 
@@ -30,15 +31,14 @@ import static pub.ihub.plugin.IHubPluginAware.EvaluateStage.BEFORE
  * Groovy插件
  * @author liheng
  */
-class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
+class IHubGroovyPlugin extends IHubProjectPlugin<IHubGroovyExtension> {
+
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin, IHubJavaBasePlugin, GroovyPlugin]
+    String extensionName = 'iHubGroovy'
 
     @Override
-    void apply(Project project) {
-        project.pluginManager.apply IHubBomPlugin
-        project.pluginManager.apply IHubJavaBasePlugin
-        project.pluginManager.apply GroovyPlugin
-
-        getExtension(project, IHubBomExtension) {
+    void apply() {
+        withExtension(IHubBomExtension) {
             String groovyGroup = 'org.codehaus.groovy'
             String groovyVersion = '3.0.8'
             it.importBoms {
@@ -53,7 +53,7 @@ class IHubGroovyPlugin implements IHubPluginAware<IHubGroovyExtension> {
                     group groovyGroup version groovyVersion
                 }
             }
-            createExtension(project, 'iHubGroovy', IHubGroovyExtension, BEFORE) { ext ->
+            withExtension(BEFORE) { ext ->
                 it.dependencies {
                     implementation ext.modules.unique().collect { "$groovyGroup:$it" } as String[]
                 }
