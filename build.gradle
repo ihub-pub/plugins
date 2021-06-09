@@ -20,6 +20,17 @@ plugins {
     id 'pl.droidsonroids.jacoco.testkit' version '1.0.8'
 }
 
+// TODO 聚合测试覆盖率报告
+apply {
+    from rootProject.file('gradle/jacoco-aggregation.gradle')
+}
+
+dependencies {
+    subprojects.each {
+        implementation it
+    }
+}
+
 subprojects {
     apply {
         plugin 'groovy'
@@ -29,6 +40,7 @@ subprojects {
         plugin 'java-gradle-plugin'
         plugin 'com.gradle.plugin-publish'
         plugin 'pl.droidsonroids.jacoco.testkit'
+        from    rootProject.file('gradle/java-conventions.gradle')
     }
 
     dependencies {
