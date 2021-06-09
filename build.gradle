@@ -21,15 +21,15 @@ plugins {
 }
 
 // TODO 聚合测试覆盖率报告
-apply {
-    from rootProject.file('gradle/jacoco-aggregation.gradle')
-}
+//apply {
+//    from rootProject.file('gradle/jacoco-aggregation.gradle')
+//}
 
-dependencies {
-    subprojects.each {
-        implementation it
-    }
-}
+//dependencies {
+//    subprojects.each {
+//        implementation it
+//    }
+//}
 
 subprojects {
     apply {
@@ -40,7 +40,7 @@ subprojects {
         plugin 'java-gradle-plugin'
         plugin 'com.gradle.plugin-publish'
         plugin 'pl.droidsonroids.jacoco.testkit'
-        from    rootProject.file('gradle/java-conventions.gradle')
+//        from    rootProject.file('gradle/java-conventions.gradle')
     }
 
     dependencies {

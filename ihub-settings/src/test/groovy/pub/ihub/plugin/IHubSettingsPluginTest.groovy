@@ -22,6 +22,7 @@ import org.gradle.testkit.runner.GradleRunner
 import spock.lang.Specification
 import spock.lang.Title
 
+import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
 
 
@@ -45,8 +46,8 @@ class IHubSettingsPluginTest extends Specification {
      */
     void setup() {
         testProjectDir.create()
-        settingsFile = testProjectDir.newFile('settings.gradle')
-        propertiesFile = testProjectDir.newFile('gradle.properties')
+        settingsFile = testProjectDir.newFile 'settings.gradle'
+        propertiesFile = testProjectDir.newFile GRADLE_PROPERTIES
         gradleBuilder = GradleRunner.create().withProjectDir(testProjectDir.root).withPluginClasspath()
         copy getClass().classLoader.getResourceAsStream('testkit-gradle.properties'), propertiesFile, null
         settingsFile << '''
@@ -68,17 +69,17 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('AliYunGradlePlugin')
-        result.output.contains('AliYunSpringPlugin')
-        result.output.contains('SpringRelease')
+        result.output.contains 'AliYunGradlePlugin'
+        result.output.contains 'AliYunSpringPlugin'
+        result.output.contains 'SpringRelease'
 
         when: '本地插件配置'
         testProjectDir.newFolder 'gradle', 'plugins'
         result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('flatDir')
-        result.output.contains('BUILD SUCCESSFUL')
+        result.output.contains 'flatDir'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def '测试插件版本配置'() {
@@ -86,12 +87,12 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('com.palantir.git-version')
-        result.output.contains('io.spring.dependency-management')
-        result.output.contains('org.springframework.boot')
-        result.output.contains('org.springframework.experimental.aot')
-        result.output.contains('com.gradle.plugin-publish')
-        result.output.contains('com.github.ben-manes.versions')
+        result.output.contains 'com.palantir.git-version'
+        result.output.contains 'io.spring.dependency-management'
+        result.output.contains 'org.springframework.boot'
+        result.output.contains 'org.springframework.experimental.aot'
+        result.output.contains 'com.gradle.plugin-publish'
+        result.output.contains 'com.github.ben-manes.versions'
 
         when: '自定义默认配置'
         settingsFile << '''
@@ -104,8 +105,8 @@ class IHubSettingsPluginTest extends Specification {
         result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('pub.ihub.plugin')
-        result.output.contains('BUILD SUCCESSFUL')
+        result.output.contains 'pub.ihub.plugin'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def '测试扩展属性配置子项目'() {
@@ -122,10 +123,10 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('demo-rest')
-        result.output.contains('demo-service')
-        result.output.contains('demo-other')
-        result.output.contains('BUILD SUCCESSFUL')
+        result.output.contains 'demo-rest'
+        result.output.contains 'demo-service'
+        result.output.contains 'demo-other'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def '测试项目属性配置子项目'() {
@@ -138,10 +139,10 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('demo-rest')
-        result.output.contains('demo-service')
+        result.output.contains 'demo-rest'
+        result.output.contains 'demo-service'
         !result.output.contains('demo-other')
-        result.output.contains('BUILD SUCCESSFUL')
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def '测试跳过目录属性配置子项目'() {
@@ -156,10 +157,10 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('demo-rest')
-        result.output.contains('demo-service')
+        result.output.contains 'demo-rest'
+        result.output.contains 'demo-service'
         !result.output.contains('demo-other')
-        result.output.contains('BUILD SUCCESSFUL')
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def '测试配置三级子项目'() {
@@ -179,13 +180,13 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains('demo-rest-suffix')
-        result.output.contains('demo-service-suffix')
-        result.output.contains('prefix-other')
-        result.output.contains('prefix-other-a-suffix')
-        result.output.contains('prefix-other-b-suffix')
-        result.output.contains('prefix-other-c-suffix')
-        result.output.contains('BUILD SUCCESSFUL')
+        result.output.contains 'demo-rest-suffix'
+        result.output.contains 'demo-service-suffix'
+        result.output.contains 'prefix-other'
+        result.output.contains 'prefix-other-a-suffix'
+        result.output.contains 'prefix-other-b-suffix'
+        result.output.contains 'prefix-other-c-suffix'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
 }

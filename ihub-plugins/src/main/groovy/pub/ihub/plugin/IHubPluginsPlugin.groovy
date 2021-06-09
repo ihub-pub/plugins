@@ -39,7 +39,7 @@ class IHubPluginsPlugin extends IHubProjectPlugin<IHubPluginsExtension> {
         // TODO
 //        project.pluginManager.apply 'com.palantir.git-version'
 //        project.version = ext.version.with {
-//            'unspecified' == it ? project.versionDetails().lastTag : it
+//            DEFAULT_VERSION == it ? project.versionDetails().lastTag : it
 //        }
         project.version = ext.version
 

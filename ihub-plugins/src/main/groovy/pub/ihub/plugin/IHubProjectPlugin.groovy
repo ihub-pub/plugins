@@ -19,6 +19,8 @@ import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.invocation.Gradle
+import org.gradle.api.logging.Logger
 import org.gradle.api.tasks.TaskProvider
 
 import java.lang.reflect.ParameterizedType
@@ -85,6 +87,42 @@ abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plug
      * 应用
      */
     protected abstract void apply()
+
+    protected Project getRootProject() {
+        project.rootProject
+    }
+
+    protected Gradle getGradle() {
+        project.gradle
+    }
+
+    protected static void setExtProperty(Project project, String key, value) {
+        project.ext.setProperty key, value
+    }
+
+    protected void setExtProperty(String key, value) {
+        setExtProperty project, key, value
+    }
+
+    protected void setRootExtProperty(String key, value) {
+        setExtProperty rootProject, key, value
+    }
+
+    protected <V> V findExtProperty(Project project, String key, V defaultValue = null) {
+        project.ext.with { has(key) ? getProperty(key) as V : defaultValue }
+    }
+
+    protected <V> V findExtProperty(String key, V defaultValue = null) {
+        findExtProperty project, key, defaultValue
+    }
+
+    protected <V> V findRootExtProperty(String key, V defaultValue = null) {
+        findExtProperty rootProject, key, defaultValue
+    }
+
+    protected Logger getLog() {
+        project.logger
+    }
 
     /**
      * 配置前执行闭包
