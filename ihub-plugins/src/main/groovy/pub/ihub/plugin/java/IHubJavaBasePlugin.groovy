@@ -24,14 +24,13 @@ import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
-import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectExtension
-import pub.ihub.plugin.bom.IHubBomExtension
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.groovy.IHubGroovyPlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 
 
 
@@ -47,7 +46,7 @@ class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
 
     @Override
     void apply() {
-        withExtension(IHubPluginsExtension, BEFORE) { iHubExt ->
+        withExtension(IHubPluginsExtension, AFTER) { iHubExt ->
             if (!project.plugins.hasPlugin(IHubJavaPlugin) && !project.plugins.hasPlugin(IHubGroovyPlugin)) {
                 return
             }
@@ -58,18 +57,6 @@ class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
                     it.targetCompatibility = version
                     it.options.encoding = 'UTF-8'
                     it.options.incremental = iHubExt.gradleCompilationIncremental
-                }
-            }
-
-            // Java11添加jaxb运行时依赖
-            if (JavaVersion.current().java11) {
-                withExtension(IHubBomExtension) {
-                    it.excludeModules {
-                        group 'com.sun.xml.bind' modules 'jaxb-core'
-                    }
-                    it.dependencies {
-                        runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
-                    }
                 }
             }
         }

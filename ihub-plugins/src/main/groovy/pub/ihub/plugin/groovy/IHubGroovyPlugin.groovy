@@ -23,8 +23,6 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
-
 
 
 /**
@@ -51,11 +49,6 @@ class IHubGroovyPlugin extends IHubProjectPlugin<IHubGroovyExtension> {
             if (it.findVersion(groovyGroup, groovyVersion).startsWith('3.')) {
                 it.groupVersions {
                     group groovyGroup version groovyVersion
-                }
-            }
-            withExtension(BEFORE) { ext ->
-                it.dependencies {
-                    implementation ext.modules.unique().collect { "$groovyGroup:$it" } as String[]
                 }
             }
         }

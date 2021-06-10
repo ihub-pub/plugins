@@ -16,10 +16,14 @@
 package pub.ihub.plugin.bom
 
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPlugin
+import pub.ihub.plugin.groovy.IHubGroovyExtension
+import pub.ihub.plugin.groovy.IHubGroovyPlugin
+import pub.ihub.plugin.publish.IHubPublishPlugin
 
 import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
@@ -41,6 +45,32 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
         // 添加默认配置
         withExtension(project.name == project.rootProject.name ? AFTER : BEFORE) {
             defaultConfig it
+
+            // 添加配置元信息
+            if (project.plugins.hasPlugin(IHubPublishPlugin)) {
+                it.dependencies {
+                    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+                }
+                project.compileJava.inputs.files project.processResources
+            }
+
+            // Java11添加jaxb运行时依赖
+            if (JavaVersion.current().java11) {
+                it.excludeModules {
+                    group 'com.sun.xml.bind' modules 'jaxb-core'
+                }
+                it.dependencies {
+                    runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
+                }
+            }
+
+            if (project.plugins.hasPlugin(IHubGroovyPlugin)) {
+                withExtension(IHubGroovyExtension) { ext ->
+                    it.dependencies {
+                        implementation ext.modules.unique().collect { "org.codehaus.groovy:$it" } as String[]
+                    }
+                }
+            }
         }
 
         // 配置项目依赖

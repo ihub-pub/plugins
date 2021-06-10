@@ -165,8 +165,9 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                         setFeature 'http://apache.org/xml/features/disallow-doctype-decl', false
                     }.parse(xml).counter
                     printJacocoReportCoverage RULE_TYPE.collectEntries { type ->
-                        [(type): counters.find { counter -> counter.'@type' == type }
-                            .with { new ReportData(it.'@missed' as int, it.'@covered' as int) }]
+                        [(type): counters.find { counter -> counter.'@type' == type }.with {
+                            it ? new ReportData(it.'@missed' as int, it.'@covered' as int) : new ReportData(0, 0)
+                        }]
                     }
                 }
             }
@@ -182,7 +183,7 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
 
         String title = project.name.toUpperCase() + ' Jacoco Report Coverage'
         printConfigContent title, reportData.collect { type, data ->
-            [type, data.total, data.missed, data.covered, data.coverage + '%']
+            [type, data.total, data.missed, data.covered, data.coverage]
         }, tap('Type', 20), tap('Total'), tap('Missed'), tap('Covered'), tap('Coverage')
 
         if (!findRootExtProperty('printJacocoReportCoverage', false)) {
@@ -195,11 +196,11 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                             covered += data.covered
                             missed += data.missed
                         }
-                        data.coverage + '%'
+                        data.coverage
                     } : null
                 }
                 if (report) {
-                    report << (['total'] + total.values().coverage*.plus('%'))
+                    report << (['total'] + total.values().coverage)
                 }
                 printConfigContent 'Jacoco Report Coverage', report, tap('Project', 30),
                     tap('Instruct'), tap('Branch'), tap('Line'),
@@ -219,8 +220,8 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
             missed + covered
         }
 
-        double getCoverage() {
-            (covered / total * 100).round 2
+        String getCoverage() {
+            total ? (covered / total * 100).round(2) + '%' : 'n/a'
         }
 
     }
