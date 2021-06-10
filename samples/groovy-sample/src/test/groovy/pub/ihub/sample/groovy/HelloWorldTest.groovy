@@ -13,35 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.sample.groovy
 
-import groovy.util.logging.Slf4j
-import org.gradle.api.Project
-import org.gradle.testfixtures.ProjectBuilder
-import pub.ihub.plugin.verification.IHubVerificationPlugin
 import spock.lang.Specification
-import spock.lang.Title
 
 
 
 /**
  * @author liheng
  */
-@Slf4j
-@Title('IHubVerificationPlugin单元测试')
-@SuppressWarnings('JUnitPublicNonTestMethod')
-class IHubVerificationPluginUT extends Specification {
+class HelloWorldTest extends Specification {
 
-    private Project project
-
-    void setup() {
-        project = ProjectBuilder.builder().build()
-        project.pluginManager.apply IHubVerificationPlugin
-    }
-
-    def 'Apply'() {
+    def 'test getHello'() {
         expect:
-        project
+        'Hello IHub' == new HelloWorld(text: 'IHub').hello
     }
 
 }

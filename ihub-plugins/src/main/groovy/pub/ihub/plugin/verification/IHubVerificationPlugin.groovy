@@ -157,9 +157,6 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
 
                 task.doLast {
                     File xml = reports.xml.destination
-                    if (!xml.exists()) {
-                        return
-                    }
                     def counters = new XmlParser().tap {
                         setFeature 'http://apache.org/xml/features/nonvalidating/load-external-dtd', false
                         setFeature 'http://apache.org/xml/features/disallow-doctype-decl', false

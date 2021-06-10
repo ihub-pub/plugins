@@ -22,7 +22,14 @@ import org.gradle.testkit.runner.GradleRunner
 import spock.lang.Specification
 import spock.lang.Title
 
+import static java.io.File.separator
+import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
+import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyDirectoryStructure
+import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyFile
+import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.getFile
+import static org.gradle.internal.impldep.org.eclipse.jgit.lib.Constants.OS_USER_DIR
+import static org.gradle.testkit.runner.GradleRunner.create
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 
@@ -37,19 +44,14 @@ class IHubPluginsPluginTest extends Specification {
 
     @Rule
     private TemporaryFolder testProjectDir = new TemporaryFolder()
-    private File buildFile
+    private GradleRunner gradleBuilder
     private File propertiesFile
 
     def setup() {
         testProjectDir.create()
+        gradleBuilder = create().withProjectDir(testProjectDir.root).withPluginClasspath()
         propertiesFile = testProjectDir.newFile('gradle.properties')
         copy getClass().classLoader.getResourceAsStream('testkit-gradle.properties'), propertiesFile, null
-        buildFile = testProjectDir.newFile('build.gradle')
-        buildFile << """
-            plugins {
-                id 'pub.ihub.plugin'
-            }
-        """
     }
 
     def cleanup() {
@@ -57,17 +59,29 @@ class IHubPluginsPluginTest extends Specification {
     }
 
     def 'basic build test'() {
+        setup:
+        testProjectDir.newFile('build.gradle') << """
+            plugins {
+                id 'pub.ihub.plugin'
+            }
+        """
+
         when:
-        def result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
-            .withPluginClasspath()
-            .build()
+        def result = gradleBuilder.build()
 
         then:
-        result.output.contains('BUILD SUCCESSFUL')
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def 'complete build test'() {
+        setup:
+        File buildFile = testProjectDir.newFile('build.gradle')
+        buildFile << """
+            plugins {
+                id 'pub.ihub.plugin'
+            }
+        """
+
         when:
         testProjectDir.newFile('settings.gradle') << 'include \'a\', \'b\', \'c\''
         testProjectDir.newFolder 'a'
@@ -121,11 +135,7 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
             }
         """
         testProjectDir.newFolder 'libs'
-        def result = GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
-            .withPluginClasspath()
-            .withArguments('-DrepoUsername=username', '-DrepoPassword=password')
-            .build()
+        def result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
 
         then:
         result.output.contains('flatDir')
@@ -134,6 +144,50 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains('SnapshotRepo')
         result.output.contains('CustomizeRepo')
         result.task(':help').outcome == SUCCESS
+    }
+
+    def '代码检查基础构建测试'() {
+        setup:
+        copyProject 'groovy-sample'
+
+        when: '基础配置'
+        testProjectDir.newFile('settings.gradle') << 'rootProject.name = \'groovy-sample\''
+        def result = gradleBuilder.withArguments('build').build()
+
+        then: '检查结果'
+        result.output.contains '┌──────────────────────────────────────────────────────────────────────────────────────────────────┐'
+        result.output.contains '│                               GROOVY-SAMPLE Jacoco Report Coverage                               │'
+        result.output.contains '├──────────────────────┬──────────────────┬──────────────────┬──────────────────┬──────────────────┤'
+        result.output.contains '│ Type                 │ Total            │ Missed           │ Covered          │ Coverage         │'
+        result.output.contains '├──────────────────────┼──────────────────┼──────────────────┼──────────────────┼──────────────────┤'
+        result.output.contains '│ INSTRUCTION          │ 13               │ 0                │ 13               │ 100.00%          │'
+        result.output.contains '│ BRANCH               │ 0                │ 0                │ 0                │ n/a              │'
+        result.output.contains '│ LINE                 │ 1                │ 0                │ 1                │ 100.00%          │'
+        result.output.contains '│ COMPLEXITY           │ 1                │ 0                │ 1                │ 100.00%          │'
+        result.output.contains '│ METHOD               │ 1                │ 0                │ 1                │ 100.00%          │'
+        result.output.contains '│ CLASS                │ 1                │ 0                │ 1                │ 100.00%          │'
+        result.output.contains '└──────────────────────┴──────────────────┴──────────────────┴──────────────────┴──────────────────┘'
+        result.output.contains '┌──────────────────────────────────────────────────────────────────────────────────────────────────┐'
+        result.output.contains '│                                      Jacoco Report Coverage                                      │'
+        result.output.contains '├────────────────────────────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┤'
+        result.output.contains '│ Project                        │ Instruct │ Branch   │ Line     │ Cxty     │ Method   │ Class    │'
+        result.output.contains '├────────────────────────────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤'
+        result.output.contains '│ groovy-sample                  │ 100.00%  │ n/a      │ 100.00%  │ 100.00%  │ 100.00%  │ 100.00%  │'
+        result.output.contains '│ total                          │ 100.00%  │ n/a      │ 100.00%  │ 100.00%  │ 100.00%  │ 100.00%  │'
+        result.output.contains '└────────────────────────────────┴──────────┴──────────┴──────────┴──────────┴──────────┴──────────┘'
+        result.task(':codenarcMain').outcome == SUCCESS
+        result.task(':codenarcTest').outcome == SUCCESS
+        result.task(':test').outcome == SUCCESS
+        result.task(':jacocoTestReport').outcome == SUCCESS
+        result.task(':jacocoTestCoverageVerification').outcome == SUCCESS
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    private void copyProject(String name) {
+        "${getFile(System.getProperty(OS_USER_DIR)).parentFile.path + separator}samples$separator$name".with {
+            copyFile getFile(it + separator + DEFAULT_BUILD_FILE), testProjectDir.newFile(DEFAULT_BUILD_FILE)
+            copyDirectoryStructure getFile(it + separator + 'src'), testProjectDir.newFolder('src')
+        }
     }
 
 }

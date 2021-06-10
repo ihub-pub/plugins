@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package pub.ihub.sample.verification;
+package pub.ihub.sample.groovy
 
 /**
+ * HelloWorld
  * @author liheng
  */
 class HelloWorld {
 
-    static String getHello() {
-        'Hello IHub'
+    String text
+
+    String getHello() {
+        'Hello ' + text
     }
 
 }
