@@ -30,60 +30,62 @@ class IHubVerificationExtension extends IHubProjectExtension {
     //<editor-fold desc="默认检查规则">
 
     static final List<String> PMD_DEFAULT_RULESET = [
-        'rulesets/java/ali-comment.xml',
-        'rulesets/java/ali-concurrent.xml',
-        'rulesets/java/ali-constant.xml',
-        'rulesets/java/ali-exception.xml',
-        'rulesets/java/ali-flowcontrol.xml',
-        'rulesets/java/ali-naming.xml',
-        'rulesets/java/ali-oop.xml',
-        'rulesets/java/ali-orm.xml',
-        'rulesets/java/ali-other.xml',
-        'rulesets/java/ali-set.xml',
-        'rulesets/vm/ali-other.xml',
+            'rulesets/java/ali-comment.xml',
+            'rulesets/java/ali-concurrent.xml',
+            'rulesets/java/ali-constant.xml',
+            'rulesets/java/ali-exception.xml',
+            'rulesets/java/ali-flowcontrol.xml',
+            'rulesets/java/ali-naming.xml',
+            'rulesets/java/ali-oop.xml',
+            'rulesets/java/ali-orm.xml',
+            'rulesets/java/ali-other.xml',
+            'rulesets/java/ali-set.xml',
+            'rulesets/vm/ali-other.xml',
     ]
 
     static final String CODENARC_DEFAULT_RULESET = '''ruleset {
-	description '全局默认CodeNarc规则集'
+    description '全局默认CodeNarc规则集\'
 
-	ruleset('rulesets/basic.xml')
-	ruleset('rulesets/braces.xml')
-	ruleset('rulesets/comments.xml')
-	ruleset('rulesets/concurrency.xml')
-	ruleset('rulesets/design.xml') {
-		'Instanceof' priority: 4
-	}
-	ruleset('rulesets/dry.xml') {
-		'DuplicateMapLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-		'DuplicateNumberLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-		'DuplicateStringLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-	}
-	ruleset('rulesets/enhanced.xml')
-	ruleset('rulesets/exceptions.xml')
-	ruleset('rulesets/formatting.xml') {
-		'LineLength' ignoreLineRegex: /.*'.*'.*|.*".*".*|.*测试.*|class .*/
-		'ConsecutiveBlankLines' enabled: false
-		'SpaceAroundMapEntryColon' characterBeforeColonRegex: /\\s|\\w|\\)|'|"|[\\u4e00-\\u9fa5]/, characterAfterColonRegex: /\\s/
-	}
-	ruleset('rulesets/generic.xml')
-	ruleset('rulesets/grails.xml')
-	ruleset('rulesets/groovyism.xml')
-	ruleset('rulesets/imports.xml') {
-		'MisorderedStaticImports' comesBefore: false
-	}
-	ruleset('rulesets/jdbc.xml')
-	ruleset('rulesets/junit.xml')
-	ruleset('rulesets/logging.xml')
-	ruleset('rulesets/naming.xml') {
-		'FieldName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*', ignoreFieldNames: 'serialVersionUID'
-		'MethodName' ignoreMethodNames: '*测试*,*test*'
-		'PropertyName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*'
-	}
-	ruleset('rulesets/security.xml')
-	ruleset('rulesets/serialization.xml')
-	ruleset('rulesets/size.xml')
-	ruleset('rulesets/unnecessary.xml')
-	ruleset('rulesets/unused.xml')
+    ruleset('rulesets/basic.xml')
+    ruleset('rulesets/braces.xml')
+    ruleset('rulesets/comments.xml')
+    ruleset('rulesets/concurrency.xml')
+    ruleset('rulesets/design.xml') {
+        'Instanceof' priority: 4
+    }
+    ruleset('rulesets/dry.xml') {
+        'DuplicateMapLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
+        'DuplicateNumberLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
+        'DuplicateStringLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
+    }
+    ruleset('rulesets/enhanced.xml')
+    ruleset('rulesets/exceptions.xml')
+    ruleset('rulesets/formatting.xml') {
+        'LineLength' ignoreLineRegex: /.*'.*'.*|.*".*".*|.*测试.*|class .*/
+        'ConsecutiveBlankLines' enabled: false
+        'SpaceAroundMapEntryColon' characterBeforeColonRegex: /\\s|\\w|\\)|'|"|[\\u4e00-\\u9fa5]/, characterAfterColonRegex: /\\s/
+    }
+    ruleset('rulesets/generic.xml')
+    ruleset('rulesets/grails.xml')
+    ruleset('rulesets/groovyism.xml')
+    ruleset('rulesets/imports.xml') {
+        'MisorderedStaticImports' comesBefore: false
+    }
+    ruleset('rulesets/jdbc.xml')
+    ruleset('rulesets/junit.xml') {
+        'JUnitPublicNonTestMethod' priority: 4
+    }
+    ruleset('rulesets/logging.xml')
+    ruleset('rulesets/naming.xml') {
+        'FieldName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*', ignoreFieldNames: 'serialVersionUID\'
+        'MethodName' ignoreMethodNames: '*测试*,*test*\'
+        'PropertyName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*\'
+    }
+    ruleset('rulesets/security.xml')
+    ruleset('rulesets/serialization.xml')
+    ruleset('rulesets/size.xml')
+    ruleset('rulesets/unnecessary.xml')
+    ruleset('rulesets/unused.xml')
 }
 '''
 
@@ -112,10 +114,12 @@ class IHubVerificationExtension extends IHubProjectExtension {
     boolean jacocoBundleBranchCoverageRuleEnabled = true
     String jacocoBundleBranchCoveredRatio = '1.0'
     boolean jacocoBundleInstructionCoverageRuleEnabled = true
+    String jacocoBundleInstructionExclusion = '**/app,**/config'
     String jacocoBundleInstructionCoveredRatio = '0.9'
     boolean jacocoPackageInstructionCoverageRuleEnabled = true
+    String jacocoPackageInstructionExclusion = '*.app,*.config'
     String jacocoPackageInstructionCoveredRatio = '0.9'
-    String jacocoReportExclusion = '**/app/**/*.class'
+    String jacocoReportExclusion = '**/Application.class,**/app/*.class,**/config/*.class'
 
     //</editor-fold>
 
@@ -167,12 +171,20 @@ class IHubVerificationExtension extends IHubProjectExtension {
         findSystemProperty 'jacocoBundleInstructionCoverageRuleEnabled', jacocoBundleInstructionCoverageRuleEnabled
     }
 
+    String getJacocoBundleInstructionExclusion() {
+        findSystemProperty 'jacocoBundleInstructionExclusion', jacocoBundleInstructionExclusion
+    }
+
     String getJacocoBundleInstructionCoveredRatio() {
         findSystemProperty 'jacocoBundleInstructionCoveredRatio', jacocoBundleInstructionCoveredRatio
     }
 
     boolean getJacocoPackageInstructionCoverageRuleEnabled() {
         findSystemProperty 'jacocoPackageInstructionCoverageRuleEnabled', jacocoPackageInstructionCoverageRuleEnabled
+    }
+
+    String getJacocoPackageInstructionExclusion() {
+        findSystemProperty 'jacocoPackageInstructionExclusion', jacocoPackageInstructionExclusion
     }
 
     String getJacocoPackageInstructionCoveredRatio() {

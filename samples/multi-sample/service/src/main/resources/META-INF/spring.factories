@@ -1,0 +1,3 @@
+# Auto Configuration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+pub.ihub.sample.service.config.ServiceAutoConfiguration

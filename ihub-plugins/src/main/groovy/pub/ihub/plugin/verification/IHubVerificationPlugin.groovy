@@ -15,10 +15,11 @@
  */
 package pub.ihub.plugin.verification
 
+import groovy.transform.TupleConstructor
+import groovy.xml.XmlParser
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdExtension
@@ -31,6 +32,8 @@ import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
 import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 
 
@@ -41,16 +44,17 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
  */
 class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension> {
 
+    private static final String[] RULE_TYPE = ['INSTRUCTION', 'BRANCH', 'LINE', 'COMPLEXITY', 'METHOD', 'CLASS']
+
     Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin]
     String extensionName = 'iHubVerification'
 
     @Override
     void apply() {
-        if (project.plugins.hasPlugin(JavaPlugin)) {
-            configPmd project
-        }
         if (project.plugins.hasPlugin(GroovyPlugin)) {
             configCodenarc project
+        } else {
+            configPmd project
         }
         configJacoco project
     }
@@ -115,13 +119,13 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                         enabled = ext.jacocoBundleBranchCoverageRuleEnabled
                         limit {
                             counter = 'BRANCH'
-                            value = 'COVEREDRATIO'
                             minimum = ext.jacocoBundleBranchCoveredRatio.toBigDecimal()
                         }
                     }
                     // rule #2：bundle指令覆盖率
                     rule {
                         enabled = ext.jacocoBundleInstructionCoverageRuleEnabled
+                        excludes = ext.jacocoBundleInstructionExclusion.tokenize ','
                         limit {
                             minimum = ext.jacocoBundleInstructionCoveredRatio.toBigDecimal()
                         }
@@ -130,6 +134,7 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                     rule {
                         enabled = ext.jacocoPackageInstructionCoverageRuleEnabled
                         element = 'PACKAGE'
+                        excludes = ext.jacocoPackageInstructionExclusion.tokenize ','
                         limit {
                             minimum = ext.jacocoPackageInstructionCoveredRatio.toBigDecimal()
                         }
@@ -139,10 +144,19 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
 
             // 覆盖率报告排除main class
             JacocoReport jacocoTestReport = withTask('jacocoTestReport') { task ->
-                afterEvaluate {
+                task.reports {
+                    xml.required = true
+                    html.required = true
+                }
+                project.afterEvaluate {
                     task.classDirectories.from = project.files(task.classDirectories.files.collect { dir ->
-                        project.fileTree dir: dir, exclude: ext.jacocoReportExclusion
+                        project.fileTree dir: dir, exclude: ext.jacocoReportExclusion.tokenize(',')
                     })
+                }
+
+                task.doLast {
+                    File xml = reports.xml.destination
+                    printJacocoReportCoverage xml
                 }
             }
 
@@ -150,6 +164,62 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
             withTask('check').dependsOn jacocoCoverageVerification
             withTask('test').finalizedBy jacocoTestReport, jacocoCoverageVerification
         }
+    }
+
+    private void printJacocoReportCoverage(File xml) {
+        def counters = new XmlParser().tap {
+            setFeature 'http://apache.org/xml/features/nonvalidating/load-external-dtd', false
+            setFeature 'http://apache.org/xml/features/disallow-doctype-decl', false
+        }.parse(xml).counter
+        Map reportData = RULE_TYPE.collectEntries { type ->
+            [(type): counters.find { counter -> counter.'@type' == type }.with {
+                it ? new ReportData(it.'@missed' as int, it.'@covered' as int) : new ReportData(0, 0)
+            }]
+        }
+
+        setExtProperty 'jacocoReportData', reportData
+
+        String title = project.name.toUpperCase() + ' Jacoco Report Coverage'
+        printConfigContent title, reportData.collect { type, data ->
+            [type, data.total, data.missed, data.covered, data.coverage]
+        }, tap('Type', 20), tap('Total'), tap('Missed'), tap('Covered'), tap('Coverage')
+
+        if (!findRootExtProperty('printJacocoReportCoverage', false)) {
+            gradle.buildFinished {
+                Map<String, ReportData> total = RULE_TYPE.collectEntries { [(it): new ReportData(0, 0)] }
+                List report = rootProject.allprojects.collect { p ->
+                    Map<String, ReportData> jacocoReportData = findExtProperty p, 'jacocoReportData'
+                    jacocoReportData ? [p.name] + jacocoReportData.collect { type, data ->
+                        total.get(type).tap {
+                            covered += data.covered
+                            missed += data.missed
+                        }
+                        data.coverage
+                    } : null
+                }
+                report << (['total'] + total.values().coverage)
+                printConfigContent 'Jacoco Report Coverage', report, tap('Project', 30),
+                        tap('Instruct'), tap('Branch'), tap('Line'),
+                        tap('Cxty'), tap('Method'), tap('Class')
+            }
+            setRootExtProperty 'printJacocoReportCoverage', true
+        }
+    }
+
+    @TupleConstructor
+    private final class ReportData {
+
+        int missed
+        int covered
+
+        int getTotal() {
+            missed + covered
+        }
+
+        String getCoverage() {
+            total ? (covered / total * 100).round(2) + '%' : 'n/a'
+        }
+
     }
 
 }

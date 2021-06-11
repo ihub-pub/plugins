@@ -1,9 +1,0 @@
-description = '应用模块'
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-native'
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-}

@@ -24,14 +24,12 @@ import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
-import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectExtension
-import pub.ihub.plugin.bom.IHubBomExtension
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
-import pub.ihub.plugin.groovy.IHubGroovyPlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 
 
 
@@ -42,15 +40,12 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
 
     Class<? extends Plugin<Project>>[] beforeApplyPlugins = [
-        IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin, BuildDashboardPlugin
+            IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin, BuildDashboardPlugin
     ]
 
     @Override
     void apply() {
-        withExtension(IHubPluginsExtension, BEFORE) { iHubExt ->
-            if (!project.plugins.hasPlugin(IHubJavaPlugin) && !project.plugins.hasPlugin(IHubGroovyPlugin)) {
-                return
-            }
+        withExtension(IHubPluginsExtension, AFTER) { iHubExt ->
             // 兼容性配置
             iHubExt.javaCompatibility?.with { version ->
                 withTask(AbstractCompile) {
@@ -60,29 +55,17 @@ class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
                     it.options.incremental = iHubExt.gradleCompilationIncremental
                 }
             }
-
-            // Java11添加jaxb运行时依赖
-            if (JavaVersion.current().java11) {
-                withExtension(IHubBomExtension) {
-                    it.excludeModules {
-                        group 'com.sun.xml.bind' modules 'jaxb-core'
-                    }
-                    it.dependencies {
-                        runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
-                    }
-                }
-            }
         }
 
         // 配置Jar属性
         withTask(Jar) {
             it.manifest {
                 attributes(
-                    'Implementation-Title': project.name,
-                    'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-                    'Implementation-Version': project.version,
-                    'Implementation-Vendor': 'IHub',
-                    'Created-By': 'Java ' + JavaVersion.current().majorVersion
+                        'Implementation-Title': project.name,
+                        'Automatic-Module-Name': project.name.replaceAll('-', '.'),
+                        'Implementation-Version': project.version,
+                        'Implementation-Vendor': 'IHub',
+                        'Created-By': 'Java ' + JavaVersion.current().majorVersion
                 )
             }
         }
