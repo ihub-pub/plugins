@@ -20,7 +20,6 @@ import groovy.xml.XmlParser
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdExtension
@@ -52,11 +51,10 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
 
     @Override
     void apply() {
-        if (project.plugins.hasPlugin(JavaPlugin)) {
-            configPmd project
-        }
         if (project.plugins.hasPlugin(GroovyPlugin)) {
             configCodenarc project
+        } else {
+            configPmd project
         }
         configJacoco project
     }
@@ -121,13 +119,13 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                         enabled = ext.jacocoBundleBranchCoverageRuleEnabled
                         limit {
                             counter = 'BRANCH'
-                            value = 'COVEREDRATIO'
                             minimum = ext.jacocoBundleBranchCoveredRatio.toBigDecimal()
                         }
                     }
                     // rule #2：bundle指令覆盖率
                     rule {
                         enabled = ext.jacocoBundleInstructionCoverageRuleEnabled
+                        excludes = ext.jacocoBundleInstructionExclusion.tokenize ','
                         limit {
                             minimum = ext.jacocoBundleInstructionCoveredRatio.toBigDecimal()
                         }
@@ -136,6 +134,7 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                     rule {
                         enabled = ext.jacocoPackageInstructionCoverageRuleEnabled
                         element = 'PACKAGE'
+                        excludes = ext.jacocoPackageInstructionExclusion.tokenize ','
                         limit {
                             minimum = ext.jacocoPackageInstructionCoveredRatio.toBigDecimal()
                         }
@@ -149,23 +148,15 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                     xml.required = true
                     html.required = true
                 }
-                afterEvaluate {
+                project.afterEvaluate {
                     task.classDirectories.from = project.files(task.classDirectories.files.collect { dir ->
-                        project.fileTree dir: dir, exclude: ext.jacocoReportExclusion
+                        project.fileTree dir: dir, exclude: ext.jacocoReportExclusion.tokenize(',')
                     })
                 }
 
                 task.doLast {
                     File xml = reports.xml.destination
-                    def counters = new XmlParser().tap {
-                        setFeature 'http://apache.org/xml/features/nonvalidating/load-external-dtd', false
-                        setFeature 'http://apache.org/xml/features/disallow-doctype-decl', false
-                    }.parse(xml).counter
-                    printJacocoReportCoverage RULE_TYPE.collectEntries { type ->
-                        [(type): counters.find { counter -> counter.'@type' == type }.with {
-                            it ? new ReportData(it.'@missed' as int, it.'@covered' as int) : new ReportData(0, 0)
-                        }]
-                    }
+                    printJacocoReportCoverage xml
                 }
             }
 
@@ -175,7 +166,17 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
         }
     }
 
-    private void printJacocoReportCoverage(Map reportData) {
+    private void printJacocoReportCoverage(File xml) {
+        def counters = new XmlParser().tap {
+            setFeature 'http://apache.org/xml/features/nonvalidating/load-external-dtd', false
+            setFeature 'http://apache.org/xml/features/disallow-doctype-decl', false
+        }.parse(xml).counter
+        Map reportData = RULE_TYPE.collectEntries { type ->
+            [(type): counters.find { counter -> counter.'@type' == type }.with {
+                it ? new ReportData(it.'@missed' as int, it.'@covered' as int) : new ReportData(0, 0)
+            }]
+        }
+
         setExtProperty 'jacocoReportData', reportData
 
         String title = project.name.toUpperCase() + ' Jacoco Report Coverage'
@@ -196,12 +197,10 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                         data.coverage
                     } : null
                 }
-                if (report) {
-                    report << (['total'] + total.values().coverage)
-                }
+                report << (['total'] + total.values().coverage)
                 printConfigContent 'Jacoco Report Coverage', report, tap('Project', 30),
-                    tap('Instruct'), tap('Branch'), tap('Line'),
-                    tap('Cxty'), tap('Method'), tap('Class')
+                        tap('Instruct'), tap('Branch'), tap('Line'),
+                        tap('Cxty'), tap('Method'), tap('Class')
             }
             setRootExtProperty 'printJacocoReportCoverage', true
         }

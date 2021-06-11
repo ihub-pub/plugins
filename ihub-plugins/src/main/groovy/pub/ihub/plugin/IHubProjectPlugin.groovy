@@ -165,7 +165,7 @@ abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plug
     }
 
     private <E> void executeAction(E param, EvaluateStage stage, Action<E> action) {
-        if (BEFORE == stage) {
+        if (BEFORE == stage && project.name != rootProject.name) {
             beforeEvaluate { action.execute param }
         } else if (AFTER == stage) {
             afterEvaluate { action.execute param }

@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id 'pub.ihub.plugin'
-}
+package pub.ihub.sample.sdk
 
-description = '测试以及代码检查插件样例'
+/**
+ * @author liheng
+ */
+class Response<T> implements Serializable {
 
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
-}
+    private static final long serialVersionUID = -1L
 
-iHubGroovy {
-    allModules = true
+    long code = 0
+    T payload
+    String message
+    Map<String, ?> metadata
+
+    Response(T payload) {
+        this.payload = payload
+    }
+
 }

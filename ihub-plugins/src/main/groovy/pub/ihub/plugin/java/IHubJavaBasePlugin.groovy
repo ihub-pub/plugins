@@ -28,7 +28,6 @@ import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
-import pub.ihub.plugin.groovy.IHubGroovyPlugin
 
 import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 
@@ -41,15 +40,12 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
 
     Class<? extends Plugin<Project>>[] beforeApplyPlugins = [
-        IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin, BuildDashboardPlugin
+            IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin, BuildDashboardPlugin
     ]
 
     @Override
     void apply() {
         withExtension(IHubPluginsExtension, AFTER) { iHubExt ->
-            if (!project.plugins.hasPlugin(IHubJavaPlugin) && !project.plugins.hasPlugin(IHubGroovyPlugin)) {
-                return
-            }
             // 兼容性配置
             iHubExt.javaCompatibility?.with { version ->
                 withTask(AbstractCompile) {
@@ -65,11 +61,11 @@ class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
         withTask(Jar) {
             it.manifest {
                 attributes(
-                    'Implementation-Title': project.name,
-                    'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-                    'Implementation-Version': project.version,
-                    'Implementation-Vendor': 'IHub',
-                    'Created-By': 'Java ' + JavaVersion.current().majorVersion
+                        'Implementation-Title': project.name,
+                        'Automatic-Module-Name': project.name.replaceAll('-', '.'),
+                        'Implementation-Version': project.version,
+                        'Implementation-Vendor': 'IHub',
+                        'Created-By': 'Java ' + JavaVersion.current().majorVersion
                 )
             }
         }

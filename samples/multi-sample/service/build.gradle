@@ -13,18 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id 'pub.ihub.plugin'
-}
+description = '服务模块'
 
-description = '测试以及代码检查插件样例'
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
-}
-
-iHubGroovy {
-    allModules = true
+dependencies {
+    implementation 'org.springframework:spring-context'
 }

@@ -30,17 +30,17 @@ class IHubVerificationExtension extends IHubProjectExtension {
     //<editor-fold desc="默认检查规则">
 
     static final List<String> PMD_DEFAULT_RULESET = [
-        'rulesets/java/ali-comment.xml',
-        'rulesets/java/ali-concurrent.xml',
-        'rulesets/java/ali-constant.xml',
-        'rulesets/java/ali-exception.xml',
-        'rulesets/java/ali-flowcontrol.xml',
-        'rulesets/java/ali-naming.xml',
-        'rulesets/java/ali-oop.xml',
-        'rulesets/java/ali-orm.xml',
-        'rulesets/java/ali-other.xml',
-        'rulesets/java/ali-set.xml',
-        'rulesets/vm/ali-other.xml',
+            'rulesets/java/ali-comment.xml',
+            'rulesets/java/ali-concurrent.xml',
+            'rulesets/java/ali-constant.xml',
+            'rulesets/java/ali-exception.xml',
+            'rulesets/java/ali-flowcontrol.xml',
+            'rulesets/java/ali-naming.xml',
+            'rulesets/java/ali-oop.xml',
+            'rulesets/java/ali-orm.xml',
+            'rulesets/java/ali-other.xml',
+            'rulesets/java/ali-set.xml',
+            'rulesets/vm/ali-other.xml',
     ]
 
     static final String CODENARC_DEFAULT_RULESET = '''ruleset {
@@ -114,10 +114,12 @@ class IHubVerificationExtension extends IHubProjectExtension {
     boolean jacocoBundleBranchCoverageRuleEnabled = true
     String jacocoBundleBranchCoveredRatio = '1.0'
     boolean jacocoBundleInstructionCoverageRuleEnabled = true
+    String jacocoBundleInstructionExclusion = '**/app,**/config'
     String jacocoBundleInstructionCoveredRatio = '0.9'
     boolean jacocoPackageInstructionCoverageRuleEnabled = true
+    String jacocoPackageInstructionExclusion = '*.app,*.config'
     String jacocoPackageInstructionCoveredRatio = '0.9'
-    String jacocoReportExclusion = '**/app/**/*.class'
+    String jacocoReportExclusion = '**/Application.class,**/app/*.class,**/config/*.class'
 
     //</editor-fold>
 
@@ -169,12 +171,20 @@ class IHubVerificationExtension extends IHubProjectExtension {
         findSystemProperty 'jacocoBundleInstructionCoverageRuleEnabled', jacocoBundleInstructionCoverageRuleEnabled
     }
 
+    String getJacocoBundleInstructionExclusion() {
+        findSystemProperty 'jacocoBundleInstructionExclusion', jacocoBundleInstructionExclusion
+    }
+
     String getJacocoBundleInstructionCoveredRatio() {
         findSystemProperty 'jacocoBundleInstructionCoveredRatio', jacocoBundleInstructionCoveredRatio
     }
 
     boolean getJacocoPackageInstructionCoverageRuleEnabled() {
         findSystemProperty 'jacocoPackageInstructionCoverageRuleEnabled', jacocoPackageInstructionCoverageRuleEnabled
+    }
+
+    String getJacocoPackageInstructionExclusion() {
+        findSystemProperty 'jacocoPackageInstructionExclusion', jacocoPackageInstructionExclusion
     }
 
     String getJacocoPackageInstructionCoveredRatio() {

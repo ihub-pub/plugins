@@ -44,6 +44,10 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
     void apply() {
         // 添加默认配置
         withExtension(project.name == project.rootProject.name ? AFTER : BEFORE) {
+            if (!it.enabledDefaultConfig) {
+                return
+            }
+
             defaultConfig it
 
             // 添加配置元信息
@@ -78,9 +82,6 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
     }
 
     private static void defaultConfig(IHubBomExtension ext) {
-        if (!ext.enabledDefaultConfig) {
-            return
-        }
         // 配置导入bom
         ext.importBoms {
             // TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
@@ -98,7 +99,7 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
             group 'com.alibaba' modules 'druid', 'druid-spring-boot-starter' version '1.2.6'
             group 'com.alibaba.p3c' modules 'p3c-pmd' version '2.1.1'
             group 'com.baomidou' modules 'mybatis-plus', 'mybatis-plus-boot-starter',
-                'mybatis-plus-generator' version '3.4.2'
+                    'mybatis-plus-generator' version '3.4.2'
             group 'com.github.xiaoymin' modules 'knife4j-aggregation-spring-boot-starter' version '2.0.8'
         }
         // 配置组版本策略（建议尽量使用bom）

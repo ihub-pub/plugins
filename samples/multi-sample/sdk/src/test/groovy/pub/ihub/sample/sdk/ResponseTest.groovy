@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id 'pub.ihub.plugin'
-}
+package pub.ihub.sample.sdk
 
-description = '测试以及代码检查插件样例'
+import spock.lang.Specification
 
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
-}
 
-iHubGroovy {
-    allModules = true
+
+/**
+ * @author liheng
+ */
+class ResponseTest extends Specification {
+
+    def 'test getPayload'() {
+        expect:
+        'test' == new Response('test').payload
+    }
+
 }

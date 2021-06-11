@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id 'pub.ihub.plugin'
-}
 
-description = '测试以及代码检查插件样例'
+package pub.ihub.sample.service;
 
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
-}
+import org.springframework.stereotype.Service;
 
-iHubGroovy {
-    allModules = true
+/**
+ * @author liheng
+ */
+@Service
+public class HelloService {
+
+    public String hello() {
+        return "Hello IHub";
+    }
+
 }

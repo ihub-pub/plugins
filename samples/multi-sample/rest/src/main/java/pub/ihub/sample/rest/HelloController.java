@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id 'pub.ihub.plugin'
-}
 
-description = '测试以及代码检查插件样例'
+package pub.ihub.sample.rest;
 
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
-}
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import pub.ihub.sample.sdk.Response;
+import pub.ihub.sample.service.HelloService;
 
-iHubGroovy {
-    allModules = true
+/**
+ * @author henry
+ */
+@RequiredArgsConstructor
+@RestController
+public class HelloController {
+
+    private final HelloService helloService;
+
+    @GetMapping
+    public Response<String> hello() {
+        return new Response<>(helloService.hello());
+    }
+
 }

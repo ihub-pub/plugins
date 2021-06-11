@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id 'pub.ihub.plugin'
-}
-
-description = '测试以及代码检查插件样例'
+description = '应用模块'
 
 apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
+    plugin 'pub.ihub.plugin.ihub-boot'
 }
 
-iHubGroovy {
-    allModules = true
+dependencies {
+    implementation project(':multi-sample-sdk')
+    implementation project(':multi-sample-service')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+iHubTest {
+    classes = '**/*Test*'
+}
+
+iHubVerification {
+    jacocoBundleInstructionCoveredRatio = '0.7'
+    jacocoPackageInstructionExclusion = 'pub.ihub.sample'
 }

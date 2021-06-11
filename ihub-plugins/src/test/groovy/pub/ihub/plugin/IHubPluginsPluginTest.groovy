@@ -146,12 +146,12 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.task(':help').outcome == SUCCESS
     }
 
-    def '代码检查基础构建测试'() {
-        setup:
-        copyProject 'groovy-sample'
-
-        when: '基础配置'
+    def '代码检查插件测试'() {
+        setup: '初始化项目'
+        copyProject 'groovy-sample', 'src'
         testProjectDir.newFile('settings.gradle') << 'rootProject.name = \'groovy-sample\''
+
+        when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
 
         then: '检查结果'
@@ -183,10 +183,35 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    private void copyProject(String name) {
+    def '多项目构建测试'() {
+        setup: '初始化项目'
+        copyProject 'multi-sample', 'rest', 'service', 'sdk'
+        testProjectDir.newFile('settings.gradle') << '''
+            rootProject.name = 'multi-sample'
+            include 'rest', 'service', 'sdk'
+            project(':rest').name = 'multi-sample-rest'
+            project(':service').name = 'multi-sample-service'
+            project(':sdk').name = 'multi-sample-sdk'
+        '''
+
+        when: '构建项目'
+        def result = gradleBuilder.withArguments('build').build()
+
+        then: '检查结果'
+        result.task(':multi-sample-rest:pmdMain').outcome == SUCCESS
+        result.task(':multi-sample-rest:pmdTest').outcome == SUCCESS
+        result.task(':multi-sample-rest:test').outcome == SUCCESS
+        result.task(':multi-sample-rest:jacocoTestReport').outcome == SUCCESS
+        result.task(':multi-sample-rest:jacocoTestCoverageVerification').outcome == SUCCESS
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    private void copyProject(String name, String... dirs) {
         "${getFile(System.getProperty(OS_USER_DIR)).parentFile.path + separator}samples$separator$name".with {
             copyFile getFile(it + separator + DEFAULT_BUILD_FILE), testProjectDir.newFile(DEFAULT_BUILD_FILE)
-            copyDirectoryStructure getFile(it + separator + 'src'), testProjectDir.newFolder('src')
+            dirs.each { dir ->
+                copyDirectoryStructure getFile(it + separator + dir), testProjectDir.newFolder(dir)
+            }
         }
     }
 

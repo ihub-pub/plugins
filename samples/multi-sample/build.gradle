@@ -17,14 +17,16 @@ plugins {
     id 'pub.ihub.plugin'
 }
 
-description = '测试以及代码检查插件样例'
+description = '多项目'
 
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
-}
-
-iHubGroovy {
-    allModules = true
+subprojects {
+    apply {
+        if (name == 'multi-sample-sdk') {
+            plugin 'pub.ihub.plugin.ihub-groovy'
+        } else {
+            plugin 'pub.ihub.plugin.ihub-java'
+        }
+        plugin 'pub.ihub.plugin.ihub-test'
+        plugin 'pub.ihub.plugin.ihub-verification'
+    }
 }
