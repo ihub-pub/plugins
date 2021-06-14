@@ -15,13 +15,10 @@
  */
 package pub.ihub.plugin.bom
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import org.gradle.api.Action
-import org.gradle.api.GradleException
-import org.gradle.api.plugins.ExtensionContainer
 import pub.ihub.plugin.IHubProjectExtension
-
-import java.util.function.BiConsumer
 
 import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
 import static org.gradle.api.plugins.JavaPlugin.API_CONFIGURATION_NAME
@@ -50,13 +47,11 @@ import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
 @TupleConstructor(includeSuperFields = true)
 class IHubBomExtension extends IHubProjectExtension {
 
-    boolean enabledDefaultConfig = true
     final Set<BomSpecImpl> bomVersions = []
     final Set<BomSpecImpl> dependencyVersions = []
     final Set<BomSpecImpl> groupVersions = []
     final Set<BomSpecImpl> excludeModules = []
     final Set<BomSpecImpl> dependencies = []
-    final Map<VersionType, Set<BomSpecImpl>> commonSpecs = [:]
 
     /**
      * 导入mavenBom
@@ -98,64 +93,29 @@ class IHubBomExtension extends IHubProjectExtension {
         actionExecute DEPENDENCY, action, dependencies
     }
 
-    boolean getEnabledDefaultConfig() {
-        findProperty 'enabledBomDefaultConfig', enabledDefaultConfig
-    }
-
     private void actionExecute(VersionType type, Action<ActionSpec<BomSpecImpl>> action, Set<BomSpecImpl> specs) {
         ActionSpec<BomSpecImpl> actionSpec = DEPENDENCY == type ? new DependenciesSpecImpl() : new GroupSpecImpl(type)
         action.execute actionSpec
-        actionSpec.specs.with {
-            assert it, 'config not empty!'
-            it*.rightShift specs
-        }
+        actionSpec.specs*.rightShift specs
     }
 
-    private List getSpecsPrintData(VersionType type, Set<BomSpecImpl> specs, BiConsumer<List, BomSpecImpl> consumer) {
-        IHubBomExtension rootExt = rootExtensions.findByType IHubBomExtension
-        Set<BomSpecImpl> commonSpecs = rootExt.commonSpecs[type]
-        (root ? commonSpecs?.tap { specs*.rightShift it } ?: specs :
-            specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
-            consumer.accept set, type in [EXCLUDE, DEPENDENCY] ? new BomSpecImpl(type, spec.id).modules(spec.modules -
-                (root ? [] : commonSpecs.find { r -> spec.id == r.id }?.modules) as String[]) : spec
-            set
-        }
-    }
-
-    private void setCommonSpecs(VersionType type, Set<BomSpecImpl> specs) {
-        if (!root) {
-            IHubBomExtension rootExt = rootExtensions.findByType IHubBomExtension
-            rootExt.commonSpecs.put type, rootExt.commonSpecs[type].with {
-                null == it ? specs : it.findAll { specs.any { s -> it.compare s } }
+    void refreshCommonSpecs() {
+        for (VersionType type : VersionType.values()) {
+            Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
+            if (!root) {
+                setRootExtProperty type.fieldName, findRootExtProperty(type.fieldName, specs).with {
+                    it.findAll { specs.any { s -> it.compare s } }
+                }
             }
         }
     }
 
-    void refreshCommonSpecs() {
-        setCommonSpecs BOM, bomVersions
-        setCommonSpecs MODULES, dependencyVersions
-        setCommonSpecs GROUP, groupVersions
-        setCommonSpecs EXCLUDE, excludeModules
-        setCommonSpecs DEPENDENCY, dependencies
-    }
-
     void printConfigContent() {
-        String projectName = projectName.toUpperCase()
-        printConfigContent "${projectName} Group Maven Bom Version", getSpecsPrintData(BOM, bomVersions) {
-            specs, spec -> specs << [spec.id, spec.module, spec.version]
-        }, groupTap(30), moduleTap(), versionTap(20)
-        printConfigContent "${projectName} Group Maven Module Version", getSpecsPrintData(MODULES, dependencyVersions) {
-            specs, spec -> specs.addAll spec.modules.collect { [spec.id, it, spec.version] }
-        }, groupTap(35), moduleTap(), versionTap(15)
-        printConfigContent "${projectName} Group Maven Default Version", getSpecsPrintData(GROUP, groupVersions) {
-            specs, spec -> specs << [spec.id, spec.version]
-        }, groupTap(), versionTap()
-        printConfigContent "${projectName} Exclude Group Modules", getSpecsPrintData(EXCLUDE, excludeModules) {
-            specs, spec -> specs.addAll(spec.modules.collect { [spec.id, it] })
-        }, groupTap(40), moduleTap()
-        printConfigContent "${projectName} Config Default Dependencies", getSpecsPrintData(DEPENDENCY, dependencies) {
-            specs, spec -> specs.addAll(spec.modules.collect { [spec.id, it] })
-        }, dependencyTypeTap(), dependenciesTap()
+        printConfig BOM, 'Group Maven Bom Version', groupTap(30), moduleTap(), versionTap(20)
+        printConfig MODULES, 'Group Maven Module Version', groupTap(35), moduleTap(), versionTap(15)
+        printConfig GROUP, 'Group Maven Default Version', groupTap(), versionTap()
+        printConfig EXCLUDE, 'Exclude Group Modules', groupTap(40), moduleTap()
+        printConfig DEPENDENCY, 'Config Default Dependencies', dependencyTypeTap(), dependenciesTap()
     }
 
     String getProjectName() {
@@ -164,10 +124,6 @@ class IHubBomExtension extends IHubProjectExtension {
 
     boolean isRoot() {
         projectName == project.rootProject.name
-    }
-
-    ExtensionContainer getRootExtensions() {
-        project.rootProject.extensions
     }
 
     private static Tuple2<String, Integer> groupTap(Integer width = null) {
@@ -188,6 +144,28 @@ class IHubBomExtension extends IHubProjectExtension {
 
     private static Tuple2<String, Integer> dependenciesTap() {
         tap 'Dependencies'
+    }
+
+    private void printConfig(VersionType type, String title, Tuple2<String, Integer>... taps) {
+        Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
+        Set<BomSpecImpl> commonSpecs = (root ? findRootExtProperty(type.fieldName) :
+            rootProject.extensions.findByType(IHubBomExtension)."$type.fieldName") as Set<BomSpecImpl>
+        printConfigContent "${projectName.toUpperCase()} $title", (root ? commonSpecs?.tap {
+            specs*.rightShift it, true
+        } ?: specs : specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
+            BomSpecImpl impl = type in [EXCLUDE, DEPENDENCY] ? new BomSpecImpl(type, spec.id).modules(spec.modules -
+                (root ? [] : commonSpecs.find { r -> spec.id == r.id }?.modules) as String[]) : spec
+            if (BOM == type) {
+                set << [impl.id, impl.module, impl.version]
+            } else if (MODULES == type) {
+                set.addAll impl.modules.collect { [impl.id, it, impl.version] }
+            } else if (GROUP == type) {
+                set << [impl.id, impl.version]
+            } else {
+                set.addAll(impl.modules.collect { [impl.id, it] })
+            }
+            set
+        }, taps
     }
 
     //<editor-fold desc="DSL扩展相关实体">
@@ -264,6 +242,7 @@ class IHubBomExtension extends IHubProjectExtension {
 
     }
 
+    @CompileStatic
     @TupleConstructor(includes = 'type')
     private final class GroupSpecImpl implements GroupSpec<BomSpecImpl> {
 
@@ -279,20 +258,21 @@ class IHubBomExtension extends IHubProjectExtension {
 
     }
 
+    @CompileStatic
     private final class DependenciesSpecImpl implements DependenciesSpec {
 
         final List<BomSpecImpl> specs = []
 
         @Override
         void compile(String type, String... dependencies) {
-            assert type, 'dependencies type not null!'
-            assert dependencies, type + ' dependencies not empty!'
-            specs << (specs.find { type == it.id }?.tap { o -> o.modules.addAll dependencies }
-                ?: new BomSpecImpl(DEPENDENCY, type)).tap { it.modules = dependencies }
+            assertProperty type as boolean, 'dependencies type not null!'
+            assertProperty dependencies as boolean, type + ' dependencies not empty!'
+            specs << new BomSpecImpl(DEPENDENCY, type).tap { it.modules = dependencies as Set<String> }
         }
 
     }
 
+    @CompileStatic
     @TupleConstructor(includes = 'type,id')
     private class BomSpecImpl implements ModuleSpec, ModulesSpec {
 
@@ -304,9 +284,7 @@ class IHubBomExtension extends IHubProjectExtension {
 
         @Override
         void version(String version) {
-            if (EXCLUDE == type) {
-                throw new GradleException('Does not support \'version\' method!')
-            }
+            assertProperty EXCLUDE != type, 'Does not support \'version\' method!'
             this.version = findVersion id, version
         }
 
@@ -318,32 +296,39 @@ class IHubBomExtension extends IHubProjectExtension {
 
         @Override
         BomSpecImpl modules(String... modules) {
-            this.modules = modules
+            this.modules = modules as Set<String>
             this
         }
 
         boolean compare(BomSpecImpl o) {
-            type == o.type && id == o.id && version == o.version && module == o.module && modules == o.modules
+            id == o.id && version == o.version && module == o.module && modules == o.modules
         }
 
-        void rightShift(Set<BomSpecImpl> specs) {
+        void rightShift(Set<BomSpecImpl> specs, boolean ifAbsent = false) {
             if (EXCLUDE == type && !modules) {
-                modules = ['all']
+                modules = new HashSet<>(['all'])
             }
-            specs << (type in [BOM, GROUP] ? this : specs.find { this == it }
-                ?.tap { it.modules.addAll this.modules } ?: this)
+            BomSpecImpl spec = specs.find { this == it }
+            if (spec && !ifAbsent) {
+                if (EXCLUDE != type) {
+                    spec.version version
+                }
+                if (BOM == type) {
+                    spec.module module
+                }
+                if (modules) {
+                    spec.modules.addAll modules
+                }
+            }
+            if (!spec) {
+                specs << this
+            }
         }
 
         @Override
         boolean equals(o) {
-            if (this.is(o)) {
-                return true
-            }
-            if (!(o instanceof BomSpecImpl)) {
-                return false
-            }
-            type == o.type && id == o.id &&
-                (BOM != type || module == o.module) && (MODULES != type || version == o.version)
+            BomSpecImpl impl = (BomSpecImpl) o
+            id == impl.id && (BOM != type || module == impl.module) && (MODULES != type || version == impl.version)
         }
 
         @Override
@@ -364,7 +349,13 @@ class IHubBomExtension extends IHubProjectExtension {
     @TupleConstructor
     private enum VersionType {
 
-        BOM, MODULES, GROUP, EXCLUDE, DEPENDENCY
+        BOM('bomVersions'),
+        MODULES('dependencyVersions'),
+        GROUP('groupVersions'),
+        EXCLUDE('excludeModules'),
+        DEPENDENCY('dependencies')
+
+        final String fieldName
 
     }
 

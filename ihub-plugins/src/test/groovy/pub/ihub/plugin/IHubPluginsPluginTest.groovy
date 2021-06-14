@@ -24,6 +24,7 @@ import spock.lang.Title
 
 import static java.io.File.separator
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
+import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyDirectoryStructure
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyFile
@@ -50,7 +51,7 @@ class IHubPluginsPluginTest extends Specification {
     def setup() {
         testProjectDir.create()
         gradleBuilder = create().withProjectDir(testProjectDir.root).withPluginClasspath()
-        propertiesFile = testProjectDir.newFile('gradle.properties')
+        propertiesFile = testProjectDir.newFile GRADLE_PROPERTIES
         copy getClass().classLoader.getResourceAsStream('testkit-gradle.properties'), propertiesFile, null
     }
 
@@ -114,25 +115,6 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
                     plugin 'pub.ihub.plugin.ihub-native'
                 }
             }
-
-            iHubBom {
-                importBoms {
-                    group 'cn.hutool' module 'hutool-bom' version '5.6.4'
-                }
-                dependencyVersions {
-                    group 'cn.hutool' modules 'core', 'aop' version '5.6.4'
-                }
-                groupVersions {
-                    group 'cn.hutool' version '5.6.4'
-                }
-                excludeModules {
-                    group 'cn.hutool' modules 'core'
-                    group 'pub.ihub'
-                }
-                dependencies {
-                    api ':a', ':b', ':c'
-                }
-            }
         """
         testProjectDir.newFolder 'libs'
         def result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
@@ -148,15 +130,15 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
 
     def '代码检查插件测试'() {
         setup: '初始化项目'
-        copyProject 'groovy-sample', 'src'
-        testProjectDir.newFile('settings.gradle') << 'rootProject.name = \'groovy-sample\''
+        copyProject 'sample-groovy', 'src'
+        testProjectDir.newFile('settings.gradle') << 'rootProject.name = \'sample-groovy\''
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
 
         then: '检查结果'
         result.output.contains '┌──────────────────────────────────────────────────────────────────────────────────────────────────┐'
-        result.output.contains '│                               GROOVY-SAMPLE Jacoco Report Coverage                               │'
+        result.output.contains '│                               SAMPLE-GROOVY Jacoco Report Coverage                               │'
         result.output.contains '├──────────────────────┬──────────────────┬──────────────────┬──────────────────┬──────────────────┤'
         result.output.contains '│ Type                 │ Total            │ Missed           │ Covered          │ Coverage         │'
         result.output.contains '├──────────────────────┼──────────────────┼──────────────────┼──────────────────┼──────────────────┤'
@@ -172,7 +154,7 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains '├────────────────────────────────┬──────────┬──────────┬──────────┬──────────┬──────────┬──────────┤'
         result.output.contains '│ Project                        │ Instruct │ Branch   │ Line     │ Cxty     │ Method   │ Class    │'
         result.output.contains '├────────────────────────────────┼──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤'
-        result.output.contains '│ groovy-sample                  │ 100.00%  │ n/a      │ 100.00%  │ 100.00%  │ 100.00%  │ 100.00%  │'
+        result.output.contains '│ sample-groovy                  │ 100.00%  │ n/a      │ 100.00%  │ 100.00%  │ 100.00%  │ 100.00%  │'
         result.output.contains '│ total                          │ 100.00%  │ n/a      │ 100.00%  │ 100.00%  │ 100.00%  │ 100.00%  │'
         result.output.contains '└────────────────────────────────┴──────────┴──────────┴──────────┴──────────┴──────────┴──────────┘'
         result.task(':codenarcMain').outcome == SUCCESS
@@ -185,24 +167,24 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
 
     def '多项目构建测试'() {
         setup: '初始化项目'
-        copyProject 'multi-sample', 'rest', 'service', 'sdk'
+        copyProject 'sample-multi', 'rest', 'service', 'sdk'
         testProjectDir.newFile('settings.gradle') << '''
-            rootProject.name = 'multi-sample'
+            rootProject.name = 'sample-multi'
             include 'rest', 'service', 'sdk'
-            project(':rest').name = 'multi-sample-rest'
-            project(':service').name = 'multi-sample-service'
-            project(':sdk').name = 'multi-sample-sdk'
+            project(':rest').name = 'sample-multi-rest'
+            project(':service').name = 'sample-multi-service'
+            project(':sdk').name = 'sample-multi-sdk'
         '''
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
 
         then: '检查结果'
-        result.task(':multi-sample-rest:pmdMain').outcome == SUCCESS
-        result.task(':multi-sample-rest:pmdTest').outcome == SUCCESS
-        result.task(':multi-sample-rest:test').outcome == SUCCESS
-        result.task(':multi-sample-rest:jacocoTestReport').outcome == SUCCESS
-        result.task(':multi-sample-rest:jacocoTestCoverageVerification').outcome == SUCCESS
+        result.task(':sample-multi-rest:pmdMain').outcome == SUCCESS
+        result.task(':sample-multi-rest:pmdTest').outcome == SUCCESS
+        result.task(':sample-multi-rest:test').outcome == SUCCESS
+        result.task(':sample-multi-rest:jacocoTestReport').outcome == SUCCESS
+        result.task(':sample-multi-rest:jacocoTestCoverageVerification').outcome == SUCCESS
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

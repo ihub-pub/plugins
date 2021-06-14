@@ -30,6 +30,7 @@ import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectPlugin
+import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
 import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
@@ -52,6 +53,14 @@ class IHubPublishPlugin extends IHubProjectPlugin<IHubPublishExtension> {
         configPublish project, iHubExt
 
         configSigning project, iHubExt
+
+        // 添加配置元信息
+        withExtension(IHubBomExtension) {
+            it.dependencies {
+                annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+            }
+            project.compileJava.inputs.files project.processResources
+        }
     }
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
