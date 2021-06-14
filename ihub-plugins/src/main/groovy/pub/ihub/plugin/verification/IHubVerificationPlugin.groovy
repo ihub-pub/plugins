@@ -177,18 +177,18 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
             }]
         }
 
-        setExtProperty 'jacocoReportData', reportData
+        extension.setExtProperty 'jacocoReportData', reportData
 
         String title = project.name.toUpperCase() + ' Jacoco Report Coverage'
         printConfigContent title, reportData.collect { type, data ->
             [type, data.total, data.missed, data.covered, data.coverage]
         }, tap('Type', 20), tap('Total'), tap('Missed'), tap('Covered'), tap('Coverage')
 
-        if (!findRootExtProperty('printJacocoReportCoverage', false)) {
+        if (!extension.findRootExtProperty('printJacocoReportCoverage', false)) {
             gradle.buildFinished {
                 Map<String, ReportData> total = RULE_TYPE.collectEntries { [(it): new ReportData(0, 0)] }
                 List report = rootProject.allprojects.collect { p ->
-                    Map<String, ReportData> jacocoReportData = findExtProperty p, 'jacocoReportData'
+                    Map<String, ReportData> jacocoReportData = extension.findExtProperty p, 'jacocoReportData'
                     jacocoReportData ? [p.name] + jacocoReportData.collect { type, data ->
                         total.get(type).tap {
                             covered += data.covered
@@ -202,7 +202,7 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                         tap('Instruct'), tap('Branch'), tap('Line'),
                         tap('Cxty'), tap('Method'), tap('Class')
             }
-            setRootExtProperty 'printJacocoReportCoverage', true
+            extension.setRootExtProperty 'printJacocoReportCoverage', true
         }
     }
 

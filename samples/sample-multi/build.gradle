@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = '应用模块'
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-boot'
+plugins {
+    id 'pub.ihub.plugin'
 }
 
-dependencies {
-    implementation project(':multi-sample-sdk')
-    implementation project(':multi-sample-service')
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}
+description = '多项目'
 
-iHubTest {
-    classes = '**/*Test*'
-}
-
-iHubVerification {
-    jacocoBundleInstructionCoveredRatio = '0.7'
-    jacocoPackageInstructionExclusion = 'pub.ihub.sample'
+subprojects {
+    apply {
+        if (name == 'sample-multi-sdk') {
+            plugin 'pub.ihub.plugin.ihub-groovy'
+        } else {
+            plugin 'pub.ihub.plugin.ihub-java'
+        }
+        plugin 'pub.ihub.plugin.ihub-test'
+        plugin 'pub.ihub.plugin.ihub-verification'
+    }
 }

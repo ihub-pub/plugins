@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin
 
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 
@@ -93,6 +94,12 @@ class IHubProjectExtension implements IHubExtension {
         } as Map
     }
 
+    protected static void assertProperty(boolean condition, String message) {
+        if (!condition) {
+            throw new GradleException(message)
+        }
+    }
+
     void systemProperties(JavaForkOptions task) {
         task.systemProperties System.properties.subMap(runIncludePropNames?.split(',') ?: []) ?: runProperties
         runSkippedPropNames?.split(',')?.each {
@@ -103,6 +110,34 @@ class IHubProjectExtension implements IHubExtension {
                 task.systemProperties.putIfAbsent k, v
             }
         }
+    }
+
+    protected Project getRootProject() {
+        project.rootProject
+    }
+
+    protected static void setExtProperty(Project project, String key, value) {
+        project.ext.setProperty key, value
+    }
+
+    void setExtProperty(String key, value) {
+        setExtProperty project, key, value
+    }
+
+    void setRootExtProperty(String key, value) {
+        setExtProperty rootProject, key, value
+    }
+
+    def <V> V findExtProperty(Project project, String key, V defaultValue = null) {
+        project.ext.with { has(key) ? getProperty(key) as V : defaultValue }
+    }
+
+    def <V> V findExtProperty(String key, V defaultValue = null) {
+        findExtProperty project, key, defaultValue
+    }
+
+    def <V> V findRootExtProperty(String key, V defaultValue = null) {
+        findExtProperty rootProject, key, defaultValue
     }
 
 }

@@ -96,30 +96,6 @@ abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plug
         project.gradle
     }
 
-    protected static void setExtProperty(Project project, String key, value) {
-        project.ext.setProperty key, value
-    }
-
-    protected void setExtProperty(String key, value) {
-        setExtProperty project, key, value
-    }
-
-    protected void setRootExtProperty(String key, value) {
-        setExtProperty rootProject, key, value
-    }
-
-    protected <V> V findExtProperty(Project project, String key, V defaultValue = null) {
-        project.ext.with { has(key) ? getProperty(key) as V : defaultValue }
-    }
-
-    protected <V> V findExtProperty(String key, V defaultValue = null) {
-        findExtProperty project, key, defaultValue
-    }
-
-    protected <V> V findRootExtProperty(String key, V defaultValue = null) {
-        findExtProperty rootProject, key, defaultValue
-    }
-
     protected Logger getLog() {
         project.logger
     }

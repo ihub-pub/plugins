@@ -51,6 +51,11 @@ class IHubGroovyPlugin extends IHubProjectPlugin<IHubGroovyExtension> {
                     group groovyGroup version groovyVersion
                 }
             }
+            withExtension(IHubGroovyExtension) { ext ->
+                it.dependencies {
+                    implementation ext.modules.unique().collect { "org.codehaus.groovy:$it" } as String[]
+                }
+            }
         }
     }
 

@@ -16,17 +16,12 @@
 package pub.ihub.plugin.bom
 
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPlugin
-import pub.ihub.plugin.groovy.IHubGroovyExtension
-import pub.ihub.plugin.groovy.IHubGroovyPlugin
-import pub.ihub.plugin.publish.IHubPublishPlugin
 
 import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 
 
 
@@ -43,38 +38,8 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
     @Override
     void apply() {
         // 添加默认配置
-        withExtension(project.name == project.rootProject.name ? AFTER : BEFORE) {
-            if (!it.enabledDefaultConfig) {
-                return
-            }
-
+        withExtension {
             defaultConfig it
-
-            // 添加配置元信息
-            if (project.plugins.hasPlugin(IHubPublishPlugin)) {
-                it.dependencies {
-                    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-                }
-                project.compileJava.inputs.files project.processResources
-            }
-
-            // Java11添加jaxb运行时依赖
-            if (JavaVersion.current().java11) {
-                it.excludeModules {
-                    group 'com.sun.xml.bind' modules 'jaxb-core'
-                }
-                it.dependencies {
-                    runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
-                }
-            }
-
-            if (project.plugins.hasPlugin(IHubGroovyPlugin)) {
-                withExtension(IHubGroovyExtension) { ext ->
-                    it.dependencies {
-                        implementation ext.modules.unique().collect { "org.codehaus.groovy:$it" } as String[]
-                    }
-                }
-            }
         }
 
         // 配置项目依赖
@@ -99,7 +64,7 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
             group 'com.alibaba' modules 'druid', 'druid-spring-boot-starter' version '1.2.6'
             group 'com.alibaba.p3c' modules 'p3c-pmd' version '2.1.1'
             group 'com.baomidou' modules 'mybatis-plus', 'mybatis-plus-boot-starter',
-                    'mybatis-plus-generator' version '3.4.2'
+                'mybatis-plus-generator' version '3.4.2'
             group 'com.github.xiaoymin' modules 'knife4j-aggregation-spring-boot-starter' version '2.0.8'
         }
         // 配置组版本策略（建议尽量使用bom）

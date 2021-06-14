@@ -17,16 +17,4 @@ plugins {
     id 'pub.ihub.plugin'
 }
 
-description = '多项目'
-
-subprojects {
-    apply {
-        if (name == 'multi-sample-sdk') {
-            plugin 'pub.ihub.plugin.ihub-groovy'
-        } else {
-            plugin 'pub.ihub.plugin.ihub-java'
-        }
-        plugin 'pub.ihub.plugin.ihub-test'
-        plugin 'pub.ihub.plugin.ihub-verification'
-    }
-}
+description = '基础配置样例'
