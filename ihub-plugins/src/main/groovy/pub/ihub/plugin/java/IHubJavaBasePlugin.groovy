@@ -56,16 +56,16 @@ class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
                     it.options.incremental = iHubExt.gradleCompilationIncremental
                 }
             }
-        }
 
-        // Java11添加jaxb运行时依赖
-        if (JavaVersion.current().java11) {
-            withExtension(IHubBomExtension) {
-                it.excludeModules {
-                    group 'com.sun.xml.bind' modules 'jaxb-core'
-                }
-                it.dependencies {
-                    runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
+            // 添加jaxb运行时依赖
+            if (iHubExt.javaJaxbRuntime) {
+                withExtension(IHubBomExtension) {
+                    it.excludeModules {
+                        group 'com.sun.xml.bind' modules 'jaxb-core'
+                    }
+                    it.dependencies {
+                        runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
+                    }
                 }
             }
         }

@@ -113,6 +113,14 @@ class IHubPluginsExtension extends IHubProjectExtension {
     //<editor-fold desc="Java相关扩展属性">
 
     /**
+     * Jaxb运行时配置配置
+     * @return 是否配置
+     */
+    boolean getJavaJaxbRuntime() {
+        findSystemProperty 'javaJaxbRuntime', true
+    }
+
+    /**
      * Java兼容性配置
      * @return 兼容版本
      */
