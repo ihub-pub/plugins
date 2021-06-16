@@ -20,7 +20,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.invocation.Gradle
-import org.gradle.api.logging.Logger
 import org.gradle.api.tasks.TaskProvider
 
 import java.lang.reflect.ParameterizedType
@@ -94,10 +93,6 @@ abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plug
 
     protected Gradle getGradle() {
         project.gradle
-    }
-
-    protected Logger getLog() {
-        project.logger
     }
 
     /**

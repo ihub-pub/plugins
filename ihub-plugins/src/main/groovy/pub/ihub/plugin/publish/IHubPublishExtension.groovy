@@ -55,7 +55,7 @@ class IHubPublishExtension extends IHubProjectExtension {
     String pomDeveloperUrl = 'https://henry-hub.github.io'
     String pomDeveloperOrganization = pomOrganizationName
     String pomDeveloperOrganizationUrl = pomOrganizationUrl
-    String pomDeveloperRoles
+    Set<String> pomDeveloperRoles = []
     String pomDeveloperTimezone
 
     void configPom(MavenPublication publication) {
@@ -95,7 +95,7 @@ class IHubPublishExtension extends IHubProjectExtension {
                     url.set pomDeveloperUrl
                     organization.set pomDeveloperOrganization
                     organizationUrl.set pomDeveloperOrganizationUrl
-                    roles.set pomDeveloperRoles?.split(',')?.toList() ?: []
+                    roles.set pomDeveloperRoles
                     timezone.set pomDeveloperTimezone
                 }
             }

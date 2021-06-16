@@ -18,8 +18,6 @@ package pub.ihub.plugin
 import groovy.util.logging.Slf4j
 import spock.lang.Title
 
-import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
-
 
 
 /**
@@ -41,24 +39,11 @@ class IHubBasicPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    def 'complete build test'() {
+    def '项目组件仓库配置测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
 
-        when:
-        testProjectDir.newFile('settings.gradle') << 'include \'a\', \'b\', \'c\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
-        testProjectDir.newFile('a/gradle.properties') << '''
-version=1.0.0
-javaCompatibility=8
-publishNeedSign=true
-signingKeyId=id
-signingSecretKey=secret
-signingPassword=password
-publishDocs=true
-'''
+        when: '构建项目'
         propertiesFile << '''
 mavenLocalEnabled=true
 release.repo.url=http://ihub.pub/nexus/content/repositories/releases
@@ -67,25 +52,23 @@ customize-repo-url=http://ihub.pub/nexus/content/repositories
 repoAllowInsecureProtocol=true
 repoIncludeGroupRegex=pub\\.ihub\\..*
 '''
-        buildFile << """
-            subprojects {
-                apply {
-                    plugin 'pub.ihub.plugin.ihub-publish'
-                    plugin 'pub.ihub.plugin.ihub-test'
-                    plugin 'pub.ihub.plugin.ihub-verification'
-                }
-            }
-        """
         testProjectDir.newFolder 'libs'
         def result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
 
-        then:
+        then: '检查结果'
         result.output.contains('flatDir')
         result.output.contains('MavenLocal')
         result.output.contains('ReleaseRepo')
         result.output.contains('SnapshotRepo')
         result.output.contains('CustomizeRepo')
-        result.task(':help').outcome == SUCCESS
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        propertiesFile << 'repoIncludeGroup=pub.ihub.demo'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def 'Groovy插件配置测试'() {
@@ -144,6 +127,7 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '修改版本以及依赖组件模块'
+        propertiesFile << 'javaCompatibility=8\n'
         propertiesFile << 'javaJaxbRuntime=false\n'
         result = gradleBuilder.build()
 
@@ -151,6 +135,74 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         !result.output.contains('│ runtimeOnly                    │ javax.xml.bind:jaxb-api                                         │')
         !result.output.contains('│ runtimeOnly                    │ org.glassfish.jaxb:jaxb-runtime                                 │')
         !result.output.contains('│ com.sun.xml.bind                         │ jaxb-core                                             │')
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'Publish插件配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << """
+            apply {
+                plugin 'pub.ihub.plugin.ihub-publish'
+            }
+        """
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        buildFile << """
+            iHubPublish {
+                pomName = 'demo'
+            }
+        """
+        propertiesFile << '''
+version=1.0.0
+'''
+        result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        propertiesFile << '''
+publishNeedSign=true
+signingKeyId=id
+signingSecretKey=secret
+signingPassword=password
+publishDocs=true
+'''
+        result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'Groovy Publish配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << """
+            apply {
+                plugin 'pub.ihub.plugin.ihub-groovy'
+                plugin 'pub.ihub.plugin.ihub-publish'
+            }
+        """
+
+        when: '构建项目'
+        propertiesFile << '''
+version=1.0.0
+publishNeedSign=true
+signingKeyId=id
+signingSecretKey=secret
+signingPassword=password
+publishDocs=true
+'''
+        def result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
+
+        then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
