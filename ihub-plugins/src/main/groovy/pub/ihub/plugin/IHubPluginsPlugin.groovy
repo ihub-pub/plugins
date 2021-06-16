@@ -15,8 +15,7 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
+
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
@@ -30,7 +29,6 @@ import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
  */
 class IHubPluginsPlugin extends IHubProjectPlugin<IHubPluginsExtension> {
 
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = []
     String extensionName = 'iHub'
 
     @Override

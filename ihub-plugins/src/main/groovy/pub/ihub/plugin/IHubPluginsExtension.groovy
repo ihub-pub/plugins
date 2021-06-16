@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 
 
@@ -23,6 +24,7 @@ import groovy.transform.TupleConstructor
  * IHub插件属性扩展
  * @author henry
  */
+@CompileStatic
 @TupleConstructor(includeSuperFields = true)
 class IHubPluginsExtension extends IHubProjectExtension {
 
