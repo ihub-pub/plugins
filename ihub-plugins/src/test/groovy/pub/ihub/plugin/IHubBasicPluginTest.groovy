@@ -15,8 +15,13 @@
  */
 package pub.ihub.plugin
 
+import groovy.transform.TupleConstructor
 import groovy.util.logging.Slf4j
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Title
+
+import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 
 
 
@@ -231,6 +236,33 @@ publishDocs=true
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'beforeEvaluateClosure测试'() {
+        when: '构建项目'
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubDemoPlugin
+
+        then: '检查结果'
+        project.extensions.findByName('iHubDemo') instanceof IHubDemoExtension
+    }
+
+    @TupleConstructor(includeSuperFields = true)
+    static class IHubDemoExtension extends IHubProjectExtension {
+
+    }
+
+    static class IHubDemoPlugin extends IHubProjectPlugin<IHubDemoExtension> {
+
+        String extensionName = 'iHubDemo'
+
+        @Override
+        protected void apply() {
+            withExtension(IHubDemoExtension, BEFORE) {
+                project.logger.info 'hello'
+            }
+        }
+
     }
 
 }

@@ -15,9 +15,12 @@
  */
 package pub.ihub.plugin
 
+import groovy.transform.CompileStatic
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
+
+import static groovy.transform.TypeCheckingMode.SKIP
 
 
 
@@ -25,6 +28,7 @@ import org.gradle.process.JavaForkOptions
  * IHub项目扩展
  * @author liheng
  */
+@CompileStatic
 class IHubProjectExtension implements IHubExtension {
 
     protected Project project
@@ -100,6 +104,7 @@ class IHubProjectExtension implements IHubExtension {
         }
     }
 
+    @CompileStatic(SKIP)
     void systemProperties(JavaForkOptions task) {
         task.systemProperties System.properties.subMap(runIncludePropNames?.split(',') ?: []) ?: runProperties
         runSkippedPropNames?.split(',')?.each {
@@ -116,6 +121,7 @@ class IHubProjectExtension implements IHubExtension {
         project.rootProject
     }
 
+    @CompileStatic(SKIP)
     protected static void setExtProperty(Project project, String key, value) {
         project.ext.setProperty key, value
     }
@@ -128,12 +134,9 @@ class IHubProjectExtension implements IHubExtension {
         setExtProperty rootProject, key, value
     }
 
-    def <V> V findExtProperty(Project project, String key, V defaultValue = null) {
+    @CompileStatic(SKIP)
+    <V> V findExtProperty(Project project, String key, V defaultValue = null) {
         project.ext.with { has(key) ? getProperty(key) as V : defaultValue }
-    }
-
-    def <V> V findExtProperty(String key, V defaultValue = null) {
-        findExtProperty project, key, defaultValue
     }
 
     def <V> V findRootExtProperty(String key, V defaultValue = null) {
