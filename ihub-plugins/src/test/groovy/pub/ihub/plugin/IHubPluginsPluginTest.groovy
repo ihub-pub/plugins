@@ -19,6 +19,7 @@ import groovy.util.logging.Slf4j
 import org.gradle.internal.impldep.org.junit.Rule
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
+import spock.lang.IgnoreIf
 import spock.lang.Specification
 import spock.lang.Title
 
@@ -41,6 +42,7 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 @Slf4j
 @Title('IHubPluginsPlugin测试套件')
 @SuppressWarnings(['PrivateFieldCouldBeFinal', 'JUnitPublicNonTestMethod'])
+@IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
 class IHubPluginsPluginTest extends Specification {
 
     @Rule

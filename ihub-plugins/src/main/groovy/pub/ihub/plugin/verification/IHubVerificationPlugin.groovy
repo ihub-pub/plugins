@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin.verification
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import groovy.xml.XmlParser
 import org.gradle.api.Plugin
@@ -171,7 +172,7 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
             setFeature 'http://apache.org/xml/features/nonvalidating/load-external-dtd', false
             setFeature 'http://apache.org/xml/features/disallow-doctype-decl', false
         }.parse(xml).counter
-        Map reportData = RULE_TYPE.collectEntries { type ->
+        Map<String, ReportData> reportData = RULE_TYPE.collectEntries { type ->
             [(type): counters.find { counter -> counter.'@type' == type }.with {
                 it ? new ReportData(it.'@missed' as int, it.'@covered' as int) : new ReportData(0, 0)
             }]
@@ -181,42 +182,48 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
 
         String title = project.name.toUpperCase() + ' Jacoco Report Coverage'
         printConfigContent title, reportData.collect { type, data ->
-            [type, data.total, data.missed, data.covered, data.coverage]
+            [type, data.total(), data.missed, data.covered, data.coverage]
         }, tap('Type', 20), tap('Total'), tap('Missed'), tap('Covered'), tap('Coverage')
 
         if (!extension.findRootExtProperty('printJacocoReportCoverage', false)) {
             gradle.buildFinished {
-                Map<String, ReportData> total = RULE_TYPE.collectEntries { [(it): new ReportData(0, 0)] }
-                List report = rootProject.allprojects.collect { p ->
-                    Map<String, ReportData> jacocoReportData = extension.findExtProperty p, 'jacocoReportData'
-                    jacocoReportData ? [p.name] + jacocoReportData.collect { type, data ->
-                        total.get(type).tap {
-                            covered += data.covered
-                            missed += data.missed
-                        }
-                        data.coverage
-                    } : null
-                }
-                report << (['total'] + total.values().coverage)
-                printConfigContent 'Jacoco Report Coverage', report, tap('Project', 30),
-                        tap('Instruct'), tap('Branch'), tap('Line'),
-                        tap('Cxty'), tap('Method'), tap('Class')
+                printFinishedJacocoReportCoverage()
             }
             extension.setRootExtProperty 'printJacocoReportCoverage', true
         }
     }
 
+    private void printFinishedJacocoReportCoverage() {
+        Map<String, ReportData> total = RULE_TYPE.collectEntries { [(it): new ReportData(0, 0)] }
+        List report = rootProject.allprojects.collect { p ->
+            Map<String, ReportData> jacocoReportData = extension.findExtProperty p, 'jacocoReportData'
+            jacocoReportData ? [p.name] + jacocoReportData.collect { type, data ->
+                total.get(type).tap {
+                    covered += data.covered
+                    missed += data.missed
+                }
+                data.coverage
+            } : null
+        }
+        report << (['total'] + total.values().coverage)
+        printConfigContent 'Jacoco Report Coverage', report, tap('Project', 30),
+            tap('Instruct'), tap('Branch'), tap('Line'),
+            tap('Cxty'), tap('Method'), tap('Class')
+    }
+
+    @CompileStatic
     @TupleConstructor
     private final class ReportData {
 
         int missed
         int covered
 
-        int getTotal() {
+        int total() {
             missed + covered
         }
 
         String getCoverage() {
+            int total = total()
             total ? (covered / total * 100).round(2) + '%' : 'n/a'
         }
 
