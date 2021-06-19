@@ -232,6 +232,7 @@ publishDocs=true
                 bpJvmVersion = '11'
             }
         """
+        testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
         result = gradleBuilder.build()
 
         then: '检查结果'

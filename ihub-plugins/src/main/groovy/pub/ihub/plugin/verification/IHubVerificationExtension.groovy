@@ -112,7 +112,7 @@ class IHubVerificationExtension extends IHubProjectExtension {
 
     String jacocoVersion = '0.8.6'
     boolean jacocoBundleBranchCoverageRuleEnabled = true
-    String jacocoBundleBranchCoveredRatio = '1.0'
+    String jacocoBundleBranchCoveredRatio = '0.9'
     boolean jacocoBundleInstructionCoverageRuleEnabled = true
     String jacocoBundleInstructionExclusion = '**/app,**/config'
     String jacocoBundleInstructionCoveredRatio = '0.9'

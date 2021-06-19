@@ -60,7 +60,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
             }
         """
         testProjectDir.newFile 'ruleset.xml'
-        result = gradleBuilder.build()
+        result = gradleBuilder.withArguments('-DiHubTestRunSkippedPropNames=java.endorsed.dirs').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'

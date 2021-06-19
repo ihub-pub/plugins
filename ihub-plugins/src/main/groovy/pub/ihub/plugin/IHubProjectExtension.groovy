@@ -18,7 +18,6 @@ package pub.ihub.plugin
 import groovy.transform.CompileStatic
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.process.JavaForkOptions
 
 import static groovy.transform.TypeCheckingMode.SKIP
 
@@ -54,70 +53,13 @@ class IHubProjectExtension implements IHubExtension {
         findSystemProperty(key, String.valueOf(defaultValue)).toInteger()
     }
 
-    /**
-     * 任务运行时属性
-     * @return 任务运行时属性
-     */
-    protected Map<String, String> getRunProperties() {
-        [:]
-    }
-
-    /**
-     * 包含属性名称（“,”分割）
-     * @return 包含属性名称
-     */
-    protected String getRunIncludePropNames() {
-        null
-    }
-
-    /**
-     * 排除属性名称（“,”分割）
-     * @return 排除属性名称
-     */
-    protected String getRunSkippedPropNames() {
-        null
-    }
-
-    /**
-     * 启用本地属性
-     * @return 启用本地属性
-     */
-    protected boolean getEnabledLocalProperties() {
-        false
-    }
-
-    /**
-     * 获取本地Java属性配置
-     * @return 本地Java属性
-     */
-    protected Map<String, Object> getLocalProperties() {
-        project.rootProject.file('.java-local.properties').with {
-            exists() ? withInputStream { is ->
-                new Properties().tap { load(is) }
-            } : [:]
-        } as Map
-    }
-
     protected static void assertProperty(boolean condition, String message) {
         if (!condition) {
             throw new GradleException(message)
         }
     }
 
-    @CompileStatic(SKIP)
-    void systemProperties(JavaForkOptions task) {
-        task.systemProperties System.properties.subMap(runIncludePropNames?.split(',') ?: []) ?: runProperties
-        runSkippedPropNames?.split(',')?.each {
-            task.systemProperties.remove it
-        }
-        if (enabledLocalProperties) {
-            localProperties.each { k, v ->
-                task.systemProperties.putIfAbsent k, v
-            }
-        }
-    }
-
-    protected Project getRootProject() {
+    Project getRootProject() {
         project.rootProject
     }
 

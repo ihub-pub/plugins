@@ -17,6 +17,7 @@ package pub.ihub.plugin.verification
 
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubProjectExtension
+import pub.ihub.plugin.IHubSystemProperties
 
 
 
@@ -25,7 +26,7 @@ import pub.ihub.plugin.IHubProjectExtension
  * @author henry
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubTestExtension extends IHubProjectExtension {
+class IHubTestExtension extends IHubProjectExtension implements IHubSystemProperties {
 
     /**
      * 启用测试
@@ -85,12 +86,12 @@ class IHubTestExtension extends IHubProjectExtension {
     }
 
     @Override
-    protected String getRunIncludePropNames() {
+    String getRunIncludePropNames() {
         findSystemProperty 'iHubTestRunIncludePropNames', runIncludePropNames
     }
 
     @Override
-    protected String getRunSkippedPropNames() {
+    String getRunSkippedPropNames() {
         findSystemProperty 'iHubTestRunSkippedPropNames', runSkippedPropNames
     }
 

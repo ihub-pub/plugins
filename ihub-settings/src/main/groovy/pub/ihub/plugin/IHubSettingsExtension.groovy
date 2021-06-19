@@ -15,9 +15,12 @@
  */
 package pub.ihub.plugin
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import org.gradle.api.Action
 import org.gradle.api.initialization.Settings
+
+import static groovy.transform.TypeCheckingMode.SKIP
 
 
 
@@ -25,6 +28,7 @@ import org.gradle.api.initialization.Settings
  * 子项目配置扩展
  * @author liheng
  */
+@CompileStatic
 @SuppressWarnings(['JUnitPublicNonTestMethod', 'JUnitPublicProperty'])
 class IHubSettingsExtension implements IHubExtension {
 
@@ -64,6 +68,7 @@ class IHubSettingsExtension implements IHubExtension {
      * 添加多个项目
      * @param projectPaths 项目路径
      */
+    @CompileStatic(SKIP)
     ProjectSpec includeProjects(String... projectPaths) {
         new ProjectSpec().tap {
             projectPaths.each { projectPath ->
@@ -72,15 +77,18 @@ class IHubSettingsExtension implements IHubExtension {
         }
     }
 
+    @CompileStatic(SKIP)
     ProjectSpec getProjectSpec(String path) {
         skippedDirs ? path in skippedDirs ? null : new ProjectSpec() : projectSpecs[path]
     }
 
+    @CompileStatic(SKIP)
     @Override
     String findProjectProperty(String key) {
         settings.hasProperty(key) ? settings."$key" : null
     }
 
+    @CompileStatic
     class ProjectSpec {
 
         private String namePrefix = settings.rootProject.name + '-'
@@ -105,6 +113,7 @@ class IHubSettingsExtension implements IHubExtension {
             }
         }
 
+        @CompileStatic(SKIP)
         String includeProject(String projectPath) {
             String gradleProjectPath = ":$projectPath"
             String projectName = projectPath.split(':').last()
@@ -119,6 +128,7 @@ class IHubSettingsExtension implements IHubExtension {
 
     }
 
+    @CompileStatic
     class PluginVersionsSpec {
 
         private final List<PluginVersionSpec> specs = []
@@ -131,6 +141,7 @@ class IHubSettingsExtension implements IHubExtension {
 
     }
 
+    @CompileStatic
     @TupleConstructor(includeFields = true, includes = 'id')
     class PluginVersionSpec {
 

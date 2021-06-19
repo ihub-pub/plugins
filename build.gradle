@@ -63,8 +63,6 @@ subprojects {
 
     // TODO 持续提升测试覆盖率
     iHubVerification {
-        jacocoBundleBranchCoveredRatio = '0.6'
-        jacocoBundleInstructionCoveredRatio = '0.8'
-        jacocoPackageInstructionCoveredRatio = '0.8'
+        jacocoBundleBranchCoveredRatio = '0.9'
     }
 }
