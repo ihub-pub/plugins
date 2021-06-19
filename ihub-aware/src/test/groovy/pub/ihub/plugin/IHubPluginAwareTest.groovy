@@ -51,6 +51,7 @@ class IHubPluginAwareTest extends Specification {
         expect:
         printConfigContent 'test', tap('t1', 30), tap('t2'), [d1: [1, 2, 3], d2: [4, 5, 6]]
         printConfigContent 'test', []
+        printConfigContent 'test', tap('t1')
     }
 
 }

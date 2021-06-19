@@ -15,12 +15,22 @@
  */
 package pub.ihub.plugin
 
+import groovy.transform.CompileStatic
+
+import static groovy.transform.TypeCheckingMode.SKIP
+
+
+
 /**
  * 插件通用方法
  * @author henry
  */
+@CompileStatic
 @SuppressWarnings('Println')
 final class IHubPluginMethods {
+
+    private static final int PRINT_WIDTH = 100
+    private static final int CONTENT_WIDTH = PRINT_WIDTH - 4
 
     static Tuple2<String, Integer> tap(String tap, Integer width = null) {
         new Tuple2<>(tap, width)
@@ -33,15 +43,16 @@ final class IHubPluginMethods {
      * @param value 值描述
      * @param map 配置数据
      */
+    @CompileStatic(SKIP)
     static void printConfigContent(String title, Tuple2<String, Integer> key, Tuple2<String, Integer> value, Map map) {
-        printConfigContent title, map.inject([]) { list, k, v ->
+        printConfigContent0 title, map.inject([]) { list, k, v ->
             if (v instanceof List) {
                 v.each { list << [k, it] }
             } else {
                 list << [k, v]
             }
             list
-        }, key, value
+        } - null, key, value
     }
 
     /**
@@ -50,28 +61,28 @@ final class IHubPluginMethods {
      * @param data 配置信息
      * @param taps 配置栏目描述
      */
+    @CompileStatic(SKIP)
     static void printConfigContent(String title, List data, Tuple2<String, Integer>... taps) {
-        printConfigContent title, data - null, 100, taps
+        printConfigContent0 title, data - null, taps
     }
 
     /**
      * 打印Map配置信息
      * @param title 标题
      * @param data 配置信息
-     * @param printWidth 打印宽度
      * @param taps 配置栏目描述
      */
-    static void printConfigContent(String title, List data, int printWidth, Tuple2<String, Integer>... taps) {
+    @CompileStatic(SKIP)
+    private static void printConfigContent0(String title, List data, Tuple2<String, Integer>... taps) {
         if (!data) {
             return
         }
-        int contentWidth = printWidth - 4
         Number size = taps.count { !it.v2 }
         int tapWidth = size ?
-            ((contentWidth - (taps.sum { it.v2 ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
-        List tapsList = taps ? taps.collect { it.v2 ? it : tap(it.v1, tapWidth) } : [tap(null, contentWidth)]
+            ((CONTENT_WIDTH - (taps.sum { it.v2 ?: 0 } as Integer) - 3 * (taps.size() - 1)) / size).intValue() : null
+        List tapsList = taps ? taps.collect { it.v2 ? it : tap(it.v1, tapWidth) } : [tap(null, CONTENT_WIDTH)]
         printBorderline tapsList*.v2, '┌─', '───', '─┐'
-        printCenter title, contentWidth
+        printCenter title, CONTENT_WIDTH
         printBorderline tapsList*.v2, '├─', '─┬─', '─┤'
         if (taps) {
             printTaps tapsList*.v2, tapsList*.v1, '│ ', ' │ ', ' │'

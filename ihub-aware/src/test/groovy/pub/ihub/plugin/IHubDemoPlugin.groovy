@@ -38,7 +38,7 @@ class IHubDemoPlugin implements Plugin<Project> {
         System.setProperty 'demoDVersion', '1.0.0'
 
         printConfigContent 'demo test print', tap('demo'), tap('version', 30), [
-            'demo.a', 'demo.b', 'demo.c', 'demo.d', 'demo.e'
+            'demoA', 'demoB', 'demoC', 'demoD', 'demoE'
         ].collectEntries { [(it): ext.findVersion(it, '1.0.1')] }
     }
 

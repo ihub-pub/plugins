@@ -17,6 +17,7 @@ package pub.ihub.plugin.spring
 
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubProjectExtension
+import pub.ihub.plugin.IHubSystemProperties
 
 
 
@@ -25,14 +26,14 @@ import pub.ihub.plugin.IHubProjectExtension
  * @author henry
  */
 @TupleConstructor(includeSuperFields = true)
-class IHubBootExtension extends IHubProjectExtension {
+class IHubBootExtension extends IHubProjectExtension implements IHubSystemProperties {
 
     //<editor-fold desc="BootRun Configuration">
 
     /**
      * bootRun属性
      */
-    Map<String, String> bootRunProperties = [:]
+    Map<String, String> runProperties = [:]
     /**
      * 包含属性名称（“,”分割）
      */
@@ -55,22 +56,17 @@ class IHubBootExtension extends IHubProjectExtension {
     //</editor-fold>
 
     @Override
-    protected Map<String, String> getRunProperties() {
-        bootRunProperties
+    String getRunIncludePropNames() {
+        findProperty 'springBootIncludePropNames', bootRunIncludePropNames
     }
 
     @Override
-    protected String getRunIncludePropNames() {
-        findProperty 'springbootIncludePropNames', bootRunIncludePropNames
-    }
-
-    @Override
-    protected String getRunSkippedPropNames() {
-        findProperty 'springbootSkippedPropNames', bootRunSkippedPropNames
+    String getRunSkippedPropNames() {
+        findProperty 'springBootSkippedPropNames', bootRunSkippedPropNames
     }
 
     String getBootJarRequiresUnpack() {
-        findProperty 'springbootRequiresUnpack', bootJarRequiresUnpack
+        findProperty 'springBootRequiresUnpack', bootJarRequiresUnpack
     }
 
 }
