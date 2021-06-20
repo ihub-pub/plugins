@@ -20,7 +20,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
-import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.java.IHubJavaBasePlugin
 
 
@@ -31,7 +30,7 @@ import pub.ihub.plugin.java.IHubJavaBasePlugin
  */
 class IHubGroovyPlugin extends IHubProjectPlugin<IHubGroovyExtension> {
 
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin, IHubJavaBasePlugin, GroovyPlugin]
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin, GroovyPlugin]
     String extensionName = 'iHubGroovy'
 
     @Override

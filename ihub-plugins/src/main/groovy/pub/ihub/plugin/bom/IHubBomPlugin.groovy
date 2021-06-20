@@ -18,7 +18,6 @@ package pub.ihub.plugin.bom
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPlugin
 
 import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
@@ -32,7 +31,7 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
 
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubPluginsPlugin, DependencyManagementPlugin]
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [DependencyManagementPlugin]
     String extensionName = 'iHubBom'
 
     @Override
