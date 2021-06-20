@@ -40,7 +40,6 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 @CompileStatic
 abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plugin<Project> {
 
-    // TODO protected
     Project project
     protected T extension
     private final List<Closure> beforeEvaluateClosure = []

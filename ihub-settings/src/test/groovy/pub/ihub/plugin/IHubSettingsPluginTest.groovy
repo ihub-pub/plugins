@@ -87,7 +87,6 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'com.palantir.git-version'
         result.output.contains 'io.spring.dependency-management'
         result.output.contains 'org.springframework.boot'
         result.output.contains 'org.springframework.experimental.aot'
