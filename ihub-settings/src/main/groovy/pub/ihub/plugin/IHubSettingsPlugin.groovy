@@ -39,12 +39,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
         // 配置常用插件版本
         ext.pluginVersions {
-            id 'com.palantir.git-version' version '0.12.3'
             id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-            id 'org.springframework.boot' version '2.4.5'
-            id 'org.springframework.experimental.aot' version '0.9.2'
-            id 'com.gradle.plugin-publish' version '0.14.0'
-            id 'com.github.ben-manes.versions' version '0.38.0'
+            id 'org.springframework.boot' version '2.5.1'
+            id 'org.springframework.experimental.aot' version '0.10.0'
+            id 'com.gradle.plugin-publish' version '0.15.0'
+            id 'com.github.ben-manes.versions' version '0.39.0'
         }
 
         // 配置自定义扩展

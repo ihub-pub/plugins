@@ -34,11 +34,7 @@ class IHubPluginsPlugin extends IHubProjectPlugin<IHubPluginsExtension> {
     @Override
     void apply() {
         IHubPluginsExtension ext = extension
-        // TODO
-//        project.pluginManager.apply 'com.palantir.git-version'
-//        project.version = ext.version.with {
-//            DEFAULT_VERSION == it ? project.versionDetails().lastTag : it
-//        }
+        // TODO 弃用git-version，之后改用semantic-release
         project.version = ext.version
 
         project.repositories {

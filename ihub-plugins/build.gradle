@@ -17,7 +17,6 @@ description = 'IHub Gradle Plugins'
 
 dependencies {
     implementation project(':ihub-aware')
-    implementation "com.palantir.gradle.gitversion:gradle-git-version:$gitVersionVersion"
     implementation "io.spring.gradle:dependency-management-plugin:$springDependencyManagementVersion"
     implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     implementation "org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:$springAotVersion"
