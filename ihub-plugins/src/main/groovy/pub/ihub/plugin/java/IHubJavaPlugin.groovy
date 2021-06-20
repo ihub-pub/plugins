@@ -17,10 +17,9 @@ package pub.ihub.plugin.java
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.IHubProjectExtension
+import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
-import pub.ihub.plugin.bom.IHubBomPlugin
 
 
 
@@ -30,7 +29,7 @@ import pub.ihub.plugin.bom.IHubBomPlugin
  */
 class IHubJavaPlugin extends IHubProjectPlugin<IHubProjectExtension> {
 
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin, IHubJavaBasePlugin]
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin]
 
     @Override
     void apply() {
