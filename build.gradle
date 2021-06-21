@@ -18,18 +18,8 @@ plugins {
     id 'com.gradle.plugin-publish' version "$pluginPublishVersion" apply false
     // Jacoco暂时支持TestKit，如下插件用于集成Jacoco报告，详见：https://github.com/gradle/gradle/issues/1465
     id 'pl.droidsonroids.jacoco.testkit' version '1.0.8'
+    id 'io.freefair.aggregate-jacoco-report' version '5.3.3.3'
 }
-
-// TODO 聚合测试覆盖率报告
-//apply {
-//    from rootProject.file('gradle/jacoco-aggregation.gradle')
-//}
-
-//dependencies {
-//    subprojects.each {
-//        implementation it
-//    }
-//}
 
 subprojects {
     apply {
@@ -40,7 +30,6 @@ subprojects {
         plugin 'java-gradle-plugin'
         plugin 'com.gradle.plugin-publish'
         plugin 'pl.droidsonroids.jacoco.testkit'
-//        from    rootProject.file('gradle/java-conventions.gradle')
     }
 
     dependencies {
