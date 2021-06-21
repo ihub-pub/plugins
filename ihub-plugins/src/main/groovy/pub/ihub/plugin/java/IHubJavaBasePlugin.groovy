@@ -30,8 +30,6 @@ import pub.ihub.plugin.IHubProjectPlugin
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
-
 
 
 /**
@@ -46,7 +44,7 @@ class IHubJavaBasePlugin extends IHubProjectPlugin<IHubProjectExtension> {
 
     @Override
     void apply() {
-        withExtension(IHubPluginsExtension, AFTER) { iHubExt ->
+        withExtension(IHubPluginsExtension) { iHubExt ->
             // 兼容性配置
             iHubExt.javaCompatibility?.with { version ->
                 withTask(AbstractCompile) {

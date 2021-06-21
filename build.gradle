@@ -60,9 +60,4 @@ subprojects {
             group 'org.codehaus.groovy' version orgCodehausGroovyVersion
         }
     }
-
-    // TODO 持续提升测试覆盖率
-    iHubVerification {
-        jacocoBundleBranchCoveredRatio = '0.9'
-    }
 }
