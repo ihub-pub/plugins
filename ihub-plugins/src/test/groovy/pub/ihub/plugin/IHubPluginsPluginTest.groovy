@@ -41,7 +41,7 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
  */
 @Slf4j
 @Title('IHubPluginsPlugin测试套件')
-@SuppressWarnings(['PrivateFieldCouldBeFinal', 'JUnitPublicNonTestMethod'])
+@SuppressWarnings('PrivateFieldCouldBeFinal')
 @IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
 class IHubPluginsPluginTest extends Specification {
 

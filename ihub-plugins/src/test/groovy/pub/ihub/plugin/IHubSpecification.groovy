@@ -36,7 +36,6 @@ import static org.gradle.testkit.runner.GradleRunner.create
  * @author henry
  */
 @Slf4j
-@SuppressWarnings('JUnitPublicNonTestMethod')
 class IHubSpecification extends Specification {
 
     @Rule

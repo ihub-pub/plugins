@@ -31,7 +31,6 @@ import spock.lang.Title
  */
 @Slf4j
 @Title('IHubVerificationPlugin测试套件')
-@SuppressWarnings('JUnitPublicNonTestMethod')
 class IHubVerificationPluginTest extends IHubSpecification {
 
     private Project project

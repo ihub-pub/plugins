@@ -32,7 +32,6 @@ import static pub.ihub.plugin.IHubPluginMethods.tap
  */
 @Slf4j
 @Title('IHubAware测试套件')
-@SuppressWarnings('JUnitPublicNonTestMethod')
 class IHubPluginAwareTest extends Specification {
 
     private Project project

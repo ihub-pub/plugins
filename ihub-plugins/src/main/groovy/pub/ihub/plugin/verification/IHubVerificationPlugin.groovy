@@ -18,6 +18,7 @@ package pub.ihub.plugin.verification
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import groovy.xml.XmlParser
+import io.freefair.gradle.plugins.jacoco.AggregateJacocoReportPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
@@ -102,6 +103,9 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
 
     private void configJacoco(Project project) {
         applyPlugin JacocoPlugin
+        if (project.name != rootProject.name) {
+            rootProject.pluginManager.apply AggregateJacocoReportPlugin
+        }
         withExtension(AFTER) { ext ->
             withExtension(JacocoPluginExtension) {
                 it.toolVersion = ext.jacocoVersion

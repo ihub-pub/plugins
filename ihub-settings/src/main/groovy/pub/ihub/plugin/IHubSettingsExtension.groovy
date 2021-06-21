@@ -29,7 +29,7 @@ import static groovy.transform.TypeCheckingMode.SKIP
  * @author liheng
  */
 @CompileStatic
-@SuppressWarnings(['JUnitPublicNonTestMethod', 'JUnitPublicProperty'])
+@SuppressWarnings('JUnitPublicProperty')
 class IHubSettingsExtension implements IHubExtension {
 
     private static final List<String> EXCLUDE_DIRS = [

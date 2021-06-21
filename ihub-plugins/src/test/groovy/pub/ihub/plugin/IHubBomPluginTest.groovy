@@ -25,7 +25,6 @@ import spock.lang.Title
  */
 @Slf4j
 @Title('BOM插件DSL扩展测试套件')
-@SuppressWarnings('JUnitPublicNonTestMethod')
 class IHubBomPluginTest extends IHubSpecification {
 
     def '基础配置成功测试'() {
@@ -67,6 +66,7 @@ class IHubBomPluginTest extends IHubSpecification {
             subprojects {
                 apply {
                     plugin 'pub.ihub.plugin.ihub-groovy'
+                    plugin 'pub.ihub.plugin.ihub-verification'
                     plugin 'pub.ihub.plugin.ihub-publish'
                 }
                 iHubBom {

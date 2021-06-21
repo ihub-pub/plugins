@@ -43,7 +43,7 @@ import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
  * BOM插件DSL扩展
  * @author liheng
  */
-@SuppressWarnings(['ConfusingMethodName', 'JUnitPublicNonTestMethod'])
+@SuppressWarnings('ConfusingMethodName')
 @TupleConstructor(includeSuperFields = true)
 class IHubBomExtension extends IHubProjectExtension {
 
