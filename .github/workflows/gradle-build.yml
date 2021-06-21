@@ -37,6 +37,11 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         run: gradle build
 
+      - name: Upload Coverage Reports
+        run: |
+          gradle jacocoTestReport
+          bash <(curl -s https://codecov.io/bash)
+
       - name: Cleanup Gradle Cache
         # Cleans up the Gradle caches before being cached
         run: |
