@@ -32,7 +32,7 @@ import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
  */
 @Slf4j
 @Title('IHubSettingsPlugin测试套件')
-@SuppressWarnings(['PrivateFieldCouldBeFinal', 'JUnitPublicNonTestMethod'])
+@SuppressWarnings('PrivateFieldCouldBeFinal')
 class IHubSettingsPluginTest extends Specification {
 
     @Rule

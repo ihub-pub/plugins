@@ -30,7 +30,6 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
  */
 @Slf4j
 @Title('基础插件扩展测试套件')
-@SuppressWarnings('JUnitPublicNonTestMethod')
 class IHubBasicPluginTest extends IHubSpecification {
 
     def '基础构建测试'() {

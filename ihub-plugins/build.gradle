@@ -15,11 +15,16 @@
  */
 description = 'IHub Gradle Plugins'
 
+repositories {
+    gradlePluginPortal()
+}
+
 dependencies {
     implementation project(':ihub-aware')
     implementation "io.spring.gradle:dependency-management-plugin:$springDependencyManagementVersion"
     implementation "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
     implementation "org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:$springAotVersion"
+    implementation "io.freefair.gradle:jacoco-plugin:$freefairVersion"
 }
 
 gradlePlugin {
