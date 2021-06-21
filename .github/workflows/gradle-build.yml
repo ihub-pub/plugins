@@ -38,6 +38,7 @@ jobs:
         run: gradle build
 
       - name: Upload Coverage Reports
+        if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
         run: |
           gradle jacocoTestReport
           bash <(curl -s https://codecov.io/bash)
