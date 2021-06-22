@@ -15,7 +15,9 @@
  */
 package pub.ihub.plugin
 
-
+import io.freefair.gradle.plugins.git.GitVersionPlugin
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
@@ -29,34 +31,33 @@ import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
  */
 class IHubPluginsPlugin extends IHubProjectPlugin<IHubPluginsExtension> {
 
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [GitVersionPlugin]
     String extensionName = 'iHub'
 
     @Override
     void apply() {
-        IHubPluginsExtension ext = extension
-        // TODO 弃用git-version，之后改用semantic-release
-        project.version = ext.version
-
-        project.repositories {
-            String dirs = "$project.rootProject.projectDir/libs"
-            if ((dirs as File).directory) {
-                flatDir dirs: dirs
+        withExtension { ext ->
+            project.repositories {
+                String dirs = "$project.rootProject.projectDir/libs"
+                if ((dirs as File).directory) {
+                    flatDir dirs: dirs
+                }
+                if (ext.mavenLocalEnabled) {
+                    mavenLocal()
+                }
+                maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public')
+                maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
+                    'https://maven.google.com')
+                maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',
+                    'https://repo.spring.io/release')
+                maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
+                // 添加私有仓库
+                ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
+                ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
+                // 添加自定义仓库
+                ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
+                mavenCentral()
             }
-            if (ext.mavenLocalEnabled) {
-                mavenLocal()
-            }
-            maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public')
-            maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
-                'https://maven.google.com')
-            maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',
-                'https://repo.spring.io/release')
-            maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
-            // 添加私有仓库
-            ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
-            ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
-            // 添加自定义仓库
-            ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
-            mavenCentral()
         }
 
         if (project.name == project.rootProject.name) {

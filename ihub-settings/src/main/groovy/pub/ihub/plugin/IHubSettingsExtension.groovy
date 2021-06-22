@@ -46,7 +46,7 @@ class IHubSettingsExtension implements IHubExtension {
         this.settings = settings
 
         // 配置主项目名称
-        settings.rootProject.name = findProperty 'projectName', settings.rootProject.name
+        settings.rootProject.name = findProperty 'name', settings.rootProject.name
 
         // 通过项目属性配置子项目
         includeProjects findProperty('includeDirs')?.split(',')
