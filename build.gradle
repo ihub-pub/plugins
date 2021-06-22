@@ -15,10 +15,11 @@
  */
 plugins {
     id 'pub.ihub.plugin'
-    id 'com.gradle.plugin-publish' version "$pluginPublishVersion" apply false
+    id 'com.gradle.plugin-publish' apply false
     // Jacoco暂时支持TestKit，如下插件用于集成Jacoco报告，详见：https://github.com/gradle/gradle/issues/1465
     id 'pl.droidsonroids.jacoco.testkit' version '1.0.8'
     id 'io.freefair.aggregate-jacoco-report' version "$freefairVersion"
+    id 'io.freefair.git-version' version "$freefairVersion"
 }
 
 subprojects {
@@ -44,9 +45,14 @@ subprojects {
     }
 
     iHubBom {
+        dependencyVersions {
+            group 'org.springframework.boot' modules 'spring-boot-gradle-plugin' version '2.5.1'
+        }
         groupVersions {
-            // TODO Gradle7.0.2Groovy版本与Spock版本冲突，指定Groovy版本为3.0.7
-            group 'org.codehaus.groovy' version orgCodehausGroovyVersion
+            group 'io.spring.gradle'                        version '1.0.11.RELEASE'
+            group 'org.springframework.experimental.aot'    version '0.10.0'
+            group 'io.freefair.gradle'                      version '5.3.3.3'
+            group 'org.codehaus.groovy'                     version '3.0.7'
         }
     }
 }

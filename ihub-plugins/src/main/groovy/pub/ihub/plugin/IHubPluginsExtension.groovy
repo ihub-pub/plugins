@@ -28,14 +28,6 @@ import groovy.transform.TupleConstructor
 @TupleConstructor(includeSuperFields = true)
 class IHubPluginsExtension extends IHubProjectExtension {
 
-    /**
-     * 项目版本
-     * @return 项目版本
-     */
-    String getVersion() {
-        findSystemProperty 'version', project.version.toString()
-    }
-
     //<editor-fold desc="组件仓库相关扩展属性">
 
     /**
