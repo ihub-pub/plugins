@@ -123,8 +123,6 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ compileOnly                    │ org.projectlombok:lombok                                        │'
-        result.output.contains '│ annotationProcessor            │ org.projectlombok:lombok                                        │'
         result.output.contains '│ runtimeOnly                    │ javax.xml.bind:jaxb-api                                         │'
         result.output.contains '│ runtimeOnly                    │ org.glassfish.jaxb:jaxb-runtime                                 │'
         result.output.contains '│ com.sun.xml.bind                         │ jaxb-core                                             │'
