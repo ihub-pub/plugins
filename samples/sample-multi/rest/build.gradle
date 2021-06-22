@@ -31,6 +31,6 @@ iHubTest {
 }
 
 iHubVerification {
-    jacocoBundleInstructionCoveredRatio = '0.7'
+    jacocoBundleInstructionCoveredRatio = '0.6'
     jacocoPackageInstructionExclusion = 'pub.ihub.sample'
 }

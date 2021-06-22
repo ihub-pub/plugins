@@ -15,11 +15,11 @@
  */
 package pub.ihub.plugin.java
 
+import io.freefair.gradle.plugins.lombok.LombokPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubProjectExtension
 import pub.ihub.plugin.IHubProjectPlugin
-import pub.ihub.plugin.bom.IHubBomExtension
 
 
 
@@ -29,16 +29,10 @@ import pub.ihub.plugin.bom.IHubBomExtension
  */
 class IHubJavaPlugin extends IHubProjectPlugin<IHubProjectExtension> {
 
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin]
+    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin, LombokPlugin]
 
     @Override
     void apply() {
-        withExtension(IHubBomExtension).dependencies {
-            // 添加lombok依赖
-            String lombok = 'org.projectlombok:lombok'
-            compileOnly lombok
-            annotationProcessor lombok
-        }
     }
 
 }
