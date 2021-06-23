@@ -44,11 +44,13 @@ jobs:
           bash <(curl -s https://codecov.io/bash)
 
       - name: Upload Test Result
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: tests
           path: |
             */build/reports/tests
+          retention-days: 1
     
       - name: Cleanup Gradle Cache
         # Cleans up the Gradle caches before being cached
