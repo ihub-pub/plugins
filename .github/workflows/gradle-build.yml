@@ -13,11 +13,7 @@ jobs:
       - name: Cache Gradle Modules
         uses: actions/cache@v2
         with:
-          path: |
-            ~/.gradle/caches/modules-2/
-            ~/.gradle/caches/build-cache-1/
-            ~/.gradle/caches/signatures/
-            ~/.gradle/caches/keyrings/
+          path: ~/.gradle/caches/
           key: ${{ runner.os }}-gradle-cache-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
       - uses: actions/checkout@v2
@@ -56,4 +52,4 @@ jobs:
         # Cleans up the Gradle caches before being cached
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+          rm -f ~/.gradle/caches/**/gc.properties
