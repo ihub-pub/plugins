@@ -68,7 +68,7 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
         }
         withExtension(AFTER) { ext ->
             withExtension(PmdExtension) {
-                String ruleset = ext.pmdRulesetFile
+                String ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
                 if (project.file(ruleset).exists()) {
                     it.ruleSetFiles = project.files ruleset
                 } else {
@@ -98,8 +98,13 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
         withExtension(AFTER) { ext ->
             withExtension(CodeNarcExtension) {
                 it.configFile = project.rootProject.with {
-                    file(ext.codenarcFile).with {
-                        exists() ? it : file(getClass().getResource('/META-INF/codenarc.groovy'))
+                    file("$rootDir/conf/codenarc/codenarc.groovy").with {
+                        String tmpPath = "$projectDir/build/tmp"
+                        exists() ? it : file("$tmpPath/codenarc.groovy").tap {
+                            mkdir tmpPath
+                            createNewFile()
+                            write getClass().getResourceAsStream('/META-INF/codenarc.groovy').readLines().join('\n')
+                        }
                     }
                 }
                 it.ignoreFailures = ext.codenarcIgnoreFailures

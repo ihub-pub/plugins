@@ -59,14 +59,6 @@ class IHubVerificationExtension extends IHubProjectExtension {
 
     //</editor-fold>
 
-    File getRootDir() {
-        project.rootProject.projectDir
-    }
-
-    String getPmdRulesetFile() {
-        findProperty 'pmdRulesetFile', pmdRulesetFile ?: "$rootDir/conf/pmd/ruleset.xml"
-    }
-
     boolean getPmdConsoleOutput() {
         findProperty 'pmdConsoleOutput', pmdConsoleOutput
     }
@@ -77,10 +69,6 @@ class IHubVerificationExtension extends IHubProjectExtension {
 
     String getPmdVersion() {
         findProperty 'pmdVersion', pmdVersion
-    }
-
-    String getCodenarcFile() {
-        findProperty 'codenarcFile', codenarcFile ?: "$rootDir/conf/codenarc/codenarc.groovy"
     }
 
     boolean getCodenarcIgnoreFailures() {
