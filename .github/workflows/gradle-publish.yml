@@ -1,4 +1,4 @@
-name: Gradle Publish
+name: Publish
 on:
   release:
     types: [created]
