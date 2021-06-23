@@ -27,76 +27,12 @@ import pub.ihub.plugin.IHubProjectExtension
 @TupleConstructor(includeSuperFields = true)
 class IHubVerificationExtension extends IHubProjectExtension {
 
-    //<editor-fold desc="默认检查规则">
-
-    static final List<String> PMD_DEFAULT_RULESET = [
-            'rulesets/java/ali-comment.xml',
-            'rulesets/java/ali-concurrent.xml',
-            'rulesets/java/ali-constant.xml',
-            'rulesets/java/ali-exception.xml',
-            'rulesets/java/ali-flowcontrol.xml',
-            'rulesets/java/ali-naming.xml',
-            'rulesets/java/ali-oop.xml',
-            'rulesets/java/ali-orm.xml',
-            'rulesets/java/ali-other.xml',
-            'rulesets/java/ali-set.xml',
-            'rulesets/vm/ali-other.xml',
-    ]
-
-    static final String CODENARC_DEFAULT_RULESET = '''ruleset {
-    description '全局默认CodeNarc规则集\'
-
-    ruleset('rulesets/basic.xml')
-    ruleset('rulesets/braces.xml')
-    ruleset('rulesets/comments.xml')
-    ruleset('rulesets/concurrency.xml')
-    ruleset('rulesets/design.xml') {
-        'Instanceof' priority: 4
-    }
-    ruleset('rulesets/dry.xml') {
-        'DuplicateMapLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-        'DuplicateNumberLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-        'DuplicateStringLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\\d*\\.groovy/
-    }
-    ruleset('rulesets/enhanced.xml')
-    ruleset('rulesets/exceptions.xml')
-    ruleset('rulesets/formatting.xml') {
-        'LineLength' ignoreLineRegex: /.*'.*'.*|.*".*".*|.*测试.*|class .*/
-        'ConsecutiveBlankLines' enabled: false
-        'SpaceAroundMapEntryColon' characterBeforeColonRegex: /\\s|\\w|\\)|'|"|[\\u4e00-\\u9fa5]/, characterAfterColonRegex: /\\s/
-    }
-    ruleset('rulesets/generic.xml')
-    ruleset('rulesets/grails.xml')
-    ruleset('rulesets/groovyism.xml')
-    ruleset('rulesets/imports.xml') {
-        'MisorderedStaticImports' comesBefore: false
-    }
-    ruleset('rulesets/jdbc.xml')
-    ruleset('rulesets/junit.xml') {
-        'JUnitPublicNonTestMethod' priority: 4
-    }
-    ruleset('rulesets/logging.xml')
-    ruleset('rulesets/naming.xml') {
-        'FieldName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*', ignoreFieldNames: 'serialVersionUID\'
-        'MethodName' ignoreMethodNames: '*测试*,*test*\'
-        'PropertyName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*\'
-    }
-    ruleset('rulesets/security.xml')
-    ruleset('rulesets/serialization.xml')
-    ruleset('rulesets/size.xml')
-    ruleset('rulesets/unnecessary.xml')
-    ruleset('rulesets/unused.xml')
-}
-'''
-
-    //</editor-fold>
-
     //<editor-fold desc="PMD Configuration">
 
     String pmdRulesetFile
     boolean pmdConsoleOutput = false
     boolean pmdIgnoreFailures = false
-    String pmdVersion = '6.31.0'
+    String pmdVersion = '6.35.0'
 
     //</editor-fold>
 
@@ -110,7 +46,7 @@ class IHubVerificationExtension extends IHubProjectExtension {
 
     //<editor-fold desc="Jacoco Configuration">
 
-    String jacocoVersion = '0.8.6'
+    String jacocoVersion = '0.8.7'
     boolean jacocoBundleBranchCoverageRuleEnabled = true
     String jacocoBundleBranchCoveredRatio = '0.9'
     boolean jacocoBundleInstructionCoverageRuleEnabled = true

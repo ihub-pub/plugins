@@ -72,7 +72,19 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
                 if (project.file(ruleset).exists()) {
                     it.ruleSetFiles = project.files ruleset
                 } else {
-                    it.ruleSets = IHubVerificationExtension.PMD_DEFAULT_RULESET
+                    it.ruleSets = [
+                        'rulesets/java/ali-comment.xml',
+                        'rulesets/java/ali-concurrent.xml',
+                        'rulesets/java/ali-constant.xml',
+                        'rulesets/java/ali-exception.xml',
+                        'rulesets/java/ali-flowcontrol.xml',
+                        'rulesets/java/ali-naming.xml',
+                        'rulesets/java/ali-oop.xml',
+                        'rulesets/java/ali-orm.xml',
+                        'rulesets/java/ali-other.xml',
+                        'rulesets/java/ali-set.xml',
+                        'rulesets/vm/ali-other.xml',
+                    ]
                 }
                 it.consoleOutput = ext.pmdConsoleOutput
                 it.ignoreFailures = ext.pmdIgnoreFailures
@@ -87,12 +99,7 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
             withExtension(CodeNarcExtension) {
                 it.configFile = project.rootProject.with {
                     file(ext.codenarcFile).with {
-                        String tmpPath = "$projectDir/build/tmp"
-                        exists() ? it : file("$tmpPath/codenarc.groovy").tap {
-                            mkdir tmpPath
-                            createNewFile()
-                            write IHubVerificationExtension.CODENARC_DEFAULT_RULESET
-                        }
+                        exists() ? it : file(getClass().getResource('/META-INF/codenarc.groovy'))
                     }
                 }
                 it.ignoreFailures = ext.codenarcIgnoreFailures
