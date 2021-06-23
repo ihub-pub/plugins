@@ -43,6 +43,13 @@ jobs:
           gradle jacocoTestReport
           bash <(curl -s https://codecov.io/bash)
 
+      - name: Upload Test Result
+        uses: actions/upload-artifact@v2
+        with:
+          name: tests
+          path: |
+            */build/reports/tests
+    
       - name: Cleanup Gradle Cache
         # Cleans up the Gradle caches before being cached
         run: |
