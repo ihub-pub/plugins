@@ -45,14 +45,13 @@ subprojects {
     }
 
     iHubBom {
-        dependencyVersions {
-            group 'org.springframework.boot' modules 'spring-boot-gradle-plugin' version '2.5.1'
-        }
         groupVersions {
-            group 'io.spring.gradle'                        version '1.0.11.RELEASE'
-            group 'org.springframework.experimental.aot'    version '0.10.0'
-            group 'io.freefair.gradle'                      version '5.3.3.3'
             group 'org.codehaus.groovy'                     version '3.0.7'
         }
+    }
+
+    // 跳过Gradle元数据生成，详见：https://github.com/gradle/gradle/issues/11862
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
     }
 }

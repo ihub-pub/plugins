@@ -39,9 +39,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
         // 配置常用插件版本
         ext.pluginVersions {
-            id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-            id 'org.springframework.boot' version '2.5.1'
-            id 'org.springframework.experimental.aot' version '0.10.0'
             id 'com.gradle.plugin-publish' version '0.15.0'
             id 'com.github.ben-manes.versions' version '0.39.0'
         }

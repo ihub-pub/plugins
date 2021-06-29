@@ -87,9 +87,6 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'io.spring.dependency-management'
-        result.output.contains 'org.springframework.boot'
-        result.output.contains 'org.springframework.experimental.aot'
         result.output.contains 'com.gradle.plugin-publish'
         result.output.contains 'com.github.ben-manes.versions'
 

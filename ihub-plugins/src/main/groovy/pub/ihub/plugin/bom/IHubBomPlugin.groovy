@@ -50,12 +50,12 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
         ext.importBoms {
             // TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
 //					group 'pub.ihub.lib' module 'ihub-libs' version '1.0.0-SNAPSHOT'
-            group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.5.1'
+            group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.5.2'
             group 'org.springframework.cloud' module 'spring-cloud-dependencies' version '2020.0.3'
             group 'com.alibaba.cloud' module 'spring-cloud-alibaba-dependencies' version '2021.1'
-            group 'com.github.xiaoymin' module 'knife4j-dependencies' version '3.0.2'
+            group 'com.github.xiaoymin' module 'knife4j-dependencies' version '3.0.3'
             group 'com.sun.xml.bind' module 'jaxb-bom-ext' version '3.0.1'
-            group 'de.codecentric' module 'spring-boot-admin-dependencies' version '2.4.1'
+            group 'de.codecentric' module 'spring-boot-admin-dependencies' version '2.4.2'
         }
         // 配置组件依赖版本
         ext.dependencyVersions {
@@ -64,7 +64,7 @@ class IHubBomPlugin extends IHubProjectPlugin<IHubBomExtension> {
             group 'com.alibaba.p3c' modules 'p3c-pmd' version '2.1.1'
             group 'com.baomidou' modules 'mybatis-plus', 'mybatis-plus-boot-starter',
                 'mybatis-plus-generator' version '3.4.3.1'
-            group 'com.github.xiaoymin' modules 'knife4j-aggregation-spring-boot-starter' version '2.0.8'
+            group 'com.github.xiaoymin' modules 'knife4j-aggregation-spring-boot-starter' version '2.0.9'
         }
         // 配置组版本策略（建议尽量使用bom）
         ext.groupVersions {
