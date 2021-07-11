@@ -82,42 +82,42 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * 是否启用bundle分支覆盖检查
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean jacocoBundleBranchCoverageRuleEnabled = true
+    boolean jacocoBranchCoverageRuleEnabled = true
     /**
      * bundle分支覆盖率
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String jacocoBundleBranchCoveredRatio = '0.9'
+    String jacocoBranchCoveredRatio = '0.9'
     /**
      * 是否启用bundle指令覆盖检查
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean jacocoBundleInstructionCoverageRuleEnabled = true
+    boolean jacocoInstructionCoverageRuleEnabled = true
     /**
      * bundle指令覆盖排除目录
      */
     @IHubProperty
-    String jacocoBundleInstructionExclusion = '**/app,**/config'
+    String jacocoInstructionExclusion = '**/app,**/config'
     /**
      * bundle指令覆盖率
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String jacocoBundleInstructionCoveredRatio = '0.9'
+    String jacocoInstructionCoveredRatio = '0.9'
     /**
      * 是否启用package指令覆盖检查
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean jacocoPackageInstructionCoverageRuleEnabled = true
+    boolean jacocoPackageCoverageRuleEnabled = true
     /**
      * package指令覆盖排除目录
      */
     @IHubProperty
-    String jacocoPackageInstructionExclusion = '*.app,*.config'
+    String jacocoPackageExclusion = '*.app,*.config'
     /**
      * package指令覆盖率
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String jacocoPackageInstructionCoveredRatio = '0.9'
+    String jacocoPackageCoveredRatio = '0.9'
     /**
      * 覆盖率报告排除目录
      */

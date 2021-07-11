@@ -97,6 +97,7 @@
 <h4 id="iHubVerification"></h4>
 <details>
 <summary>iHubVerification</summary>
+属性说明：<b>pmd</b>开头为<b>PMD静态检查</b>，<b>codenarc</b>开头为<b>Codenarc静态检查</b>，<b>jacoco</b>开头为<b>Jacoco覆盖率检查</b>
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
@@ -106,14 +107,14 @@
 | `codenarcIgnoreFailures` | Codenarc检查是否忽略失败 | `false` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 | `codenarcVersion` | Codenarc版本 | `2.1.0` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | `jacocoVersion` | Jacoco版本 | `0.8.7` | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| `jacocoBundleBranchCoverageRuleEnabled` | 是否启用bundle分支覆盖检查 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
-| `jacocoBundleBranchCoveredRatio` | bundle分支覆盖率 | `0.9` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
-| `jacocoBundleInstructionCoverageRuleEnabled` | 是否启用bundle指令覆盖检查 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
-| `jacocoBundleInstructionExclusion` | bundle指令覆盖排除目录 | `**/app`<br>`**/config` | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| `bundle指令覆盖率` | 控制台是否打印PMD信息 | `0.9` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
-| `jacocoPackageInstructionCoverageRuleEnabled` | 是否启用package指令覆盖检查 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
-| `jacocoPackageInstructionExclusion` | package指令覆盖排除目录 | `*.app`<br>`*.config` | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| `jacocoPackageInstructionCoveredRatio` | package指令覆盖率 | `0.9` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+| `jacocoBranchCoverageRuleEnabled` | 是否启用bundle分支覆盖检查 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+| `jacocoBranchCoveredRatio` | bundle分支覆盖率 | `0.9` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+| `jacocoInstructionCoverageRuleEnabled` | 是否启用bundle指令覆盖检查 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+| `jacocoInstructionExclusion` | bundle指令覆盖排除目录 | `**/app`<br>`**/config` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `jacocoInstructionCoveredRatio` | bundle指令覆盖率 | `0.9` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+| `jacocoPackageCoverageRuleEnabled` | 是否启用package指令覆盖检查 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+| `jacocoPackageExclusion` | package指令覆盖排除目录 | `*.app`<br>`*.config` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `jacocoPackageCoveredRatio` | package指令覆盖率 | `0.9` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 | `jacocoReportExclusion` | 覆盖率报告排除目录 | `**/Application.class`<br>`**/app/*.class`<br>`**/config/*.class` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 </details>
 <h4 id="iHubBoot"></h4>
@@ -131,7 +132,7 @@
 <h4 id="iHubNative"></h4>
 <details>
 <summary>iHubNative</summary>
-属性说明：`bp`开头为`构建时属性`，`bpl`开头为`启动时属性`
+属性说明：<b>bp</b>开头为<b>构建时属性</b>，<b>bpl</b>开头为<b>启动时属性</b>
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
