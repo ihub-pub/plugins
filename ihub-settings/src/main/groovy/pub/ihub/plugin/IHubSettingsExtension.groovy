@@ -30,7 +30,7 @@ import static groovy.transform.TypeCheckingMode.SKIP
  */
 @CompileStatic
 @SuppressWarnings('JUnitPublicProperty')
-class IHubSettingsExtension implements IHubExtension {
+class IHubSettingsExtension implements IHubExtensionAware, IHubProjectProperty {
 
     private static final List<String> EXCLUDE_DIRS = [
         'build', 'src', 'conf', 'libs', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
@@ -49,8 +49,8 @@ class IHubSettingsExtension implements IHubExtension {
         settings.rootProject.name = findProperty 'name', settings.rootProject.name
 
         // 通过项目属性配置子项目
-        includeProjects findProperty('includeDirs')?.split(',')
-        skippedDirs = findProperty('skippedDirs')?.split ','
+        includeProjects findProperty('iHubSettings.includeDirs')?.split(',')
+        skippedDirs = findProperty('iHubSettings.skippedDirs')?.split ','
     }
 
     /**
@@ -84,7 +84,7 @@ class IHubSettingsExtension implements IHubExtension {
 
     @CompileStatic(SKIP)
     @Override
-    String findProjectProperty(String key) {
+    Object findProjectProperty(String key) {
         settings.hasProperty(key) ? settings."$key" : null
     }
 

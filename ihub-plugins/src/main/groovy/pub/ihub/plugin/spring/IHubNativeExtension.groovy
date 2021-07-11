@@ -17,7 +17,9 @@ package pub.ihub.plugin.spring
 
 import groovy.transform.TupleConstructor
 import org.gradle.api.JavaVersion
-import pub.ihub.plugin.IHubProjectExtension
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtensionAware
+import pub.ihub.plugin.IHubProperty
 
 
 
@@ -25,22 +27,26 @@ import pub.ihub.plugin.IHubProjectExtension
  * 原生镜像插件扩展
  * @author henry
  */
-@TupleConstructor(includeSuperFields = true)
-class IHubNativeExtension extends IHubProjectExtension {
+@IHubExtension('iHubNative')
+@TupleConstructor(allProperties = true, includes = 'project')
+class IHubNativeExtension implements IHubProjectExtensionAware {
 
     //<editor-fold desc="Build Configuration">
 
     /**
      * JVM版本
      */
-    String bpJvmVersion
+    @IHubProperty
+    String bpJvmVersion = JavaVersion.current().majorVersion
     /**
      * 是否启用原生映像构建
      */
+    @IHubProperty
     boolean bpNativeImage = true
     /**
      * 传递给原生映像命令的参数
      */
+    @IHubProperty
     String bpNativeImageBuildArguments
 
     //</editor-fold>
@@ -50,31 +56,35 @@ class IHubNativeExtension extends IHubProjectExtension {
     /**
      * JVM内存
      */
+    @IHubProperty
     String bplJvmHeadRoom = '8G'
     /**
      * JVM运行时已加载类的数量，默认“35% of classes"
      */
+    @IHubProperty
     String bplJvmLoadedClassCount
     /**
      * JVM运行时用户线程数，默认“250”
      */
+    @IHubProperty
     String bplJvmThreadCount
     /**
      * JVM环境变量
      */
+    @IHubProperty
     String javaToolOptions
 
     //</editor-fold>
 
     Map<String, String> getEnvironment() {
         [
-            BP_JVM_VERSION                 : bpJvmVersion ?: JavaVersion.current().majorVersion,
+            BP_JVM_VERSION                 : bpJvmVersion,
             BP_NATIVE_IMAGE                : bpNativeImage.toString(),
             BP_NATIVE_IMAGE_BUILD_ARGUMENTS: bpNativeImageBuildArguments,
             BPL_JVM_HEAD_ROOM              : bplJvmHeadRoom,
             BPL_JVM_LOADED_CLASS_COUNT     : bplJvmLoadedClassCount,
             BPL_JVM_THREAD_COUNT           : bplJvmThreadCount,
-            JAVA_TOOL_OPTIONS              : findSystemProperty('JAVA_TOOL_OPTIONS', javaToolOptions),
+            JAVA_TOOL_OPTIONS              : javaToolOptions,
         ].findAll { it.value }
     }
 

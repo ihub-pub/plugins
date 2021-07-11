@@ -17,9 +17,14 @@ package pub.ihub.plugin.publish
 
 import groovy.transform.TupleConstructor
 import org.gradle.api.publish.maven.MavenPublication
-import pub.ihub.plugin.IHubProjectExtension
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtensionAware
+import pub.ihub.plugin.IHubProperty
 
 import static java.time.Year.now
+import static pub.ihub.plugin.IHubProperty.Type.ENV
+import static pub.ihub.plugin.IHubProperty.Type.PROJECT
+import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
 
 
@@ -27,13 +32,46 @@ import static java.time.Year.now
  * 组件发布属性扩展
  * @author henry
  */
-@TupleConstructor(includeSuperFields = true)
-class IHubPublishExtension extends IHubProjectExtension {
+@IHubExtension('iHubPublish')
+@TupleConstructor(allProperties = true, includes = 'project')
+class IHubPublishExtension implements IHubProjectExtensionAware {
+
+    /**
+     * 组件发布是否需要签名
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
+    boolean publishNeedSign = false
+
+    /**
+     * 签名key
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
+    String signingKeyId
+
+    /**
+     * 签名密钥
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
+    String signingSecretKey
+
+    /**
+     * 签名密码
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
+    String signingPassword
+
+    /**
+     * 是否发布文档
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
+    boolean publishDocs = false
+
+    //<editor-fold desc="POM属性">
 
     String pomName
     String pomPackaging
     String pomDescription
-    String pomUrl = 'https://ihub.pub'
+    String pomUrl
     String pomInceptionYear = now().value
 
     String pomScmUrl
@@ -46,17 +84,19 @@ class IHubPublishExtension extends IHubProjectExtension {
     String pomLicenseDistribution
     String pomLicenseComments
 
-    String pomOrganizationName = 'Dock'
-    String pomOrganizationUrl = 'https://ihub.pub'
+    String pomOrganizationName
+    String pomOrganizationUrl
 
     String pomDeveloperId
-    String pomDeveloperName = 'henry'
-    String pomDeveloperEmail = 'henry.box@outlook.com'
-    String pomDeveloperUrl = 'https://henry-hub.github.io'
-    String pomDeveloperOrganization = pomOrganizationName
-    String pomDeveloperOrganizationUrl = pomOrganizationUrl
+    String pomDeveloperName
+    String pomDeveloperEmail
+    String pomDeveloperUrl
+    String pomDeveloperOrganization
+    String pomDeveloperOrganizationUrl
     Set<String> pomDeveloperRoles = []
     String pomDeveloperTimezone
+
+    //</editor-fold>
 
     void configPom(MavenPublication publication) {
         publication.pom {

@@ -15,9 +15,15 @@
  */
 package pub.ihub.plugin.spring
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import pub.ihub.plugin.IHubProjectExtension
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtensionAware
+import pub.ihub.plugin.IHubProperty
 import pub.ihub.plugin.IHubSystemProperties
+
+import static pub.ihub.plugin.IHubProperty.Type.PROJECT
+import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
 
 
@@ -25,8 +31,10 @@ import pub.ihub.plugin.IHubSystemProperties
  * IHub Spring Boot Plugin Extension
  * @author henry
  */
-@TupleConstructor(includeSuperFields = true)
-class IHubBootExtension extends IHubProjectExtension implements IHubSystemProperties {
+@IHubExtension('iHubBoot')
+@CompileStatic
+@TupleConstructor(allProperties = true, includes = 'project')
+class IHubBootExtension implements IHubProjectExtensionAware, IHubSystemProperties {
 
     //<editor-fold desc="BootRun Configuration">
 
@@ -35,38 +43,31 @@ class IHubBootExtension extends IHubProjectExtension implements IHubSystemProper
      */
     Map<String, String> runProperties = [:]
     /**
-     * 包含属性名称（“,”分割）
+     * 运行时包含系统属性名称（“,”分割）
      */
-    String bootRunIncludePropNames
+    @IHubProperty(type = [PROJECT, SYSTEM])
+    String runIncludePropNames
     /**
-     * 排除属性名称（“,”分割）
+     * 运行时排除系统属性名称（“,”分割）
      */
-    String bootRunSkippedPropNames
+    @IHubProperty(type = [PROJECT, SYSTEM])
+    String runSkippedPropNames
     /**
      * 启用本地属性
      */
+    @IHubProperty
     boolean enabledLocalProperties = true
 
     //</editor-fold>
 
     //<editor-fold desc="BootJar Configuration">
 
+    /**
+     * 配置需要移除的库
+     */
+    @IHubProperty
     String bootJarRequiresUnpack = ''
 
     //</editor-fold>
-
-    @Override
-    String getRunIncludePropNames() {
-        findProperty 'springBootIncludePropNames', bootRunIncludePropNames
-    }
-
-    @Override
-    String getRunSkippedPropNames() {
-        findProperty 'springBootSkippedPropNames', bootRunSkippedPropNames
-    }
-
-    String getBootJarRequiresUnpack() {
-        findProperty 'springBootRequiresUnpack', bootJarRequiresUnpack
-    }
 
 }

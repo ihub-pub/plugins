@@ -16,7 +16,6 @@
 package pub.ihub.plugin.publish
 
 import org.gradle.api.JavaVersion
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
@@ -28,12 +27,13 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
+import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsExtension
-import pub.ihub.plugin.IHubProjectPlugin
+import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
-import pub.ihub.plugin.java.IHubJavaBasePlugin
+import pub.ihub.plugin.java.IHubJavaPlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
@@ -41,10 +41,8 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
  * 组件发布插件
  * @author liheng
  */
-class IHubPublishPlugin extends IHubProjectPlugin<IHubPublishExtension> {
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin]
-    String extensionName = 'iHubPublish'
+@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [IHubJavaPlugin])
+class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override
     void apply() {
@@ -52,7 +50,7 @@ class IHubPublishPlugin extends IHubProjectPlugin<IHubPublishExtension> {
 
         configPublish project, iHubExt
 
-        configSigning project, iHubExt
+        configSigning project, extension
 
         // 添加配置元信息
         withExtension(IHubBomExtension) {
@@ -64,6 +62,7 @@ class IHubPublishPlugin extends IHubProjectPlugin<IHubPublishExtension> {
     }
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
+        boolean publishDocs = extension.publishDocs
         applyPlugin MavenPublishPlugin
         withExtension(PublishingExtension) {
             it.publications {
@@ -72,7 +71,6 @@ class IHubPublishPlugin extends IHubProjectPlugin<IHubPublishExtension> {
 
                     // release版本时发布sources以及docs包
                     if (release) {
-                        boolean publishDocs = iHubExt.publishDocs
                         List tasks = [
                             this.registerSourcesJar()
                         ]
@@ -118,11 +116,11 @@ class IHubPublishPlugin extends IHubProjectPlugin<IHubPublishExtension> {
         }
     }
 
-    private void configSigning(Project project, IHubPluginsExtension iHubExt) {
+    private void configSigning(Project project, IHubPublishExtension extension) {
         project.plugins.apply SigningPlugin
         withExtension(SigningExtension) { ext ->
-            ext.required = release && iHubExt.publishNeedSign
-            ext.useInMemoryPgpKeys iHubExt.signingKeyId, iHubExt.signingSecretKey, iHubExt.signingPassword
+            ext.required = release && extension.publishNeedSign
+            ext.useInMemoryPgpKeys extension.signingKeyId, extension.signingSecretKey, extension.signingPassword
             withExtension(PublishingExtension, AFTER) {
                 if (ext.required) {
                     ext.sign it.publications.mavenJava

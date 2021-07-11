@@ -61,6 +61,8 @@ class IHubBomPluginTest extends IHubSpecification {
                 }
                 dependencies {
                     api ':a', ':b', ':c'
+                    compileOnlyApi 'cn.hutool:hutool-core'
+                    testCompileOnly 'cn.hutool:hutool-log'
                 }
             }
             subprojects {
@@ -96,6 +98,8 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains '│ implementation                 │ org.codehaus.groovy:groovy-sql                                  │'
         result.output.contains '│ implementation                 │ org.codehaus.groovy:groovy-datetime                             │'
         result.output.contains '│ annotationProcessor            │ org.springframework.boot:spring-boot-configuration-processor    │'
+        result.output.contains '│ compileOnlyApi                 │ cn.hutool:hutool-core                                           │'
+        result.output.contains '│ testCompileOnly                │ cn.hutool:hutool-log                                            │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -148,7 +152,6 @@ class IHubBomPluginTest extends IHubSpecification {
             }
         '''
         def result = gradleBuilder.buildAndFail()
-        96644364
         then: '检查结果'
         result.output.contains 'type dependencies not empty!'
     }

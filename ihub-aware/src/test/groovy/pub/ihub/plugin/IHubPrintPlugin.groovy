@@ -15,37 +15,22 @@
  */
 package pub.ihub.plugin
 
-import groovy.transform.CompileStatic
-
-import java.lang.annotation.Documented
-import java.lang.annotation.Retention
-import java.lang.annotation.Target
-
-import static java.lang.annotation.ElementType.TYPE
-import static java.lang.annotation.RetentionPolicy.RUNTIME
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
 
 
 
 /**
- * IHub扩展
  * @author henry
  */
-@Documented
-@Retention(RUNTIME)
-@Target(TYPE)
-@CompileStatic
-@interface IHubExtension {
+@IHubPlugin(IHubPrintExtension)
+class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
 
-    /**
-     * 扩展名称
-     * @return 名称
-     */
-    String value()
-
-    /**
-     * 是否需要装饰扩展
-     * @return flag
-     */
-    boolean decorated() default false
+    @Override
+    void apply() {
+        printConfigContent 'test', tap('t1', 30), tap('t2'), [d1: [1, 2, 3], d2: [4, 5, 6]]
+        printConfigContent 'test', []
+        printConfigContent 'test', tap('t1')
+    }
 
 }

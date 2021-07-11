@@ -128,7 +128,7 @@ class IHubSettingsPluginTest extends Specification {
     def '测试项目属性配置子项目'() {
         when: '配置项目'
         propertiesFile << 'name=demo\n'
-        propertiesFile << 'includeDirs=rest,service\n'
+        propertiesFile << 'iHubSettings.includeDirs=rest,service\n'
         testProjectDir.newFolder 'rest'
         testProjectDir.newFolder 'service'
         testProjectDir.newFolder 'other'
@@ -144,7 +144,7 @@ class IHubSettingsPluginTest extends Specification {
     def '测试跳过目录属性配置子项目'() {
         when: '配置项目'
         propertiesFile << 'name=demo\n'
-        propertiesFile << 'skippedDirs=other\n'
+        propertiesFile << 'iHubSettings.skippedDirs=other\n'
         testProjectDir.newFolder '.git'
         testProjectDir.newFolder 'src'
         testProjectDir.newFolder 'rest'

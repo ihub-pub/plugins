@@ -21,31 +21,40 @@ import java.lang.annotation.Documented
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
 
-import static java.lang.annotation.ElementType.TYPE
+import static groovy.transform.TypeCheckingMode.SKIP
+import static java.lang.annotation.ElementType.FIELD
 import static java.lang.annotation.RetentionPolicy.RUNTIME
+import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 
 
 
 /**
- * IHub扩展
+ * IHub属性
  * @author henry
  */
 @Documented
 @Retention(RUNTIME)
-@Target(TYPE)
+@Target(FIELD)
 @CompileStatic
-@interface IHubExtension {
+@interface IHubProperty {
 
     /**
-     * 扩展名称
+     * 属性名称（默认原属性名称）
      * @return 名称
      */
-    String value()
+    String value() default ''
 
     /**
-     * 是否需要装饰扩展
-     * @return flag
+     * 属性类型
+     * @return 类型
      */
-    boolean decorated() default false
+    @CompileStatic(SKIP)
+    Type[] type() default [PROJECT]
+
+    enum Type {
+
+        PROJECT, SYSTEM, ENV
+
+    }
 
 }

@@ -53,13 +53,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
-        buildFile << """
-            iHubVerification {
-                pmdRulesetFile = "\$rootDir/ruleset.xml"
-            }
-        """
-        testProjectDir.newFile 'ruleset.xml'
-        result = gradleBuilder.withArguments('-DiHubTestRunSkippedPropNames=java.endorsed.dirs').build()
+        result = gradleBuilder.withArguments('-DiHubTest.runSkippedPropNames=java.endorsed.dirs').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
@@ -81,18 +75,6 @@ class IHubVerificationPluginTest extends IHubSpecification {
 
         when: '构建项目'
         def result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
-
-        when: '构建项目'
-        buildFile << """
-            iHubVerification {
-                codenarcFile = "\$rootDir/codenarc.groovy"
-            }
-        """
-        testProjectDir.newFile 'codenarc.groovy'
-        result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'

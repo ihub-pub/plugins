@@ -18,7 +18,11 @@ package pub.ihub.plugin.bom
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import org.gradle.api.Action
-import pub.ihub.plugin.IHubProjectExtension
+import org.gradle.api.GradleException
+import pub.ihub.plugin.IHubExtProperty
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtensionAware
+import pub.ihub.plugin.IHubProjectProperty
 
 import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
 import static org.gradle.api.plugins.JavaPlugin.API_CONFIGURATION_NAME
@@ -43,9 +47,10 @@ import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
  * BOM插件DSL扩展
  * @author liheng
  */
+@IHubExtension(value = 'iHubBom', decorated = true)
 @SuppressWarnings('ConfusingMethodName')
-@TupleConstructor(includeSuperFields = true)
-class IHubBomExtension extends IHubProjectExtension {
+@TupleConstructor(allProperties = true, includes = 'project')
+class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IHubProjectProperty {
 
     final Set<BomSpecImpl> bomVersions = []
     final Set<BomSpecImpl> dependencyVersions = []
@@ -103,7 +108,7 @@ class IHubBomExtension extends IHubProjectExtension {
         for (VersionType type : VersionType.values()) {
             Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
             if (!root) {
-                setRootExtProperty type.fieldName, findRootExtProperty(type.fieldName, specs).with {
+                setExtProperty rootProject, type.fieldName, findExtProperty(rootProject, type.fieldName, specs).with {
                     it.findAll { specs.any { s -> it.compare s } }
                 }
             }
@@ -148,7 +153,7 @@ class IHubBomExtension extends IHubProjectExtension {
 
     private void printConfig(VersionType type, String title, Tuple2<String, Integer>... taps) {
         Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
-        Set<BomSpecImpl> commonSpecs = (root ? findRootExtProperty(type.fieldName) :
+        Set<BomSpecImpl> commonSpecs = (root ? findExtProperty(rootProject, type.fieldName) :
             rootProject.extensions.findByType(IHubBomExtension)."$type.fieldName") as Set<BomSpecImpl>
         printConfigContent "${projectName.toUpperCase()} $title", (root ? commonSpecs?.tap {
             specs*.rightShift it, true
@@ -166,6 +171,12 @@ class IHubBomExtension extends IHubProjectExtension {
             }
             set
         }, taps
+    }
+
+    private static void assertProperty(boolean condition, String message) {
+        if (!condition) {
+            throw new GradleException(message)
+        }
     }
 
     //<editor-fold desc="DSL扩展相关实体">

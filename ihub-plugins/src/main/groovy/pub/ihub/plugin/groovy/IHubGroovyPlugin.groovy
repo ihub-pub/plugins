@@ -15,12 +15,12 @@
  */
 package pub.ihub.plugin.groovy
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
-import pub.ihub.plugin.IHubProjectPlugin
+import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubPluginsExtension
+import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
-import pub.ihub.plugin.java.IHubJavaBasePlugin
+import pub.ihub.plugin.java.IHubJavaPlugin
 
 
 
@@ -28,10 +28,8 @@ import pub.ihub.plugin.java.IHubJavaBasePlugin
  * Groovy插件
  * @author liheng
  */
-class IHubGroovyPlugin extends IHubProjectPlugin<IHubGroovyExtension> {
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin, GroovyPlugin]
-    String extensionName = 'iHubGroovy'
+@IHubPlugin(beforeApplyPlugins = [IHubJavaPlugin, GroovyPlugin])
+class IHubGroovyPlugin extends IHubProjectPluginAware {
 
     @Override
     void apply() {
@@ -50,9 +48,19 @@ class IHubGroovyPlugin extends IHubProjectPlugin<IHubGroovyExtension> {
                     group groovyGroup version groovyVersion
                 }
             }
-            withExtension(IHubGroovyExtension) { ext ->
+            withExtension(IHubPluginsExtension) { ext ->
                 it.dependencies {
-                    implementation ext.modules.unique().collect { "org.codehaus.groovy:$it" } as String[]
+                    implementation((ext.compileGroovyAllModules ? ['groovy-all'] : [
+                        'groovy',
+                        'groovy-datetime',
+                        'groovy-dateutil',
+                        'groovy-groovydoc',
+                        'groovy-json',
+                        'groovy-nio',
+                        'groovy-sql',
+                        'groovy-templates',
+                        'groovy-xml',
+                    ]).collect { "org.codehaus.groovy:$it" } as String[])
                 }
             }
         }

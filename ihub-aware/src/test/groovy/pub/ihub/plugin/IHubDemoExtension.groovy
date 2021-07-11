@@ -15,14 +15,34 @@
  */
 package pub.ihub.plugin
 
+import groovy.transform.TupleConstructor
+
+import static pub.ihub.plugin.IHubProperty.Type.ENV
+import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
+
+
+
 /**
  * @author henry
  */
-class IHubDemoExtension implements IHubExtension {
+@IHubExtension('iHubDemo')
+@SuppressWarnings('GetterMethodCouldBeProperty')
+@TupleConstructor(allProperties = true, includes = 'project')
+class IHubDemoExtension implements IHubProjectExtensionAware, IHubExtProperty, IHubProjectProperty {
 
-    @Override
-    String findProjectProperty(String key) {
-        System.getProperty key
+    boolean flag = false
+
+    @IHubProperty
+    String str = 'text'
+
+    @IHubProperty(type = SYSTEM)
+    String system = 'system'
+
+    @IHubProperty(type = ENV)
+    String env = 'env'
+
+    String getGetMethod() {
+        'method'
     }
 
 }

@@ -16,36 +16,31 @@
 package pub.ihub.plugin
 
 import groovy.transform.CompileStatic
+import org.gradle.api.Project
 
-import java.lang.annotation.Documented
-import java.lang.annotation.Retention
-import java.lang.annotation.Target
-
-import static java.lang.annotation.ElementType.TYPE
-import static java.lang.annotation.RetentionPolicy.RUNTIME
+import static groovy.transform.TypeCheckingMode.SKIP
 
 
 
 /**
- * IHub扩展
+ * IHub项目扩展属性
  * @author henry
  */
-@Documented
-@Retention(RUNTIME)
-@Target(TYPE)
 @CompileStatic
-@interface IHubExtension {
+trait IHubExtProperty implements IHubProjectExtensionAware {
 
-    /**
-     * 扩展名称
-     * @return 名称
-     */
-    String value()
+    Project getRootProject() {
+        project.rootProject
+    }
 
-    /**
-     * 是否需要装饰扩展
-     * @return flag
-     */
-    boolean decorated() default false
+    @CompileStatic(SKIP)
+    void setExtProperty(Project project = this.project, String key, value) {
+        project.ext.setProperty key, value
+    }
+
+    @CompileStatic(SKIP)
+    <V> V findExtProperty(Project project = this.project, String key, V defaultValue = null) {
+        project.ext.with { has(key) ? getProperty(key) as V : defaultValue }
+    }
 
 }

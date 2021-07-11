@@ -15,12 +15,11 @@
  */
 package pub.ihub.plugin.spring
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 import org.springframework.aot.gradle.SpringAotGradlePlugin
-import pub.ihub.plugin.IHubProjectPlugin
+import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubProjectPluginAware
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
@@ -28,10 +27,8 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
  * 原生镜像插件
  * @author henry
  */
-class IHubNativePlugin extends IHubProjectPlugin<IHubNativeExtension> {
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBootPlugin, SpringAotGradlePlugin]
-    String extensionName = 'iHubNative'
+@IHubPlugin(value = IHubNativeExtension, beforeApplyPlugins = [IHubBootPlugin, SpringAotGradlePlugin])
+class IHubNativePlugin extends IHubProjectPluginAware<IHubNativeExtension> {
 
     @Override
     void apply() {

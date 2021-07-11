@@ -20,16 +20,13 @@ import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.invocation.Gradle
+import org.gradle.api.logging.Logger
 import org.gradle.api.tasks.TaskProvider
 
-import java.lang.reflect.ParameterizedType
-
 import static groovy.transform.TypeCheckingMode.SKIP
-import static java.lang.Class.forName
 import static org.gradle.internal.Actions.doNothing
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 
 
 
@@ -38,7 +35,7 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
  * @author henry
  */
 @CompileStatic
-abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plugin<Project> {
+abstract class IHubProjectPluginAware<T extends IHubProjectExtensionAware> implements Plugin<Project> {
 
     Project project
     protected T extension
@@ -48,8 +45,18 @@ abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plug
     @Override
     void apply(Project project) {
         this.project = project
-        applyPlugin beforeApplyPlugins
-        extension = extensionName?.with { project.extensions.create it, extensionClass, project }
+        IHubPlugin iHubPlugin = this.class.getAnnotation IHubPlugin
+        applyPlugin iHubPlugin.beforeApplyPlugins()
+        Class<T> extensionClass = iHubPlugin.value() as Class<T>
+        IHubExtension annotation = extensionClass.getAnnotation IHubExtension
+        if (annotation) {
+            if (annotation.decorated()) {
+                extension = project.extensions.create annotation.value(), extensionClass, project
+            } else {
+                extension = extensionClass.getDeclaredConstructor(Project).newInstance project
+                project.extensions.add annotation.value(), extension
+            }
+        }
         apply()
         beforeEvaluateClosure.each {
             project.beforeEvaluate it
@@ -70,31 +77,12 @@ abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plug
     }
 
     /**
-     * 前置应用插件
-     * @return 应用插件
-     */
-    protected Class<Plugin<Project>>[] getBeforeApplyPlugins() {
-        [] as Class<Plugin<Project>>[]
-    }
-
-    /**
-     * 扩展名
-     * @return 扩展名
-     */
-    protected String getExtensionName() {
-    }
-
-    /**
      * 应用
      */
     protected abstract void apply()
 
-    protected Project getRootProject() {
-        project.rootProject
-    }
-
-    protected Gradle getGradle() {
-        project.gradle
+    protected Logger getLogger() {
+        project.logger
     }
 
     /**
@@ -148,10 +136,6 @@ abstract class IHubProjectPlugin<T extends IHubProjectExtension> implements Plug
         } else {
             action.execute param
         }
-    }
-
-    private Class<T> getExtensionClass() {
-        forName((this.class.genericSuperclass as ParameterizedType).actualTypeArguments.first().typeName) as Class<T>
     }
 
     enum EvaluateStage {

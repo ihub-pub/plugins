@@ -15,37 +15,28 @@
  */
 package pub.ihub.plugin
 
-import groovy.transform.CompileStatic
-
-import java.lang.annotation.Documented
-import java.lang.annotation.Retention
-import java.lang.annotation.Target
-
-import static java.lang.annotation.ElementType.TYPE
-import static java.lang.annotation.RetentionPolicy.RUNTIME
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 
 
 
 /**
- * IHub扩展
  * @author henry
  */
-@Documented
-@Retention(RUNTIME)
-@Target(TYPE)
-@CompileStatic
-@interface IHubExtension {
+@IHubPlugin
+class IHubSimplePlugin extends IHubProjectPluginAware {
 
-    /**
-     * 扩展名称
-     * @return 名称
-     */
-    String value()
-
-    /**
-     * 是否需要装饰扩展
-     * @return flag
-     */
-    boolean decorated() default false
+    @Override
+    void apply() {
+        withExtension(IHubPrintExtension, BEFORE) {
+            logger.info 'before print extension'
+        }
+        withExtension(IHubPrintExtension) {
+            logger.info 'with print extension'
+        }
+        withExtension(IHubPrintExtension, AFTER) {
+            logger.info 'after print extension'
+        }
+    }
 
 }

@@ -19,7 +19,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import groovy.xml.XmlParser
 import io.freefair.gradle.plugins.jacoco.AggregateJacocoReportPlugin
-import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
@@ -30,13 +29,14 @@ import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
 import org.gradle.testing.jacoco.tasks.JacocoReport
-import pub.ihub.plugin.IHubProjectPlugin
+import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.tap
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
@@ -44,12 +44,10 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
  * 代码检查插件
  * @author liheng
  */
-class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension> {
+@IHubPlugin(value = IHubVerificationExtension, beforeApplyPlugins = [IHubBomPlugin])
+class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExtension> {
 
     private static final String[] RULE_TYPE = ['INSTRUCTION', 'BRANCH', 'LINE', 'COMPLEXITY', 'METHOD', 'CLASS']
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin]
-    String extensionName = 'iHubVerification'
 
     @Override
     void apply() {
@@ -115,8 +113,8 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
 
     private void configJacoco(Project project) {
         applyPlugin JacocoPlugin
-        if (project.name != rootProject.name) {
-            rootProject.pluginManager.apply AggregateJacocoReportPlugin
+        if (project.name != extension.rootProject.name) {
+            extension.rootProject.pluginManager.apply AggregateJacocoReportPlugin
         }
         withExtension(AFTER) { ext ->
             withExtension(JacocoPluginExtension) {
@@ -201,17 +199,17 @@ class IHubVerificationPlugin extends IHubProjectPlugin<IHubVerificationExtension
             [type, data.total(), data.missed, data.covered, data.coverage]
         }, tap('Type', 20), tap('Total'), tap('Missed'), tap('Covered'), tap('Coverage')
 
-        if (!extension.findRootExtProperty('printJacocoReportCoverage', false)) {
-            gradle.buildFinished {
+        if (!extension.findExtProperty(extension.rootProject, 'printJacocoReportCoverage', false)) {
+            project.gradle.buildFinished {
                 printFinishedJacocoReportCoverage()
             }
-            extension.setRootExtProperty 'printJacocoReportCoverage', true
+            extension.setExtProperty extension.rootProject, 'printJacocoReportCoverage', true
         }
     }
 
     private void printFinishedJacocoReportCoverage() {
         Map<String, ReportData> total = RULE_TYPE.collectEntries { [(it): new ReportData(0, 0)] }
-        List report = rootProject.allprojects.collect { p ->
+        List report = extension.rootProject.allprojects.collect { p ->
             Map<String, ReportData> jacocoReportData = extension.findExtProperty p, 'jacocoReportData'
             jacocoReportData ? [p.name] + jacocoReportData.collect { type, data ->
                 total.get(type).tap {

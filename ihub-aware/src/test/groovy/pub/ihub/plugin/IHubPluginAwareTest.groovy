@@ -15,15 +15,11 @@
  */
 package pub.ihub.plugin
 
-
 import groovy.util.logging.Slf4j
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
 import spock.lang.Title
-
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
 
 
 
@@ -38,19 +34,28 @@ class IHubPluginAwareTest extends Specification {
 
     void setup() {
         project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubPrintPlugin
         project.pluginManager.apply IHubDemoPlugin
     }
 
     def '测试扩展特征'() {
+        setup:
+        project.iHubDemo.setExtProperty 'ext1', 'ext1'
+
         expect:
         project.extensions.findByName('iHubDemo') instanceof IHubDemoExtension
+        false == project.iHubDemo.flag
+        'text' == project.iHubDemo.str
+        'system' == project.iHubDemo.system
+        'env' == project.iHubDemo.env
+        'method' == project.iHubDemo.getMethod
+        'ext1' == project.iHubDemo.findExtProperty('ext1')
+        'ext2' == project.iHubDemo.findExtProperty(project.rootProject, 'ext2', 'ext2')
     }
 
-    def '测试插件通用方法'() {
+    def '测试插件打印方法'() {
         expect:
-        printConfigContent 'test', tap('t1', 30), tap('t2'), [d1: [1, 2, 3], d2: [4, 5, 6]]
-        printConfigContent 'test', []
-        printConfigContent 'test', tap('t1')
+        project.extensions.findByName('iHubPrint') instanceof IHubPrintExtension
     }
 
 }
