@@ -15,15 +15,14 @@
  */
 package pub.ihub.plugin.verification
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.testing.Test
-import pub.ihub.plugin.IHubProjectPlugin
+import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
@@ -31,11 +30,9 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
  * 测试插件
  * @author henry
  */
+@IHubPlugin(value = IHubTestExtension, beforeApplyPlugins = [IHubBomPlugin])
 @SuppressWarnings('UnnecessaryObjectReferences')
-class IHubTestPlugin extends IHubProjectPlugin<IHubTestExtension> {
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubBomPlugin]
-    String extensionName = 'iHubTest'
+class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
 
     @Override
     void apply() {

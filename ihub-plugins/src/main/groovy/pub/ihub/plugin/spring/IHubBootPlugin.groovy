@@ -15,15 +15,14 @@
  */
 package pub.ihub.plugin.spring
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
-import pub.ihub.plugin.IHubProjectPlugin
-import pub.ihub.plugin.java.IHubJavaBasePlugin
+import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubProjectPluginAware
+import pub.ihub.plugin.java.IHubJavaPlugin
 
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
@@ -31,10 +30,8 @@ import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.AFTER
  * IHub Spring Boot Plugin
  * @author henry
  */
-class IHubBootPlugin extends IHubProjectPlugin<IHubBootExtension> {
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [IHubJavaBasePlugin, SpringBootPlugin]
-    String extensionName = 'iHubBoot'
+@IHubPlugin(value = IHubBootExtension, beforeApplyPlugins = [IHubJavaPlugin, SpringBootPlugin])
+class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
 
     @Override
     void apply() {

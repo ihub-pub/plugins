@@ -13,32 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin.groovy
+package pub.ihub.plugin
 
 import groovy.transform.TupleConstructor
-import pub.ihub.plugin.IHubProjectExtension
 
 
 
 /**
- * Groovy插件扩展
- * @author liheng
+ * @author henry
  */
-@TupleConstructor(includeSuperFields = true)
-class IHubGroovyExtension extends IHubProjectExtension {
-
-    List<String> getModules() {
-        findProperty('groovyAllModules', false) ? ['groovy-all'] : [
-            'groovy',
-            'groovy-datetime',
-            'groovy-dateutil',
-            'groovy-groovydoc',
-            'groovy-json',
-            'groovy-nio',
-            'groovy-sql',
-            'groovy-templates',
-            'groovy-xml',
-        ]
-    }
+@IHubExtension(value = 'iHubPrint', decorated = true)
+@TupleConstructor(allProperties = true, includes = 'project')
+class IHubPrintExtension implements IHubProjectExtensionAware {
 
 }

@@ -15,8 +15,6 @@
  */
 package pub.ihub.plugin
 
-
-import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 
 
@@ -25,9 +23,7 @@ import org.gradle.process.JavaForkOptions
  * 系统属性扩展特征
  * @author henry
  */
-trait IHubSystemProperties {
-
-    abstract Project getRootProject()
+trait IHubSystemProperties implements IHubProjectExtensionAware {
 
     /**
      * 任务运行时属性
@@ -58,7 +54,7 @@ trait IHubSystemProperties {
      * @return 本地Java属性
      */
     Map<String, Object> getLocalProperties() {
-        rootProject.file('.java-local.properties').with {
+        project.rootProject.file('.java-local.properties').with {
             exists() ? withInputStream { is ->
                 new Properties().tap { load(is) }
             } : [:]

@@ -15,13 +15,8 @@
  */
 package pub.ihub.plugin
 
-import groovy.transform.TupleConstructor
 import groovy.util.logging.Slf4j
-import org.gradle.api.Project
-import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Title
-
-import static pub.ihub.plugin.IHubProjectPlugin.EvaluateStage.BEFORE
 
 
 
@@ -49,15 +44,15 @@ class IHubBasicPluginTest extends IHubSpecification {
 
         when: '构建项目'
         propertiesFile << '''
-mavenLocalEnabled=true
-release.repo.url=http://ihub.pub/nexus/content/repositories/releases
-snapshot_repo_url=http://ihub.pub/nexus/content/repositories/snapshots
-customize-repo-url=http://ihub.pub/nexus/content/repositories
-repoAllowInsecureProtocol=true
-repoIncludeGroupRegex=pub\\.ihub\\..*
+iHub.mavenLocalEnabled=true
+iHub.releaseRepoUrl=http://ihub.pub/nexus/content/repositories/releases
+iHub.snapshotRepoUrl=http://ihub.pub/nexus/content/repositories/snapshots
+iHub.customizeRepoUrl=http://ihub.pub/nexus/content/repositories
+iHub.repoAllowInsecureProtocol=true
+iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 '''
         testProjectDir.newFolder 'libs'
-        def result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
+        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
         result.output.contains('flatDir')
@@ -68,7 +63,7 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
-        propertiesFile << 'repoIncludeGroup=pub.ihub.demo'
+        propertiesFile << 'iHub.repoIncludeGroup=pub.ihub.demo'
         result = gradleBuilder.build()
 
         then: '检查结果'
@@ -101,7 +96,7 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '修改版本以及依赖组件模块'
-        propertiesFile << 'groovyAllModules=true\n'
+        propertiesFile << 'iHub.compileGroovyAllModules=true\n'
         propertiesFile << 'org.codehaus.groovy.version=2.5.14\n'
         result = gradleBuilder.build()
 
@@ -129,8 +124,8 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '修改版本以及依赖组件模块'
-        propertiesFile << 'javaCompatibility=8\n'
-        propertiesFile << 'javaJaxbRuntime=false\n'
+        propertiesFile << 'iHub.javaCompatibility=8\n'
+        propertiesFile << 'iHub.javaJaxbRuntime=false\n'
         result = gradleBuilder.build()
 
         then: '检查结果'
@@ -164,20 +159,20 @@ repoIncludeGroupRegex=pub\\.ihub\\..*
         propertiesFile << '''
 version=1.0.0
 '''
-        result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
+        result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
         propertiesFile << '''
-publishNeedSign=true
-signingKeyId=id
-signingSecretKey=secret
-signingPassword=password
-publishDocs=true
+iHubPublish.publishNeedSign=true
+iHubPublish.signingKeyId=id
+iHubPublish.signingSecretKey=secret
+iHubPublish.signingPassword=password
+iHubPublish.publishDocs=true
 '''
-        result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
+        result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
@@ -196,13 +191,13 @@ publishDocs=true
         when: '构建项目'
         propertiesFile << '''
 version=1.0.0
-publishNeedSign=true
-signingKeyId=id
-signingSecretKey=secret
-signingPassword=password
-publishDocs=true
+iHubPublish.publishNeedSign=true
+iHubPublish.signingKeyId=id
+iHubPublish.signingSecretKey=secret
+iHubPublish.signingPassword=password
+iHubPublish.publishDocs=true
 '''
-        def result = gradleBuilder.withArguments('-DrepoUsername=username', '-DrepoPassword=password').build()
+        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
@@ -234,33 +229,6 @@ publishDocs=true
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
-    }
-
-    def 'beforeEvaluateClosure测试'() {
-        when: '构建项目'
-        Project project = ProjectBuilder.builder().build()
-        project.pluginManager.apply IHubDemoPlugin
-
-        then: '检查结果'
-        project.extensions.findByName('iHubDemo') instanceof IHubDemoExtension
-    }
-
-    @TupleConstructor(includeSuperFields = true)
-    static class IHubDemoExtension extends IHubProjectExtension {
-
-    }
-
-    static class IHubDemoPlugin extends IHubProjectPlugin<IHubDemoExtension> {
-
-        String extensionName = 'iHubDemo'
-
-        @Override
-        protected void apply() {
-            withExtension(IHubDemoExtension, BEFORE) {
-                project.logger.info 'hello'
-            }
-        }
-
     }
 
 }

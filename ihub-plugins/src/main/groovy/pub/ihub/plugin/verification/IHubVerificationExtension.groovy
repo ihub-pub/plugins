@@ -15,8 +15,15 @@
  */
 package pub.ihub.plugin.verification
 
+import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
-import pub.ihub.plugin.IHubProjectExtension
+import pub.ihub.plugin.IHubExtProperty
+import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubProjectExtensionAware
+import pub.ihub.plugin.IHubProperty
+
+import static pub.ihub.plugin.IHubProperty.Type.PROJECT
+import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
 
 
@@ -24,99 +31,99 @@ import pub.ihub.plugin.IHubProjectExtension
  * 代码检查插件扩展
  * @author henry
  */
-@TupleConstructor(includeSuperFields = true)
-class IHubVerificationExtension extends IHubProjectExtension {
+@IHubExtension('iHubVerification')
+@CompileStatic
+@TupleConstructor(allProperties = true, includes = 'project')
+class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtProperty {
 
     //<editor-fold desc="PMD Configuration">
 
-    String pmdRulesetFile
+    /**
+     * PMD检查是否打印控制台信息
+     */
+    @IHubProperty
     boolean pmdConsoleOutput = false
+    /**
+     * PMD检查是否忽略失败
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     boolean pmdIgnoreFailures = false
+    /**
+     * PMD版本
+     */
+    @IHubProperty
     String pmdVersion = '6.35.0'
 
     //</editor-fold>
 
     //<editor-fold desc="Codenarc Configuration">
 
-    String codenarcFile
+    /**
+     * Codenarc检查是否忽略失败
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     boolean codenarcIgnoreFailures = false
+    /**
+     * Codenarc版本
+     */
+    @IHubProperty
     String codenarcVersion = '2.1.0'
 
     //</editor-fold>
 
     //<editor-fold desc="Jacoco Configuration">
 
+    /**
+     * Jacoco版本
+     */
+    @IHubProperty
     String jacocoVersion = '0.8.7'
+    /**
+     * 是否启用bundle分支覆盖检查
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     boolean jacocoBundleBranchCoverageRuleEnabled = true
+    /**
+     * bundle分支覆盖率
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     String jacocoBundleBranchCoveredRatio = '0.9'
+    /**
+     * 是否启用bundle指令覆盖检查
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     boolean jacocoBundleInstructionCoverageRuleEnabled = true
+    /**
+     * bundle指令覆盖排除目录
+     */
+    @IHubProperty
     String jacocoBundleInstructionExclusion = '**/app,**/config'
+    /**
+     * bundle指令覆盖率
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     String jacocoBundleInstructionCoveredRatio = '0.9'
+    /**
+     * 是否启用package指令覆盖检查
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     boolean jacocoPackageInstructionCoverageRuleEnabled = true
+    /**
+     * package指令覆盖排除目录
+     */
+    @IHubProperty
     String jacocoPackageInstructionExclusion = '*.app,*.config'
+    /**
+     * package指令覆盖率
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
     String jacocoPackageInstructionCoveredRatio = '0.9'
+    /**
+     * 覆盖率报告排除目录
+     */
+    @IHubProperty
     String jacocoReportExclusion = '**/Application.class,**/app/*.class,**/config/*.class'
 
     //</editor-fold>
-
-    boolean getPmdConsoleOutput() {
-        findProperty 'pmdConsoleOutput', pmdConsoleOutput
-    }
-
-    boolean getPmdIgnoreFailures() {
-        findProperty 'pmdIgnoreFailures', pmdIgnoreFailures
-    }
-
-    String getPmdVersion() {
-        findProperty 'pmdVersion', pmdVersion
-    }
-
-    boolean getCodenarcIgnoreFailures() {
-        findProperty 'codenarcIgnoreFailures', codenarcIgnoreFailures
-    }
-
-    String getCodenarcVersion() {
-        findProperty 'codenarcVersion', codenarcVersion
-    }
-
-    String getJacocoVersion() {
-        findProperty 'jacocoVersion', jacocoVersion
-    }
-
-    boolean getJacocoBundleBranchCoverageRuleEnabled() {
-        findSystemProperty 'jacocoBundleBranchCoverageRuleEnabled', jacocoBundleBranchCoverageRuleEnabled
-    }
-
-    String getJacocoBundleBranchCoveredRatio() {
-        findSystemProperty 'jacocoBundleBranchCoveredRatio', jacocoBundleBranchCoveredRatio
-    }
-
-    boolean getJacocoBundleInstructionCoverageRuleEnabled() {
-        findSystemProperty 'jacocoBundleInstructionCoverageRuleEnabled', jacocoBundleInstructionCoverageRuleEnabled
-    }
-
-    String getJacocoBundleInstructionExclusion() {
-        findSystemProperty 'jacocoBundleInstructionExclusion', jacocoBundleInstructionExclusion
-    }
-
-    String getJacocoBundleInstructionCoveredRatio() {
-        findSystemProperty 'jacocoBundleInstructionCoveredRatio', jacocoBundleInstructionCoveredRatio
-    }
-
-    boolean getJacocoPackageInstructionCoverageRuleEnabled() {
-        findSystemProperty 'jacocoPackageInstructionCoverageRuleEnabled', jacocoPackageInstructionCoverageRuleEnabled
-    }
-
-    String getJacocoPackageInstructionExclusion() {
-        findSystemProperty 'jacocoPackageInstructionExclusion', jacocoPackageInstructionExclusion
-    }
-
-    String getJacocoPackageInstructionCoveredRatio() {
-        findSystemProperty 'jacocoPackageInstructionCoveredRatio', jacocoPackageInstructionCoveredRatio
-    }
-
-    String getJacocoReportExclusion() {
-        findSystemProperty 'jacocoReportExclusion', jacocoReportExclusion
-    }
 
 }

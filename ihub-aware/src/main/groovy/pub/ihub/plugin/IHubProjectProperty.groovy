@@ -15,37 +15,20 @@
  */
 package pub.ihub.plugin
 
-import groovy.transform.CompileStatic
-
-import java.lang.annotation.Documented
-import java.lang.annotation.Retention
-import java.lang.annotation.Target
-
-import static java.lang.annotation.ElementType.TYPE
-import static java.lang.annotation.RetentionPolicy.RUNTIME
-
-
-
 /**
- * IHub扩展
+ * IHub项目属性
  * @author henry
  */
-@Documented
-@Retention(RUNTIME)
-@Target(TYPE)
-@CompileStatic
-@interface IHubExtension {
+trait IHubProjectProperty {
 
-    /**
-     * 扩展名称
-     * @return 名称
-     */
-    String value()
+    abstract Object findProjectProperty(String key)
 
-    /**
-     * 是否需要装饰扩展
-     * @return flag
-     */
-    boolean decorated() default false
+    String findProperty(String key, String defaultValue = null) {
+        findProjectProperty(key) ?: defaultValue
+    }
+
+    String findVersion(String key, String defaultValue) {
+        findProperty key + '.version', defaultValue
+    }
 
 }

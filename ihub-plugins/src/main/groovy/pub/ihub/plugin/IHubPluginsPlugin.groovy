@@ -16,8 +16,6 @@
 package pub.ihub.plugin
 
 import io.freefair.gradle.plugins.git.GitVersionPlugin
-import org.gradle.api.Plugin
-import org.gradle.api.Project
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
@@ -29,10 +27,8 @@ import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
  * 配置项目组件仓库
  * @author liheng
  */
-class IHubPluginsPlugin extends IHubProjectPlugin<IHubPluginsExtension> {
-
-    Class<? extends Plugin<Project>>[] beforeApplyPlugins = [GitVersionPlugin]
-    String extensionName = 'iHub'
+@IHubPlugin(value = IHubPluginsExtension, beforeApplyPlugins = [GitVersionPlugin])
+class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
     @Override
     void apply() {

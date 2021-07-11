@@ -15,31 +15,48 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
+import org.gradle.api.DefaultTask
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.tap
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 
 
 
 /**
  * @author henry
  */
-class IHubDemoPlugin implements Plugin<Project> {
+@IHubPlugin(value = IHubDemoExtension, beforeApplyPlugins = IHubSimplePlugin)
+class IHubDemoPlugin extends IHubProjectPluginAware<IHubDemoExtension> {
 
     @Override
-    void apply(Project project) {
-        IHubDemoExtension ext = project.extensions.create 'iHubDemo', IHubDemoExtension
+    void apply() {
+        withExtension(BEFORE) {
+            logger.info 'before extension'
+        }
+        withExtension {
+            logger.info 'with extension'
+        }
+        withExtension(AFTER) {
+            logger.info 'after extension'
+        }
+
+        registerTask('demo', DefaultTask) {
+            logger.info it.name
+        }
+        withTask('demo') {
+            logger.info it.name
+        }
+        withTask(DefaultTask) {
+            logger.info it.name
+        }
+        withTask 'demo'
 
         System.setProperty 'demo.a.version', '1.0.0'
-        System.setProperty 'demo_b_version', '1.0.0'
-        System.setProperty 'demo-c-version', '1.0.0'
-        System.setProperty 'demoDVersion', '1.0.0'
-
         printConfigContent 'demo test print', tap('demo'), tap('version', 30), [
-            'demoA', 'demoB', 'demoC', 'demoD', 'demoE'
-        ].collectEntries { [(it): ext.findVersion(it, '1.0.1')] }
+            'demo.a', 'demo.b'
+        ].collectEntries { [(it): extension.findVersion(it, '1.0.1')] }
     }
 
 }
