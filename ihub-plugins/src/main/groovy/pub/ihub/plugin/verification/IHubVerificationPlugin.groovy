@@ -131,27 +131,27 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
                 it.violationRules {
                     // rule #1：bundle分支覆盖率
                     rule {
-                        enabled = ext.jacocoBundleBranchCoverageRuleEnabled
+                        enabled = ext.jacocoBranchCoverageRuleEnabled
                         limit {
                             counter = 'BRANCH'
-                            minimum = ext.jacocoBundleBranchCoveredRatio.toBigDecimal()
+                            minimum = ext.jacocoBranchCoveredRatio.toBigDecimal()
                         }
                     }
                     // rule #2：bundle指令覆盖率
                     rule {
-                        enabled = ext.jacocoBundleInstructionCoverageRuleEnabled
-                        excludes = ext.jacocoBundleInstructionExclusion.tokenize ','
+                        enabled = ext.jacocoInstructionCoverageRuleEnabled
+                        excludes = ext.jacocoInstructionExclusion.tokenize ','
                         limit {
-                            minimum = ext.jacocoBundleInstructionCoveredRatio.toBigDecimal()
+                            minimum = ext.jacocoInstructionCoveredRatio.toBigDecimal()
                         }
                     }
                     // rule #3：package指令覆盖率
                     rule {
-                        enabled = ext.jacocoPackageInstructionCoverageRuleEnabled
+                        enabled = ext.jacocoPackageCoverageRuleEnabled
                         element = 'PACKAGE'
-                        excludes = ext.jacocoPackageInstructionExclusion.tokenize ','
+                        excludes = ext.jacocoPackageExclusion.tokenize ','
                         limit {
-                            minimum = ext.jacocoPackageInstructionCoveredRatio.toBigDecimal()
+                            minimum = ext.jacocoPackageCoveredRatio.toBigDecimal()
                         }
                     }
                 }
