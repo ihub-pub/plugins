@@ -31,10 +31,10 @@
 ## 属性配置表
 插件配置属性获取目前支持4种方式：`扩展属性`（`Ext`）、`项目属性`（`Prj`）、`系统属性`（`Sys`）、`环境属性`（`Env`）， 
 属性优先级：`Sys` > `Env` > `Prj` > `Ext`
-- `Ext`（Extension）：插件自定义扩展属性，配置与`build.gradle`文件，配置方式详见[samples](samples)
-- `Prj`（Project）：项目属性，配置与`gradle.properties`文件，配置格式`扩展名`.`属性名`，如`iHub.mavenLocalEnabled=true`
-- `Sys`（System）：系统属性，如命令行传递的信息等，配置格式`扩展名`.`属性名`，如`-DiHub.mavenLocalEnabled=true`
-- `Env`（Environment）：环境变量属性，配置格式全部大写，多个单词，用`_`分隔，如`MAVEN_LOCAL_ENABLED=true`
+> - `Ext`（Extension）：插件自定义扩展属性，配置与`build.gradle`文件，配置方式详见[samples](samples)
+> - `Prj`（Project）：项目属性，配置与`gradle.properties`文件，配置格式`扩展名`.`属性名`，如`iHub.mavenLocalEnabled=true`
+> - `Sys`（System）：系统属性，如命令行传递的信息等，配置格式`扩展名`.`属性名`，如`-DiHub.mavenLocalEnabled=true`
+> - `Env`（Environment）：环境变量属性，配置格式全部大写，多个单词，用`_`分隔，如`MAVEN_LOCAL_ENABLED=true`
 ### 各插件详细属性如下
 <h4 id="iHubSettings"></h4>
 <details>
@@ -97,7 +97,8 @@
 <h4 id="iHubVerification"></h4>
 <details>
 <summary>iHubVerification</summary>
-属性说明：<b>pmd</b>开头为<b>PMD静态检查</b>，<b>codenarc</b>开头为<b>Codenarc静态检查</b>，<b>jacoco</b>开头为<b>Jacoco覆盖率检查</b>
+
+> 属性说明：`pmd`开头为`PMD静态检查`，`codenarc`开头为`Codenarc静态检查`，`jacoco`开头为`Jacoco覆盖率检查`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
@@ -132,7 +133,8 @@
 <h4 id="iHubNative"></h4>
 <details>
 <summary>iHubNative</summary>
-属性说明：<b>bp</b>开头为<b>构建时属性</b>，<b>bpl</b>开头为<b>启动时属性</b>
+
+> 属性说明：`bp`开头为`构建时属性`，`bpl`开头为`启动时属性`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
