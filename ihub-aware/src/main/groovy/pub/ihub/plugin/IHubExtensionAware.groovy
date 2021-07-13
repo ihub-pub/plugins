@@ -56,7 +56,11 @@ trait IHubExtensionAware {
         }
         // 获取扩展属性
         value = value ?: invokeGetMethod(name)
-        'false' == value?.toString() ? false : value?.asType(field.type)
+        if (!value) {
+            return value
+        }
+        'false' == value.toString() ? false : field.type.primitive && value.toString().integer ?
+            value.toString().toInteger() : value.asType(field.type)
     }
 
     private Object invokeGetMethod(String name) {
