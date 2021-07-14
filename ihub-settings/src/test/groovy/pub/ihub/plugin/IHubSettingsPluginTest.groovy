@@ -162,26 +162,31 @@ class IHubSettingsPluginTest extends Specification {
     def '测试配置三级子项目'() {
         when: '配置项目'
         propertiesFile << 'name=demo\n'
-        testProjectDir.newFolder 'rest'
-        testProjectDir.newFolder 'service'
-        testProjectDir.newFolder 'other', 'a'
-        testProjectDir.newFolder 'other', 'b'
-        testProjectDir.newFolder 'other', 'c'
+        testProjectDir.with {
+            newFolder 'rest'
+            newFolder 'service'
+            newFolder 'test'
+            newFolder 'other', 'a'
+            newFolder 'other', 'b'
+            newFolder 'other', 'c'
+        }
         settingsFile << '''
             iHubSettings {
                 includeProjects 'rest', 'service' suffix '-suffix'
-                includeProjects 'other' prefix 'prefix-' subproject '-suffix'
+                includeProjects 'other' prefix 'prefix-' subproject
+                includeProjects 'test' noPrefix
             }
         '''
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'demo-rest-suffix'
-        result.output.contains 'demo-service-suffix'
-        result.output.contains 'prefix-other'
-        result.output.contains 'prefix-other-a-suffix'
-        result.output.contains 'prefix-other-b-suffix'
-        result.output.contains 'prefix-other-c-suffix'
+        result.output.contains '│ other                               │ prefix-other                                               │'
+        result.output.contains '│ other                               │ prefix-other-a                                             │'
+        result.output.contains '│ other                               │ prefix-other-b                                             │'
+        result.output.contains '│ other                               │ prefix-other-c                                             │'
+        result.output.contains '│ rest                                │ demo-rest-suffix                                           │'
+        result.output.contains '│ service                             │ demo-service-suffix                                        │'
+        result.output.contains '│ test                                │ test                                                       │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
