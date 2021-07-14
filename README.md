@@ -6,7 +6,7 @@
 [![Gitee](https://img.shields.io/badge/IHubPub-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![Gradle Plugin](https://img.shields.io/badge/IHubGradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
 [![Docs](https://img.shields.io/badge/Knowledge-white.svg?style=flat&logo=BookStack)](https://doc.ihub.pub "Knowledge")
-[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
+[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains") [![Join the chat at https://gitter.im/ihub-pub/plugins](https://badges.gitter.im/ihub-pub/plugins.svg)](https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
 ![Version](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg?logo=Gradle)
 ![Version](https://img.shields.io/badge/Spring-5.3.8-6DB33F.svg?logo=Spring&logoColor=white)
