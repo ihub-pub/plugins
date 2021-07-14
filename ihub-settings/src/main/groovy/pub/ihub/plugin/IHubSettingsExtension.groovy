@@ -100,17 +100,25 @@ class IHubSettingsExtension implements IHubExtensionAware, IHubProjectProperty {
             this
         }
 
+        ProjectSpec getNoPrefix() {
+            prefix ''
+        }
+
         ProjectSpec suffix(String nameSuffix) {
             this.nameSuffix = nameSuffix
             this
         }
 
-        ProjectSpec subproject(String nameSuffix = this.nameSuffix) {
+        ProjectSpec subproject(String nameSuffix) {
             new ProjectSpec().tap {
                 this.subprojectSpec = it
                 it.namePrefix = this.namePrefix
                 it.nameSuffix = nameSuffix
             }
+        }
+
+        ProjectSpec getSubproject() {
+            subproject nameSuffix
         }
 
         @CompileStatic(SKIP)
