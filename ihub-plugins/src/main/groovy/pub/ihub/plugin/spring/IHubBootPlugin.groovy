@@ -16,21 +16,25 @@
 package pub.ihub.plugin.spring
 
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.java.IHubJavaPlugin
 
+import static org.springframework.boot.buildpack.platform.build.PullPolicy.IF_NOT_PRESENT
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
 /**
  * IHub Spring Boot Plugin
+ * 参见官方入门文档：https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/
  * @author henry
  */
 @IHubPlugin(value = IHubBootExtension, beforeApplyPlugins = [IHubJavaPlugin, SpringBootPlugin])
+@SuppressWarnings('UnnecessaryObjectReferences')
 class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
 
     @Override
@@ -38,15 +42,36 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
         withExtension(AFTER) { ext ->
             withTask(BootRun) {
                 ext.systemProperties it
+                it.optimizedLaunch = ext.runOptimizedLaunch
             }
 
             withTask(BootJar) {
                 it.requiresUnpack ext.bootJarRequiresUnpack
             }
-        }
+            withTask('jar') {
+                it.enabled = false
+            }
 
-        project.bootBuildImage {
-            builder = 'paketobuildpacks/builder:tiny'
+            // 注：使用bootBuildImage时须禁用启动脚本
+            withTask(BootBuildImage) {
+                it.pullPolicy = IF_NOT_PRESENT
+                it.environment = ext.environment
+                it.cleanCache = ext.bpCleanCache
+                it.verboseLogging = ext.bpVerboseLogging
+                it.publish = ext.bpPublish
+                it.docker {
+                    host = ext.dockerHost
+                    tlsVerify = ext.dockerTlsVerify
+                    certPath = ext.dockerCertPath
+                    builderRegistry {
+                        url = ext.dockerUrl
+                        username = ext.dockerUsername
+                        password = ext.dockerPassword
+                        email = ext.dockerEmail
+                        token = ext.dockerToken
+                    }
+                }
+            }
         }
     }
 

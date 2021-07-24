@@ -50,6 +50,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 //					group 'pub.ihub.lib' module 'ihub-libs' version '1.0.0-SNAPSHOT'
             group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.5.1'
             group 'org.springframework.cloud' module 'spring-cloud-dependencies' version '2020.0.3'
+//            group 'org.springframework.statemachine' module 'spring-statemachine-bom' version '3.0.1'
             group 'com.alibaba.cloud' module 'spring-cloud-alibaba-dependencies' version '2021.1'
             group 'com.github.xiaoymin' module 'knife4j-dependencies' version '3.0.3'
             group 'com.sun.xml.bind' module 'jaxb-bom-ext' version '3.0.1'

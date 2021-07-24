@@ -6,7 +6,7 @@
 [![GitHub](https://img.shields.io/badge/IHubPub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
 [![Gitee](https://img.shields.io/badge/IHubPub-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![Gradle Plugin](https://img.shields.io/badge/IHubGradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
-[![GitBook](https://img.shields.io/badge/GitBook-3884FF.svg?style=flat&logo=GitBook&logoColor=white)](https://doc.ihub.pub "GitBook")
+[![GitBook](https://img.shields.io/badge/Docs-white.svg?style=flat&logo=GitBook&logoColor=3884FF)](https://doc.ihub.pub "GitBook")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
 ![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
 ![Version](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg?logo=Gradle)
@@ -122,19 +122,41 @@
 #### iHubBoot
 <details>
 
+> 属性说明：`run`开头为`运行时属性`，`bootJar`开头为`打包Jar时属性`，`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`docker`开头为`Docker仓库相关属性`，[参照](https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/)
+
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `runProperties` | bootRun属性 | :x: | :white_check_mark: | :x: | :x: | :x: |
 | `runIncludePropNames` | 运行时包含系统属性名称（“,”分割） | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 | `runSkippedPropNames` | 运行时排除系统属性名称（“,”分割） | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 | `enabledLocalProperties` | 启用本地属性 | `true` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `runOptimizedLaunch` | 优化启动 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 | `bootJarRequiresUnpack` | 配置需要移除的库 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bpJvmVersion` | JVM版本 | `默认当前版本` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bpCleanCache` | 是否在构建前清理缓存 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bpVerboseLogging` | 启用构建器操作的详细日志记录 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bpPublish` | 是否将生成的镜像发布到Docker仓库 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `httpProxy` | http代理 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `httpsProxy` | https代理 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bplJvmHeadRoom` | JVM内存 | `8G` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bplJvmLoadedClassCount` | JVM运行时已加载类的数量 | `35% of classes` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bplJvmThreadCount` | JVM运行时用户线程数 | `250` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `javaToolOptions` | JVM环境变量 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `bpeEnvironment` | JVM运行时变量，[参照](https://paketo.io/docs/reference/configuration/) | :x: | :white_check_mark: | :x: | :x: | :x: |
+| `dockerHost` | Docker守护程序的主机和端口的url | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `dockerTlsVerify` | 启用安全https协议 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `dockerCertPath` | https证书和密钥文件的路径 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `dockerUrl` | Docker私有镜像仓库地址 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `dockerUsername` | Docker私有镜像仓库用户名 | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| `dockerPassword` | Docker私有镜像仓库密码 | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| `dockerEmail` | Docker私有镜像仓库邮箱 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `dockerToken` | Docker私有镜像仓库身份令牌 | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 </details>
 
 #### iHubNative
 <details>
 
-> 属性说明：`bp`开头为`构建时属性`，`bpl`开头为`启动时属性`
+> 属性说明：`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
