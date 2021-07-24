@@ -6,13 +6,12 @@
 [![GitHub](https://img.shields.io/badge/IHubPub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
 [![Gitee](https://img.shields.io/badge/IHubPub-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![Gradle Plugin](https://img.shields.io/badge/IHubGradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
-[![Docs](https://img.shields.io/badge/Knowledge-white.svg?style=flat&logo=BookStack)](https://doc.ihub.pub "Knowledge")
+[![GitBook](https://img.shields.io/badge/GitBook-3884FF.svg?style=flat&logo=GitBook&logoColor=white)](https://doc.ihub.pub "GitBook")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
 ![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
 ![Version](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg?logo=Gradle)
-![Version](https://img.shields.io/badge/Spring-5.3.8-6DB33F.svg?logo=Spring&logoColor=white)
 ![Version](https://img.shields.io/badge/SpringBoot-2.5.1-6DB33F.svg?logo=SpringBoot&logoColor=white)
-![GitHub last commit](https://img.shields.io/github/last-commit/ihub-pub/plugins)
+![Version](https://img.shields.io/badge/SpringCloud-2020.0.3-6DB33F.svg?logo=Spring&logoColor=white)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/ihub-pub/plugins)
 
 本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成，使用详见[samples](samples)，该项目包含插件如下：
