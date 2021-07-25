@@ -6,7 +6,7 @@
 [![GitHub](https://img.shields.io/badge/IHubPub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
 [![Gitee](https://img.shields.io/badge/IHubPub-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![Gradle Plugin](https://img.shields.io/badge/IHubGradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
-[![GitBook](https://img.shields.io/badge/Docs-white.svg?style=flat&logo=GitBook&logoColor=3884FF)](https://doc.ihub.pub "GitBook")
+[![GitBook](https://img.shields.io/badge/GitBook-white.svg?style=flat&logo=GitBook&logoColor=3884FF)](https://doc.ihub.pub "GitBook")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
 ![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
 ![Version](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg?logo=Gradle)
@@ -122,7 +122,7 @@
 #### iHubBoot
 <details>
 
-> 属性说明：`run`开头为`运行时属性`，`bootJar`开头为`打包Jar时属性`，`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`docker`开头为`Docker仓库相关属性`，[参照](https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/)
+> 属性说明：`run`开头为`运行时属性`，`bootJar`开头为`打包Jar时属性`，`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`docker`开头为`Docker仓库相关属性`，[参考](https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/)
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
@@ -142,7 +142,7 @@
 | `bplJvmLoadedClassCount` | JVM运行时已加载类的数量 | `35% of classes` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | `bplJvmThreadCount` | JVM运行时用户线程数 | `250` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | `javaToolOptions` | JVM环境变量 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| `bpeEnvironment` | JVM运行时变量，[参照](https://paketo.io/docs/reference/configuration/) | :x: | :white_check_mark: | :x: | :x: | :x: |
+| `bpeEnvironment` | JVM运行时变量，[参考](https://paketo.io/docs/reference/configuration/) | :x: | :white_check_mark: | :x: | :x: | :x: |
 | `dockerHost` | Docker守护程序的主机和端口的url | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | `dockerTlsVerify` | 启用安全https协议 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | `dockerCertPath` | https证书和密钥文件的路径 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
@@ -156,7 +156,7 @@
 #### iHubNative
 <details>
 
-> 属性说明：`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`
+> 属性说明：`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`aot`开头为`AOT插件属性`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
@@ -167,6 +167,15 @@
 | `bplJvmLoadedClassCount` | JVM运行时已加载类的数量 | `35% of classes` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | `bplJvmThreadCount` | JVM运行时用户线程数 | `250` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | `javaToolOptions` | JVM环境变量 | :x: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotMode` | native镜像编译器配置 | `NATIVE` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotDebugVerify` | 启用验证调试 | `false` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
+| `aotRemoveXmlSupport` | 移除XML支持 | `true` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotRemoveSpelSupport` | 移除Spel支持 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotRemoveYamlSupport` | 移除Yaml支持 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotRemoveJmxSupport` | 移除Jmx支持 | `true` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotVerify` | 开启自动验证 | `true` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotRemoveUnusedConfig` | 移除未使用的配置 | `true` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| `aotFailOnMissingSelectorHint` | 如果没有为活动选择器提供提示，则抛出错误 | `true` | :white_check_mark: | :white_check_mark: | :x: | :x: |
 </details>
 
 ## Contributing

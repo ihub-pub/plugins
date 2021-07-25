@@ -30,7 +30,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
  * IHub Spring Boot Plugin
- * 参见官方入门文档：https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/
+ * 参考官方入门文档：https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/
  * @author henry
  */
 @IHubPlugin(value = IHubBootExtension, beforeApplyPlugins = [IHubJavaPlugin, SpringBootPlugin])
