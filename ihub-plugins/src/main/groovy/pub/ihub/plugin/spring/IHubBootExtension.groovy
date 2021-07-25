@@ -135,7 +135,7 @@ class IHubBootExtension implements IHubProjectExtensionAware, IHubSystemProperti
     String javaToolOptions
     /**
      * JVM运行时变量
-     * 参见：https://paketo.io/docs/reference/configuration/
+     * 参考：https://paketo.io/docs/reference/configuration/
      */
     Map<String, String> bpeEnvironment = [:]
 

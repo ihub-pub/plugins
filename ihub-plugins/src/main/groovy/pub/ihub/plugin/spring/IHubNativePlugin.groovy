@@ -16,6 +16,8 @@
 package pub.ihub.plugin.spring
 
 import org.springframework.aot.gradle.SpringAotGradlePlugin
+import org.springframework.aot.gradle.dsl.SpringAotExtension
+import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
@@ -25,6 +27,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
  * 原生镜像插件
+ * 参考官方入门文档：https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/
  * @author henry
  */
 @IHubPlugin(value = IHubNativeExtension, beforeApplyPlugins = [IHubBootPlugin, SpringAotGradlePlugin])
@@ -33,9 +36,20 @@ class IHubNativePlugin extends IHubProjectPluginAware<IHubNativeExtension> {
     @Override
     void apply() {
         withExtension(AFTER) { ext ->
-            project.bootBuildImage {
-                builder = 'paketobuildpacks/builder:tiny'
-                environment = ext.environment
+            withTask(BootBuildImage) {
+                it.builder = 'paketobuildpacks/builder:tiny'
+                it.environment = ext.environment
+            }
+            withExtension(SpringAotExtension) {
+                it.mode.set ext.aotMode
+                it.debugVerify.set ext.aotDebugVerify
+                it.removeXmlSupport.set ext.aotRemoveXmlSupport
+                it.removeSpelSupport.set ext.aotRemoveSpelSupport
+                it.removeYamlSupport.set ext.aotRemoveYamlSupport
+                it.removeJmxSupport.set ext.aotRemoveJmxSupport
+                it.verify.set ext.aotVerify
+                it.removeUnusedConfig.set ext.aotRemoveUnusedConfig
+                it.failOnMissingSelectorHint.set ext.aotFailOnMissingSelectorHint
             }
         }
     }
