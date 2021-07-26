@@ -116,11 +116,15 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
     }
 
     void printConfigContent() {
-        printConfig BOM, 'Group Maven Bom Version', groupTap(30), moduleTap(), versionTap(20)
+        printConfig BOM, 'Group Maven Bom Version', groupTap(35), moduleTap(), versionTap(15)
         printConfig MODULES, 'Group Maven Module Version', groupTap(35), moduleTap(), versionTap(15)
         printConfig GROUP, 'Group Maven Default Version', groupTap(), versionTap()
         printConfig EXCLUDE, 'Exclude Group Modules', groupTap(40), moduleTap()
         printConfig DEPENDENCY, 'Config Default Dependencies', dependencyTypeTap(), dependenciesTap()
+    }
+
+    String findVersion(String key, String defaultValue) {
+        findProjectProperty(key + '.version') ?: defaultValue
     }
 
     String getProjectName() {
@@ -156,7 +160,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
         Set<BomSpecImpl> commonSpecs = (root ? findExtProperty(rootProject, type.fieldName) :
             rootProject.extensions.findByType(IHubBomExtension)."$type.fieldName") as Set<BomSpecImpl>
         printConfigContent "${projectName.toUpperCase()} $title", (root ? commonSpecs?.tap {
-            specs*.rightShift it, true
+            specs*.rightShift it
         } ?: specs : specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
             BomSpecImpl impl = type in [EXCLUDE, DEPENDENCY] ? new BomSpecImpl(type, spec.id).modules(spec.modules -
                 (root ? [] : commonSpecs.find { r -> spec.id == r.id }?.modules) as String[]) : spec
@@ -296,7 +300,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
         @Override
         void version(String version) {
             assertProperty EXCLUDE != type, 'Does not support \'version\' method!'
-            this.version = findVersion id, version
+            this.version = version
         }
 
         @Override
@@ -315,12 +319,12 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
             id == o.id && version == o.version && module == o.module && modules == o.modules
         }
 
-        void rightShift(Set<BomSpecImpl> specs, boolean ifAbsent = false) {
+        void rightShift(Set<BomSpecImpl> specs) {
             if (EXCLUDE == type && !modules) {
                 modules = new HashSet<>(['all'])
             }
             BomSpecImpl spec = specs.find { this == it }
-            if (spec && !ifAbsent) {
+            if (spec as boolean) {
                 if (EXCLUDE != type) {
                     spec.version version
                 }
@@ -330,8 +334,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
                 if (modules) {
                     spec.modules.addAll modules
                 }
-            }
-            if (!spec) {
+            } else {
                 specs << this
             }
         }

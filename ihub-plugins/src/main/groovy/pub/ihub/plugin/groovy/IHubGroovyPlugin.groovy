@@ -31,21 +31,22 @@ import pub.ihub.plugin.java.IHubJavaPlugin
 @IHubPlugin(beforeApplyPlugins = [IHubJavaPlugin, GroovyPlugin])
 class IHubGroovyPlugin extends IHubProjectPluginAware {
 
+    private static final String GROOVY_GROUP = 'org.codehaus.groovy'
+    private static final String GROOVY_VERSION = '3.0.8'
+
     @Override
     void apply() {
         withExtension(IHubBomExtension) {
-            String groovyGroup = 'org.codehaus.groovy'
-            String groovyVersion = '3.0.8'
             it.importBoms {
-                group groovyGroup module 'groovy-bom' version groovyVersion
+                group GROOVY_GROUP module 'groovy-bom' version GROOVY_VERSION
             }
             it.dependencyVersions {
-                group groovyGroup modules 'groovy-all' version groovyVersion
+                group GROOVY_GROUP modules 'groovy-all' version GROOVY_VERSION
             }
             // 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
-            if (it.findVersion(groovyGroup, groovyVersion).startsWith('3.')) {
+            if (it.findVersion('groovy', GROOVY_VERSION).startsWith('3.')) {
                 it.groupVersions {
-                    group groovyGroup version groovyVersion
+                    group GROOVY_GROUP version GROOVY_VERSION
                 }
             }
             withExtension(IHubPluginsExtension) { ext ->

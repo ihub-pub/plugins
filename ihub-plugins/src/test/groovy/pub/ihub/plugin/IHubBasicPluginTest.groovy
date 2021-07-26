@@ -97,7 +97,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         when: '修改版本以及依赖组件模块'
         propertiesFile << 'iHub.compileGroovyAllModules=true\n'
-        propertiesFile << 'org.codehaus.groovy.version=2.5.14\n'
+        propertiesFile << 'groovy.version=2.5.14\n'
         result = gradleBuilder.build()
 
         then: '检查结果'
