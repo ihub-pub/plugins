@@ -21,6 +21,9 @@ import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_DEPENDENCY_VERSION_CONFIG
+import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_MAVEN_BOM_VERSION_CONFIG
+import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_VERSION_CONFIG
 
 
 
@@ -46,28 +49,21 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
     private static void defaultConfig(IHubBomExtension ext) {
         // 配置导入bom
         ext.importBoms {
-            // TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
-//					group 'pub.ihub.lib' module 'ihub-libs' version '1.0.0-SNAPSHOT'
-            group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.5.1'
-            group 'org.springframework.cloud' module 'spring-cloud-dependencies' version '2020.0.3'
-//            group 'org.springframework.statemachine' module 'spring-statemachine-bom' version '3.0.1'
-            group 'com.alibaba.cloud' module 'spring-cloud-alibaba-dependencies' version '2021.1'
-            group 'com.github.xiaoymin' module 'knife4j-dependencies' version '3.0.3'
-            group 'com.sun.xml.bind' module 'jaxb-bom-ext' version '3.0.1'
-            group 'de.codecentric' module 'spring-boot-admin-dependencies' version '2.4.2'
+            GROUP_MAVEN_BOM_VERSION_CONFIG.each { library, config ->
+                group config.v1 module config.v2 version ext.findVersion(library, config.v3)
+            }
         }
         // 配置组件依赖版本
         ext.dependencyVersions {
-            group 'com.alibaba' modules 'fastjson' version '1.2.76'
-            group 'com.alibaba' modules 'druid', 'druid-spring-boot-starter' version '1.2.6'
-            group 'com.alibaba.p3c' modules 'p3c-pmd' version '2.1.1'
-            group 'com.baomidou' modules 'mybatis-plus', 'mybatis-plus-boot-starter',
-                'mybatis-plus-generator' version '3.4.3.1'
-            group 'com.github.xiaoymin' modules 'knife4j-aggregation-spring-boot-starter' version '2.0.9'
+            GROUP_DEPENDENCY_VERSION_CONFIG.each { library, config ->
+                group config.v1 modules config.v2 version ext.findVersion(library, config.v3)
+            }
         }
         // 配置组版本策略（建议尽量使用bom）
         ext.groupVersions {
-            group 'cn.hutool' version '5.7.2'
+            GROUP_VERSION_CONFIG.each { library, config ->
+                group config.v1 version ext.findVersion(library, config.v2)
+            }
         }
         // 配置默认排除项
         ext.excludeModules {

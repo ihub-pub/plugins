@@ -23,12 +23,4 @@ trait IHubProjectProperty {
 
     abstract Object findProjectProperty(String key)
 
-    String findProperty(String key, String defaultValue = null) {
-        findProjectProperty(key) ?: defaultValue
-    }
-
-    String findVersion(String key, String defaultValue) {
-        findProperty key + '.version', defaultValue
-    }
-
 }

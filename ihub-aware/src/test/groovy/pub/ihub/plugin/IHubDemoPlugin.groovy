@@ -17,8 +17,6 @@ package pub.ihub.plugin
 
 import org.gradle.api.DefaultTask
 
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 
@@ -52,11 +50,6 @@ class IHubDemoPlugin extends IHubProjectPluginAware<IHubDemoExtension> {
             logger.info it.name
         }
         withTask 'demo'
-
-        System.setProperty 'demo.a.version', '1.0.0'
-        printConfigContent 'demo test print', tap('demo'), tap('version', 30), [
-            'demo.a', 'demo.b'
-        ].collectEntries { [(it): extension.findVersion(it, '1.0.1')] }
     }
 
 }

@@ -88,6 +88,10 @@ class IHubSettingsExtension implements IHubExtensionAware, IHubProjectProperty {
         settings.hasProperty(key) ? settings."$key" : null
     }
 
+    private String findProperty(String key, String defaultValue = null) {
+        findProjectProperty(key) ?: defaultValue
+    }
+
     @CompileStatic
     class ProjectSpec {
 
@@ -157,7 +161,7 @@ class IHubSettingsExtension implements IHubExtensionAware, IHubProjectProperty {
         private String pluginVersion
 
         void version(String version) {
-            pluginVersion = findVersion id, version
+            pluginVersion = version
         }
 
     }

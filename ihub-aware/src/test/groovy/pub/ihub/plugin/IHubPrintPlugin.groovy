@@ -28,6 +28,7 @@ class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
 
     @Override
     void apply() {
+        printConfigContent 'test', tap('k'), tap('v', 30), [k1: 'v1', k2: 'v2']
         printConfigContent 'test', tap('t1', 30), tap('t2'), [d1: [1, 2, 3], d2: [4, 5, 6]]
         printConfigContent 'test', []
         printConfigContent 'test', tap('t1')

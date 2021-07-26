@@ -2,17 +2,13 @@
 [![Gradle Build](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f866ca35cbb44347a210722a2da8aabc)](https://app.codacy.com/gh/ihub-pub/plugins?utm_source=github.com&utm_medium=referral&utm_content=ihub-pub/plugins&utm_campaign=Badge_Grade_Settings)
 [![codecov](https://codecov.io/gh/ihub-pub/plugins/branch/main/graph/badge.svg?token=ZQ0WR3ZSWG)](https://codecov.io/gh/ihub-pub/plugins)
-[![Join the chat at https://gitter.im/ihub-pub/plugins](https://badges.gitter.im/ihub-pub/plugins.svg)](https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![GitHub](https://img.shields.io/badge/IHubPub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
-[![Gitee](https://img.shields.io/badge/IHubPub-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
-[![Gradle Plugin](https://img.shields.io/badge/IHubGradle-02303A.svg?style=flat&logo=Gradle)](https://plugins.gradle.org/u/henry-gradle "IHub Plugins Gradle Plugin")
-[![GitBook](https://img.shields.io/badge/GitBook-white.svg?style=flat&logo=GitBook&logoColor=3884FF)](https://doc.ihub.pub "GitBook")
-[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "JetBrains")
-![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
-![Version](https://img.shields.io/badge/Gradle-7.1-brightgreen.svg?logo=Gradle)
-![Version](https://img.shields.io/badge/SpringBoot-2.5.1-6DB33F.svg?logo=SpringBoot&logoColor=white)
-![Version](https://img.shields.io/badge/SpringCloud-2020.0.3-6DB33F.svg?logo=Spring&logoColor=white)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/ihub-pub/plugins)
+[![GitHub](https://img.shields.io/badge/GitHub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
+[![Gitee](https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
+[![GitBook](https://img.shields.io/badge/GitBook-3884FF.svg?style=flat&logo=GitBook&logoColor=white)](https://doc.ihub.pub "IHubPub")
+[![Join the chat at https://gitter.im/ihub-pub/plugins](https://img.shields.io/badge/Gitter-45af90.svg?style=flat&logo=Gitter&logoColor=white&)](https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge "Chat On Gitter")
+[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "Thanks to JetBrains for sponsoring")
+![License](https://img.shields.io/github/license/ihub-pub/plugins?style=flat&logo=Apache&color=282661&label)
+[![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=02303A&label&labelColor=02303A&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
 
 本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成，使用详见[samples](samples)，该项目包含插件如下：
 
@@ -20,7 +16,7 @@
 |----|-------------|-----------|-------------|
 | pub.ihub.plugin.ihub-settings | 设置插件 | [`iHubSettings`](#ihubsettings) | 配置插件仓库以及子项目 |
 | pub.ihub.plugin | 基础插件 | [`iHub`](#ihub) | 配置组件仓库 |
-| pub.ihub.plugin.ihub-bom | 组件依赖管理 | [`iHubBom`](samples/sample-extensions/bom.gradle) | 配置组件默认依赖版本以及兼容性管理 |
+| pub.ihub.plugin.ihub-bom | 组件依赖管理 | [`iHubBom`](#ihubbom) | 配置组件默认依赖版本以及兼容性管理 |
 | pub.ihub.plugin.ihub-java | Java插件 | | 配置一些默认依赖以及兼容性配置 |
 | pub.ihub.plugin.ihub-groovy | Groovy插件 | | 配置Groovy组件依赖 |
 | pub.ihub.plugin.ihub-publish | 发布插件 | [`iHubPublish`](#ihubpublish) | 配置组件发布仓库以及其他个性化组件配置 |
@@ -32,8 +28,8 @@
 ## 属性配置表
 插件配置属性获取目前支持4种方式：`扩展属性`（`Ext`）、`项目属性`（`Prj`）、`系统属性`（`Sys`）、`环境属性`（`Env`）， 
 属性优先级：`Sys` > `Env` > `Prj` > `Ext`
-> - `Ext`（Extension）：插件自定义扩展属性，配置与`build.gradle`文件，配置方式详见[samples](samples)
-> - `Prj`（Project）：项目属性，配置与`gradle.properties`文件，配置格式`扩展名`.`属性名`，如`iHub.mavenLocalEnabled=true`
+> - `Ext`（Extension）：插件自定义扩展属性，配置于`build.gradle`文件，配置方式详见[samples](samples)
+> - `Prj`（Project）：项目属性，配置于`gradle.properties`文件，配置格式`扩展名`.`属性名`，如`iHub.mavenLocalEnabled=true`
 > - `Sys`（System）：系统属性，如命令行传递的信息等，配置格式`扩展名`.`属性名`，如`-DiHub.mavenLocalEnabled=true`
 > - `Env`（Environment）：环境变量属性，配置格式全部大写，多个单词，用`_`分隔，如`MAVEN_LOCAL_ENABLED=true`
 ### 各插件详细属性如下
@@ -64,6 +60,29 @@
 | `javaCompatibility` | Java兼容性配置 | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 | `gradleCompilationIncremental` | gradle增量编译 | `true` | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: |
 | `compileGroovyAllModules` | 是否添加groovy所有模块 | `false` | :white_check_mark: | :white_check_mark: | :x: | :x: |
+</details>
+
+#### iHubBom
+<details>
+
+> 插件配置方式详见[样例](samples/sample-extensions/bom.gradle)，插件内置常见组件版本如下，可通过如下属性配置覆盖默认版本，配置于`gradle.properties`文件，配置格式`属性名`，如`ihub-libs.version=1.0.0`，详细属性如下：
+
+| Property | Version |
+| -------- | ------- |
+| `ihub-libs.version` | 1.0.0-SNAPSHOT |
+| `spring-boot.version` | 2.5.1 |
+| `spring-cloud.version` | 2020.0.3 |
+| `spring-statemachine.version` | 3.0.1 |
+| `spring-cloud-alibaba.version` | 2021.1 |
+| `spring-boot-admin.version` | 2.4.2 |
+| `knife4j.version` | 3.0.3 |
+| `jaxb.version` | 3.0.1 |
+| `alibaba-fastjson.version` | 1.2.76 |
+| `alibaba-druid.version` | 1.2.6 |
+| `alibaba-p3c.version` | 2.1.1 |
+| `mybatis-plus.version` | 3.4.3.1 |
+| `knife4j-aggregation.version` | 2.0.9 |
+| `hutool.version` | 5.7.2 |
 </details>
 
 #### iHubPublish

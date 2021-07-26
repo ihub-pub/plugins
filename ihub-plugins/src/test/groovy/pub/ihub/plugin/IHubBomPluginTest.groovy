@@ -35,7 +35,7 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ cn.hutool                      │ hutool-bom                               │ 5.6.5                │'
+        result.output.contains '│ cn.hutool                           │ hutool-bom                               │ 5.6.5           │'
         result.output.contains '│ cn.hutool                           │ core                                     │ 5.6.5           │'
         result.output.contains '│ cn.hutool                           │ aop                                      │ 5.6.5           │'
         result.output.contains '│ cn.hutool                                                       │ 5.6.5                          │'
@@ -82,8 +82,8 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ org.codehaus.groovy            │ groovy-bom                               │ 2.5.14               │'
-        result.output.contains '│ cn.hutool                      │ hutool-bom                               │ 5.6.6                │'
+        result.output.contains '│ org.codehaus.groovy                 │ groovy-bom                               │ 2.5.14          │'
+        result.output.contains '│ cn.hutool                           │ hutool-bom                               │ 5.6.6           │'
         result.output.contains '│ cn.hutool                                │ core                                                  │'
         result.output.contains '│ api                            │ :a                                                              │'
         result.output.contains '│ api                            │ :b                                                              │'
