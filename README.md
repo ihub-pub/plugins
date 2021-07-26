@@ -7,7 +7,6 @@
 [![GitBook](https://img.shields.io/badge/GitBook-3884FF.svg?style=flat&logo=GitBook&logoColor=white)](https://doc.ihub.pub "IHubPub")
 [![Join the chat at https://gitter.im/ihub-pub/plugins](https://img.shields.io/badge/Gitter-45af90.svg?style=flat&logo=Gitter&logoColor=white&)](https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge "Chat On Gitter")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "Thanks to JetBrains for sponsoring")
-![License](https://img.shields.io/github/license/ihub-pub/plugins?style=flat&logo=Apache&color=282661&label)
 [![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=02303A&label&labelColor=02303A&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
 
 本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成，使用详见[samples](samples)，该项目包含插件如下：
