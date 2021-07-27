@@ -24,6 +24,7 @@ import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProjectProperty
 
+import static groovy.transform.TypeCheckingMode.SKIP
 import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
 import static org.gradle.api.plugins.JavaPlugin.API_CONFIGURATION_NAME
 import static org.gradle.api.plugins.JavaPlugin.COMPILE_ONLY_API_CONFIGURATION_NAME
@@ -34,6 +35,7 @@ import static org.gradle.api.plugins.JavaPlugin.TEST_COMPILE_ONLY_CONFIGURATION_
 import static org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
 import static org.gradle.api.plugins.JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.tap
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.BOM
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.DEPENDENCY
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.EXCLUDE
@@ -47,6 +49,7 @@ import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
  * @author liheng
  */
 @IHubExtension(value = 'iHubBom', decorated = true)
+@CompileStatic
 @SuppressWarnings('ConfusingMethodName')
 @TupleConstructor(allProperties = true, includes = 'project')
 class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IHubProjectProperty {
@@ -61,6 +64,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
      * 导入mavenBom
      * @param action 配置
      */
+    @CompileStatic(SKIP)
     void importBoms(Action<GroupSpec<ModuleSpec>> action) {
         actionExecute BOM, action, bomVersions
     }
@@ -69,6 +73,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
      * 配置依赖默认版本
      * @param action 配置
      */
+    @CompileStatic(SKIP)
     void dependencyVersions(Action<GroupSpec<ModulesSpec>> action) {
         actionExecute MODULES, action, dependencyVersions
     }
@@ -77,6 +82,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
      * 配置组版本策略（建议尽量使用bom）
      * @param action 配置
      */
+    @CompileStatic(SKIP)
     void groupVersions(Action<GroupSpec<VersionSpec>> action) {
         actionExecute GROUP, action, groupVersions
     }
@@ -85,6 +91,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
      * 排除组件依赖
      * @param action 配置
      */
+    @CompileStatic(SKIP)
     void excludeModules(Action<GroupSpec<ModulesSpec>> action) {
         actionExecute EXCLUDE, action, excludeModules
     }
@@ -93,10 +100,12 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
      * 配置组件依赖
      * @param action 配置
      */
+    @CompileStatic(SKIP)
     void dependencies(Action<DependenciesSpec> action) {
         actionExecute DEPENDENCY, action, dependencies
     }
 
+    @CompileStatic(SKIP)
     private void actionExecute(VersionType type, Action<ActionSpec<BomSpecImpl>> action, Set<BomSpecImpl> specs) {
         ActionSpec<BomSpecImpl> actionSpec = DEPENDENCY == type ? new DependenciesSpecImpl() : new GroupSpecImpl(type)
         action.execute actionSpec
@@ -105,13 +114,21 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
 
     void refreshCommonSpecs() {
         for (VersionType type : VersionType.values()) {
-            Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
+            Set<BomSpecImpl> specs = getProperty(type.fieldName) as Set<BomSpecImpl>
             if (!root) {
                 setExtProperty rootProject, type.fieldName, findExtProperty(rootProject, type.fieldName, specs).with {
                     it.findAll { specs.any { s -> it.compare s } }
                 }
             }
         }
+    }
+
+    void printConfigContent() {
+        printConfig BOM, 'Group Maven Bom Version', groupTap(35), moduleTap(), versionTap(15)
+        printConfig MODULES, 'Group Maven Module Version', groupTap(35), moduleTap(), versionTap(15)
+        printConfig GROUP, 'Group Maven Default Version', groupTap(), versionTap()
+        printConfig EXCLUDE, 'Exclude Group Modules', groupTap(40), moduleTap()
+        printConfig DEPENDENCY, 'Config Default Dependencies', dependencyTypeTap(), dependenciesTap()
     }
 
     String findVersion(String key, String defaultValue) {
@@ -126,10 +143,31 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
         projectName == project.rootProject.name
     }
 
+    private static Tuple2<String, Integer> groupTap(Integer width = null) {
+        tap 'Group', width
+    }
+
+    private static Tuple2<String, Integer> versionTap(Integer width = 30) {
+        tap 'Version', width
+    }
+
+    private static Tuple2<String, Integer> moduleTap() {
+        tap 'Module', null
+    }
+
+    private static Tuple2<String, Integer> dependencyTypeTap() {
+        tap 'DependencyType', 30
+    }
+
+    private static Tuple2<String, Integer> dependenciesTap() {
+        tap 'Dependencies'
+    }
+
+    @CompileStatic(SKIP)
     void printConfig(VersionType type, String title, Tuple2<String, Integer>... taps) {
         Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
         Set<BomSpecImpl> commonSpecs = findExtProperty rootProject, type.fieldName
-        printConfigContent "${projectName.toUpperCase()} $title", (root ? specs?.tap {
+        printConfigContent "${projectName.toUpperCase()} $title", (root ? specs.tap {
             commonSpecs*.rightShift it
         } ?: specs : specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
             BomSpecImpl impl = type in [EXCLUDE, DEPENDENCY] ? new BomSpecImpl(type, spec.id).modules(spec.modules -
