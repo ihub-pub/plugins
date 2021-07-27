@@ -18,6 +18,8 @@ package pub.ihub.plugin
 import groovy.util.logging.Slf4j
 import spock.lang.Title
 
+import static org.gradle.api.Project.DEFAULT_BUILD_FILE
+
 
 
 /**
@@ -79,12 +81,20 @@ class IHubBomPluginTest extends IHubSpecification {
                 }
             }
         '''
+        testProjectDir.newFile('a/' + DEFAULT_BUILD_FILE) << '''
+            iHubBom {
+                excludeModules {
+                    group 'cn.hutool' modules 'log'
+                }
+            }
+        '''
         def result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains '│ org.codehaus.groovy                 │ groovy-bom                               │ 2.5.14          │'
         result.output.contains '│ cn.hutool                           │ hutool-bom                               │ 5.6.6           │'
         result.output.contains '│ cn.hutool                                │ core                                                  │'
+        result.output.contains '│ cn.hutool                                │ log                                                   │'
         result.output.contains '│ api                            │ :a                                                              │'
         result.output.contains '│ api                            │ :b                                                              │'
         result.output.contains '│ api                            │ :c                                                              │'
