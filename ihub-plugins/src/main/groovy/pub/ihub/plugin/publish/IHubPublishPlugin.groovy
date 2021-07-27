@@ -105,6 +105,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             it.repositories {
                 maven {
                     url release ? iHubExt.releaseRepoUrl : iHubExt.snapshotRepoUrl
+                    allowInsecureProtocol iHubExt.repoAllowInsecureProtocol
                     iHubExt.repoUsername?.with { repoUsername ->
                         credentials {
                             username repoUsername
