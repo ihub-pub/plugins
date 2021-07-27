@@ -157,10 +157,9 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IH
 
     private void printConfig(VersionType type, String title, Tuple2<String, Integer>... taps) {
         Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
-        Set<BomSpecImpl> commonSpecs = (root ? findExtProperty(rootProject, type.fieldName) :
-            rootProject.extensions.findByType(IHubBomExtension)."$type.fieldName") as Set<BomSpecImpl>
-        printConfigContent "${projectName.toUpperCase()} $title", (root ? commonSpecs?.tap {
-            specs*.rightShift it
+        Set<BomSpecImpl> commonSpecs = findExtProperty rootProject, type.fieldName
+        printConfigContent "${projectName.toUpperCase()} $title", (root ? specs?.tap {
+            commonSpecs*.rightShift it
         } ?: specs : specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
             BomSpecImpl impl = type in [EXCLUDE, DEPENDENCY] ? new BomSpecImpl(type, spec.id).modules(spec.modules -
                 (root ? [] : commonSpecs.find { r -> spec.id == r.id }?.modules) as String[]) : spec
