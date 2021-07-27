@@ -20,7 +20,13 @@ import org.gradle.api.Project
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
+import static pub.ihub.plugin.IHubPluginMethods.tap
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.BOM
+import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.DEPENDENCY
+import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.EXCLUDE
+import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.GROUP
+import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
 import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_DEPENDENCY_VERSION_CONFIG
 import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_MAVEN_BOM_VERSION_CONFIG
 import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_VERSION_CONFIG
@@ -139,9 +145,37 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             ext.refreshCommonSpecs()
 
             project.gradle.taskGraph.whenReady {
-                ext.printConfigContent()
+                printConfigContent ext
             }
         }
+    }
+
+    private static void printConfigContent(IHubBomExtension ext) {
+        ext.printConfig BOM, 'Group Maven Bom Version', groupTap(35), moduleTap(), versionTap(15)
+        ext.printConfig MODULES, 'Group Maven Module Version', groupTap(35), moduleTap(), versionTap(15)
+        ext.printConfig GROUP, 'Group Maven Default Version', groupTap(), versionTap()
+        ext.printConfig EXCLUDE, 'Exclude Group Modules', groupTap(40), moduleTap()
+        ext.printConfig DEPENDENCY, 'Config Default Dependencies', dependencyTypeTap(), dependenciesTap()
+    }
+
+    private static Tuple2<String, Integer> groupTap(Integer width = null) {
+        tap 'Group', width
+    }
+
+    private static Tuple2<String, Integer> versionTap(Integer width = 30) {
+        tap 'Version', width
+    }
+
+    private static Tuple2<String, Integer> moduleTap() {
+        tap 'Module', null
+    }
+
+    private static Tuple2<String, Integer> dependencyTypeTap() {
+        tap 'DependencyType', 30
+    }
+
+    private static Tuple2<String, Integer> dependenciesTap() {
+        tap 'Dependencies'
     }
 
 }
