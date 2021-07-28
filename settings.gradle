@@ -18,5 +18,5 @@ plugins {
 }
 
 iHubSettings {
-    includeProjects 'ihub-aware', 'ihub-plugins', 'ihub-settings' prefix ''
+    includeProjects 'ihub-aware', 'ihub-plugins', 'ihub-settings' noPrefix
 }
