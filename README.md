@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/ihub-pub/plugins/branch/main/graph/badge.svg?token=ZQ0WR3ZSWG)](https://codecov.io/gh/ihub-pub/plugins)
 [![GitHub](https://img.shields.io/badge/GitHub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
 [![Gitee](https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
-[![Docs](https://img.shields.io/badge/Docs-8CA1AF.svg?style=flat&logo=Read+the+Docs&logoColor=white)](https://doc.ihub.pub "Docs")
+[![Docs](https://img.shields.io/badge/Docs-8CA1AF.svg?style=flat&logo=Read+the+Docs&logoColor=white)](https://doc.ihub.pub/plugins "Docs")
 [![Join the chat at https://gitter.im/ihub-pub/plugins](https://img.shields.io/badge/Gitter-45af90.svg?style=flat&logo=Gitter&logoColor=white&)](https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge "Chat On Gitter")
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "Thanks to JetBrains for sponsoring")
 [![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=02303A&label&labelColor=02303A&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
