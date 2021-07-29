@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="cn">
 <head>
+  <link rel="icon" href="../favicon.ico" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta charset="UTF-8">
@@ -10,9 +11,43 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
-      //...
+        repo: 'ihub-pub/plugins',
+        name: 'IHub Plugins',
+        logo: 'https://doc.ihub.pub/favicon.ico',
+        nameLink: '/',
+        // themeColor: 'rgb(42,175,40)',
+        homepage: '../README.md',
+        // alias: {
+        //     '.*?/changelog': '../CHANGELOG.md',
+        //     '/.*/_navbar.md': '/_navbar.md',
+        // },
+        auto2top: true,
+        loadSidebar: true,
+        // autoHeader: true,
+        loadNavbar: true,
+        mergeNavbar: true,
+        maxLevel: 4,
+        subMaxLevel: 2,
+        fallbackLanguages: ['en'],
+        ga: 'G-G60CQD0XTC',
+        search: {
+            maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+            // paths: [], // or 'auto'
+            placeholder: '搜索',
+            noData: '找不到结果',
+            depth: 2, // 搜索标题的最大层级, 1 - 6
+            hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
+            namespace: 'plugins'
+        }
     }
   </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"/>
+<!--  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"/>-->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"/>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/ga.min.js"/>
+  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"/>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"/>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-groovy.min.js"/>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"/>
 </body>
 </html>
