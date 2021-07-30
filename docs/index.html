@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="cn">
 <head>
-  <link rel="icon" href="../favicon.ico"/>
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/favicon.ico"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/themes/vue.css">
 </head>
 <body>
   <div id="app"></div>
@@ -15,33 +15,40 @@
         name: 'IHub Plugins',
         logo: 'https://doc.ihub.pub/favicon.ico',
         nameLink: '/',
+        // homepage: 'https://cdn.jsdelivr.net/gh/ihub-pub/plugins/README.md',
+        homepage: '../README.md',
+        alias: {
+            '.*?/CHANGELOG': 'https://cdn.jsdelivr.net/gh/ihub-pub/plugins/CHANGELOG.md'
+        },
         auto2top: true,
         loadSidebar: true,
-        // autoHeader: true,
+        autoHeader: true,
         loadNavbar: true,
         mergeNavbar: true,
         maxLevel: 4,
         subMaxLevel: 2,
-        fallbackLanguages: ['en'],
         ga: 'G-G60CQD0XTC',
         search: {
-            maxAge: 86400000, // 过期时间，单位毫秒，默认一天
-            // paths: [], // or 'auto'
             placeholder: '搜索',
             noData: '找不到结果',
-            depth: 2, // 搜索标题的最大层级, 1 - 6
-            hideOtherSidebarContent: false, // 是否隐藏其他侧边栏内容
             namespace: 'plugins'
         }
     }
   </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
-<!--  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>-->
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/ga.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-groovy.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/ga.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-groovy.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <!-- gitter -->
+  <script>
+      ((window.gitter = {}).chat = {}).options = {
+          room: 'ihub-pub/plugins'
+      };
+  </script>
+  <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
 </body>
 </html>
