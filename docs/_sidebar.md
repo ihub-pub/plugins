@@ -1,11 +1,13 @@
-* [Home](/)
-* [Guide](demo.md "The greatest guide in the world")
-- Getting started
-
-    - [Quick start](demo.md)
-    - [Writing more pages](more-pages.md)
-    - [Custom navbar](custom-navbar.md)
-    - [Cover page](cover.md)
-
-- [Awesome docsify](awesome.md)
-- [Changelog](changelog.md)
+* [📚 简介](/)
+* [🔖 版本](/CHANGELOG.md)
+- 📦 插件
+  - [设置插件](iHubSettings.md '配置插件仓库以及子项目 ')
+  - [基础插件](iHub.md '配置组件仓库 ')
+  - [组件依赖管理](iHubBom.md '配置组件默认依赖版本以及兼容性管理 ')
+  - [Java插件](iHubJava.md '配置一些默认依赖以及兼容性配置 ')
+  - [Groovy插件](iHubGroovy.md '配置Groovy组件依赖 ')
+  - [发布插件](iHubPublish.md '配置组件发布仓库以及其他个性化组件配置 ')
+  - [测试插件](iHubTest.md '测试相关插件 ')
+  - [验证插件](iHubVerification.md '配置代码静态检查以及测试用例覆盖等 ')
+  - [Boot插件](iHubBoot.md '用于镜像个性化配置 ')
+  - [Native插件](iHubNative.md '用于原生镜像个性化配置 ')
