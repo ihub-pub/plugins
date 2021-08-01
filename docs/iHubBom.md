@@ -1,5 +1,5 @@
 # 组件依赖管理
-配置组件默认依赖版本以及兼容性管理，插件扩展名`iHubBom`，[属性说明](/?id=属性配置表)
+配置组件默认依赖版本以及兼容性管理，插件扩展名`iHubBom`，[属性说明](/explanation?id=属性配置说明)
 
 > 插件配置方式详见[样例](samples/sample-extensions/bom.gradle)，插件内置常见组件版本如下，可通过如下属性配置覆盖默认版本，配置于`gradle.properties`文件，配置格式`属性名`，如`ihub-libs.version=1.0.0`，详细属性如下：
 
