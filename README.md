@@ -6,10 +6,11 @@
 [![Gitee](https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![Docs](https://img.shields.io/badge/Docs-8CA1AF.svg?style=flat&logo=Read+the+Docs&logoColor=white)](https://doc.ihub.pub/plugins "Docs")
 [![Join the chat at https://gitter.im/ihub-pub/plugins](https://img.shields.io/badge/Gitter-45af90.svg?style=flat&logo=Gitter&logoColor=white&)](https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge "Chat On Gitter")
-[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "Thanks to JetBrains for sponsoring")
-[![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=02303A&label&labelColor=02303A&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
+[![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=white&label=release&labelColor=02303A&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
 
-本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成，使用详见[samples](https://github.com/henry-hub/plugins/tree/main/samples)，该项目包含插件如下：
+本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成。
+
+## 📦 插件列表
 
 | 插件ID | 插件名称 | 插件描述 |
 |----|-------------|-------------|
@@ -24,14 +25,18 @@
 | `pub.ihub.plugin.ihub-boot` | [Boot插件](https://doc.ihub.pub/plugins/#/iHubBoot) | 用于镜像个性化配置 |
 | `pub.ihub.plugin.ihub-native` | [Native插件](https://doc.ihub.pub/plugins/#/iHubNative) | 用于原生镜像个性化配置 |
 
-## 属性配置表
-插件配置属性获取目前支持4种方式：`扩展属性`（`Ext`）、`项目属性`（`Prj`）、`系统属性`（`Sys`）、`环境属性`（`Env`）， 
-属性优先级：`Sys` > `Env` > `Prj` > `Ext`
-> - `Ext`（Extension）：插件自定义扩展属性，配置于`build.gradle`文件，配置方式详见[samples](https://github.com/henry-hub/plugins/tree/main/samples)
-> - `Prj`（Project）：项目属性，配置于`gradle.properties`文件，配置格式`扩展名`.`属性名`，如`iHub.mavenLocalEnabled=true`
-> - `Sys`（System）：系统属性，如命令行传递的信息等，配置格式`扩展名`.`属性名`，如`-DiHub.mavenLocalEnabled=true`
-> - `Env`（Environment）：环境变量属性，配置格式全部大写，多个单词，用`_`分隔，如`MAVEN_LOCAL_ENABLED=true`
+## 🎉 上手指南
 
-## Contributing
+使用详见[samples](https://github.com/henry-hub/plugins/tree/main/samples)
 
-Contributors are welcomed to join IHub Plugins project. Please check [CONTRIBUTING](https://github.com/ihub-pub/plugins/blob/main/CONTRIBUTING.md) about how to contribute to this project.
+## 👨‍ 贡献者
+
+请阅读 [CONTRIBUTING](https://github.com/ihub-pub/plugins/blob/main/CONTRIBUTING.md) 查阅为该项目做出贡献的开发者。
+
+## 📜 版权说明
+
+![GitHub](https://img.shields.io/github/license/ihub-pub/plugins)
+
+## 🙏 鸣谢
+
+[![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "Thanks to JetBrains for sponsoring")
