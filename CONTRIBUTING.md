@@ -19,3 +19,7 @@ IHub欢迎大家为IHub贡献 [Issues](https://github.com/ihub-pub/plugins/issue
 ## 💬加入社区
 
 欢迎加入 [Gitter](https://gitter.im/ihub-pub/plugins) 参与讨论
+
+## 👨‍💻贡献者
+
+![GitHub Contributors Image](https://contrib.rocks/image?repo=ihub-pub/plugins)
