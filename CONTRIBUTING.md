@@ -12,9 +12,9 @@ IHub欢迎大家为IHub贡献 [Issues](https://github.com/ihub-pub/plugins/issue
 
 ### 🎯 发起 [Pull Request](https://github.com/ihub-pub/plugins/pulls)
 
-* 提交`Pull Request`须遵守模板规范。
-* 请确保您的提交的内容符合代码规范且通过静态检查以及所有测试，检查不通过不予合并。
-* 所提交的相关内容测试用例 [覆盖率](https://codecov.io/gh/ihub-pub/plugins) 不低于90%。
+> * 提交`Pull Request`须遵守模板规范。
+> * 请确保您的提交的内容符合代码规范且通过静态检查以及所有测试，检查不通过不予合并。
+> * 所提交的相关内容测试用例 [覆盖率](https://codecov.io/gh/ihub-pub/plugins) 不低于90%。
 
 ## 💬 加入社区
 
