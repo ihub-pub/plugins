@@ -1,9 +1,9 @@
 ---
 name: Blank
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
-assignees: ''
+about: 其他问题
+title: "\U0001F4AD XXX"
+labels: question
+assignees: henry-hub
 
 ---
 

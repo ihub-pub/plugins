@@ -1,38 +1,31 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
+about: 提交BUG
+title: "\U0001F41B XXX"
 labels: bug
-assignees: ''
+assignees: henry-hub
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**问题描述（必填）**
+描述。。。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**复现步骤（必填）**
+1. 。。。
+2. 。。。
+3. 。。。
+。。。
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**预期行为**
+描述。。。
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**截图**
+如果有，请添加屏幕截图以帮助解释您的问题。
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**版本信息**
+ - 操作系统：[如 Windows10]
+ - JDK：[如 JDK11]
+ - IHub：[如 x.x.x]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+**附加内容**
+描述。。。
