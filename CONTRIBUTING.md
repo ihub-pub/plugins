@@ -1,32 +1,21 @@
-# Contributing to Open Source Guides
+# 🏗开源贡献指南
 
-Thanks for checking out the Open Source Guides! We're excited to hear and learn from you. Your experiences will benefit others who read and use these guides.
+IHub欢迎大家为IHub贡献 [Issues](https://github.com/ihub-pub/plugins/issues) 以及 [Pull Requests](https://github.com/ihub-pub/plugins/pulls) ，为开源社区做贡献，为了维护者更方便维护项目以及保障源码质量，请贡献者务必遵守 [贡献者行为准则](https://github.com/ihub-pub/plugins/blob/main/CODE_OF_CONDUCT.md) 以及如下规范。
 
-We've put together the following guidelines to help you figure out where you can best be helpful.
+## 🎖如何贡献
 
-## Table of Contents
+参与贡献前，请先搜索 [Issues](https://github.com/ihub-pub/plugins/issues) 和 [Pull Requests](https://github.com/ihub-pub/plugins/pulls) ，看看其他人是否提出了类似的想法或问题，避免重复提交。
 
-0. [Ground rules & expectations](#ground-rules--expectations)
-0. [How to contribute](#how-to-contribute)
-0. [Community](#community)
+### 💭提交 [Issues](https://github.com/ihub-pub/plugins/issues)
+> * 提交`Issues`须遵守模板规范，便于维护者收录问题或者定位问题。
+> * 添加内容时，请考虑它是否具有广泛的价值，是否具有通用性，请不要添加您个人或工作具体业务内容的或引用链接。
 
-## Ground rules & expectations
+### 🎯发起 [Pull Request](https://github.com/ihub-pub/plugins/pulls)
 
-Before we get started, here are a few things we expect from you (and that you should expect from others):
+* 提交`Pull Request`须遵守模板规范。
+* 请确保您的提交的内容符合代码规范且通过静态检查以及所有测试，检查不通过不予合并。
+* 所提交的相关内容测试用例 [覆盖率](https://codecov.io/gh/ihub-pub/plugins) 不低于90%。
 
-* Be kind and thoughtful in your conversations around this project. We all come from different backgrounds and projects, which means we likely have different perspectives on "how open source is done." Try to listen to others rather than convince them that your way is correct.
-* Open Source Guides are released with a [Contributor Code of Conduct](./CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
-* If you open a pull request, please ensure that your contribution passes all tests. If there are test failures, you will need to address them before we can merge your contribution.
-* When adding content, please consider if it is widely valuable. Please don't add references or links to things you or your employer have created as others will do so if they appreciate it.
+## 💬加入社区
 
-## How to contribute
-
-If you'd like to contribute, start by searching through the [issues](https://github.com/ihub-pub/plugins/issues) and [pull requests](https://github.com/ihub-pub/plugins/pulls) to see whether someone else has raised a similar idea or question.
-
-If you don't see your idea listed, and you think it fits into the goals of this guide, open a pull request.
-
-## Community
-
-Discussions about the Open Source Guides take place on this repository's [Issues](https://github.com/ihub-pub/plugins/issues) and [Pull Requests](https://github.com/ihub-pub/plugins/pulls) sections. Anybody is welcome to join these conversations.
-
-Wherever possible, do not take these conversations to private channels, including contacting the maintainers directly. Keeping communication public means everybody can benefit and learn from the conversation.
+欢迎加入 [Gitter](https://gitter.im/ihub-pub/plugins) 参与讨论
