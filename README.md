@@ -2,6 +2,7 @@
 [![Gradle Build](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f866ca35cbb44347a210722a2da8aabc)](https://app.codacy.com/gh/ihub-pub/plugins?utm_source=github.com&utm_medium=referral&utm_content=ihub-pub/plugins&utm_campaign=Badge_Grade_Settings)
 [![codecov](https://codecov.io/gh/ihub-pub/plugins/branch/main/graph/badge.svg?token=ZQ0WR3ZSWG)](https://codecov.io/gh/ihub-pub/plugins)
+[![IHub](https://img.shields.io/badge/IHub-white.svg?style=flat&logo=Micro.blog&logoColor=black)](https://ihub.pub "IHub")
 [![GitHub](https://img.shields.io/badge/GitHub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
 [![Gitee](https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![Docs](https://img.shields.io/badge/Docs-8CA1AF.svg?style=flat&logo=Read+the+Docs&logoColor=white)](https://doc.ihub.pub/plugins "Docs")
@@ -29,7 +30,7 @@
 
 使用详见[samples](https://github.com/henry-hub/plugins/tree/main/samples)
 
-## 👨‍ 贡献者
+## 👨‍💻 贡献者
 
 请阅读 [CONTRIBUTING](https://github.com/ihub-pub/plugins/blob/main/CONTRIBUTING.md) 查阅为该项目做出贡献的开发者。
 
