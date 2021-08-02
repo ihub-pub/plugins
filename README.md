@@ -1,4 +1,8 @@
-# IHub Plugins
+<a target="_blank" href="https://ihub.pub/">
+    <img src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/ihub.svg" height="150">
+    <img src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/plugins.svg" height="150">
+</a>
+
 [![Gradle Build](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f866ca35cbb44347a210722a2da8aabc)](https://app.codacy.com/gh/ihub-pub/plugins?utm_source=github.com&utm_medium=referral&utm_content=ihub-pub/plugins&utm_campaign=Badge_Grade_Settings)
 [![codecov](https://codecov.io/gh/ihub-pub/plugins/branch/main/graph/badge.svg?token=ZQ0WR3ZSWG)](https://codecov.io/gh/ihub-pub/plugins)
