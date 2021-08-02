@@ -1,6 +1,6 @@
 <a target="_blank" href="https://ihub.pub/">
     <img src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/ihub.svg" height="150">
-    <img src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/plugins.svg" height="150">
+    <img src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/ihub_plugins.svg" height="150">
 </a>
 
 [![Gradle Build](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
