@@ -15,8 +15,7 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.api.Plugin
-import org.gradle.api.Project
+import groovy.transform.CompileStatic
 
 import java.lang.annotation.Documented
 import java.lang.annotation.Retention
@@ -28,30 +27,19 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 
 
 /**
- * IHub插件
+ * IHub任务
  * @author henry
  */
 @Documented
 @Retention(RUNTIME)
 @Target(TYPE)
-@interface IHubPlugin {
+@CompileStatic
+@interface IHubTask {
 
     /**
-     * 插件扩展类型
-     * @return 扩展类型
+     * 任务名称
+     * @return 名称
      */
-    Class<? extends IHubProjectExtensionAware> value() default IHubProjectExtensionAware
-
-    /**
-     * 前置应用插件
-     * @return 插件
-     */
-    Class<Plugin<Project>>[] beforeApplyPlugins() default []
-
-    /**
-     * 插件任务
-     * @return 任务
-     */
-    Class<IHubProjectTask>[] tasks() default []
+    String value()
 
 }

@@ -57,6 +57,10 @@ abstract class IHubProjectPluginAware<T extends IHubProjectExtensionAware> imple
                 project.extensions.add annotation.value(), extension
             }
         }
+        iHubPlugin.tasks().each {
+            IHubTask task = it.getAnnotation IHubTask
+            registerTask task.value(), it, { it.group = 'ihub' }
+        }
         apply()
         beforeEvaluateClosure.each {
             project.beforeEvaluate it
