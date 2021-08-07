@@ -53,6 +53,8 @@ class IHubVerificationPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
+        testProjectDir.newFolder 'conf', 'pmd'
+        testProjectDir.newFile 'conf/pmd/ruleset.xml'
         result = gradleBuilder.withArguments('-DiHubTest.runSkippedPropNames=java.endorsed.dirs').build()
 
         then: '检查结果'

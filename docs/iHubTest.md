@@ -1,4 +1,3 @@
-# 测试插件
 测试相关插件，插件扩展名`iHubTest`，[属性说明](/explanation?id=属性配置说明)
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
