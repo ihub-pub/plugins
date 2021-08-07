@@ -16,6 +16,9 @@
 description = 'IHub Gradle Plugins'
 
 repositories {
+    maven {
+        url 'https://maven.aliyun.com/repository/spring-plugin'
+    }
     gradlePluginPortal()
 }
 
