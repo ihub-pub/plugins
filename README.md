@@ -23,6 +23,7 @@
 |----|-------------|-------------|
 | `pub.ihub.plugin.ihub-settings` | [设置插件](https://doc.ihub.pub/plugins/#/iHubSettings) | 配置插件仓库以及子项目 |
 | `pub.ihub.plugin` | [基础插件](https://doc.ihub.pub/plugins/#/iHub) | 配置组件仓库 |
+| `pub.ihub.plugin.ihub-generate` | [配置插件](https://doc.ihub.pub/plugins/#/iHubGenerate) | 用于生成项目配置 |
 | `pub.ihub.plugin.ihub-bom` | [组件依赖管理](https://doc.ihub.pub/plugins/#/iHubBom) | 配置组件默认依赖版本以及兼容性管理 |
 | `pub.ihub.plugin.ihub-java` | [Java插件](https://doc.ihub.pub/plugins/#/iHubJava) | 配置一些默认依赖以及兼容性配置 |
 | `pub.ihub.plugin.ihub-groovy` | [Groovy插件](https://doc.ihub.pub/plugins/#/iHubGroovy) | 配置Groovy组件依赖 |
@@ -34,8 +35,8 @@
 
 ## 🎉 上手指南
 
-使用详见[samples](https://github.com/henry-hub/plugins/tree/main/samples)
+使用详见[samples](https://github.com/ihub-pub/plugins/tree/main/samples)
 
-## 👨‍💻 贡献者
+## 👨‍💻 开源贡献指南
 
-请阅读 [CONTRIBUTING](https://github.com/ihub-pub/plugins/blob/main/CONTRIBUTING.md) 查阅为该项目做出贡献的开发者。
+请阅读 [CONTRIBUTING](./CONTRIBUTING.md) 为该项目做出贡献

@@ -1,4 +1,3 @@
-# 验证插件
 配置代码静态检查以及测试用例覆盖等，插件扩展名`iHubVerification`，[属性说明](/explanation?id=属性配置说明)
 
 > 属性说明：`pmd`开头为`PMD静态检查`，`codenarc`开头为`Codenarc静态检查`，`jacoco`开头为`Jacoco覆盖率检查`
