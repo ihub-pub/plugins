@@ -3,15 +3,15 @@
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
-| `mavenLocalEnabled` | 是否启用本地仓库 | `false` | ✔ | ✔ | ❌ | ❌ |
-| `releaseRepoUrl` | 正式版本仓库 | ❌ | ✔ | ✔ | ❌ | ❌ |
-| `snapshotRepoUrl` | 快照版本仓库 | ❌ | ✔ | ✔ | ❌ | ❌ |
+| `mavenLocalEnabled` | 是否启用本地仓库 | `false` | ❌ | ✔ | ❌ | ❌ |
+| `releaseRepoUrl` | 正式版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
+| `snapshotRepoUrl` | 快照版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
 | `repoAllowInsecureProtocol` | 是否允许不安全协议（是否允许http） | `false` | ✔ | ✔ | ❌ | ❌ |
 | `repoIncludeGroup` | 仓库包含组（用于限制仓库范围） | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `repoIncludeGroupRegex` | 仓库包含组正则（用于限制仓库范围） | `.*` | ✔ | ✔ | ❌ | ❌ |
 | `repoUsername` | 仓库用户名 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `repoPassword` | 仓库密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
-| `customizeRepoUrl` | 自定义仓库 | ❌ | ✔ | ✔ | ❌ | ❌ |
+| `customizeRepoUrl` | 自定义仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
 | `javaJaxbRuntime` | Jaxb运行时配置 | `true` | ✔ | ✔ | ✔ | ❌ |
 | `javaCompatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
