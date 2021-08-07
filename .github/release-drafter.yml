@@ -21,27 +21,12 @@ change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&'
 version-resolver:
   major:
-    labels:
-      - 'major'
+    labels: 'major'
   minor:
-    labels:
-      - 'minor'
+    labels: 'minor'
   patch:
-    labels:
-      - 'patch'
+    labels: 'patch'
   default: patch
-autolabeler:
-  - label: 'documentation'
-    files: '*.md'
-  - label: 'bug'
-    branch: '/fix\/.+/'
-    title: '/.*fix.*/'
-  - label: 'enhancement'
-    branch:
-      - '/feature\/.+/'
-      - '/(\d+\.)+x/'
-  - label: 'chore'
-    title: '/.*from.*to.*/'
 template: |
   ## ✏️ Changes
 
