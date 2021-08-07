@@ -39,4 +39,4 @@
 
 ## 👨‍💻 开源贡献指南
 
-请阅读 [CONTRIBUTING](./CONTRIBUTING.md) 为该项目做出贡献
+请阅读 [CONTRIBUTING](CONTRIBUTING.md) 为该项目做出贡献
