@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -41,13 +40,18 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
      * 插件扩展类型
      * @return 扩展类型
      */
-    Class<? extends IHubProjectExtensionAware> value() default {
-    }
+    Class<? extends IHubProjectExtensionAware> value() default IHubProjectExtensionAware
 
     /**
      * 前置应用插件
      * @return 插件
      */
     Class<Plugin<Project>>[] beforeApplyPlugins() default []
+
+    /**
+     * 插件任务
+     * @return 任务
+     */
+    Class<IHubProjectTask>[] tasks() default []
 
 }

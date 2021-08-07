@@ -1,4 +1,3 @@
-# 基础插件
 配置组件仓库，插件扩展名`iHub`，[属性说明](/explanation?id=属性配置说明)
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |

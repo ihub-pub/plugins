@@ -25,7 +25,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 /**
  * @author henry
  */
-@IHubPlugin(value = IHubDemoExtension, beforeApplyPlugins = IHubSimplePlugin)
+@IHubPlugin(value = IHubDemoExtension, beforeApplyPlugins = IHubSimplePlugin, tasks = IHubDemoTask)
 class IHubDemoPlugin extends IHubProjectPluginAware<IHubDemoExtension> {
 
     @Override
@@ -40,9 +40,6 @@ class IHubDemoPlugin extends IHubProjectPluginAware<IHubDemoExtension> {
             logger.info 'after extension'
         }
 
-        registerTask('demo', DefaultTask) {
-            logger.info it.name
-        }
         withTask('demo') {
             logger.info it.name
         }

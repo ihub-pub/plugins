@@ -1,1 +1,1 @@
-- [![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=white&label=release&labelColor=02303A&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
+- [![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=white&label=IHub&labelColor=02303A&logo=Gradle)](https://doc.ihub.pub/plugins "IHub")
