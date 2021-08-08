@@ -20,11 +20,10 @@ jobs:
       - name: Run Codacy Analysis CLI
         uses: codacy/codacy-analysis-cli-action@4.0.0
         with:
-#           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           verbose: true
           api-token: ${{ secrets.CODACY_API_TOKEN }}
           codacy-api-base-url: https://api.codacy.com/api/v3
-          directory: plugins
+          directory: /home/runner/work/plugins/plugins/
           clang-tidy-output: path/to/output
           faux-pas-output: path/to/output
           upload: true
