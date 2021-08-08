@@ -35,11 +35,11 @@ jobs:
         run: gradle build
 
       - name: Upload Coverage Reports
-#         if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
+        if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
         run: |
           gradle jacocoTestReport
           bash <(curl -s https://codecov.io/bash)
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
 
       - name: Codacy Coverage Reporter
   # You may pin to the exact commit or the version.
@@ -51,7 +51,7 @@ jobs:
     # API account token to retrieve your remote Codacy configuration for the project being analyzed
 #     api-token: # optional
     # Optional comma separated list of coverage reports to send to Codacy
-#     coverage-reports: # optional, default is 
+          coverage-reports: report.xml
 
       - name: Upload Test Result
         if: ${{ failure() }}
