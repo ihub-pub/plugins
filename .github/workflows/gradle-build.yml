@@ -26,23 +26,18 @@ jobs:
           server-id: github
           settings-path: ${{ github.workspace }}
 
-#       - name: Build with Gradle (fast)
-#         if: ${{ github.event_name != 'schedule' }}
-#         run: gradle build -Dfast.test=true
+      - name: Build with Gradle (fast)
+        if: ${{ github.event_name != 'schedule' }}
+        run: gradle build -Dfast.test=true
 
       - name: Build with Gradle (all)
-#         if: ${{ github.event_name == 'schedule' }}
+        if: ${{ github.event_name == 'schedule' }}
         run: gradle build
 
       - name: Upload Coverage Reports
-#         if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
+        if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
         run: |
           bash <(curl -s https://codecov.io/bash)
-          export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Groovy -r ihub-aware/build/reports/jacoco/test/jacocoTestReport.xml --partial
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Groovy -r ihub-plugins/build/reports/jacoco/test/jacocoTestReport.xml --partial
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Groovy -r ihub-settings/build/reports/jacoco/test/jacocoTestReport.xml --partial
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) final
 
       - name: Upload Test Result
         if: ${{ failure() }}
