@@ -41,6 +41,18 @@ jobs:
           bash <(curl -s https://codecov.io/bash)
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r report.xml
 
+      - name: Codacy Coverage Reporter
+  # You may pin to the exact commit or the version.
+  # uses: codacy/codacy-coverage-reporter-action@3f58b0e12285221110375dffef1150534700246b
+        uses: codacy/codacy-coverage-reporter-action@1.0.0
+        with:
+    # API project token to retrieve your remote Codacy configuration for the project being analyzed
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+    # API account token to retrieve your remote Codacy configuration for the project being analyzed
+#     api-token: # optional
+    # Optional comma separated list of coverage reports to send to Codacy
+#     coverage-reports: # optional, default is 
+
       - name: Upload Test Result
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
