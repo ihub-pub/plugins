@@ -24,10 +24,10 @@ jobs:
           verbose: true
           api-token: ${{ secrets.CODACY_API_TOKEN }}
           codacy-api-base-url: https://api.codacy.com/api/v3
-#           directory: # optional
+          directory: plugins
+          clang-tidy-output: path/to/output
+          faux-pas-output: path/to/output
           upload: true
-          clang-tidy-output: "path/to/output"
-          faux-pas-output: "path/to/output"
           output: results.sarif
           format: sarif
           gh-code-scanning-compat: true
