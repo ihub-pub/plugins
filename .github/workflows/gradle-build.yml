@@ -36,6 +36,7 @@ jobs:
           rm -f ~/.gradle/caches/**/gc.properties
 
   test:
+    if: ${{ github.event_name != 'push' }}
     runs-on: ubuntu-latest
     steps:
       - name: Cache Gradle Modules
