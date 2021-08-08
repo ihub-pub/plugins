@@ -37,20 +37,12 @@ jobs:
       - name: Upload Coverage Reports
 #         if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
         run: |
-          gradle jacocoTestReport
           bash <(curl -s https://codecov.io/bash)
           export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ihub-aware/build/reports/jacoco/test/jacocoTestReport.xml
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ihub-plugins/build/reports/jacoco/test/jacocoTestReport.xml
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ihub-settings/build/reports/jacoco/test/jacocoTestReport.xml
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Groovy -r ihub-aware/build/reports/jacoco/test/jacocoTestReport.xml --partial
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Groovy -r ihub-plugins/build/reports/jacoco/test/jacocoTestReport.xml --partial
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Groovy -r ihub-settings/build/reports/jacoco/test/jacocoTestReport.xml --partial
           bash <(curl -Ls https://coverage.codacy.com/get.sh) final
-
-      - name: Codacy Coverage Reporter
-        if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
-        uses: codacy/codacy-coverage-reporter-action@1.0.0
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ihub-aware/build/reports/jacoco/test/jacocoTestReport.xml,,
 
       - name: Upload Test Result
         if: ${{ failure() }}
