@@ -24,33 +24,13 @@ jobs:
           verbose: true
           api-token: ${{ secrets.CODACY_API_TOKEN }}
           codacy-api-base-url: https://api.codacy.com/api/v3
+#           directory: # optional
           upload: true
           output: results.sarif
           format: sarif
           gh-code-scanning-compat: true
-
-    # The directory to be analyzed
-#     directory: # optional
-    # Number of tools to run in parallel
-#     parallel: # optional
-    # The name of the tool to analyze the code
-#     tool: # optional
-    # Maximum time each tool has to execute
-#     tool-timeout: # optional
-    # Fail the analysis if any tool fails to run
-#     fail-if-incomplete: # optional
-    # Allow network access for tools
-#     allow-network: # optional
-    # Force files to be readable by changing the permissions before running the analysis
-#     force-file-permissions: # optional
-    # Run GoSec. Possible values (true|false)
-#     run-gosec: # optional
-    # Run StaticCheck. Possible values (true|false)
-#     run-staticcheck: # optional
-    # Path to a file containing the output of Clang Tidy.
-#     clang-tidy-output: # optional
-    # Path to a file containing the output of Faux Pas.
-#     faux-pas-output: # optional
+          run-gosec: true
+          run-staticcheck: true
 
       - name: Upload SARIF results file
         uses: github/codeql-action/upload-sarif@v1
