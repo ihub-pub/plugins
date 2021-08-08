@@ -23,12 +23,9 @@ jobs:
           verbose: true
           api-token: ${{ secrets.CODACY_API_TOKEN }}
           codacy-api-base-url: https://api.codacy.com/api/v3
-          directory: /home/runner/work/plugins/plugins/
-          upload: true
           output: results.sarif
           format: sarif
           gh-code-scanning-compat: true
-          run-docker-tools: false
 
       - name: Upload SARIF results file
         uses: github/codeql-action/upload-sarif@v1
