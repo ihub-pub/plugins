@@ -38,12 +38,6 @@ class IHubGithubConfigTask extends IHubProjectTask {
         // Release Drafter Config
         copyFile '.github/release-drafter.yml'
         copyFile '.github/workflows/release-drafter.yml'
-        // Pull Request Template
-        copyFile '.github/pull_request_template.md'
-        // Issue Template
-        copyFile '.github/ISSUE_TEMPLATE/blank.md'
-        copyFile '.github/ISSUE_TEMPLATE/bug_report.md'
-        copyFile '.github/ISSUE_TEMPLATE/feature-request.md'
     }
 
     @CompileStatic(SKIP)
