@@ -1,6 +1,6 @@
 # 🏗 开源贡献指南
 
-IHub欢迎大家为IHub贡献 [Issues](https://github.com/ihub-pub/plugins/issues) 以及 [Pull Requests](https://github.com/ihub-pub/plugins/pulls) ，为开源社区做贡献，为了维护者更方便维护项目以及保障源码质量，请贡献者务必遵守 [贡献者行为准则](CODE_OF_CONDUCT.md) 以及如下规范。
+IHub欢迎大家为IHub贡献 [Issues](https://github.com/ihub-pub/plugins/issues) 以及 [Pull Requests](https://github.com/ihub-pub/plugins/pulls) ，为开源社区做贡献，为了维护者更方便维护项目以及保障源码质量，请贡献者务必遵守 [贡献者行为准则](https://github.com/ihub-pub/.github/blob/main/CODE_OF_CONDUCT.md) 以及如下规范。
 
 ## 🎖 如何贡献
 
