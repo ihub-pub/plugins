@@ -44,17 +44,17 @@ final class IHubVersionProperties {
     static final Map<String, Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
         // TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
 //        (IHUB_LIBS)           : bom('pub.ihub.lib', 'ihub-libs', '1.0.0-SNAPSHOT'),
-        (SPRING_BOOT)         : bom('org.springframework.boot', 'spring-boot-dependencies', '2.5.1'),
+        (SPRING_BOOT)         : bom('org.springframework.boot', 'spring-boot-dependencies', '2.5.3'),
         (SPRING_CLOUD)        : bom('org.springframework.cloud', 'spring-cloud-dependencies', '2020.0.3'),
         (SPRING_STATEMACHINE) : bom('org.springframework.statemachine', 'spring-statemachine-bom', '3.0.1'),
         (SPRING_CLOUD_ALIBABA): bom('com.alibaba.cloud', 'spring-cloud-alibaba-dependencies', '2021.1'),
-        (SPRING_BOOT_ADMIN)   : bom('de.codecentric', 'spring-boot-admin-dependencies', '2.4.2'),
+        (SPRING_BOOT_ADMIN)   : bom('de.codecentric', 'spring-boot-admin-dependencies', '2.5.0'),
         (KNIFE4J)             : bom('com.github.xiaoymin', 'knife4j-dependencies', '3.0.3'),
-        (JAXB)                : bom('com.sun.xml.bind', 'jaxb-bom-ext', '3.0.1'),
+        (JAXB)                : bom('com.sun.xml.bind', 'jaxb-bom-ext', '3.0.2'),
     ]
 
     static final Map<String, Tuple3<String, String[], String>> GROUP_DEPENDENCY_VERSION_CONFIG = [
-        (ALIBABA_FASTJSON)   : dependency('com.alibaba', '1.2.76', 'fastjson'),
+        (ALIBABA_FASTJSON)   : dependency('com.alibaba', '1.2.78', 'fastjson'),
         (ALIBABA_DRUID)      : dependency('com.alibaba', '1.2.6', 'druid', 'druid-spring-boot-starter'),
         (ALIBABA_P3C)        : dependency('com.alibaba.p3c', '2.1.1', 'p3c-pmd'),
         (MYBATIS_PLUS)       : dependency('com.baomidou', '3.4.3.1',
@@ -63,7 +63,7 @@ final class IHubVersionProperties {
     ]
 
     static final Map<String, Tuple2<String, String>> GROUP_VERSION_CONFIG = [
-        (HUTOOL): group('cn.hutool', '5.7.2'),
+        (HUTOOL): group('cn.hutool', '5.7.8'),
     ]
 
     private static Tuple3<String, String, String> bom(String group, String module, String version) {
