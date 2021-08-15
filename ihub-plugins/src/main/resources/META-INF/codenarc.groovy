@@ -31,7 +31,7 @@ ruleset {
     ruleset('rulesets/enhanced.xml')
     ruleset('rulesets/exceptions.xml')
     ruleset('rulesets/formatting.xml') {
-        'LineLength' ignoreLineRegex: /.*'.*'.*|.*".*".*|.*测试.*|class .*/
+        'LineLength' ignoreLineRegex: /.*'.*'.*|.*".*".*|.*\u6d4b\u8bd5.*|class .*/
         'ConsecutiveBlankLines' enabled: false
         'SpaceAroundMapEntryColon' characterBeforeColonRegex: /\s|\w|\)|'|"|[\u4e00-\u9fa5]/, characterAfterColonRegex: /\s/
     }
@@ -48,7 +48,7 @@ ruleset {
     ruleset('rulesets/logging.xml')
     ruleset('rulesets/naming.xml') {
         'FieldName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*', ignoreFieldNames: 'serialVersionUID'
-        'MethodName' ignoreMethodNames: '*测试*,*test*'
+        'MethodName' ignoreMethodNames: '*\u6d4b\u8bd5*,*test*'
         'PropertyName' staticFinalRegex: '[A-Z][A-Z0-9_]*', staticRegex: '[a-z][a-zA-Z0-9_]*'
     }
     ruleset('rulesets/security.xml')
