@@ -22,7 +22,6 @@ import org.gradle.api.GradleException
 import pub.ihub.plugin.IHubExtProperty
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
-import pub.ihub.plugin.IHubProjectProperty
 
 import static groovy.transform.TypeCheckingMode.SKIP
 import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
@@ -52,7 +51,7 @@ import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.MODULES
 @CompileStatic
 @SuppressWarnings('ConfusingMethodName')
 @TupleConstructor(allProperties = true, includes = 'project')
-class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty, IHubProjectProperty {
+class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
 
     final Set<BomSpecImpl> bomVersions = []
     final Set<BomSpecImpl> dependencyVersions = []

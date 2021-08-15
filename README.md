@@ -32,6 +32,7 @@
 | `pub.ihub.plugin.ihub-verification` | [验证插件](https://doc.ihub.pub/plugins/#/iHubVerification) | 配置代码静态检查以及测试用例覆盖等 |
 | `pub.ihub.plugin.ihub-boot` | [Boot插件](https://doc.ihub.pub/plugins/#/iHubBoot) | 用于镜像个性化配置 |
 | `pub.ihub.plugin.ihub-native` | [Native插件](https://doc.ihub.pub/plugins/#/iHubNative) | 用于原生镜像个性化配置 |
+| `pub.ihub.plugin.ihub-git-hooks` | [GitHooks插件](https://doc.ihub.pub/plugins/#/ihubGitHooks) | 用于配置GitHooks |
 
 ## 🎉 上手指南
 

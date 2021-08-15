@@ -30,7 +30,7 @@ import static groovy.transform.TypeCheckingMode.SKIP
  */
 @CompileStatic
 @SuppressWarnings('JUnitPublicProperty')
-class IHubSettingsExtension implements IHubExtensionAware, IHubProjectProperty {
+class IHubSettingsExtension implements IHubExtensionAware {
 
     private static final List<String> EXCLUDE_DIRS = [
         'build', 'src', 'conf', 'libs', 'logs', 'docs', 'classes', 'target', 'out', 'node_modules', 'db', 'gradle',
@@ -83,13 +83,8 @@ class IHubSettingsExtension implements IHubExtensionAware, IHubProjectProperty {
     }
 
     @CompileStatic(SKIP)
-    @Override
-    Object findProjectProperty(String key) {
-        settings.hasProperty(key) ? settings."$key" : null
-    }
-
     private String findProperty(String key, String defaultValue = null) {
-        findProjectProperty(key) ?: defaultValue
+        settings.hasProperty(key) ? settings."$key" : defaultValue
     }
 
     @CompileStatic

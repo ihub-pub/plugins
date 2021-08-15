@@ -35,7 +35,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
  * @author henry
  */
 @CompileStatic
-abstract class IHubProjectPluginAware<T extends IHubProjectExtensionAware> implements Plugin<Project> {
+abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements Plugin<Project> {
 
     Project project
     protected T extension
