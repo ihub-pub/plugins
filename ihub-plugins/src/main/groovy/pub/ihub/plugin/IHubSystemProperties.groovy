@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin
 
+import org.gradle.api.Project
 import org.gradle.process.JavaForkOptions
 
 
@@ -23,7 +24,9 @@ import org.gradle.process.JavaForkOptions
  * 系统属性扩展特征
  * @author henry
  */
-trait IHubSystemProperties implements IHubProjectExtensionAware {
+trait IHubSystemProperties {
+
+    abstract Project getProject()
 
     /**
      * 任务运行时属性

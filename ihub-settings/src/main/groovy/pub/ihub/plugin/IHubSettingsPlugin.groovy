@@ -29,6 +29,20 @@ import static pub.ihub.plugin.IHubPluginMethods.tap
  */
 class IHubSettingsPlugin implements Plugin<Settings> {
 
+    static final List<String> IHUB_PLUGINS = [
+        'pub.ihub.plugin',
+        'pub.ihub.plugin.ihub-generate',
+        'pub.ihub.plugin.ihub-bom',
+        'pub.ihub.plugin.ihub-java',
+        'pub.ihub.plugin.ihub-groovy',
+        'pub.ihub.plugin.ihub-publish',
+        'pub.ihub.plugin.ihub-test',
+        'pub.ihub.plugin.ihub-verification',
+        'pub.ihub.plugin.ihub-boot',
+        'pub.ihub.plugin.ihub-native',
+        'pub.ihub.plugin.ihub-git-hooks',
+    ]
+
     @Override
     void apply(Settings settings) {
         // 配置插件仓库
@@ -48,7 +62,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             // 配置插件版本
             settings.pluginManagement {
                 plugins {
-                    id IHubSettingsPlugin.package.name version IHubSettingsPlugin.package.implementationVersion
+                    IHUB_PLUGINS.each { pluginId ->
+                        id pluginId version IHubSettingsPlugin.package.implementationVersion
+                    }
                     ext.pluginVersionSpecs.each { key, value ->
                         id key version value
                     }

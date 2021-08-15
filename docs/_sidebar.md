@@ -13,3 +13,4 @@
   - [验证插件](iHubVerification.md '配置代码静态检查以及测试用例覆盖等 ')
   - [Boot插件](iHubBoot.md '用于镜像个性化配置 ')
   - [Native插件](iHubNative.md '用于原生镜像个性化配置 ')
+  - [GitHooks插件](ihubGitHooks.md '用于配置GitHooks ')

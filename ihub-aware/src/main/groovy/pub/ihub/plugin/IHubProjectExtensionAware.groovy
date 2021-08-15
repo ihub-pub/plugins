@@ -25,7 +25,7 @@ import org.gradle.api.Project
  * @author liheng
  */
 @CompileStatic
-trait IHubProjectExtensionAware implements IHubExtensionAware {
+trait IHubProjectExtensionAware implements IHubExtensionAware, IHubProjectProperty {
 
     Project project
 

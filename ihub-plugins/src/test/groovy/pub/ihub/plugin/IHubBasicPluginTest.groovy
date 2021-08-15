@@ -231,4 +231,23 @@ iHubPublish.publishDocs=true
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'GitHooks插件配置测试'() {
+        setup: '初始化项目'
+        buildFile << '''
+            plugins {
+                id 'pub.ihub.plugin.ihub-git-hooks'
+            }
+
+            iHubGitHooks {
+                hooks = ['pre-commit': 'build']
+            }
+        '''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
 }

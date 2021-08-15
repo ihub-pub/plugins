@@ -28,7 +28,7 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 @IHubExtension('iHubDemo')
 @SuppressWarnings('GetterMethodCouldBeProperty')
 @TupleConstructor(allProperties = true, includes = 'project')
-class IHubDemoExtension implements IHubProjectExtensionAware, IHubExtProperty, IHubProjectProperty {
+class IHubDemoExtension implements IHubProjectExtensionAware, IHubExtProperty {
 
     boolean flag = false
 

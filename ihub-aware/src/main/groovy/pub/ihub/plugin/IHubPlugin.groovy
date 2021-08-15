@@ -40,7 +40,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
      * 插件扩展类型
      * @return 扩展类型
      */
-    Class<? extends IHubProjectExtensionAware> value() default IHubProjectExtensionAware
+    Class<? extends IHubExtensionAware> value() default IHubExtensionAware
 
     /**
      * 前置应用插件

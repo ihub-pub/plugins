@@ -13,36 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.githooks
 
-import groovy.transform.CompileStatic
-import org.gradle.api.Project
+import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubProjectPluginAware
 
-import static groovy.transform.TypeCheckingMode.SKIP
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
 /**
- * IHub项目扩展属性
+ * IHub Git Hooks插件
  * @author henry
  */
-@CompileStatic
-trait IHubExtProperty {
+@IHubPlugin(IHubGitHooksExtension)
+class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
 
-    abstract Project getProject()
-
-    Project getRootProject() {
-        project.rootProject
-    }
-
-    @CompileStatic(SKIP)
-    void setExtProperty(Project project = this.project, String key, value) {
-        project.ext.setProperty key, value
-    }
-
-    @CompileStatic(SKIP)
-    <V> V findExtProperty(Project project = this.project, String key, V defaultValue = null) {
-        project.ext.with { has(key) ? getProperty(key) as V : defaultValue }
+    @Override
+    void apply() {
+        withExtension(AFTER) {
+            it.writeHooks()
+        }
     }
 
 }
