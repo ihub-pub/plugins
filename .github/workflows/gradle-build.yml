@@ -100,7 +100,6 @@ jobs:
           max-allowed-issues: 2147483647
 
       - name: Upload SARIF results file
-        if: ${{ github.event_name != 'pull_request' }}
         uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: results.sarif
