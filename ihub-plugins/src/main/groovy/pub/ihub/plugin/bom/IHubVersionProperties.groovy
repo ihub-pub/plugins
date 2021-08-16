@@ -41,6 +41,10 @@ final class IHubVersionProperties {
     static final String ALIBABA_P3C = 'alibaba-p3c'
     static final String MYBATIS_PLUS = 'mybatis-plus'
 
+    static final String GROOVY_VERSION = '3.0.8'
+    static final String SPOCK_VERSION = '2.0-groovy-3.0'
+    static final String SPOCK_REPORTS_VERSION = '2.0-groovy-3.0'
+
     static final Map<String, Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
         // TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
 //        (IHUB_LIBS)           : bom('pub.ihub.lib', 'ihub-libs', '1.0.0-SNAPSHOT'),

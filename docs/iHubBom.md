@@ -1,6 +1,47 @@
-配置组件默认依赖版本以及兼容性管理，插件扩展名`iHubBom`，[属性说明](/explanation?id=属性配置说明)
+> 用于配置项目依赖组件[默认版本](iHubBom?id=默认版本)以及兼容性管理。
 
-> 插件配置方式详见[样例](https://github.com/ihub-pub/plugins/tree/main/samples/sample-extensions/bom.gradle)，插件内置常见组件版本如下，可通过如下属性配置覆盖默认版本，配置于`gradle.properties`文件，配置格式`属性名`，如`ihub-libs.version=1.0.0`，详细属性如下：
+## 插件安装
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin' version '1.1.1'
+}
+```
+
+## 配置示例
+
+```groovy
+iHubBom {
+    // 导入mavenBom
+    importBoms {
+        group 'cn.hutool' module 'hutool-bom' version '5.6.5'
+    }
+    // 配置依赖默认版本
+    dependencyVersions {
+        group 'cn.hutool' modules 'core', 'aop' version '5.6.5'
+    }
+    // 配置组版本策略
+    groupVersions {
+        group 'cn.hutool' version '5.6.5'
+    }
+    // 排除组件依赖
+    excludeModules {
+        group 'org.slf4j' modules 'slf4j-api'
+        // 支持排除整个组
+        group 'pub.ihub'
+    }
+    // 配置组件依赖
+    dependencies {
+        api 'cn.hutool:hutool-aop'
+        // 支持依赖其他项目模块
+//        api ':a', ':b', ':c'
+    }
+}
+```
+
+## 默认版本
+
+> 如下为插件内置常见组件默认版本，可在`gradle.properties`配置中覆盖默认版本，如`ihub-libs.version=1.0.0`。
 
 | Property | Version |
 | -------- | ------- |
@@ -18,3 +59,6 @@
 | `mybatis-plus.version` | 3.4.3.1 |
 | `knife4j-aggregation.version` | 2.0.9 |
 | `hutool.version` | 5.7.8 |
+| `groovy.version` | 3.0.8 |
+| `spock.version` | 2.0-groovy-3.0 |
+| `spock-reports.version` | 2.0-groovy-3.0 |
