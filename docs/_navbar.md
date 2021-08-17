@@ -1,1 +1,2 @@
-- [![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=white&label=IHub&labelColor=02303A&logo=Gradle)](https://doc.ihub.pub/plugins "IHub")
+- 版本
+  - [1.1.0](1.1.0)
