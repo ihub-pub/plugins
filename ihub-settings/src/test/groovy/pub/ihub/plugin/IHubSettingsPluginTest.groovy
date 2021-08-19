@@ -89,19 +89,6 @@ class IHubSettingsPluginTest extends Specification {
         then: '检查结果'
         result.output.contains 'com.gradle.plugin-publish'
         result.output.contains 'com.github.ben-manes.versions'
-
-        when: '自定义默认配置'
-        settingsFile << '''
-            iHubSettings {
-                pluginVersions {
-                    id 'pub.ihub.plugin' version '1.0.0'
-                }
-            }
-        '''
-        result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'pub.ihub.plugin'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
