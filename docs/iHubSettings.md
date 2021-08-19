@@ -1,6 +1,96 @@
-配置插件仓库以及子项目，插件扩展名`iHubSettings`，[属性说明](/explanation?id=属性配置说明)
+> `pub.ihub.plugin.ihub-settings`插件用于配置插件仓库、插件版本以及子项目管理，该插件属于[设置插件](https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html#org.gradle.api.initialization.Settings)，配置与`settings.gradle`。
 
-| Extension | Description | Default | Ext | Prj | Sys | Env |
-| --------- | ----------- | ------- | --- | ------- | ------ | --- |
-| `includeDirs` | 包含项目路径 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `skippedDirs` | 排除项目路径 | ❌ | ❌ | ✔ | ❌ | ❌ |
+## 插件安装
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-settings' version '1.1.1'
+}
+```
+
+## 配置示例
+
+> 配置子项目：
+
+目录结构：
+
+```
++---rest
++---sdk
+\---service
+```
+
+配置：
+
+```groovy
+iHubSettings {
+    includeProjects 'rest', 'sdk', 'service'
+}
+```
+
+> 配置三级子项目：
+
+目录结构：
+
+```
++---rest
++---service
++---test
+\---other
+    +---a
+    +---b
+    \---c
+```
+
+配置：
+
+```groovy
+iHubSettings {
+    includeProjects 'rest', 'service' suffix '-suffix'
+    includeProjects 'test' noPrefix
+    includeProjects 'other' prefix 'prefix-' subproject
+}
+```
+
+## 默认插件仓库
+
+| Name | Url |
+| --------- | ----------- |
+| `ProjectDirs`        | `{rootProject.projectDir}/gradle/plugins`         |
+| `AliYunGradlePlugin` | https://maven.aliyun.com/repository/gradle-plugin |
+| `AliYunSpringPlugin` | https://maven.aliyun.com/repository/spring-plugin |
+| `SpringRelease`      | https://repo.spring.io/release                    |
+
+## 扩展属性
+
+> `gradle.properties`配置支持如下属性：
+
+| Property  | Description |
+| --------- | ----------- |
+| `name` | 配置主项目名称 |
+| `iHubSettings.includeDirs` | 包含项目路径，多目录“,”分割 |
+| `iHubSettings.skippedDirs` | 排除项目路径，多目录“,”分割 |
+
+> 配置如下：
+
+```properties
+name=demo
+iHubSettings.includeDirs=rest,service
+```
+
+## 默认版本
+
+> 配置了以下插件版本：
+
+| Plugin   | Version |
+| -------- | ------- |
+| `com.gradle.plugin-publish`     | 0.15.0 |
+| `com.github.ben-manes.versions` | 0.39.0 |
+
+> 使用插件时可以不用加版本号，配置如下：
+
+```groovy
+plugins {
+    id 'com.gradle.plugin-publish'
+}
+```

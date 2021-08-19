@@ -1,7 +1,6 @@
 * [📚 简介](/)
 * [🔖 版本](https://github.com/ihub-pub/plugins/releases)
-* [📑 说明](explanation.md)
-- 📦 插件
+* 📦 插件
   - [设置插件](iHubSettings.md '配置插件仓库以及子项目 ')
   - [基础插件](iHub.md '配置组件仓库 ')
   - [配置插件](iHubGenerate.md '用于生成项目配置 ')
@@ -14,3 +13,4 @@
   - [Boot插件](iHubBoot.md '用于镜像个性化配置 ')
   - [Native插件](iHubNative.md '用于原生镜像个性化配置 ')
   - [GitHooks插件](ihubGitHooks.md '用于配置GitHooks ')
+* [📑 说明](explanation.md)

@@ -16,8 +16,6 @@
 package pub.ihub.plugin
 
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
-import org.gradle.api.Action
 import org.gradle.api.initialization.Settings
 
 import static groovy.transform.TypeCheckingMode.SKIP
@@ -37,7 +35,6 @@ class IHubSettingsExtension implements IHubExtensionAware {
     ]
 
     final Settings settings
-    final Map<String, String> pluginVersionSpecs = [:]
     final Map<String, ProjectSpec> projectSpecs = [:]
 
     private final String[] skippedDirs
@@ -51,17 +48,6 @@ class IHubSettingsExtension implements IHubExtensionAware {
         // 通过项目属性配置子项目
         includeProjects findProperty('iHubSettings.includeDirs')?.split(',')
         skippedDirs = findProperty('iHubSettings.skippedDirs')?.split ','
-    }
-
-    /**
-     * 配置插件版本
-     * @param action 配置
-     */
-    void pluginVersions(Action<PluginVersionsSpec> action) {
-        List<PluginVersionSpec> versions = new PluginVersionsSpec().tap { action.execute it }.specs
-        versions.each {
-            pluginVersionSpecs.put it.id, it.pluginVersion
-        }
     }
 
     /**
@@ -131,32 +117,6 @@ class IHubSettingsExtension implements IHubExtensionAware {
             settings.project(gradleProjectPath).tap {
                 name = namePrefix + projectPath.replaceAll(':', '-') + nameSuffix
             }.name
-        }
-
-    }
-
-    @CompileStatic
-    class PluginVersionsSpec {
-
-        private final List<PluginVersionSpec> specs = []
-
-        PluginVersionSpec id(String id) {
-            new PluginVersionSpec(id).tap {
-                specs << it
-            }
-        }
-
-    }
-
-    @CompileStatic
-    @TupleConstructor(includeFields = true, includes = 'id')
-    class PluginVersionSpec {
-
-        private final String id
-        private String pluginVersion
-
-        void version(String version) {
-            pluginVersion = version
         }
 
     }

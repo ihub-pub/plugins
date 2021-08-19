@@ -25,8 +25,8 @@ repositories {
 dependencies {
     implementation project(':ihub-aware')
     implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.5.1'
-    compileOnly    'org.springframework.boot:spring-boot-buildpack-platform:2.5.1'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.5.3'
+    compileOnly    'org.springframework.boot:spring-boot-buildpack-platform:2.5.3'
     implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.10.1'
     implementation 'io.freefair.gradle:git-plugin:5.3.3.3'
     implementation 'io.freefair.gradle:lombok-plugin:5.3.3.3'

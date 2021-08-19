@@ -29,7 +29,7 @@ import static pub.ihub.plugin.IHubPluginMethods.tap
  */
 class IHubSettingsPlugin implements Plugin<Settings> {
 
-    static final List<String> IHUB_PLUGINS = [
+    private static final List<String> IHUB_PLUGINS = [
         'pub.ihub.plugin',
         'pub.ihub.plugin.ihub-generate',
         'pub.ihub.plugin.ihub-bom',
@@ -43,6 +43,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         'pub.ihub.plugin.ihub-git-hooks',
     ]
 
+    private static final Map<String, String> PLUGIN_VERSIONS = [
+        'com.gradle.plugin-publish'    : '0.15.0',
+        'com.github.ben-manes.versions': '0.39.0',
+    ]
+
     @Override
     void apply(Settings settings) {
         // 配置插件仓库
@@ -50,12 +55,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
         // 扩展配置
         IHubSettingsExtension ext = settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
-
-        // 配置常用插件版本
-        ext.pluginVersions {
-            id 'com.gradle.plugin-publish' version '0.15.0'
-            id 'com.github.ben-manes.versions' version '0.39.0'
-        }
 
         // 配置自定义扩展
         settings.gradle.settingsEvaluated {
@@ -65,12 +64,13 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     IHUB_PLUGINS.each { pluginId ->
                         id pluginId version IHubSettingsPlugin.package.implementationVersion
                     }
-                    ext.pluginVersionSpecs.each { key, value ->
+                    // 配置常用插件版本
+                    PLUGIN_VERSIONS.each { key, value ->
                         id key version value
                     }
                 }
             }
-            printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), ext.pluginVersionSpecs
+            printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), PLUGIN_VERSIONS
 
             // 配置子项目
             Map<String, List<String>> projectSpecs = [:]
