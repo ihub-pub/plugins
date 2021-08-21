@@ -1,4 +1,4 @@
-> 用于`spring-boot`镜像个性化配置。
+> 扩展名`iHubBoot`，用于`spring-boot`镜像个性化配置。
 
 ## 插件安装
 
@@ -30,7 +30,7 @@ iHubBoot {
 }
 ```
 
-## 属性说明
+## 扩展属性
 
 > [属性说明](/explanation?id=属性配置说明)：`run`开头为`运行时属性`，`bootJar`开头为`打包Jar时属性`，`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`docker`开头为`Docker仓库相关属性`，[参考](https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/)
 

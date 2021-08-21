@@ -31,7 +31,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     private static final List<String> IHUB_PLUGINS = [
         'pub.ihub.plugin',
-        'pub.ihub.plugin.ihub-generate',
         'pub.ihub.plugin.ihub-bom',
         'pub.ihub.plugin.ihub-java',
         'pub.ihub.plugin.ihub-groovy',

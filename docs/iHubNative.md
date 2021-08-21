@@ -1,4 +1,4 @@
-> 用于`spring-native`镜像个性化配置。
+> 扩展名`iHubNative`，用于`spring-native`镜像个性化配置。
 
 ## 插件安装
 
@@ -28,7 +28,7 @@ iHubNative {
 }
 ```
 
-## 属性说明
+## 扩展属性
 
 > [属性说明](/explanation?id=属性配置说明)：`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`aot`开头为`AOT插件属性`
 

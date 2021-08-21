@@ -41,12 +41,6 @@ gradlePlugin {
             description         = 'IHub Plugins Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
         }
-        iHubGenerate {
-            id                  = 'pub.ihub.plugin.ihub-generate'
-            displayName         = 'IHub Generate Gradle Plugin'
-            description         = 'IHub Generate Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.generate.IHubGeneratePlugin'
-        }
         iHubBom {
             id                  = 'pub.ihub.plugin.ihub-bom'
             displayName         = 'IHub Bom Plugin'

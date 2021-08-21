@@ -3,7 +3,6 @@
 * 📦 插件
   - [设置插件](iHubSettings.md '配置插件仓库以及子项目 ')
   - [基础插件](iHub.md '配置组件仓库 ')
-  - [配置插件](iHubGenerate.md '用于生成项目配置 ')
   - [Bom插件](iHubBom.md '配置组件默认依赖版本以及兼容性管理 ')
   - [Java插件](iHubJava.md '配置一些默认依赖以及兼容性配置 ')
   - [Groovy插件](iHubGroovy.md '配置Groovy组件依赖 ')

@@ -52,6 +52,8 @@ iHubSettings {
 }
 ```
 
+> `注意`：插件默认排除了常见非项目目录，`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle`
+
 ## 默认插件仓库
 
 | Name | Url |

@@ -15,7 +15,7 @@
 [![JetBrains](https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black)](https://www.jetbrains.com "Thanks to JetBrains for sponsoring")
 [![GitHub release](https://img.shields.io/github/v/release/ihub-pub/plugins?color=white&label=release&labelColor=02303A&logo=Gradle)](https://plugins.gradle.org/plugin/pub.ihub.plugin "IHub Plugins Gradle Plugin")
 
-本插件用于封装常用Gradle插件，并做了一些个性化缺省配置，便于项目集成。
+一套Gradle插件集，封装了常用Gradle插件，并做了一些个性化缺省配置，极大的简化项目管理配置。
 
 ## 📦 插件列表
 
@@ -23,7 +23,6 @@
 |----|-------------|-------------|
 | [pub.ihub.plugin.ihub-settings](https://doc.ihub.pub/plugins/#/iHubSettings) | `设置插件` | 配置插件仓库以及子项目 |
 | [pub.ihub.plugin](https://doc.ihub.pub/plugins/#/iHub) | `基础插件` | 配置组件仓库 |
-| [pub.ihub.plugin.ihub-generate](https://doc.ihub.pub/plugins/#/iHubGenerate) | `配置插件` | 用于生成项目配置 |
 | [pub.ihub.plugin.ihub-bom](https://doc.ihub.pub/plugins/#/iHubBom) | `组件依赖管理` | 配置组件默认依赖版本以及兼容性管理 |
 | [pub.ihub.plugin.ihub-java](https://doc.ihub.pub/plugins/#/iHubJava) | `Java插件` | 配置一些默认依赖以及兼容性配置 |
 | [pub.ihub.plugin.ihub-groovy](https://doc.ihub.pub/plugins/#/iHubGroovy) | `Groovy插件` | 配置Groovy组件依赖 |

@@ -1,6 +1,56 @@
-配置代码静态检查以及测试用例覆盖等，插件扩展名`iHubVerification`，[属性说明](/explanation?id=属性配置说明)
+> 扩展名`iHubVerification`，用于配置代码静态检查以及测试用例覆盖等。
 
-> 属性说明：`pmd`开头为`PMD静态检查`，`codenarc`开头为`Codenarc静态检查`，`jacoco`开头为`Jacoco覆盖率检查`
+## 插件安装
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-verification' version '1.1.1'
+}
+```
+
+或
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin' version '1.1.1'
+}
+
+apply {
+    plugin 'pub.ihub.plugin.ihub-verification'
+}
+```
+
+## 配置示例
+
+> PMD静态检查示例
+
+```groovy
+iHubVerification {
+    pmdConsoleOutput = true
+}
+```
+
+> Codenarc静态检查示例
+
+```groovy
+iHubVerification {
+    codenarcIgnoreFailures = true
+}
+```
+
+> Jacoco测试覆盖示例
+
+```groovy
+iHubVerification {
+    jacocoBranchCoverageRuleEnabled = true
+    jacocoInstructionCoverageRuleEnabled = true
+    jacocoPackageCoverageRuleEnabled = true
+}
+```
+
+## 扩展属性
+
+> [属性说明](/explanation?id=属性配置说明)：`pmd`开头为`PMD静态检查`，`codenarc`开头为`Codenarc静态检查`，`jacoco`开头为`Jacoco覆盖率检查`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |

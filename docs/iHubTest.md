@@ -1,4 +1,37 @@
-测试相关插件，插件扩展名`iHubTest`，[属性说明](/explanation?id=属性配置说明)
+> 扩展名`iHubTest`，测试相关插件。
+
+## 插件安装
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-test' version '1.1.1'
+}
+```
+
+或
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin' version '1.1.1'
+}
+
+apply {
+    plugin 'pub.ihub.plugin.ihub-test'
+}
+```
+
+## 配置示例
+
+```groovy
+iHubTest {
+    enabled = true
+    failFast = true
+}
+```
+
+## 扩展属性
+
+> [属性说明](/explanation?id=属性配置说明)：
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
