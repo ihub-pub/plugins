@@ -113,7 +113,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
 
     private void configJacoco(Project project) {
         applyPlugin JacocoPlugin
-        if (project.name != extension.rootProject.name) {
+        if (project != extension.rootProject) {
             extension.rootProject.pluginManager.apply AggregateJacocoReportPlugin
         }
         withExtension(AFTER) { ext ->

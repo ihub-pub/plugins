@@ -79,6 +79,9 @@ class IHubBomPluginTest extends IHubSpecification {
                         group 'cn.hutool' module 'hutool-bom' version '5.6.6'
                     }
                 }
+                github {
+                    slug = 'freefair/gradle-plugins'
+                }
             }
         '''
         testProjectDir.newFile('a/' + DEFAULT_BUILD_FILE) << '''
