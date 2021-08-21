@@ -1,6 +1,14 @@
-> 用于配置Groovy[默认版本](iHubBom?id=默认版本)以及[组件依赖](iHubGroovy?id=组件依赖)。
+> 用于配置Groovy[默认版本](/iHubBom?id=默认版本)以及[组件依赖](/iHubGroovy?id=组件依赖)。
 
 ## 插件安装
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-groovy' version '1.1.1'
+}
+```
+
+或
 
 ```groovy
 plugins {
@@ -14,7 +22,7 @@ apply {
 
 ## 组件依赖
 
-> 项目默认会依赖如下组件，可以配置[compileGroovyAllModules](iHub)依赖`groovy-all`。
+> 项目默认会依赖如下组件，可以配置[compileGroovyAllModules](/iHub?id=配置示例)依赖`groovy-all`。
 
 | 默认依赖组件 |
 | --------- |
