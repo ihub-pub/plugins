@@ -25,9 +25,9 @@ repositories {
 dependencies {
     implementation project(':ihub-aware')
     implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.5.3'
-    compileOnly    'org.springframework.boot:spring-boot-buildpack-platform:2.5.3'
-    implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.10.1'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.5.4'
+    compileOnly    'org.springframework.boot:spring-boot-buildpack-platform:2.5.4'
+    implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.10.3'
     implementation 'io.freefair.gradle:git-plugin:6.1.0'
     implementation 'io.freefair.gradle:lombok-plugin:6.1.0'
     implementation 'io.freefair.gradle:jacoco-plugin:6.1.0'
@@ -36,7 +36,9 @@ dependencies {
 
 iHubBom {
     importBoms {
+        // TODO 升级1.1.1可移除
         group 'com.squareup.okhttp3' module 'okhttp-bom' version '4.9.1'
+        group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.5.4'
     }
 }
 
