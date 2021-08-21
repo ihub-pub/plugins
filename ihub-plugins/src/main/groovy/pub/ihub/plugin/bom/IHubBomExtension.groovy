@@ -134,12 +134,8 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
         findProjectProperty(key + '.version') ?: defaultValue
     }
 
-    String getProjectName() {
-        project.name
-    }
-
     boolean isRoot() {
-        projectName == project.rootProject.name
+        project == project.rootProject
     }
 
     private static Tuple2<String, Integer> groupTap(Integer width = null) {
@@ -166,7 +162,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
     void printConfig(VersionType type, String title, Tuple2<String, Integer>... taps) {
         Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
         Set<BomSpecImpl> commonSpecs = findExtProperty rootProject, type.fieldName
-        printConfigContent "${projectName.toUpperCase()} $title", (root ? specs.tap {
+        printConfigContent "${project.name.toUpperCase()} $title", (root ? specs.tap {
             commonSpecs*.rightShift it
         } ?: specs : specs.findAll { commonSpecs.every { s -> !it.compare(s) } }).inject([]) { set, spec ->
             BomSpecImpl impl = type in [EXCLUDE, DEPENDENCY] ? new BomSpecImpl(type, spec.id).modules(spec.modules -

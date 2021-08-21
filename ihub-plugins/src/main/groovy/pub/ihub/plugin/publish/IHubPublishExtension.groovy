@@ -16,12 +16,10 @@
 package pub.ihub.plugin.publish
 
 import groovy.transform.TupleConstructor
-import org.gradle.api.publish.maven.MavenPublication
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
 
-import static java.time.Year.now
 import static pub.ihub.plugin.IHubProperty.Type.ENV
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
@@ -65,81 +63,5 @@ class IHubPublishExtension implements IHubProjectExtensionAware {
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
     boolean publishDocs = false
-
-    //<editor-fold desc="POM属性">
-
-    String pomName
-    String pomPackaging
-    String pomDescription
-    String pomUrl
-    String pomInceptionYear = now().value
-
-    String pomScmUrl
-    String pomScmConnection
-    String pomScmDeveloperConnection
-    String pomScmTag
-
-    String pomLicenseName
-    String pomLicenseUrl
-    String pomLicenseDistribution
-    String pomLicenseComments
-
-    String pomOrganizationName
-    String pomOrganizationUrl
-
-    String pomDeveloperId
-    String pomDeveloperName
-    String pomDeveloperEmail
-    String pomDeveloperUrl
-    String pomDeveloperOrganization
-    String pomDeveloperOrganizationUrl
-    Set<String> pomDeveloperRoles = []
-    String pomDeveloperTimezone
-
-    //</editor-fold>
-
-    void configPom(MavenPublication publication) {
-        publication.pom {
-            name.set pomName ?: publication.artifactId
-            packaging = pomPackaging
-            description.set pomDescription
-            url.set pomUrl
-            inceptionYear.set pomInceptionYear
-
-            scm {
-                url.set pomScmUrl
-                connection.set pomScmConnection
-                developerConnection.set pomScmDeveloperConnection
-                tag.set pomScmTag
-            }
-
-            licenses {
-                license {
-                    name.set pomLicenseName
-                    url.set pomLicenseUrl
-                    distribution.set pomLicenseDistribution
-                    comments.set pomLicenseComments
-                }
-            }
-
-            organization {
-                name.set pomOrganizationName
-                url.set pomOrganizationUrl
-            }
-
-            developers {
-                developer {
-                    id.set pomDeveloperId
-                    name.set pomDeveloperName
-                    email.set pomDeveloperEmail
-                    url.set pomDeveloperUrl
-                    organization.set pomDeveloperOrganization
-                    organizationUrl.set pomDeveloperOrganizationUrl
-                    roles.set pomDeveloperRoles
-                    timezone.set pomDeveloperTimezone
-                }
-            }
-        }
-    }
 
 }

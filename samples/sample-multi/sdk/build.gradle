@@ -18,3 +18,7 @@ description = '组件模块'
 apply {
     plugin 'pub.ihub.plugin.ihub-publish'
 }
+
+github {
+    slug = 'freefair/gradle-plugins'
+}

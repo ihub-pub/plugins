@@ -45,9 +45,9 @@ class IHubBasicPluginTest extends IHubSpecification {
         when: '构建项目'
         propertiesFile << '''
 iHub.mavenLocalEnabled=true
-iHub.releaseRepoUrl=http://ihub.pub/nexus/content/repositories/releases
-iHub.snapshotRepoUrl=http://ihub.pub/nexus/content/repositories/snapshots
-iHub.customizeRepoUrl=http://ihub.pub/nexus/content/repositories
+iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
+iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
+iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 iHub.repoAllowInsecureProtocol=true
 iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 '''
@@ -142,24 +142,16 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
             apply {
                 plugin 'pub.ihub.plugin.ihub-publish'
             }
-        """
-
-        when: '构建项目'
-        def result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
-
-        when: '构建项目'
-        buildFile << """
-            iHubPublish {
-                pomName = 'demo'
+            github {
+                slug = 'freefair/gradle-plugins'
             }
         """
+
+        when: '构建项目'
         propertiesFile << '''
 version=1.0.0
 '''
-        result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
@@ -185,6 +177,9 @@ iHubPublish.publishDocs=true
             apply {
                 plugin 'pub.ihub.plugin.ihub-groovy'
                 plugin 'pub.ihub.plugin.ihub-publish'
+            }
+            github {
+                slug = 'freefair/gradle-plugins'
             }
         """
 

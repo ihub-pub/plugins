@@ -27,7 +27,7 @@ import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
  * 配置项目组件仓库
  * @author liheng
  */
-@IHubPlugin(value = IHubPluginsExtension, beforeApplyPlugins = [GitVersionPlugin])
+@IHubPlugin(IHubPluginsExtension)
 class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
     @Override
@@ -56,7 +56,8 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
             }
         }
 
-        if (project.name == project.rootProject.name) {
+        if (project == project.rootProject) {
+            applyPlugin GitVersionPlugin
             printConfigContent 'Gradle Project Repos', project.repositories*.displayName
         }
 
