@@ -46,13 +46,14 @@ iHubBom {
 | Property | Version |
 | -------- | ------- |
 | `ihub-libs.version` | 1.0.0-SNAPSHOT |
-| `spring-boot.version` | 2.5.3 |
+| `spring-boot.version` | 2.5.4 |
 | `spring-cloud.version` | 2020.0.3 |
 | `spring-statemachine.version` | 3.0.1 |
 | `spring-cloud-alibaba.version` | 2021.1 |
 | `spring-boot-admin.version` | 2.5.0 |
 | `knife4j.version` | 3.0.3 |
 | `jaxb.version` | 3.0.2 |
+| `okhttp3.version` | 4.9.1 |
 | `alibaba-fastjson.version` | 1.2.78 |
 | `alibaba-druid.version` | 1.2.6 |
 | `alibaba-p3c.version` | 2.1.1 |

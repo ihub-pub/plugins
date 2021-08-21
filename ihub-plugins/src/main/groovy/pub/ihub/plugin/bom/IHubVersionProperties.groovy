@@ -40,6 +40,7 @@ final class IHubVersionProperties {
     static final String ALIBABA_DRUID = 'alibaba-druid'
     static final String ALIBABA_P3C = 'alibaba-p3c'
     static final String MYBATIS_PLUS = 'mybatis-plus'
+    static final String OKHTTP3 = 'okhttp3'
 
     static final String GROOVY_VERSION = '3.0.8'
     static final String SPOCK_VERSION = '2.0-groovy-3.0'
@@ -48,13 +49,14 @@ final class IHubVersionProperties {
     static final Map<String, Tuple3<String, String, String>> GROUP_MAVEN_BOM_VERSION_CONFIG = [
         // TODO 由于GitHub仓库token只能个人使用，组件发布到中央仓库方可使用
 //        (IHUB_LIBS)           : bom('pub.ihub.lib', 'ihub-libs', '1.0.0-SNAPSHOT'),
-        (SPRING_BOOT)         : bom('org.springframework.boot', 'spring-boot-dependencies', '2.5.3'),
+        (SPRING_BOOT)         : bom('org.springframework.boot', 'spring-boot-dependencies', '2.5.4'),
         (SPRING_CLOUD)        : bom('org.springframework.cloud', 'spring-cloud-dependencies', '2020.0.3'),
         (SPRING_STATEMACHINE) : bom('org.springframework.statemachine', 'spring-statemachine-bom', '3.0.1'),
         (SPRING_CLOUD_ALIBABA): bom('com.alibaba.cloud', 'spring-cloud-alibaba-dependencies', '2021.1'),
         (SPRING_BOOT_ADMIN)   : bom('de.codecentric', 'spring-boot-admin-dependencies', '2.5.0'),
         (KNIFE4J)             : bom('com.github.xiaoymin', 'knife4j-dependencies', '3.0.3'),
         (JAXB)                : bom('com.sun.xml.bind', 'jaxb-bom-ext', '3.0.2'),
+        (OKHTTP3)             : bom('com.squareup.okhttp3', 'okhttp-bom', '4.9.1'),
     ]
 
     static final Map<String, Tuple3<String, String[], String>> GROUP_DEPENDENCY_VERSION_CONFIG = [
