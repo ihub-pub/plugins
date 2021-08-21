@@ -34,14 +34,6 @@ dependencies {
     implementation 'io.freefair.gradle:github-plugin:6.1.0'
 }
 
-iHubBom {
-    importBoms {
-        // TODO 升级1.1.1可移除
-        group 'com.squareup.okhttp3' module 'okhttp-bom' version '4.9.1'
-        group 'org.springframework.boot' module 'spring-boot-dependencies' version '2.5.4'
-    }
-}
-
 gradlePlugin {
     plugins {
         iHubPlugins {
