@@ -15,7 +15,7 @@
  */
 package pub.ihub.plugin.publish
 
-import org.gradle.api.JavaVersion
+import io.freefair.gradle.plugins.github.GithubPomPlugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
@@ -41,7 +41,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * 组件发布插件
  * @author liheng
  */
-@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [IHubJavaPlugin])
+@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [GithubPomPlugin, IHubJavaPlugin])
 class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override
@@ -96,10 +96,6 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
                     it.groupId = project.group
                     it.version = project.version
-                    this.withExtension(EvaluateStage.AFTER) { ext ->
-                        artifactId = project.jar.archiveBaseName.get()
-                        ext.configPom it
-                    }
                 }
             }
             it.repositories {
@@ -145,9 +141,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         registerTask('javadocsJar', Jar) {
             it.archiveClassifier.set 'javadoc'
             Task javadocTask = it.project.tasks.getByName('javadoc').tap {
-                if (JavaVersion.current().java9Compatible) {
-                    options.addBooleanOption 'html5', true
-                }
+                options.addBooleanOption 'html5', true
                 options.encoding = 'UTF-8'
             }
             it.dependsOn javadocTask
