@@ -20,8 +20,8 @@ jobs:
 
       - name: Build with Gradle
         uses: ihub-pub/actions@main
-          with:
-            run: build -x test
+        with:
+          run: build -x test
 
   test:
     if: ${{ github.event_name != 'push' }}
@@ -38,14 +38,14 @@ jobs:
       - name: Test with Gradle (fast)
         if: ${{ github.event_name != 'schedule' }}
         uses: ihub-pub/actions@main
-          with:
-            run: test -Dfast.test=true
+        with:
+          run: test -Dfast.test=true
 
       - name: Test with Gradle (all)
         if: ${{ github.event_name == 'schedule' }}
         uses: ihub-pub/actions@main
-          with:
-            run: test
+        with:
+          run: test
 
       - name: Upload Coverage Reports
         if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
