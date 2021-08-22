@@ -42,12 +42,6 @@ subprojects {
         tags        = ['ihub', 'groovy', 'gradle', 'spring', 'boot', 'java', 'native']
     }
 
-    iHubBom {
-        groupVersions {
-            group 'org.codehaus.groovy'                     version '3.0.7'
-        }
-    }
-
     // 跳过Gradle元数据生成，详见：https://github.com/gradle/gradle/issues/11862
     tasks.withType(GenerateModuleMetadata) {
         enabled = false
