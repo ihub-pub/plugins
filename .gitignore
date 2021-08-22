@@ -9,7 +9,6 @@ lombok.config
 .gradle
 build
 gradle-app.setting
-!gradle-wrapper.jar
 .gradletasknamecache
 
 # Maven #
