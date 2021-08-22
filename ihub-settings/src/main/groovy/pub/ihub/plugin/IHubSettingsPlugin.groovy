@@ -60,11 +60,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             // 配置插件版本
             settings.pluginManagement {
                 plugins {
-                    IHUB_PLUGINS.each { pluginId ->
-                        id pluginId version IHubSettingsPlugin.package.implementationVersion
-                    }
-                    // 配置常用插件版本
-                    PLUGIN_VERSIONS.each { key, value ->
+                    (IHUB_PLUGINS.collectEntries {
+                        [(it): IHubSettingsPlugin.package.implementationVersion]
+                    } + PLUGIN_VERSIONS).findAll { it.value }.each { key, value ->
                         id key version value
                     }
                 }
