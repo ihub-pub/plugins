@@ -50,7 +50,7 @@ iHubBom {
 | `spring-cloud.version` | 2020.0.3 |
 | `spring-statemachine.version` | 3.0.1 |
 | `spring-cloud-alibaba.version` | 2021.1 |
-| `spring-boot-admin.version` | 2.5.0 |
+| `spring-boot-admin.version` | 2.5.1 |
 | `knife4j.version` | 3.0.3 |
 | `jaxb.version` | 3.0.2 |
 | `okhttp3.version` | 4.9.1 |

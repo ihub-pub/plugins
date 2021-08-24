@@ -53,7 +53,7 @@ final class IHubVersionProperties {
         (SPRING_CLOUD)        : bom('org.springframework.cloud', 'spring-cloud-dependencies', '2020.0.3'),
         (SPRING_STATEMACHINE) : bom('org.springframework.statemachine', 'spring-statemachine-bom', '3.0.1'),
         (SPRING_CLOUD_ALIBABA): bom('com.alibaba.cloud', 'spring-cloud-alibaba-dependencies', '2021.1'),
-        (SPRING_BOOT_ADMIN)   : bom('de.codecentric', 'spring-boot-admin-dependencies', '2.5.0'),
+        (SPRING_BOOT_ADMIN)   : bom('de.codecentric', 'spring-boot-admin-dependencies', '2.5.1'),
         (KNIFE4J)             : bom('com.github.xiaoymin', 'knife4j-dependencies', '3.0.3'),
         (JAXB)                : bom('com.sun.xml.bind', 'jaxb-bom-ext', '3.0.2'),
         (OKHTTP3)             : bom('com.squareup.okhttp3', 'okhttp-bom', '4.9.1'),
