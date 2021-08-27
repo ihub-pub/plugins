@@ -69,7 +69,7 @@ final class IHubVersionProperties {
     ]
 
     static final Map<String, Tuple2<String, String>> GROUP_VERSION_CONFIG = [
-        (HUTOOL): group('cn.hutool', '5.7.8'),
+        (HUTOOL): group('cn.hutool', '5.7.10'),
     ]
 
     private static Tuple3<String, String, String> bom(String group, String module, String version) {
