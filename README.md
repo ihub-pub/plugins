@@ -33,6 +33,13 @@
 | [pub.ihub.plugin.ihub-native](https://doc.ihub.pub/plugins/#/iHubNative) | `Native插件` | 用于原生镜像个性化配置 |
 | [pub.ihub.plugin.ihub-git-hooks](https://doc.ihub.pub/plugins/#/ihubGitHooks) | `GitHooks插件` | 用于配置GitHooks |
 
+## 🔰 支持版本
+
+| Version | Java | Gradle |
+|---------|------|--------|
+| 1.1.1+  | 11   | 7.2    |
+| 1.1.0   | 11   | 7.0    |
+
 ## 🎉 上手指南
 
 ### 插件安装

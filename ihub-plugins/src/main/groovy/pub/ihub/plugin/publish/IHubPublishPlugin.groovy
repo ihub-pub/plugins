@@ -33,6 +33,7 @@ import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaPlugin
 
+import static io.freefair.gradle.plugins.github.internal.GitUtils.findSlug
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
@@ -41,11 +42,16 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * 组件发布插件
  * @author liheng
  */
-@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [GithubPomPlugin, IHubJavaPlugin])
+@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = IHubJavaPlugin)
 class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override
     void apply() {
+        // 引入GithubPom插件
+        if (findSlug(project)) {
+            applyPlugin GithubPomPlugin
+        }
+
         IHubPluginsExtension iHubExt = withExtension IHubPluginsExtension
 
         configPublish project, iHubExt

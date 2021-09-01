@@ -142,9 +142,6 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
             apply {
                 plugin 'pub.ihub.plugin.ihub-publish'
             }
-            github {
-                slug = 'freefair/gradle-plugins'
-            }
         """
 
         when: '构建项目'
@@ -178,9 +175,6 @@ iHubPublish.publishDocs=true
                 plugin 'pub.ihub.plugin.ihub-groovy'
                 plugin 'pub.ihub.plugin.ihub-publish'
             }
-            github {
-                slug = 'freefair/gradle-plugins'
-            }
         """
 
         when: '构建项目'
@@ -192,7 +186,8 @@ iHubPublish.signingSecretKey=secret
 iHubPublish.signingPassword=password
 iHubPublish.publishDocs=true
 '''
-        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password')
+            .withEnvironment('GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'ihub-pub/plugins').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
