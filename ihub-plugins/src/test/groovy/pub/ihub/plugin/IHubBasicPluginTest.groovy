@@ -161,7 +161,8 @@ iHubPublish.signingSecretKey=secret
 iHubPublish.signingPassword=password
 iHubPublish.publishDocs=true
 '''
-        result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+        result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password')
+            .withEnvironment('GITHUB_ACTIONS': 'false').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
