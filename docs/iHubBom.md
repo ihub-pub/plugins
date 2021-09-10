@@ -59,7 +59,7 @@ iHubBom {
 | `alibaba-p3c.version` | 2.1.1 |
 | `mybatis-plus.version` | 3.4.3.1 |
 | `knife4j-aggregation.version` | 2.0.9 |
-| `hutool.version` | 5.7.11 |
+| `hutool.version` | 5.7.12 |
 | `groovy.version` | 3.0.8 |
 | `spock.version` | 2.0-groovy-3.0 |
 | `spock-reports.version` | 2.0-groovy-3.0 |
