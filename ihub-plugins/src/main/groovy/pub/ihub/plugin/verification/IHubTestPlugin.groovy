@@ -23,8 +23,6 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.bom.IHubVersionProperties.SPOCK_REPORTS_VERSION
-import static pub.ihub.plugin.bom.IHubVersionProperties.SPOCK_VERSION
 
 
 
@@ -40,14 +38,6 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
     void apply() {
         withExtension(IHubBomExtension) {
             if (project.plugins.hasPlugin(GroovyPlugin)) {
-                String spockVersion = it.findVersion 'spock', SPOCK_VERSION
-                String spockReportsVersion = it.findVersion 'spock-reports', SPOCK_REPORTS_VERSION
-                it.importBoms {
-                    group 'org.spockframework' module 'spock-bom' version spockVersion
-                }
-                it.dependencyVersions {
-                    group 'com.athaydes' modules 'spock-reports' version spockReportsVersion
-                }
                 it.dependencies {
                     testImplementation 'org.spockframework:spock-spring'
                     testRuntimeOnly 'com.athaydes:spock-reports'

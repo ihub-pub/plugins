@@ -130,10 +130,6 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
         printConfig DEPENDENCY, 'Config Default Dependencies', dependencyTypeTap(), dependenciesTap()
     }
 
-    String findVersion(String key, String defaultValue) {
-        findProjectProperty(key + '.version') ?: defaultValue
-    }
-
     boolean isRoot() {
         project == project.rootProject
     }

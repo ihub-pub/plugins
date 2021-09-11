@@ -22,8 +22,6 @@ import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaPlugin
 
-import static pub.ihub.plugin.bom.IHubVersionProperties.GROOVY_VERSION
-
 
 
 /**
@@ -33,38 +31,21 @@ import static pub.ihub.plugin.bom.IHubVersionProperties.GROOVY_VERSION
 @IHubPlugin(beforeApplyPlugins = [IHubJavaPlugin, GroovyPlugin])
 class IHubGroovyPlugin extends IHubProjectPluginAware {
 
-    private static final String GROOVY_GROUP = 'org.codehaus.groovy'
-
     @Override
     void apply() {
         withExtension(IHubBomExtension) {
-            String groovyVersion = it.findVersion 'groovy', GROOVY_VERSION
-            it.importBoms {
-                group GROOVY_GROUP module 'groovy-bom' version groovyVersion
-            }
-            it.dependencyVersions {
-                group GROOVY_GROUP modules 'groovy-all' version groovyVersion
-            }
-            // 由于codenarc插件内强制指定了groovy版本，groovy3.0需要强制指定版本
-            if (groovyVersion.startsWith('3.')) {
-                it.groupVersions {
-                    group GROOVY_GROUP version groovyVersion
-                }
-            }
-            withExtension(IHubPluginsExtension) { ext ->
-                it.dependencies {
-                    implementation((ext.compileGroovyAllModules ? ['groovy-all'] : [
-                        'groovy',
-                        'groovy-datetime',
-                        'groovy-dateutil',
-                        'groovy-groovydoc',
-                        'groovy-json',
-                        'groovy-nio',
-                        'groovy-sql',
-                        'groovy-templates',
-                        'groovy-xml',
-                    ]).collect { "org.codehaus.groovy:$it" } as String[])
-                }
+            it.dependencies {
+                implementation((withExtension(IHubPluginsExtension).compileGroovyAllModules ? ['groovy-all'] : [
+                    'groovy',
+                    'groovy-datetime',
+                    'groovy-dateutil',
+                    'groovy-groovydoc',
+                    'groovy-json',
+                    'groovy-nio',
+                    'groovy-sql',
+                    'groovy-templates',
+                    'groovy-xml',
+                ]).collect { "org.codehaus.groovy:$it" } as String[])
             }
         }
     }
