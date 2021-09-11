@@ -21,9 +21,6 @@ import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_DEPENDENCY_VERSION_CONFIG
-import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_MAVEN_BOM_VERSION_CONFIG
-import static pub.ihub.plugin.bom.IHubVersionProperties.GROUP_VERSION_CONFIG
 
 
 
@@ -37,36 +34,12 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
     @Override
     void apply() {
-        // 添加默认配置
-        withExtension {
-            defaultConfig it
-        }
-
-        // 配置项目依赖
-        configProject project
-    }
-
-    private static void defaultConfig(IHubBomExtension ext) {
-        // 配置导入bom
-        ext.importBoms {
-            GROUP_MAVEN_BOM_VERSION_CONFIG.each { library, config ->
-                group config.v1 module config.v2 version ext.findVersion(library, config.v3)
-            }
-        }
-        // 配置组件依赖版本
-        ext.dependencyVersions {
-            GROUP_DEPENDENCY_VERSION_CONFIG.each { library, config ->
-                group config.v1 modules config.v2 version ext.findVersion(library, config.v3)
-            }
-        }
-        // 配置组版本策略（建议尽量使用bom）
-        ext.groupVersions {
-            GROUP_VERSION_CONFIG.each { library, config ->
-                group config.v1 version ext.findVersion(library, config.v2)
-            }
+        // 配置ihub-bom
+        extension.importBoms {
+            group 'pub.ihub.lib' module 'ihub-bom' version '1.0.0'
         }
         // 配置默认排除项
-        ext.excludeModules {
+        extension.excludeModules {
             group 'c3p0' modules 'c3p0'
             group 'commons-logging' modules 'commons-logging'
             group 'com.zaxxer' modules 'HikariCP'
@@ -77,11 +50,14 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             group 'stax' modules 'stax-api'
         }
         // 配置默认依赖组件
-        ext.dependencies {
+        extension.dependencies {
             compileOnly 'cn.hutool:hutool-all'
             implementation 'org.slf4j:slf4j-api'
             runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
         }
+
+        // 配置项目依赖
+        configProject project
     }
 
     private void configProject(Project project) {

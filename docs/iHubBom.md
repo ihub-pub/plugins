@@ -39,27 +39,12 @@ iHubBom {
 }
 ```
 
-## 默认版本
+## 默认BOM
 
-> 如下为插件内置常见组件默认版本，可在`gradle.properties`配置中覆盖默认版本，如`ihub-libs.version=1.0.0`。
+> 插件内置默认BOM配置，配置组件版本[详见](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-bom)。
 
-| Property | Version |
-| -------- | ------- |
-| `ihub-libs.version` | 1.0.0-SNAPSHOT |
-| `spring-boot.version` | 2.5.4 |
-| `spring-cloud.version` | 2020.0.3 |
-| `spring-statemachine.version` | 3.0.1 |
-| `spring-cloud-alibaba.version` | 2021.1 |
-| `spring-boot-admin.version` | 2.5.1 |
-| `knife4j.version` | 3.0.3 |
-| `jaxb.version` | 3.0.2 |
-| `okhttp3.version` | 4.9.1 |
-| `alibaba-fastjson.version` | 1.2.78 |
-| `alibaba-druid.version` | 1.2.6 |
-| `alibaba-p3c.version` | 2.1.1 |
-| `mybatis-plus.version` | 3.4.3.1 |
-| `knife4j-aggregation.version` | 2.0.9 |
-| `hutool.version` | 5.7.12 |
-| `groovy.version` | 3.0.8 |
-| `spock.version` | 2.0-groovy-3.0 |
-| `spock-reports.version` | 2.0-groovy-3.0 |
+```groovy
+importBoms {
+    group 'pub.ihub.lib' module 'ihub-bom' version '1.0.0'
+}
+```
