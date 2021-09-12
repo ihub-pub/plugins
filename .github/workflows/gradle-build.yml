@@ -62,7 +62,7 @@ jobs:
           retention-days: 1
 
   codacy:
-    if: ${{ github.repository_owner == 'ihub-pub' }}
+    if: ${{ github.event_name == 'push' && github.repository_owner == 'ihub-pub' }}
     name: Codacy Security Scan
     runs-on: ubuntu-latest
     steps:
