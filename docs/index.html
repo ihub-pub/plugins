@@ -68,33 +68,7 @@
       };
   </script>
   <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
-  <!-- version -->
-  <script>
-      window.onload = replaceNav
-      document.body.onclick = replaceNav
-
-      function replaceNav() {
-          if ('#/' !== window.location.hash) {
-              document.querySelectorAll('.sidebar-nav a').forEach(function (a) {
-                  const versionHash = window.location.hash.replace(/(#\/[0-9]+\.[0-9]+\.[0-9]+).*/, '$1')
-                  if (a.href.endsWith('#/')) {
-                      a.href = '/plugins'
-                  } else if (versionHash.includes('.') && !a.href.includes(versionHash)) {
-                      a.href = a.href.replace(/(.*)#[0-9\.\/]*(\/.*)/, '$1' + versionHash + '$2').replace(/(.*)\/$/,'$1')
-                  }
-              })
-              document.querySelectorAll('.app-nav a').forEach(function (a) {
-                  const hash = window.location.hash.replace(/#.*(\/.*)/, '$1')
-                  a.href = a.href.replace(/(.*)(#\/[0-9]+\.[0-9]+\.[0-9]+).*/, '$1$2' + hash).replace(/(.*)\/$/,'$1')
-              })
-              document.querySelectorAll('main a').forEach(function (a) {
-                  const versionHash = window.location.hash.replace(/(#\/[0-9]+\.[0-9]+\.[0-9]+).*/, '$1')
-                  if (versionHash.includes('.') && !a.href.includes(versionHash)) {
-                      a.href = a.href.replace(/(.*)#[0-9\.\/]*(\/.*)/, '$1' + versionHash + '$2').replace(/(.*)\/$/,'$1')
-                  }
-              })
-          }
-      }
-  </script>
+  <!-- version-nav -->
+  <script src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/lib/version-nav.js"></script>
 </body>
 </html>
