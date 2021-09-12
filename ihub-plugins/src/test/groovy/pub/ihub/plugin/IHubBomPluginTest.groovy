@@ -57,6 +57,16 @@ class IHubBomPluginTest extends IHubSpecification {
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
         buildFile << '''
+            allprojects {
+                iHubBom {
+                    importBoms {
+                        group 'org.codehaus.groovy' module 'groovy-bom' version '3.0.8'
+                    }
+                    dependencyVersions {
+                        group 'org.codehaus.groovy' modules 'groovy-all' version '3.0.8'
+                    }
+                }
+            }
             iHubBom {
                 excludeModules {
                     group 'cn.hutool' modules 'core'
@@ -77,6 +87,18 @@ class IHubBomPluginTest extends IHubSpecification {
                     importBoms {
                         group 'org.codehaus.groovy' module 'groovy-bom' version '2.5.14'
                         group 'cn.hutool' module 'hutool-bom' version '5.6.6'
+                    }
+                    dependencyVersions {
+                        group 'org.codehaus.groovy' modules 'groovy-all' version '2.5.14'
+                    }
+                    groupVersions {
+                        group 'cn.hutool' version '5.6.6'
+                    }
+                    excludeModules {
+                        group 'cn.hutool'
+                    }
+                    dependencies {
+                        compileOnlyApi 'cn.hutool:hutool-all'
                     }
                 }
             }

@@ -23,7 +23,7 @@ plugins {
 
 iHubGitHooks {
     hooks = [
-        'pre-commit': './gradlew build -DiHubVerification.jacocoBranchCoverageRuleEnabled=false -DiHubVerification.jacocoInstructionCoverageRuleEnabled=false -DiHubVerification.jacocoPackageCoverageRuleEnabled=false -x test'
+        'pre-commit': './gradlew build -x test'
     ]
 }
 

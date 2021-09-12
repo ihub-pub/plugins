@@ -28,10 +28,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.5.4'
     compileOnly    'org.springframework.boot:spring-boot-buildpack-platform:2.5.4'
     implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.10.3'
-    implementation 'io.freefair.gradle:git-plugin:6.1.0'
-    implementation 'io.freefair.gradle:lombok-plugin:6.1.0'
-    implementation 'io.freefair.gradle:jacoco-plugin:6.1.0'
-    implementation 'io.freefair.gradle:github-plugin:6.1.0'
+    implementation 'io.freefair.gradle:git-plugin:6.2.0'
+    implementation 'io.freefair.gradle:lombok-plugin:6.2.0'
+    implementation 'io.freefair.gradle:jacoco-plugin:6.2.0'
+    implementation 'io.freefair.gradle:github-plugin:6.2.0'
 }
 
 gradlePlugin {
