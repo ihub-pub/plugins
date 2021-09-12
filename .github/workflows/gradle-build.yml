@@ -85,7 +85,6 @@ jobs:
           sarif_file: results.sarif
 
   validation:
-    if: ${{ github.event_name == 'push' }}
     name: Validate Gradle Wrapper
     runs-on: ubuntu-latest
     steps:

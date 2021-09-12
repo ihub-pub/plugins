@@ -19,7 +19,7 @@ import io.freefair.gradle.plugins.github.GithubPomPlugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
@@ -33,7 +33,7 @@ import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaPlugin
 
-import static io.freefair.gradle.plugins.github.internal.GitUtils.findSlug
+import static io.freefair.gradle.plugins.github.internal.GitUtils.currentlyRunningOnGithubActions
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
@@ -48,7 +48,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     @Override
     void apply() {
         // 引入GithubPom插件
-        if (findSlug(project)) {
+        if (currentlyRunningOnGithubActions()) {
             applyPlugin GithubPomPlugin
         }
 
@@ -139,7 +139,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     private TaskProvider registerSourcesJar() {
         registerTask('sourcesJar', Jar) {
             it.archiveClassifier.set 'sources'
-            it.from it.project.convention.getPlugin(JavaPluginConvention).sourceSets.getByName('main').allSource
+            it.from withExtension(JavaPluginExtension).sourceSets.getByName('main').allSource
         }
     }
 

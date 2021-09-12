@@ -37,23 +37,26 @@ trait IHubProjectProperty {
         }
         IHubProperty iHubProperty = field.getAnnotation IHubProperty
         String fieldName = getClass().getAnnotation(IHubExtension).value() + '.' + (iHubProperty?.value() ?: name)
+        IHubProperty.Type[] propertyType = iHubProperty?.type() ?: [] as IHubProperty.Type[]
         // 优先从系统属性和项目属性获取，环境属性多用于敏感信息配置
         Object value = null
         // 获取系统属性
-        if (iHubProperty?.type()?.contains(SYSTEM)) {
-            value = System.getProperty fieldName
+        if (propertyType.contains(SYSTEM)) {
+            value = System.getProperty(fieldName)?.replaceAll '\\\\n', '\n'
         }
         // 获取环境属性
-        if (!value && iHubProperty?.type()?.contains(ENV)) {
-            value = System.getenv name.replaceAll(/([A-Z])/, '_$1').toUpperCase()
+        if (null == value && propertyType.contains(ENV)) {
+            value = System.getenv(name.replaceAll(/([A-Z])/, '_$1').toUpperCase())?.replaceAll '\\\\n', '\n'
         }
         // 获取项目属性
-        if (!value && iHubProperty?.type()) {
+        if (null == value && propertyType) {
             value = findProjectProperty fieldName
         }
         // 获取扩展属性
-        value = value ?: invokeGetMethod(name)
-        if (!value) {
+        if (null == value) {
+            value = invokeGetMethod name
+        }
+        if (null == value) {
             return value
         }
         'false' == value.toString() ? false : field.type.primitive && value.toString().integer ?

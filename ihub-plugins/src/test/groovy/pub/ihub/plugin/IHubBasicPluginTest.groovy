@@ -70,6 +70,52 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '扩展属性测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+        gradle.taskGraph.whenReady {
+            println 'repoUsername:' + iHub.repoUsername
+        }
+        '''
+
+        when: '读取默认属性'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:null'
+
+        when: '读取扩展属性'
+        buildFile << '''
+        iHub {
+            repoUsername = 'type\\next'
+        }
+        '''
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\next'
+
+        when: '读取项目属性'
+        propertiesFile << 'iHub.repoUsername=type\\nprj'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\nprj'
+
+        when: '读取环境属性'
+        result = gradleBuilder.withEnvironment(REPO_USERNAME: 'type\nenv').build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\nenv'
+
+        when: '读取系统属性'
+        result = gradleBuilder.withEnvironment(REPO_USERNAME: 'type\nenv').withArguments('-DiHub.repoUsername=type\nsys').build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\nsys'
+    }
+
     def 'Groovy插件配置测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
