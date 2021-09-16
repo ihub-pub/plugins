@@ -34,7 +34,6 @@ import static org.gradle.api.plugins.JavaPlugin.TEST_COMPILE_ONLY_CONFIGURATION_
 import static org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
 import static org.gradle.api.plugins.JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.BOM
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.DEPENDENCY
 import static pub.ihub.plugin.bom.IHubBomExtension.VersionType.EXCLUDE
@@ -123,39 +122,19 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
     }
 
     void printConfigContent() {
-        printConfig BOM, 'Group Maven Bom Version', groupTap(35), moduleTap(), versionTap(15)
-        printConfig MODULES, 'Group Maven Module Version', groupTap(35), moduleTap(), versionTap(15)
-        printConfig GROUP, 'Group Maven Default Version', groupTap(), versionTap()
-        printConfig EXCLUDE, 'Exclude Group Modules', groupTap(40), moduleTap()
-        printConfig DEPENDENCY, 'Config Default Dependencies', dependencyTypeTap(), dependenciesTap()
+        printConfig BOM, 'Group Maven Bom Version', 'Group', 'Module', 'Version'
+        printConfig MODULES, 'Group Maven Module Version', 'Group', 'Module', 'Version'
+        printConfig GROUP, 'Group Maven Default Version', 'Group', 'Version'
+        printConfig EXCLUDE, 'Exclude Group Modules', 'Group', 'Module'
+        printConfig DEPENDENCY, 'Config Default Dependencies', 'DependencyType', 'Dependencies'
     }
 
     boolean isRoot() {
         project == project.rootProject
     }
 
-    private static Tuple2<String, Integer> groupTap(Integer width = null) {
-        tap 'Group', width
-    }
-
-    private static Tuple2<String, Integer> versionTap(Integer width = 30) {
-        tap 'Version', width
-    }
-
-    private static Tuple2<String, Integer> moduleTap() {
-        tap 'Module', null
-    }
-
-    private static Tuple2<String, Integer> dependencyTypeTap() {
-        tap 'DependencyType', 30
-    }
-
-    private static Tuple2<String, Integer> dependenciesTap() {
-        tap 'Dependencies'
-    }
-
     @CompileStatic(SKIP)
-    void printConfig(VersionType type, String title, Tuple2<String, Integer>... taps) {
+    void printConfig(VersionType type, String title, String... taps) {
         Set<BomSpecImpl> specs = this."$type.fieldName" as Set<BomSpecImpl>
         Set<BomSpecImpl> commonSpecs = findExtProperty rootProject, type.fieldName
         printConfigContent "${project.name.toUpperCase()} $title", (root ? specs.tap {

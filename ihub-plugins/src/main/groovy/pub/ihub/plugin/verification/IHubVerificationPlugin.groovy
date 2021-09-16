@@ -35,7 +35,6 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
@@ -197,7 +196,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
         String title = project.name.toUpperCase() + ' Jacoco Report Coverage'
         printConfigContent title, reportData.collect { type, data ->
             [type, data.total(), data.missed, data.covered, data.coverage]
-        }, tap('Type', 20), tap('Total'), tap('Missed'), tap('Covered'), tap('Coverage')
+        }, 'Type', 'Total', 'Missed', 'Covered', 'Coverage'
 
         if (!extension.findExtProperty(extension.rootProject, 'printJacocoReportCoverage', false)) {
             project.gradle.buildFinished {
@@ -218,11 +217,10 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
                 }
                 data.coverage
             } : null
-        }
+        } - null
         report << (['total'] + total.values().coverage)
-        printConfigContent 'Jacoco Report Coverage', report, tap('Project', 30),
-            tap('Instruct'), tap('Branch'), tap('Line'),
-            tap('Cxty'), tap('Method'), tap('Class')
+        printConfigContent 'Jacoco Report Coverage', report,
+            'Project', 'Instruct', 'Branch', 'Line', 'Cxty', 'Method', 'Class'
     }
 
     @CompileStatic

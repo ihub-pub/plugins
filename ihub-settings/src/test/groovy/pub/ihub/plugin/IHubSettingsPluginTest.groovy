@@ -167,13 +167,13 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ other                               │ prefix-other                                               │'
-        result.output.contains '│ other                               │ prefix-other-a                                             │'
-        result.output.contains '│ other                               │ prefix-other-b                                             │'
-        result.output.contains '│ other                               │ prefix-other-c                                             │'
-        result.output.contains '│ rest                                │ demo-rest-suffix                                           │'
-        result.output.contains '│ service                             │ demo-service-suffix                                        │'
-        result.output.contains '│ test                                │ test                                                       │'
+        result.output.contains '│ other                                    │ prefix-other                                          │'
+        result.output.contains '│ other                                    │ prefix-other-a                                        │'
+        result.output.contains '│ other                                    │ prefix-other-b                                        │'
+        result.output.contains '│ other                                    │ prefix-other-c                                        │'
+        result.output.contains '│ rest                                     │ demo-rest-suffix                                      │'
+        result.output.contains '│ service                                  │ demo-service-suffix                                   │'
+        result.output.contains '│ test                                     │ test                                                  │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

@@ -16,7 +16,8 @@
 package pub.ihub.plugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
+import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
 
 
 
@@ -28,10 +29,17 @@ class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
 
     @Override
     void apply() {
-        printConfigContent 'test', tap('k'), tap('v', 30), [k1: 'v1', k2: 'v2']
-        printConfigContent 'test', tap('t1', 30), tap('t2'), [d1: [1, 2, 3], d2: [4, 5, 6]]
         printConfigContent 'test', []
-        printConfigContent 'test', tap('t1')
+        printConfigContent 'test', [['123', '456', '798']]
+        printConfigContent 'test', [
+            ['123', '12345', '123'],
+            ['12345', '123', '1234567'],
+            ['1', '1234567890', '123']
+        ], 't1', 't2', 't3'
+        printLineConfigContent 'test', [
+            '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
+        ], 't'
+        printMapConfigContent 'test', 'ID', 'Version', [a: '1', b: '2', c: ['3', '4']]
     }
 
 }
