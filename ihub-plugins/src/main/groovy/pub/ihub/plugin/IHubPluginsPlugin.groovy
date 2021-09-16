@@ -18,7 +18,7 @@ package pub.ihub.plugin
 import io.freefair.gradle.plugins.git.GitVersionPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
 
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 
 
 
@@ -58,7 +58,7 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
         if (project == project.rootProject) {
             applyPlugin GitVersionPlugin
-            printConfigContent 'Gradle Project Repos', project.repositories*.displayName
+            printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
         }
 
         applyPlugin IHubBomPlugin

@@ -18,8 +18,8 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
-import static pub.ihub.plugin.IHubPluginMethods.tap
+import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
+import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
 
 
 
@@ -67,7 +67,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     }
                 }
             }
-            printConfigContent 'Gradle Plugin Plugins Version', tap('ID'), tap('Version', 30), PLUGIN_VERSIONS
+            printMapConfigContent 'Gradle Plugin Plugins Version', 'ID', 'Version', PLUGIN_VERSIONS
 
             // 配置子项目
             Map<String, List<String>> projectSpecs = [:]
@@ -83,7 +83,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     projectSpecs.put path, names - null
                 }
             }
-            printConfigContent 'Include Gradle Projects', tap('Path', 35), tap('Projects'), projectSpecs
+            printMapConfigContent 'Include Gradle Projects', 'Path', 'Projects', projectSpecs
         }
     }
 
@@ -107,7 +107,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     url 'https://repo.spring.io/release'
                 }
             }
-            printConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
+            printLineConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
         }
     }
 
