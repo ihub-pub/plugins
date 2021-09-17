@@ -41,10 +41,10 @@ iHubBom {
 
 ## 默认BOM
 
-> 插件内置默认BOM配置，配置组件版本[详见](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-bom)。
+> 插件内置默认BOM配置，配置组件版本[详见](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-libs)。
 
 ```groovy
 importBoms {
-    group 'pub.ihub.lib' module 'ihub-bom' version '1.0.0'
+    group 'pub.ihub.lib' module 'ihub-libs' version '1.0.0'
 }
 ```
