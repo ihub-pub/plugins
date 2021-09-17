@@ -39,13 +39,13 @@ jobs:
         if: ${{ github.event_name != 'schedule' }}
         uses: ihub-pub/actions@main
         with:
-          run: test -Dfast.test=true
+          run: test -DiHubTest.failFast=true -Dfast.test=true
 
       - name: Test with Gradle (all)
         if: ${{ github.event_name == 'schedule' }}
         uses: ihub-pub/actions@main
         with:
-          run: test
+          run: test -DiHubTest.failFast=true
 
       - name: Upload Coverage Reports
         if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}

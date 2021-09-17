@@ -63,7 +63,7 @@ class IHubPluginsPluginTest extends Specification {
 
     def '代码检查插件测试'() {
         setup: '初始化项目'
-        copyProject 'sample-groovy', 'src'
+        copyProject 'sample-groovy', 'src', 'conf'
         testProjectDir.newFile('settings.gradle') << 'rootProject.name = \'sample-groovy\''
 
         when: '构建项目'

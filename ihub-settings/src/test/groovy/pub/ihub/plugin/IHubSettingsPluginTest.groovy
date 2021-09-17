@@ -158,6 +158,8 @@ class IHubSettingsPluginTest extends Specification {
             newFolder 'other', 'c'
         }
         settingsFile << '''
+            // 模拟重复配置
+            include 'test'
             iHubSettings {
                 includeProjects 'rest', 'service' suffix '-suffix'
                 includeProjects 'other' prefix 'prefix-' subproject
@@ -173,7 +175,7 @@ class IHubSettingsPluginTest extends Specification {
         result.output.contains '│ other                                    │ prefix-other-c                                        │'
         result.output.contains '│ rest                                     │ demo-rest-suffix                                      │'
         result.output.contains '│ service                                  │ demo-service-suffix                                   │'
-        result.output.contains '│ test                                     │ test                                                  │'
+        !result.output.contains('│ test                                     │ test                                                  │')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
