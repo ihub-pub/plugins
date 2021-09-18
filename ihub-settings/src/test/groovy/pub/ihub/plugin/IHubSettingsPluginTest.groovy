@@ -179,4 +179,26 @@ class IHubSettingsPluginTest extends Specification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '测试配置三级子项目（仅含子项目）'() {
+        when: '配置项目'
+        testProjectDir.with {
+            newFolder 'other', 'a'
+            newFolder 'other', 'b'
+            newFolder 'other', 'c'
+        }
+        settingsFile << '''
+            iHubSettings {
+                includeProjects 'other' prefix 'prefix-' suffix '-suffix' onlySubproject
+            }
+        '''
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        !result.output.contains('│ other                                     │ prefix-other                                         │')
+        result.output.contains '│ other                                     │ prefix-a-suffix                                      │'
+        result.output.contains '│ other                                     │ prefix-b-suffix                                      │'
+        result.output.contains '│ other                                     │ prefix-c-suffix                                      │'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
 }

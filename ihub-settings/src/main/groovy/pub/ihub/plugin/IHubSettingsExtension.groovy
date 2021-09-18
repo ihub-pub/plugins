@@ -78,6 +78,7 @@ class IHubSettingsExtension implements IHubExtensionAware {
 
         private String namePrefix = settings.rootProject.name + '-'
         private String nameSuffix = ''
+        boolean include = true
         ProjectSpec subprojectSpec
 
         ProjectSpec prefix(String namePrefix) {
@@ -106,8 +107,14 @@ class IHubSettingsExtension implements IHubExtensionAware {
             subproject nameSuffix
         }
 
+        ProjectSpec getOnlySubproject() {
+            subprojectSpec = this
+            include = false
+            this
+        }
+
         @CompileStatic(SKIP)
-        String includeProject(String projectPath) {
+        String includeProject(String projectPath, File projectDir = null) {
             String gradleProjectPath = ":$projectPath"
             String projectName = projectPath.split(':').last()
             if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || settings.findProject(gradleProjectPath)) {
@@ -115,6 +122,9 @@ class IHubSettingsExtension implements IHubExtensionAware {
             }
             settings.include gradleProjectPath
             settings.project(gradleProjectPath).tap {
+                if (projectDir) {
+                    it.projectDir = projectDir
+                }
                 name = namePrefix + projectPath.replaceAll(':', '-') + nameSuffix
             }.name
         }
