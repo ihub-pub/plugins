@@ -57,6 +57,8 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
         }
 
         if (project == project.rootProject) {
+            logger.lifecycle 'Build with IHub Plugins {}.', IHubPluginsPlugin.package.implementationVersion
+            logger.lifecycle 'You can see the documentation to learn more, see https://doc.ihub.pub/plugins.'
             applyPlugin GitVersionPlugin
             printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
         }
