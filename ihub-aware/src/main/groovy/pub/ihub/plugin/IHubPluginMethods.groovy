@@ -74,6 +74,11 @@ final class IHubPluginMethods {
                 s << max { it[i].toString().length() }[i].toString().length()
             }
         } as List<Integer>
+        if (taps) {
+            widths.eachWithIndex { int width, int i ->
+                widths.set i, [width, taps[i].length()].max()
+            }
+        }
         int width = CONTENT_WIDTH - (widths.size() - 1) * 3 - (widths.sum() as int)
         if (width > 0) {
             int sub = width / widths.size() as int
