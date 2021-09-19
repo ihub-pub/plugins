@@ -38,6 +38,13 @@ subprojects {
         plugin 'pl.droidsonroids.jacoco.testkit'
     }
 
+    // TODO groovy版本降级
+    iHubBom {
+        importBoms {
+            group 'org.codehaus.groovy' module 'groovy-bom' version '3.0.8'
+        }
+    }
+
     dependencies {
         implementation gradleApi()
     }
