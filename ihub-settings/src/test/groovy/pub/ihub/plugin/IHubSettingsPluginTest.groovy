@@ -88,7 +88,6 @@ class IHubSettingsPluginTest extends Specification {
 
         then: '检查结果'
         result.output.contains 'com.gradle.plugin-publish'
-        result.output.contains 'com.github.ben-manes.versions'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
