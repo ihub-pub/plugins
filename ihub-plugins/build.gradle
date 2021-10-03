@@ -32,6 +32,7 @@ dependencies {
     implementation 'io.freefair.gradle:lombok-plugin:6.2.0'
     implementation 'io.freefair.gradle:jacoco-plugin:6.2.0'
     implementation 'io.freefair.gradle:github-plugin:6.2.0'
+    implementation 'com.github.ben-manes:gradle-versions-plugin:0.39.0'
 }
 
 gradlePlugin {
