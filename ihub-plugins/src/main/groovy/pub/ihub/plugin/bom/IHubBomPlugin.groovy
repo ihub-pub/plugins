@@ -15,11 +15,14 @@
  */
 package pub.ihub.plugin.bom
 
+import com.github.benmanes.gradle.versions.VersionsPlugin
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
@@ -58,6 +61,16 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
         // 配置项目依赖
         configProject project
+
+        // 自定义依赖升级输出
+        if (project == project.rootProject) {
+            applyPlugin VersionsPlugin
+            withTask DependencyUpdatesTask, {
+                it.configure {
+                    outputFormatter = dependencyUpdatesOutputFormatter
+                }
+            }
+        }
     }
 
     private void configProject(Project project) {
@@ -116,6 +129,38 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
             project.gradle.taskGraph.whenReady {
                 ext.printConfigContent()
+            }
+        }
+    }
+
+    private final dependencyUpdatesOutputFormatter = { result ->
+        result.current.dependencies.with {
+            if (!empty) {
+                String title = 'The following dependencies are using the latest version'
+                printConfigContent title, it.collect { dependency ->
+                    [dependency.group, dependency.name, dependency.version]
+                }, 'Group', 'Module', 'Version'
+            }
+        }
+        result.exceeded.dependencies.with {
+            if (!empty) {
+                String title = 'The following dependencies exceed the version found at the revision level'
+                printConfigContent title, it.collect { dependency ->
+                    [dependency.group, dependency.name, dependency.version, dependency.latest]
+                }, 'Group', 'Module', 'Current version', 'Latest version'
+            }
+        }
+        result.outdated.dependencies.with {
+            if (!empty) {
+                String title = 'The following dependencies have later versions'
+                printConfigContent title, it.collect { dependency ->
+                    [
+                        dependency.group,
+                        dependency.name,
+                        dependency.version,
+                        dependency.available.release ?: dependency.available.milestone
+                    ]
+                }, 'Group', 'Module', 'Current version', 'Latest version'
             }
         }
     }
