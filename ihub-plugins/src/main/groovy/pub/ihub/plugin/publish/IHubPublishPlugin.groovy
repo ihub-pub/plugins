@@ -31,7 +31,6 @@ import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
-import pub.ihub.plugin.java.IHubJavaPlugin
 
 import static io.freefair.gradle.plugins.github.internal.GitUtils.currentlyRunningOnGithubActions
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
@@ -42,7 +41,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * 组件发布插件
  * @author liheng
  */
-@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = IHubJavaPlugin)
+@IHubPlugin(IHubPublishExtension)
 class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override
@@ -59,11 +58,13 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         configSigning project, extension
 
         // 添加配置元信息
-        withExtension(IHubBomExtension) {
-            it.dependencies {
-                annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        if (project.plugins.hasPlugin('java')) {
+            withExtension(IHubBomExtension) {
+                it.dependencies {
+                    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+                }
+                project.compileJava.inputs.files project.processResources
             }
-            project.compileJava.inputs.files project.processResources
         }
     }
 
@@ -73,6 +74,10 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         withExtension(PublishingExtension) {
             it.publications {
                 create('mavenJava', MavenPublication) {
+                    if (project.plugins.hasPlugin('java-platform')) {
+                        from project.components.getByName('javaPlatform')
+                        return
+                    }
                     from project.components.getByName('java')
 
                     // release版本时发布sources以及docs包

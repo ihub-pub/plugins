@@ -185,6 +185,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         copyProject 'basic.gradle'
         buildFile << """
             apply {
+                plugin 'pub.ihub.plugin.ihub-java'
                 plugin 'pub.ihub.plugin.ihub-publish'
             }
         """
@@ -234,6 +235,23 @@ iHubPublish.publishDocs=true
 '''
         def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password')
             .withEnvironment('GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'ihub-pub/plugins').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'Java平台Publish配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << """
+            apply {
+                plugin 'java-platform'
+                plugin 'pub.ihub.plugin.ihub-publish'
+            }
+        """
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'

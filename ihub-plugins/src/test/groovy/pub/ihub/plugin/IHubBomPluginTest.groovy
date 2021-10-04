@@ -146,6 +146,11 @@ class IHubBomPluginTest extends IHubSpecification {
 
         when: '测试配置方法'
         project.plugins.withType(IHubBomPlugin) {
+            it.rejectVersionFilter currentVersion: '5.7.12', candidate: [version: '5.7.13']
+            it.rejectVersionFilter currentVersion: '5.7.12.ga', candidate: [version: '5.7.13.m']
+            it.rejectVersionFilter currentVersion: '5.7.12.m', candidate: [version: '5.7.13.ga']
+        }
+        project.plugins.withType(IHubBomPlugin) {
             it.dependencyUpdatesOutputFormatter current: [
                 dependencies: [
                     [

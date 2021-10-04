@@ -16,5 +16,6 @@
 description = '组件模块'
 
 apply {
+    plugin 'pub.ihub.plugin.ihub-java'
     plugin 'pub.ihub.plugin.ihub-publish'
 }
