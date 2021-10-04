@@ -62,12 +62,17 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         // 配置项目依赖
         configProject project
 
-        // 自定义依赖升级输出
         if (project == project.rootProject) {
             applyPlugin VersionsPlugin
             withTask DependencyUpdatesTask, {
                 it.configure {
+                    // 自定义依赖升级输出
                     outputFormatter = dependencyUpdatesOutputFormatter
+                    // 配置拒绝升级策略
+                    rejectVersionIf rejectVersionFilter
+                    // 其他配置
+                    checkConstraints = true
+                    checkForGradleUpdate = false
                 }
             }
         }
@@ -131,6 +136,14 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 ext.printConfigContent()
             }
         }
+    }
+
+    static final isStable(String version) {
+        ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) } || version ==~ /v?(\d+\.)+\d+/
+    }
+
+    private final rejectVersionFilter = { current ->
+        isStable(current.currentVersion) && !isStable(current.candidate.version)
     }
 
     private final dependencyUpdatesOutputFormatter = { result ->
