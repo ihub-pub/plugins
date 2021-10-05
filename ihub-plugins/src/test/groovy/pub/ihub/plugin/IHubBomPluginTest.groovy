@@ -15,11 +15,7 @@
  */
 package pub.ihub.plugin
 
-
 import groovy.util.logging.Slf4j
-import org.gradle.api.Project
-import org.gradle.testfixtures.ProjectBuilder
-import pub.ihub.plugin.bom.IHubBomPlugin
 import spock.lang.Title
 
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
@@ -61,6 +57,9 @@ class IHubBomPluginTest extends IHubSpecification {
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
         buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-bom'
+            }
             allprojects {
                 iHubBom {
                     importBoms {
@@ -139,84 +138,15 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    def '自定义依赖升级打印方法测试'() {
-        setup: '初始化项目'
-        Project project = ProjectBuilder.builder().build()
-        project.pluginManager.apply IHubBomPlugin
-
-        when: '测试配置方法'
-        project.plugins.withType(IHubBomPlugin) {
-            it.rejectVersionFilter currentVersion: '5.7.12', candidate: [version: '5.7.13']
-            it.rejectVersionFilter currentVersion: '5.7.12.ga', candidate: [version: '5.7.13.m']
-            it.rejectVersionFilter currentVersion: '5.7.12.m', candidate: [version: '5.7.13.ga']
-        }
-        project.plugins.withType(IHubBomPlugin) {
-            it.dependencyUpdatesOutputFormatter current: [
-                dependencies: [
-                    [
-                        group  : 'cn.hutool',
-                        name   : 'hutool-all',
-                        version: '5.7.13'
-                    ]
-                ]
-            ], exceeded: [
-                dependencies: [
-                    [
-                        group  : 'cn.hutool',
-                        name   : 'hutool-all',
-                        version: '5.7.13',
-                        latest : '5.7.12'
-                    ]
-                ]
-            ], outdated: [
-                dependencies: [
-                    [
-                        group    : 'cn.hutool',
-                        name     : 'hutool-all',
-                        version  : '5.7.12',
-                        available: [
-                            release: '5.7.13'
-                        ]
-                    ]
-                ]
-            ]
-            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []],
-                outdated: [dependencies: []]
-            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
-                dependencies: [
-                    [
-                        group    : 'cn.hutool',
-                        name     : 'hutool-all',
-                        version  : '5.7.12',
-                        available: [
-                            milestone: '5.7.13'
-                        ]
-                    ]
-                ]
-            ]
-        }
-
-        then: '检查结果'
-        project.tasks.getByName 'dependencyUpdates'
-    }
-
-//    def '自定义依赖升级打印测试'() {
-//        setup: '初始化项目'
-//        copyProject 'basic.gradle'
-//
-//        when: '检查组件版本'
-//        def result = gradleBuilder.withArguments('dependencyUpdates').build()
-//
-//        then: '检查结果'
-//        result.output.contains 'The following dependencies have later versions'
-//    }
-
     def '配置失败测试-排除组件依赖配置版本号'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
 
         when: '排除组件依赖配置版本号'
         buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-bom'
+            }
             iHubBom {
                 excludeModules {
                     group 'pub.ihub' version '1.0.0'
@@ -235,6 +165,9 @@ class IHubBomPluginTest extends IHubSpecification {
 
         when: '配置组件依赖类型为空'
         buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-bom'
+            }
             iHubBom {
                 dependencies {
                     compile null
@@ -253,6 +186,9 @@ class IHubBomPluginTest extends IHubSpecification {
 
         when: '配置组件依赖为空'
         buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-bom'
+            }
             iHubBom {
                 dependencies {
                     compile 'type'

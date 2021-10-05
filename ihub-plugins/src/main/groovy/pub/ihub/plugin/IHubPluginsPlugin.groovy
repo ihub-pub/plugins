@@ -15,9 +15,11 @@
  */
 package pub.ihub.plugin
 
+import com.github.benmanes.gradle.versions.VersionsPlugin
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.freefair.gradle.plugins.git.GitVersionPlugin
-import pub.ihub.plugin.bom.IHubBomPlugin
 
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 
 
@@ -61,9 +63,9 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 ', You can see the documentation to learn more, See https://doc.ihub.pub/plugins.'
             applyPlugin GitVersionPlugin
             printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
+            // 配置组件升级任务
+            configDependencyUpdates()
         }
-
-        applyPlugin IHubBomPlugin
 
         project.subprojects {
             pluginManager.apply IHubPluginsPlugin
@@ -99,6 +101,79 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                     username repoUsername
                     password ext.repoPassword
                 }
+            }
+        }
+    }
+
+    static final isStable(String version) {
+        ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) } || version ==~ /v?(\d+\.)+\d+/
+    }
+
+    private final rejectVersionFilter = { current ->
+        isStable(current.currentVersion) && !isStable(current.candidate.version)
+    }
+
+    private replaceLastVersion(dependencies) {
+        project.allprojects.each { prj ->
+            List<String> lines = prj.buildFile.readLines()
+            prj.buildFile.withWriter { writer ->
+                lines.each { line ->
+                    writer.writeLine dependencies.findResult { dep ->
+                        def dependency = "${dep.group}:${dep.name}:${dep.version}"
+                        def latest = "${dep.group}:${dep.name}:${dep.available.release ?: dep.available.milestone}"
+                        line.contains(dependency) ? line.replace(dependency, latest) : null
+                    } ?: line
+                }
+            }
+        }
+    }
+
+    private final dependencyUpdatesOutputFormatter = { result ->
+        result.current.dependencies.with {
+            if (!empty) {
+                String title = 'The following dependencies are using the latest version'
+                printConfigContent title, it.collect { dependency ->
+                    [dependency.group, dependency.name, dependency.version]
+                }, 'Group', 'Module', 'Version'
+            }
+        }
+        result.exceeded.dependencies.with {
+            if (!empty) {
+                String title = 'The following dependencies exceed the version found at the revision level'
+                printConfigContent title, it.collect { dependency ->
+                    [dependency.group, dependency.name, dependency.version, dependency.latest]
+                }, 'Group', 'Module', 'Current version', 'Latest version'
+            }
+        }
+        result.outdated.dependencies.with {
+            if (!empty) {
+                String title = 'The following dependencies have later versions'
+                printConfigContent title, it.collect { dependency ->
+                    [
+                        dependency.group,
+                        dependency.name,
+                        dependency.version,
+                        dependency.available.release ?: dependency.available.milestone
+                    ]
+                }, 'Group', 'Module', 'Current version', 'Latest version'
+                if (this.extension.autoReplaceLaterVersions) {
+                    replaceLastVersion it
+                }
+            }
+        }
+    }
+
+    private configDependencyUpdates() {
+        applyPlugin VersionsPlugin
+        withTask DependencyUpdatesTask, {
+            it.configure {
+                // 自定义依赖升级输出
+                outputFormatter = dependencyUpdatesOutputFormatter
+                // 配置拒绝升级策略
+                rejectVersionIf rejectVersionFilter
+                // 其他配置
+                checkConstraints = true
+                checkForGradleUpdate = false
             }
         }
     }

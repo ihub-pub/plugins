@@ -16,6 +16,8 @@
 package pub.ihub.plugin
 
 import groovy.util.logging.Slf4j
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Title
 
 
@@ -302,6 +304,97 @@ iHubPublish.publishDocs=true
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '自定义依赖升级打印方法测试'() {
+        setup: '初始化项目'
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubPluginsPlugin
+
+        when: '测试配置方法'
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.rejectVersionFilter currentVersion: '5.7.12', candidate: [version: '5.7.13']
+            it.rejectVersionFilter currentVersion: '5.7.12.ga', candidate: [version: '5.7.13.m']
+            it.rejectVersionFilter currentVersion: '5.7.12.m', candidate: [version: '5.7.13.ga']
+        }
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.dependencyUpdatesOutputFormatter current: [
+                dependencies: [
+                    [
+                        group  : 'cn.hutool',
+                        name   : 'hutool-all',
+                        version: '5.7.13'
+                    ]
+                ]
+            ], exceeded: [
+                dependencies: [
+                    [
+                        group  : 'cn.hutool',
+                        name   : 'hutool-all',
+                        version: '5.7.13',
+                        latest : '5.7.12'
+                    ]
+                ]
+            ], outdated: [
+                dependencies: [
+                    [
+                        group    : 'cn.hutool',
+                        name     : 'hutool-all',
+                        version  : '5.7.12',
+                        available: [
+                            release: '5.7.13'
+                        ]
+                    ]
+                ]
+            ]
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []],
+                outdated: [dependencies: []]
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
+                dependencies: [
+                    [
+                        group    : 'cn.hutool',
+                        name     : 'hutool-all',
+                        version  : '5.7.12',
+                        available: [
+                            milestone: '5.7.13'
+                        ]
+                    ]
+                ]
+            ]
+        }
+        project.iHub.autoReplaceLaterVersions = true
+        project.buildFile.createNewFile()
+        project.buildFile << '''
+            dependencies {
+                api 'cn.hutool:hutool-all:5.7.12',
+                    'cn.hutool:hutool-core:5.7.12'
+            }
+        '''
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
+                dependencies: [
+                    [
+                        group    : 'cn.hutool',
+                        name     : 'hutool-all',
+                        version  : '5.7.12',
+                        available: [
+                            release: '5.7.13'
+                        ]
+                    ],
+                    [
+                        group    : 'cn.hutool',
+                        name     : 'hutool-core',
+                        version  : '5.7.12',
+                        available: [
+                            milestone: '5.7.13'
+                        ]
+                    ]
+                ]
+            ]
+        }
+
+        then: '检查结果'
+        project.tasks.getByName 'dependencyUpdates'
     }
 
 }

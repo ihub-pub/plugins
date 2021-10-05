@@ -63,3 +63,4 @@ iHub {
 | `javaCompatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
 | `compileGroovyAllModules` | 是否添加groovy所有模块 | `false` | ✔ | ✔ | ❌ | ❌ |
+| `autoReplaceLaterVersions` | 自动替换最新版本 | `false` | ✔ | ✔ | ✔ | ❌ |
