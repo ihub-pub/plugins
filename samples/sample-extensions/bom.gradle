@@ -15,6 +15,7 @@
  */
 plugins {
     id 'pub.ihub.plugin'
+    id 'pub.ihub.plugin.ihub-bom'
 }
 
 description = 'BOM插件DSL扩展配置样例'

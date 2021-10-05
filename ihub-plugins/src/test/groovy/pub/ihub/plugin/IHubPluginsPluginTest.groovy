@@ -121,6 +121,17 @@ class IHubPluginsPluginTest extends Specification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '自定义依赖升级打印测试'() {
+        setup: '初始化项目'
+        copyProject 'sample-groovy', 'src', 'conf'
+
+        when: '检查组件版本'
+        def result = gradleBuilder.withArguments('dependencyUpdates').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     private void copyProject(String name, String... dirs) {
         "${getFile(System.getProperty(OS_USER_DIR)).parentFile.path + separator}samples$separator$name".with {
             copyFile getFile(it + separator + DEFAULT_BUILD_FILE), testProjectDir.newFile(DEFAULT_BUILD_FILE)
