@@ -4,7 +4,7 @@
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-verification' version '1.1.5'
+    id 'pub.ihub.plugin.ihub-verification' version '1.1.6'
 }
 ```
 
@@ -12,7 +12,7 @@ plugins {
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin' version '1.1.5'
+    id 'pub.ihub.plugin' version '1.1.6'
 }
 
 apply {

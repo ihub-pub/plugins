@@ -64,7 +64,18 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
             applyPlugin GitVersionPlugin
             printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
             // 配置组件升级任务
-            configDependencyUpdates()
+            applyPlugin VersionsPlugin
+            withTask DependencyUpdatesTask, {
+                it.configure {
+                    // 自定义依赖升级输出
+                    outputFormatter = dependencyUpdatesOutputFormatter
+                    // 配置拒绝升级策略
+                    rejectVersionIf rejectVersionFilter
+                    // 其他配置
+                    checkConstraints = true
+                    checkForGradleUpdate = false
+                }
+            }
         }
 
         project.subprojects {
@@ -159,21 +170,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 if (this.extension.autoReplaceLaterVersions) {
                     replaceLastVersion it
                 }
-            }
-        }
-    }
-
-    private configDependencyUpdates() {
-        applyPlugin VersionsPlugin
-        withTask DependencyUpdatesTask, {
-            it.configure {
-                // 自定义依赖升级输出
-                outputFormatter = dependencyUpdatesOutputFormatter
-                // 配置拒绝升级策略
-                rejectVersionIf rejectVersionFilter
-                // 其他配置
-                checkConstraints = true
-                checkForGradleUpdate = false
             }
         }
     }
