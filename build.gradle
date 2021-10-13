@@ -30,6 +30,7 @@ iHubGitHooks {
 subprojects {
     apply {
         plugin 'groovy'
+        plugin 'pub.ihub.plugin.ihub-java'
         plugin 'pub.ihub.plugin.ihub-test'
         plugin 'pub.ihub.plugin.ihub-verification'
         plugin 'pub.ihub.plugin.ihub-publish'
