@@ -43,7 +43,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
     ]
 
     private static final Map<String, String> PLUGIN_VERSIONS = [
-        'com.gradle.plugin-publish': '0.15.0',
+        'com.gradle.plugin-publish': '0.16.0',
     ]
 
     @Override

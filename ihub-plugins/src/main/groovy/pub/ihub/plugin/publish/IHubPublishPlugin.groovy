@@ -15,6 +15,8 @@
  */
 package pub.ihub.plugin.publish
 
+import groovy.json.JsonSlurper
+import groovy.transform.Memoized
 import io.freefair.gradle.plugins.github.GithubPomPlugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -32,6 +34,7 @@ import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 
+import static cn.hutool.http.HttpUtil.get
 import static io.freefair.gradle.plugins.github.internal.GitUtils.currentlyRunningOnGithubActions
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
@@ -49,6 +52,11 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         // 引入GithubPom插件
         if (currentlyRunningOnGithubActions()) {
             applyPlugin GithubPomPlugin
+            afterEvaluate {
+                withExtension(PublishingExtension) {
+                    it.publications.withType MavenPublication, this::configurePomDevelopers
+                }
+            }
         }
 
         IHubPluginsExtension iHubExt = withExtension IHubPluginsExtension
@@ -120,6 +128,36 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private void configurePomDevelopers(MavenPublication mavenPublication) {
+        mavenPublication.pom.developers {
+            contributors(project.github.slug.get()).each { user ->
+                developer {
+                    id.set user.id
+                    name.set user.name
+                    email.set user.email
+                    url.set user.url
+                }
+            }
+        }
+    }
+
+    @Memoized
+    private static List<Map<String, String>> contributors(String slug) {
+        JsonSlurper jsonSlurper = new JsonSlurper()
+        jsonSlurper.parseText(get("https://api.github.com/repos/$slug/contributors")).findAll {
+            'User' == it.type
+        }.collect {
+            jsonSlurper.parseText(get(it.url)).with {
+                [
+                    id   : login,
+                    name : name,
+                    email: email,
+                    url  : html_url
+                ]
             }
         }
     }
