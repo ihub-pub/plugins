@@ -90,7 +90,6 @@ class IHubJavaPlugin extends IHubProjectPluginAware {
             lombokConfig << [
                 'config.stopBubbling'                : true,
                 'lombok.addLombokGeneratedAnnotation': true,
-                'lombok.accessors.chain'             : true,
             ].collect { k, v -> "$k = $v" }.join('\n')
         }
     }
