@@ -206,7 +206,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         }
         settingsFile << '''
             iHubSettings {
-                includeProjects 'other' prefix 'prefix-' suffix '-suffix' onlySubproject
+                includeProjects 'other' prefix 'prefix-' suffix '-suffix' skippedDirs 'c' onlySubproject
             }
         '''
         def result = gradleBuilder.build()
@@ -215,7 +215,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         !result.output.contains('│ other                                     │ prefix-other                                         │')
         result.output.contains '│ other                                     │ prefix-a-suffix                                      │'
         result.output.contains '│ other                                     │ prefix-b-suffix                                      │'
-        result.output.contains '│ other                                     │ prefix-c-suffix                                      │'
+        !result.output.contains('│ other                                     │ prefix-c-suffix                                      │')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

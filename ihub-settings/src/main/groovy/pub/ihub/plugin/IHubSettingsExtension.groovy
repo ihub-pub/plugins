@@ -84,6 +84,7 @@ class IHubSettingsExtension implements IHubExtensionAware {
         private String nameSuffix = ''
         boolean include = true
         ProjectSpec subprojectSpec
+        private String[] skippedSubDirs = []
 
         ProjectSpec prefix(String namePrefix) {
             this.namePrefix = namePrefix
@@ -104,6 +105,7 @@ class IHubSettingsExtension implements IHubExtensionAware {
                 this.subprojectSpec = it
                 it.namePrefix = this.namePrefix
                 it.nameSuffix = nameSuffix
+                it.skippedSubDirs = this.skippedSubDirs
             }
         }
 
@@ -117,8 +119,13 @@ class IHubSettingsExtension implements IHubExtensionAware {
             this
         }
 
+        ProjectSpec skippedDirs(String... dirs) {
+            skippedSubDirs = dirs
+            this
+        }
+
         @CompileStatic(SKIP)
-        String includeProject(String projectPath, File projectDir = null) {
+        private String includeProject(String projectPath, File projectDir = null) {
             String gradleProjectPath = ":$projectPath"
             String projectName = projectPath.split(':').last()
             if (projectPath.startsWith('.') || projectName in EXCLUDE_DIRS || settings.findProject(gradleProjectPath)) {
@@ -131,6 +138,21 @@ class IHubSettingsExtension implements IHubExtensionAware {
                 }
                 name = namePrefix + projectPath.replaceAll(':', '-') + nameSuffix
             }.name
+        }
+
+        Map<String, List<String>> includeSubProject(File dir) {
+            String path = dir.name
+            List<String> names = include ? [includeProject(path)] : []
+            subprojectSpec?.with { subSpec ->
+                dir.eachDir { subDir ->
+                    if (!subSpec.skippedSubDirs.contains(subDir.name)) {
+                        names << (include ? subSpec.includeProject("$path:$subDir.name") :
+                            subSpec.includeProject(subDir.name, subDir))
+                    }
+                }
+            }
+            names.removeIf { !it }
+            [(path): names]
         }
 
     }
