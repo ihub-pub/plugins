@@ -72,16 +72,8 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             // 配置子项目
             Map<String, List<String>> projectSpecs = [:]
             settings.rootDir.eachDir { dir ->
-                String path = dir.name
-                ext.getProjectSpec(path)?.with { spec ->
-                    List<String> names = spec.include ? [spec.includeProject(path)] : []
-                    spec.subprojectSpec?.with { subSpec ->
-                        dir.eachDir { subDir ->
-                            names << (spec.include ? subSpec.includeProject("$path:$subDir.name") :
-                                subSpec.includeProject(subDir.name, subDir))
-                        }
-                    }
-                    projectSpecs.put path, names - null
+                ext.getProjectSpec(dir.name)?.with { spec ->
+                    projectSpecs.putAll spec.includeSubProject(dir)
                 }
             }
             printMapConfigContent 'Include Gradle Projects', 'Path', 'Projects', projectSpecs

@@ -48,7 +48,7 @@ iHubSettings {
 iHubSettings {
     includeProjects 'rest', 'service' suffix '-suffix'
     includeProjects 'test' noPrefix
-    includeProjects 'other' prefix 'prefix-' subproject
+    includeProjects 'other' prefix 'prefix-' skippedDirs 'c' subproject
     includeProjects 'subproject' prefix 'prefix-' suffix '-suffix' onlySubproject
 }
 ```
