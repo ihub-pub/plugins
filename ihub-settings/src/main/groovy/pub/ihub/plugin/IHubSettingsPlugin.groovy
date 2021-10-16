@@ -20,6 +20,7 @@ import org.gradle.api.initialization.Settings
 
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
+import static pub.ihub.plugin.IHubSettingsExtension.findProperty
 
 
 
@@ -105,6 +106,26 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 maven {
                     name 'SpringRelease'
                     url 'https://repo.spring.io/release'
+                }
+                // 添加私有仓库
+                findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
+                    maven {
+                        name 'ReleaseRepo'
+                        url repoUrl
+                    }
+                }
+                findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
+                    maven {
+                        name 'SnapshotRepo'
+                        url repoUrl
+                    }
+                }
+                // 添加自定义仓库
+                findProperty(settings, 'iHub.customizeRepoUrl')?.with { repoUrl ->
+                    maven {
+                        name 'CustomizeRepo'
+                        url repoUrl
+                    }
                 }
             }
             printLineConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName

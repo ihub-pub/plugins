@@ -72,6 +72,25 @@ class IHubSettingsPluginTest extends Specification {
         result.output.contains 'AliYunGradlePlugin'
         result.output.contains 'AliYunSpringPlugin'
         result.output.contains 'SpringRelease'
+        !result.output.contains('ReleaseRepo')
+        !result.output.contains('SnapshotRepo')
+        !result.output.contains('CustomizeRepo')
+
+        when: '私有仓库配置'
+        propertiesFile << '''
+iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
+iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
+iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
+'''
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'AliYunGradlePlugin'
+        result.output.contains 'AliYunSpringPlugin'
+        result.output.contains 'SpringRelease'
+        result.output.contains 'ReleaseRepo'
+        result.output.contains 'SnapshotRepo'
+        result.output.contains 'CustomizeRepo'
 
         when: '本地插件配置'
         testProjectDir.newFolder 'gradle', 'plugins'

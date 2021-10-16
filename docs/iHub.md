@@ -33,7 +33,7 @@ iHub {
 
 | Name | Description | Url |
 | ---- | ----------- | --- |
-| `ProjectDirs` | 项目手动添加组件 | `{rootProject.projectDir}/libs` |
+| `ProjectDirs` | 项目本地组件 | `{rootProject.projectDir}/libs` |
 | `MavenLocal` | 本地仓库 | `{local}/.m2/repository` |
 | `AliYunPublic` | 阿里云聚合公有仓库 | https://maven.aliyun.com/repository/public |
 | `AliYunGoogle` | 阿里云Google代理仓库 | https://maven.aliyun.com/repository/google |

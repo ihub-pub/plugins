@@ -57,12 +57,17 @@ iHubSettings {
 
 ## 默认插件仓库
 
-| Name | Url |
-| --------- | ----------- |
-| `ProjectDirs`        | `{rootProject.projectDir}/gradle/plugins`         |
-| `AliYunGradlePlugin` | https://maven.aliyun.com/repository/gradle-plugin |
-| `AliYunSpringPlugin` | https://maven.aliyun.com/repository/spring-plugin |
-| `SpringRelease`      | https://repo.spring.io/release                    |
+> 私有仓库、自定义仓库配置参见[扩展属性](/iHub?id=扩展属性)
+
+| Name | Description | Url |
+| ---- | ----------- | --- |
+| `ProjectDirs` | 项目本地插件 | `{rootProject.projectDir}/gradle/plugins` |
+| `AliYunGradlePlugin` | 阿里云Gradle代理插件仓库 | https://maven.aliyun.com/repository/gradle-plugin |
+| `AliYunSpringPlugin` | 阿里云Spring代理插件仓库 | https://maven.aliyun.com/repository/spring-plugin |
+| `SpringRelease` | Spring Release仓库 | https://repo.spring.io/release |
+| `ReleaseRepo` | 私有Release仓库 | https://repo.xxx.com/release |
+| `SnapshotRepo` | 私有Snapshot仓库 | https://repo.xxx.com/snapshot |
+| `CustomizeRepo` | 自定义仓库仓库 | https://repo.xxx.com/repo |
 
 ## 扩展属性
 

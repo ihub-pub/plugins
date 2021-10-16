@@ -68,8 +68,12 @@ class IHubSettingsExtension implements IHubExtensionAware {
         skippedDirs ? path in skippedDirs ? null : new ProjectSpec() : projectSpecs[path]
     }
 
+    String findProperty(String key, String defaultValue = null) {
+        findProperty settings, key, defaultValue
+    }
+
     @CompileStatic(SKIP)
-    private String findProperty(String key, String defaultValue = null) {
+    static String findProperty(Settings settings, String key, String defaultValue = null) {
         settings.hasProperty(key) ? settings."$key" : defaultValue
     }
 
