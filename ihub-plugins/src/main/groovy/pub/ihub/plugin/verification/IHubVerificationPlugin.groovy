@@ -21,6 +21,7 @@ import groovy.xml.XmlParser
 import io.freefair.gradle.plugins.jacoco.AggregateJacocoReportPlugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdExtension
@@ -52,7 +53,8 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
     void apply() {
         if (project.plugins.hasPlugin(GroovyPlugin)) {
             configCodenarc project
-        } else {
+        }
+        if (project.plugins.hasPlugin(JavaPlugin)) {
             configPmd project
         }
         configJacoco project

@@ -17,11 +17,17 @@ package pub.ihub.plugin.verification
 
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
+import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPlugin
+import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
 import pub.ihub.plugin.IHubSystemProperties
 
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.JUNIT_JUPITER
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.NONE
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.SPOCK
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
@@ -85,5 +91,14 @@ class IHubTestExtension implements IHubProjectExtensionAware, IHubSystemProperti
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
     boolean failFast = false
+
+    /**
+     * 测试框架
+     * @return 测试框架
+     */
+    @IHubProperty
+    BuildInitTestFramework getTestFramework() {
+        project.plugins.hasPlugin(GroovyPlugin) ? SPOCK : project.plugins.hasPlugin(JavaPlugin) ? JUNIT_JUPITER : NONE
+    }
 
 }

@@ -23,6 +23,7 @@ import java.lang.annotation.Target
 
 import static groovy.transform.TypeCheckingMode.SKIP
 import static java.lang.annotation.ElementType.FIELD
+import static java.lang.annotation.ElementType.METHOD
 import static java.lang.annotation.RetentionPolicy.RUNTIME
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 
@@ -34,7 +35,7 @@ import static pub.ihub.plugin.IHubProperty.Type.PROJECT
  */
 @Documented
 @Retention(RUNTIME)
-@Target(FIELD)
+@Target([FIELD, METHOD])
 @CompileStatic
 @interface IHubProperty {
 

@@ -16,6 +16,7 @@
 package pub.ihub.plugin
 
 import java.lang.reflect.Field
+import java.lang.reflect.Method
 
 import static pub.ihub.plugin.IHubProperty.Type.ENV
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
@@ -31,11 +32,17 @@ trait IHubProjectProperty {
     abstract Object findProjectProperty(String key)
 
     Object getProperty(String name) {
+        IHubProperty iHubProperty
+        Class<?> fieldType
         Field field = getClass().declaredFields.find { f -> f.name == name }
-        if (!field) {
-            return invokeGetMethod(name)
+        if (field) {
+            iHubProperty = field.getAnnotation IHubProperty
+            fieldType = field.type
+        } else {
+            Method method = getClass().getMethod(getMethodName(name))
+            iHubProperty = method.getAnnotation IHubProperty
+            fieldType = method.returnType
         }
-        IHubProperty iHubProperty = field.getAnnotation IHubProperty
         String fieldName = getClass().getAnnotation(IHubExtension).value() + '.' + (iHubProperty?.value() ?: name)
         IHubProperty.Type[] propertyType = iHubProperty?.type() ?: [] as IHubProperty.Type[]
         // 优先从系统属性和项目属性获取，环境属性多用于敏感信息配置
@@ -59,13 +66,17 @@ trait IHubProjectProperty {
         if (null == value) {
             return value
         }
-        'false' == value.toString() ? false : field.type.primitive && value.toString().integer ?
-            value.toString().toInteger() : value.asType(field.type)
+        'false' == value.toString() ? false : fieldType.primitive && value.toString().integer ?
+            value.toString().toInteger() : value.asType(fieldType)
     }
 
     private Object invokeGetMethod(String name) {
-        invokeMethod name.replaceFirst(/([a-z])/, '$1_').split('_')
-            .with { "get${it[0].toUpperCase()}${it[1]}" }, null
+        invokeMethod getMethodName(name), null
+    }
+
+    private String getMethodName(String name) {
+        name.replaceFirst(/([a-z])/, '$1_').split('_')
+            .with { "get${it[0].toUpperCase()}${it[1]}" }
     }
 
 }
