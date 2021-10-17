@@ -15,13 +15,17 @@
  */
 package pub.ihub.plugin.verification
 
+import org.gradle.api.Action
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.tasks.testing.Test
+import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.JUNIT_JUPITER
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.SPOCK
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
@@ -34,20 +38,27 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 @SuppressWarnings('UnnecessaryObjectReferences')
 class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
 
-    @Override
-    void apply() {
-        withExtension(IHubBomExtension) {
-            if (project.plugins.hasPlugin(GroovyPlugin)) {
-                it.dependencies {
-                    testImplementation 'org.spockframework:spock-spring'
-                    testRuntimeOnly 'com.athaydes:spock-reports'
-                }
-            } else {
-                it.dependencies {
-                    testImplementation 'org.junit.jupiter:junit-jupiter'
-                }
+    private final Map<BuildInitTestFramework, Action<IHubBomExtension>> testDependenciesMapping = [
+        (SPOCK)        : { IHubBomExtension iHubBom ->
+            applyPlugin GroovyPlugin
+            iHubBom.dependencies {
+                testImplementation 'org.spockframework:spock-spring'
+                testRuntimeOnly 'com.athaydes:spock-reports'
+            }
+        },
+        (JUNIT_JUPITER): { IHubBomExtension iHubBom ->
+            iHubBom.dependencies {
+                testImplementation 'org.junit.jupiter:junit-jupiter'
             }
         }
+    ]
+
+    @Override
+    void apply() {
+        testDependenciesMapping[extension.testFramework]?.with {
+            withExtension IHubBomExtension, it
+        }
+
         withExtension(AFTER) { ext ->
             withTask('test') { Test it ->
                 ext.systemProperties it

@@ -45,3 +45,4 @@ iHubTest {
 | [`enabledLocalProperties`](/explanation?id=enabledlocalproperties) | 启用本地属性 | `false` | ✔ | ✔ | ❌ | ❌ |
 | `debug` | 启用测试调试 | `false` | ✔ | ✔ | ✔ | ❌ |
 | `failFast` | 只要有一个测试失败就停止测试 | `false` | ✔ | ✔ | ✔ | ❌ |
+| `testFramework` | 测试框架 | groovy->`SPOCK`<br>java->`JUNIT_JUPITER` | ❌ | ✔ | ❌ | ❌ |

@@ -58,6 +58,19 @@ class IHubVerificationPluginTest extends IHubSpecification {
         result = gradleBuilder.withArguments('-DiHubTest.runSkippedPropNames=java.endorsed.dirs').build()
 
         then: '检查结果'
+        !result.output.contains('│ testImplementation                       │ org.spockframework:spock-spring                       │')
+        !result.output.contains('│ testRuntimeOnly                          │ com.athaydes:spock-reports                            │')
+        result.output.contains '│ pmd                                      │ com.alibaba.p3c:p3c-pmd                               │'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        propertiesFile << 'iHubTest.testFramework=SPOCK'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains '│ testImplementation                       │ org.spockframework:spock-spring                       │'
+        result.output.contains '│ testRuntimeOnly                          │ com.athaydes:spock-reports                            │'
+        result.output.contains '│ pmd                                      │ com.alibaba.p3c:p3c-pmd                               │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -79,6 +92,9 @@ class IHubVerificationPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
+        result.output.contains '│ testImplementation                    │ org.spockframework:spock-spring                          │'
+        result.output.contains '│ testRuntimeOnly                       │ com.athaydes:spock-reports                               │'
+        result.output.contains '│ pmd                                   │ com.alibaba.p3c:p3c-pmd                                  │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
