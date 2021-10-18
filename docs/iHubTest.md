@@ -31,7 +31,7 @@ iHubTest {
 
 ## 扩展属性
 
-> [属性说明](/explanation?id=属性配置说明)：
+> 属性使用说明[详见](/explanation?id=属性配置说明)
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |

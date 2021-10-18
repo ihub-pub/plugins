@@ -50,7 +50,7 @@ iHubVerification {
 
 ## 扩展属性
 
-> [属性说明](/explanation?id=属性配置说明)：`pmd`开头为`PMD静态检查`，`codenarc`开头为`Codenarc静态检查`，`jacoco`开头为`Jacoco覆盖率检查`
+> 属性使用说明[详见](/explanation?id=属性配置说明)`pmd`开头为`PMD静态检查`，`codenarc`开头为`Codenarc静态检查`，`jacoco`开头为`Jacoco覆盖率检查`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |

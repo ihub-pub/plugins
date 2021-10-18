@@ -30,7 +30,7 @@ iHubNative {
 
 ## 扩展属性
 
-> [属性说明](/explanation?id=属性配置说明)：`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`aot`开头为`AOT插件属性`
+> 属性使用说明[详见](/explanation?id=属性配置说明)`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`aot`开头为`AOT插件属性`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
