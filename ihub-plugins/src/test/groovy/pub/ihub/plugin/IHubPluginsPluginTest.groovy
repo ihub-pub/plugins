@@ -26,6 +26,7 @@ import spock.lang.Title
 import static java.io.File.separator
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 import static org.gradle.api.Project.GRADLE_PROPERTIES
+import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyDirectoryStructure
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyFile
@@ -64,7 +65,7 @@ class IHubPluginsPluginTest extends Specification {
     def '代码检查插件测试'() {
         setup: '初始化项目'
         copyProject 'sample-groovy', 'src', 'conf'
-        testProjectDir.newFile('settings.gradle') << 'rootProject.name = \'sample-groovy\''
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'rootProject.name = \'sample-groovy\''
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
@@ -101,7 +102,7 @@ class IHubPluginsPluginTest extends Specification {
     def '多项目构建测试'() {
         setup: '初始化项目'
         copyProject 'sample-multi', 'rest', 'service', 'sdk'
-        testProjectDir.newFile('settings.gradle') << '''
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << '''
             rootProject.name = 'sample-multi'
             include 'rest', 'service', 'sdk'
             project(':rest').name = 'sample-multi-rest'

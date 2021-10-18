@@ -19,19 +19,19 @@
 
 ## 📦 插件列表
 
-| 插件ID | 插件名称 | 插件描述 |
-|----|-------------|-------------|
-| [pub.ihub.plugin.ihub-settings](https://doc.ihub.pub/plugins/#/iHubSettings) | `设置插件` | 配置插件仓库以及子项目 |
-| [pub.ihub.plugin](https://doc.ihub.pub/plugins/#/iHub) | `基础插件` | 配置组件仓库 |
-| [pub.ihub.plugin.ihub-bom](https://doc.ihub.pub/plugins/#/iHubBom) | `组件依赖管理` | 配置组件默认依赖版本以及兼容性管理 |
-| [pub.ihub.plugin.ihub-java](https://doc.ihub.pub/plugins/#/iHubJava) | `Java插件` | 配置一些默认依赖以及兼容性配置 |
-| [pub.ihub.plugin.ihub-groovy](https://doc.ihub.pub/plugins/#/iHubGroovy) | `Groovy插件` | 配置Groovy组件依赖 |
-| [pub.ihub.plugin.ihub-publish](https://doc.ihub.pub/plugins/#/iHubPublish) | `发布插件` | 配置组件发布仓库以及其他个性化组件配置 |
-| [pub.ihub.plugin.ihub-test](https://doc.ihub.pub/plugins/#/iHubTest) | `测试插件` | 测试相关插件 |
-| [pub.ihub.plugin.ihub-verification](https://doc.ihub.pub/plugins/#/iHubVerification) | `验证插件` | 配置代码静态检查以及测试用例覆盖等 |
-| [pub.ihub.plugin.ihub-boot](https://doc.ihub.pub/plugins/#/iHubBoot) | `Boot插件` | 用于镜像个性化配置 |
-| [pub.ihub.plugin.ihub-native](https://doc.ihub.pub/plugins/#/iHubNative) | `Native插件` | 用于原生镜像个性化配置 |
-| [pub.ihub.plugin.ihub-git-hooks](https://doc.ihub.pub/plugins/#/ihubGitHooks) | `GitHooks插件` | 用于配置GitHooks |
+| 插件ID | 插件名称 | 插件类型 | 插件描述 |
+|----|-------------|-------------|-------------|
+| [pub.ihub.plugin.ihub-settings](https://doc.ihub.pub/plugins/#/iHubSettings) | `设置插件` | `Settings` | 配置插件仓库以及子项目 |
+| [pub.ihub.plugin](https://doc.ihub.pub/plugins/#/iHub) | `基础插件` | `Project` | 配置组件仓库 |
+| [pub.ihub.plugin.ihub-bom](https://doc.ihub.pub/plugins/#/iHubBom) | `组件依赖管理` | `Project` | 配置组件默认依赖版本以及兼容性管理 |
+| [pub.ihub.plugin.ihub-java](https://doc.ihub.pub/plugins/#/iHubJava) | `Java插件` | `Project` | 配置一些默认依赖以及兼容性配置 |
+| [pub.ihub.plugin.ihub-groovy](https://doc.ihub.pub/plugins/#/iHubGroovy) | `Groovy插件` | `Project` | 配置Groovy组件依赖 |
+| [pub.ihub.plugin.ihub-publish](https://doc.ihub.pub/plugins/#/iHubPublish) | `发布插件` | `Project` | 配置组件发布仓库以及其他个性化组件配置 |
+| [pub.ihub.plugin.ihub-test](https://doc.ihub.pub/plugins/#/iHubTest) | `测试插件` | `Project` | 测试相关插件 |
+| [pub.ihub.plugin.ihub-verification](https://doc.ihub.pub/plugins/#/iHubVerification) | `验证插件` | `Project` | 配置代码静态检查以及测试用例覆盖等 |
+| [pub.ihub.plugin.ihub-boot](https://doc.ihub.pub/plugins/#/iHubBoot) | `Boot插件` | `Project` | 用于镜像个性化配置 |
+| [pub.ihub.plugin.ihub-native](https://doc.ihub.pub/plugins/#/iHubNative) | `Native插件` | `Project` | 用于原生镜像个性化配置 |
+| [pub.ihub.plugin.ihub-git-hooks](https://doc.ihub.pub/plugins/#/ihubGitHooks) | `GitHooks插件` | `Project` | 用于配置GitHooks |
 
 ## 🔰 支持版本
 

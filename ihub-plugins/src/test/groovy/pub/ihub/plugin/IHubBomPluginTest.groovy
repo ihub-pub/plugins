@@ -19,6 +19,7 @@ import groovy.util.logging.Slf4j
 import spock.lang.Title
 
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
+import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 
 
 
@@ -52,7 +53,7 @@ class IHubBomPluginTest extends IHubSpecification {
         copyProject 'basic.gradle'
 
         when: '添加子项目'
-        testProjectDir.newFile('settings.gradle') << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
