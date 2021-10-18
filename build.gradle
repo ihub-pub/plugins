@@ -43,6 +43,9 @@ subprojects {
     iHubBom {
         importBoms {
             group 'org.codehaus.groovy' module 'groovy-bom' version '3.0.8'
+            // TODO 整理bom组件
+            group 'com.squareup.okhttp3' module 'okhttp-bom' version '4.9.2'
+            group 'com.sun.xml.bind' module 'jaxb-bom-ext' version '3.0.2'
         }
     }
 

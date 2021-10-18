@@ -18,6 +18,7 @@ package pub.ihub.plugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 
+import static java.lang.Boolean.valueOf
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
 import static pub.ihub.plugin.IHubSettingsExtension.findProperty
@@ -100,16 +101,25 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     url 'https://repo.spring.io/release'
                 }
                 // 添加私有仓库
+                boolean repoAllowInsecureProtocol = valueOf findProperty(settings, 'iHub.repoAllowInsecureProtocol')
                 findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
                     maven {
                         name 'ReleaseRepo'
                         url repoUrl
+                        allowInsecureProtocol repoAllowInsecureProtocol
+                        mavenContent {
+                            releasesOnly()
+                        }
                     }
                 }
                 findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
                     maven {
                         name 'SnapshotRepo'
                         url repoUrl
+                        allowInsecureProtocol repoAllowInsecureProtocol
+                        mavenContent {
+                            snapshotsOnly()
+                        }
                     }
                 }
                 // 添加自定义仓库
