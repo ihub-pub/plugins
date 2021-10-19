@@ -1,8 +1,8 @@
-> `ihub-bom`用于配置项目依赖组件版本以及兼容性管理。
+> `ihub-bom`插件用于配置项目依赖组件版本以及兼容性管理。
 
-| 插件ID | 插件名称 | 插件类型 | 扩展名称 |
+| 插件ID | 插件名称 | 插件类型 | 插件依赖 |
 |-------|---------|--------|---------|
-| `pub.ihub.plugin.ihub-bom` | `Bom插件` | `Project` |  |
+| `pub.ihub.plugin.ihub-bom` | `Bom插件` | `Project` | [io.spring.dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin) |
 
 ## 插件安装
 

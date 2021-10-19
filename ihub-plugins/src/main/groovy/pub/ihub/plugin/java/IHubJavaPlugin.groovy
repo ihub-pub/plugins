@@ -73,7 +73,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware {
                     'Implementation-Title': project.name,
                     'Automatic-Module-Name': project.name.replaceAll('-', '.'),
                     'Implementation-Version': project.version,
-                    'Implementation-Vendor': 'IHub',
+                    'Implementation-Vendor-Id': project.group,
                     'Created-By': 'Java ' + JavaVersion.current().majorVersion
                 )
             }
