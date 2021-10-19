@@ -31,7 +31,7 @@
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-native' version '1.1.7'
+    id 'pub.ihub.plugin.ihub-native' version '1.1.8'
 }
 ```
 
@@ -39,7 +39,7 @@ plugins {
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin' version '1.1.7'
+    id 'pub.ihub.plugin' version '1.1.8'
 }
 
 apply {

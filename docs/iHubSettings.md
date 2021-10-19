@@ -37,7 +37,7 @@ iHubSettings.includeDirs=rest,service
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.1.7'
+    id 'pub.ihub.plugin.ihub-settings' version '1.1.8'
 }
 ```
 
