@@ -36,7 +36,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
     void apply() {
         // 配置ihub-bom
         extension.importBoms {
-            group 'pub.ihub.lib' module 'ihub-bom' version '1.0.1'
+            group 'pub.ihub.lib' module 'ihub-bom' version '1.0.2'
         }
         // 配置默认排除项
         extension.excludeModules {
