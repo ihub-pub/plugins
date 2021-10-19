@@ -1,10 +1,43 @@
-> `pub.ihub.plugin.ihub-settings`插件用于配置插件仓库、插件版本以及子项目管理，该插件属于[设置插件](https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html#org.gradle.api.initialization.Settings)，配置与`settings.gradle`。
+> `ihub-settings`插件用于配置插件仓库、插件版本以及子项目管理，该插件属于[设置插件](https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html#org.gradle.api.initialization.Settings)，配置与`settings.gradle`。
+
+| 插件ID | 插件名称 | 插件类型 | 扩展名称 |
+|-------|---------|--------|---------|
+| `pub.ihub.plugin.ihub-settings` | `设置插件` | `Settings` | `iHubSettings` |
+
+## 扩展属性
+
+> DSL扩展配置支持如下配置：
+
+| 扩展方法 | 扩展描述 |
+| --------- | ----------- |
+| `includeProjects` | 添加项目（支持多个项目） |
+| `prefix` | 项目前缀（默认`主项目名称-`） |
+| `noPrefix` | 无项目前缀 |
+| `suffix` | 项目后缀 |
+| `subproject` | 包含三级子项目 |
+| `onlySubproject` | 仅含三级子项目（不含当前项目，三级项目为`主项目`的子项目） |
+| `skippedDirs` | 忽略三级子项目目录 |
+
+> `gradle.properties`配置支持如下属性：
+
+| Property  | Description |
+| --------- | ----------- |
+| `name` | 配置主项目名称 |
+| `iHubSettings.includeDirs` | 包含项目路径，多目录“,”分割 |
+| `iHubSettings.skippedDirs` | 排除项目路径，多目录“,”分割 |
+
+> 配置如下：
+
+```properties
+name=demo
+iHubSettings.includeDirs=rest,service
+```
 
 ## 插件安装
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.1.7'
+    id 'pub.ihub.plugin.ihub-settings' version '1.1.8'
 }
 ```
 
@@ -69,31 +102,13 @@ iHubSettings {
 | `SnapshotRepo` | 私有Snapshot仓库 | https://repo.xxx.com/snapshot |
 | `CustomizeRepo` | 自定义仓库仓库 | https://repo.xxx.com/repo |
 
-## 扩展属性
-
-> `gradle.properties`配置支持如下属性：
-
-| Property  | Description |
-| --------- | ----------- |
-| `name` | 配置主项目名称 |
-| `iHubSettings.includeDirs` | 包含项目路径，多目录“,”分割 |
-| `iHubSettings.skippedDirs` | 排除项目路径，多目录“,”分割 |
-
-> 配置如下：
-
-```properties
-name=demo
-iHubSettings.includeDirs=rest,service
-```
-
 ## 默认版本
 
-> 配置了以下插件版本：
+> 插件配置了以下插件默认版本：
 
 | Plugin   | Version |
 | -------- | ------- |
-| `com.gradle.plugin-publish`     | 0.15.0 |
-| `com.github.ben-manes.versions` | 0.39.0 |
+| `com.gradle.plugin-publish`     | 0.16.0 |
 
 > 使用插件时可以不用加版本号，配置如下：
 

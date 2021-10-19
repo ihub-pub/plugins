@@ -1,10 +1,35 @@
-> 扩展名`iHub`，用于配置[组件仓库](/iHub?id=组件仓库)以及一些其他[扩展属性](/iHub?id=扩展属性)。
+> `ihub`插件是基础插件，用于配置[组件仓库](/iHub?id=组件仓库)以及一些其他[扩展属性](/iHub?id=扩展属性)，配置与`build.gradle`。
+
+| 插件ID | 插件名称 | 插件类型 | 扩展名称 | `主项目`插件依赖 |
+|-------|---------|--------|---------|--------|
+| `pub.ihub.plugin` | `基础插件` | `Project` | `iHub` | [io.freefair.git-version](https://plugins.gradle.org/plugin/io.freefair.git-version)、[com.github.ben-manes.versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)、[ihub-bom](iHubBom) |
+
+## 扩展属性
+
+> 属性使用说明[详见](/explanation?id=属性配置说明)
+
+| Extension | Description | Default | Ext | Prj | Sys | Env |
+| --------- | ----------- | ------- | --- | ------- | ------ | --- |
+| `mavenLocalEnabled` | 是否启用本地仓库 | `false` | ❌ | ✔ | ❌ | ❌ |
+| `releaseRepoUrl` | 正式版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
+| `snapshotRepoUrl` | 快照版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
+| `repoAllowInsecureProtocol` | 是否允许不安全协议（是否允许http） | `false` | ✔ | ✔ | ❌ | ❌ |
+| `repoIncludeGroup` | 仓库包含组（用于限制仓库范围） | ❌ | ✔ | ✔ | ❌ | ❌ |
+| `repoIncludeGroupRegex` | 仓库包含组正则（用于限制仓库范围） | `.*` | ✔ | ✔ | ❌ | ❌ |
+| `repoUsername` | 仓库用户名 | ❌ | ✔ | ✔ | ✔ | ✔ |
+| `repoPassword` | 仓库密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
+| `customizeRepoUrl` | 自定义仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
+| `javaJaxbRuntime` | Jaxb运行时配置 | `true` | ✔ | ✔ | ✔ | ❌ |
+| `javaCompatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
+| `compileGroovyAllModules` | 是否添加groovy所有模块 | `false` | ✔ | ✔ | ❌ | ❌ |
+| `autoReplaceLaterVersions` | 自动替换最新版本（[versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)插件增强） | `false` | ✔ | ✔ | ✔ | ❌ |
 
 ## 插件安装
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin' version '1.1.7'
+    id 'pub.ihub.plugin' version '1.1.8'
 }
 ```
 
@@ -43,24 +68,3 @@ iHub {
 | `SnapshotRepo` | 私有Snapshot仓库 | https://repo.xxx.com/snapshot |
 | `CustomizeRepo` | 自定义仓库仓库 | https://repo.xxx.com/repo |
 | `MavenRepo` | Maven中央仓库 |  |
-
-## 扩展属性
-
-> [属性说明](/explanation?id=属性配置说明)：
-
-| Extension | Description | Default | Ext | Prj | Sys | Env |
-| --------- | ----------- | ------- | --- | ------- | ------ | --- |
-| `mavenLocalEnabled` | 是否启用本地仓库 | `false` | ❌ | ✔ | ❌ | ❌ |
-| `releaseRepoUrl` | 正式版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `snapshotRepoUrl` | 快照版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `repoAllowInsecureProtocol` | 是否允许不安全协议（是否允许http） | `false` | ✔ | ✔ | ❌ | ❌ |
-| `repoIncludeGroup` | 仓库包含组（用于限制仓库范围） | ❌ | ✔ | ✔ | ❌ | ❌ |
-| `repoIncludeGroupRegex` | 仓库包含组正则（用于限制仓库范围） | `.*` | ✔ | ✔ | ❌ | ❌ |
-| `repoUsername` | 仓库用户名 | ❌ | ✔ | ✔ | ✔ | ✔ |
-| `repoPassword` | 仓库密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
-| `customizeRepoUrl` | 自定义仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `javaJaxbRuntime` | Jaxb运行时配置 | `true` | ✔ | ✔ | ✔ | ❌ |
-| `javaCompatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
-| `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
-| `compileGroovyAllModules` | 是否添加groovy所有模块 | `false` | ✔ | ✔ | ❌ | ❌ |
-| `autoReplaceLaterVersions` | 自动替换最新版本 | `false` | ✔ | ✔ | ✔ | ❌ |

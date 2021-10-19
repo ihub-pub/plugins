@@ -21,6 +21,7 @@ import io.freefair.gradle.plugins.github.GithubPomPlugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
@@ -44,7 +45,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * 组件发布插件
  * @author liheng
  */
-@IHubPlugin(IHubPublishExtension)
+@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = MavenPublishPlugin)
 class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override
@@ -66,7 +67,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         configSigning project, extension
 
         // 添加配置元信息
-        if (project.plugins.hasPlugin('java')) {
+        if (project.plugins.hasPlugin(JavaPlugin)) {
             withExtension(IHubBomExtension) {
                 it.dependencies {
                     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -78,11 +79,10 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
         boolean publishDocs = extension.publishDocs
-        applyPlugin MavenPublishPlugin
         withExtension(PublishingExtension) {
             it.publications {
                 create('mavenJava', MavenPublication) {
-                    if (project.plugins.hasPlugin('java-platform')) {
+                    if (project.plugins.hasPlugin(org.gradle.api.plugins.JavaPlatformPlugin)) {
                         from project.components.getByName('javaPlatform')
                         return
                     }

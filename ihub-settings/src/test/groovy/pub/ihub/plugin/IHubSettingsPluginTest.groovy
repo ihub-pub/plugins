@@ -23,6 +23,7 @@ import spock.lang.Specification
 import spock.lang.Title
 
 import static org.gradle.api.Project.GRADLE_PROPERTIES
+import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
 
 
@@ -46,7 +47,7 @@ class IHubSettingsPluginTest extends Specification {
      */
     void setup() {
         testProjectDir.create()
-        settingsFile = testProjectDir.newFile 'settings.gradle'
+        settingsFile = testProjectDir.newFile DEFAULT_SETTINGS_FILE
         propertiesFile = testProjectDir.newFile GRADLE_PROPERTIES
         gradleBuilder = GradleRunner.create().withProjectDir(testProjectDir.root).withPluginClasspath()
         copy getClass().classLoader.getResourceAsStream('testkit-gradle.properties'), propertiesFile, null

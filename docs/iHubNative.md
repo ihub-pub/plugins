@@ -1,36 +1,12 @@
-> 扩展名`iHubNative`，用于`spring-native`镜像个性化配置。
+> `ihub-native`插件用于集成`spring-native`插件以及镜像默认配置，详细说明参见[官方文档](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/)。
 
-## 插件安装
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-native' version '1.1.7'
-}
-```
-
-或
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin' version '1.1.7'
-}
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-native'
-}
-```
-
-## 配置示例
-
-```groovy
-iHubNative {
-    bpJvmVersion = '11'
-}
-```
+| 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
+|-------|---------|--------|---------|--------|
+| `pub.ihub.plugin.ihub-native` | `Native插件` | `Project` | `iHubNative` | [ihub-boot](iHubBoot)、[org.springframework.experimental.aot](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#spring-aot-gradle) |
 
 ## 扩展属性
 
-> [属性说明](/explanation?id=属性配置说明)：`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`aot`开头为`AOT插件属性`
+> 属性使用说明[详见](/explanation?id=属性配置说明)`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`aot`开头为`AOT插件属性`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
@@ -50,3 +26,31 @@ iHubNative {
 | `aotVerify` | 开启自动验证 | `true` | ✔ | ✔ | ❌ | ❌ |
 | `aotRemoveUnusedConfig` | 移除未使用的配置 | `true` | ✔ | ✔ | ❌ | ❌ |
 | `aotFailOnMissingSelectorHint` | 如果没有为活动选择器提供提示，则抛出错误 | `true` | ✔ | ✔ | ❌ | ❌ |
+
+## 插件安装
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-native' version '1.1.8'
+}
+```
+
+或
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin' version '1.1.8'
+}
+
+apply {
+    plugin 'pub.ihub.plugin.ihub-native'
+}
+```
+
+## 配置示例
+
+```groovy
+iHubNative {
+    bpJvmVersion = '11'
+}
+```

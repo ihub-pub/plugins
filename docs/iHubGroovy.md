@@ -1,10 +1,14 @@
-> 用于配置Groovy[默认版本](/iHubBom?id=默认版本)以及[组件依赖](/iHubGroovy?id=组件依赖)。
+> `ihub-groovy`插件用于集成Groovy相关插件环境以及配置Groovy默认[组件依赖](/iHubGroovy?id=组件依赖)。
+
+| 插件ID | 插件名称 | 插件类型 | 插件依赖 |
+|-------|---------|--------|---------|
+| `pub.ihub.plugin.ihub-groovy` | `Groovy插件` | `Project` | [ihub-java](iHubJava)、[groovy](https://docs.gradle.org/current/userguide/groovy_plugin.html) |
 
 ## 插件安装
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-groovy' version '1.1.7'
+    id 'pub.ihub.plugin.ihub-groovy' version '1.1.8'
 }
 ```
 
@@ -12,7 +16,7 @@ plugins {
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin' version '1.1.7'
+    id 'pub.ihub.plugin' version '1.1.8'
 }
 
 apply {
