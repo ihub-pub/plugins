@@ -4,6 +4,8 @@
 |-------|---------|--------|---------|--------|
 | `pub.ihub.plugin` | `基础插件` | `Project` | `iHub` | [io.freefair.git-version](https://plugins.gradle.org/plugin/io.freefair.git-version)、[com.github.ben-manes.versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)、[ihub-bom](iHubBom) |
 
+注：当主项目不含[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)插件时，会默认导入`ihub-bom`插件
+
 ## 扩展属性
 
 > 属性使用说明[详见](/explanation?id=属性配置说明)
@@ -54,7 +56,7 @@ iHub {
 
 ## 组件仓库
 
-> 组件仓库配置顺序
+> 为适应国内网络环境，配置组件仓库如下
 
 | Name | Description | Url |
 | ---- | ----------- | --- |

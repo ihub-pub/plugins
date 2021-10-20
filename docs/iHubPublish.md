@@ -2,7 +2,7 @@
 
 | 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
 |-------|---------|--------|---------|--------|
-| `pub.ihub.plugin.ihub-publish` | `发布插件` | `Project` | `iHubPublish` | [maven-publish](https://docs.gradle.org/current/userguide/publishing_maven.html)、[io.freefair.github.pom](https://plugins.gradle.org/plugin/io.freefair.github.pom)（`OnGithub`） |
+| `pub.ihub.plugin.ihub-publish` | `发布插件` | `Project` | `iHubPublish` | [ihub](iHub)、[maven-publish](https://docs.gradle.org/current/userguide/publishing_maven.html)、<br>[io.freefair.github.pom](https://plugins.gradle.org/plugin/io.freefair.github.pom)（`OnGithub`） |
 
 ## 扩展属性
 

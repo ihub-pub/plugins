@@ -32,6 +32,7 @@ import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsExtension
+import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 
@@ -45,7 +46,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * 组件发布插件
  * @author liheng
  */
-@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = MavenPublishPlugin)
+@IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [IHubPluginsPlugin, MavenPublishPlugin])
 class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override

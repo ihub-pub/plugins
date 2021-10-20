@@ -18,6 +18,7 @@ package pub.ihub.plugin
 import com.github.benmanes.gradle.versions.VersionsPlugin
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.freefair.gradle.plugins.git.GitVersionPlugin
+import org.gradle.api.plugins.JavaPlatformPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
@@ -77,7 +78,9 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                     checkForGradleUpdate = false
                 }
             }
-            applyPlugin IHubBomPlugin
+            if (!project.plugins.hasPlugin(JavaPlatformPlugin)) {
+                applyPlugin IHubBomPlugin
+            }
         }
 
         project.subprojects {

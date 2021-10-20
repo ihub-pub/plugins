@@ -2,7 +2,7 @@
 
 | 插件ID | 插件名称 | 插件类型 | 插件依赖 |
 |-------|---------|--------|---------|
-| `pub.ihub.plugin.ihub-bom` | `Bom插件` | `Project` | [io.spring.dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin) |
+| `pub.ihub.plugin.ihub-bom` | `Bom插件` | `Project` | [ihub](iHub)、[io.spring.dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin) |
 
 ## 插件安装
 
