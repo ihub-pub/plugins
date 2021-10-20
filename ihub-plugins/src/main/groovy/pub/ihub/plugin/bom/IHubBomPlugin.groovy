@@ -18,6 +18,7 @@ package pub.ihub.plugin.bom
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import org.gradle.api.Project
 import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
@@ -28,7 +29,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * BOM（Bill of Materials）组件依赖管理
  * @author henry
  */
-@IHubPlugin(value = IHubBomExtension, beforeApplyPlugins = [DependencyManagementPlugin])
+@IHubPlugin(value = IHubBomExtension, beforeApplyPlugins = [IHubPluginsPlugin, DependencyManagementPlugin])
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 

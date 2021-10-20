@@ -37,6 +37,24 @@ class IHubBasicPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
+        result.output.contains 'Group Maven Bom Version'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'Java平台构建测试'() {
+        setup: '初始化项目'
+        buildFile << '''
+plugins {
+    id 'java-platform'
+    id 'pub.ihub.plugin'
+}
+'''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        !result.output.contains('Group Maven Bom Version')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
