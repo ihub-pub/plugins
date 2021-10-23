@@ -24,10 +24,11 @@ import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 import pub.ihub.plugin.IHubPlugin
-import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
+
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
@@ -35,32 +36,45 @@ import pub.ihub.plugin.bom.IHubBomPlugin
  * Java插件
  * @author henry
  */
-@IHubPlugin(beforeApplyPlugins = [
+@IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [
     IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, LombokPlugin, ProjectReportsPlugin, BuildDashboardPlugin
 ])
-class IHubJavaPlugin extends IHubProjectPluginAware {
+class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
     @Override
     void apply() {
-        withExtension(IHubPluginsExtension) { iHubExt ->
+        withExtension(AFTER) { ext ->
             // 兼容性配置
-            iHubExt.javaCompatibility?.with { version ->
+            ext.compatibility?.with { version ->
                 withTask(AbstractCompile) {
                     it.sourceCompatibility = version
                     it.targetCompatibility = version
                     it.options.encoding = 'UTF-8'
-                    it.options.incremental = iHubExt.gradleCompilationIncremental
+                    it.options.incremental = ext.gradleCompilationIncremental
                 }
             }
 
-            // 添加jaxb运行时依赖
-            if (iHubExt.javaJaxbRuntime) {
-                withExtension(IHubBomExtension) {
+            withExtension(IHubBomExtension) {
+                // 添加jaxb运行时依赖
+                if (ext.jaxbRuntime) {
                     it.excludeModules {
                         group 'com.sun.xml.bind' modules 'jaxb-core'
                     }
                     it.dependencies {
                         runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
+                    }
+                }
+                // 添加日志依赖配置
+                if (ext.logDependency) {
+                    it.excludeModules {
+                        group 'commons-logging' modules 'commons-logging'
+                        group 'log4j' modules 'log4j'
+                        group 'org.apache.logging.log4j' modules 'log4j-core'
+                        group 'org.slf4j' modules 'slf4j-jcl', 'slf4j-log4j12'
+                    }
+                    it.dependencies {
+                        implementation 'org.slf4j:slf4j-api'
+                        runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
                     }
                 }
             }
