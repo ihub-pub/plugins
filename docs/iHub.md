@@ -21,9 +21,6 @@
 | `repoUsername` | 仓库用户名 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `repoPassword` | 仓库密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `customizeRepoUrl` | 自定义仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `javaJaxbRuntime` | Jaxb运行时配置 | `true` | ✔ | ✔ | ✔ | ❌ |
-| `javaCompatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
-| `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
 | `compileGroovyAllModules` | 是否添加groovy所有模块 | `false` | ✔ | ✔ | ❌ | ❌ |
 | `autoReplaceLaterVersions` | 自动替换最新版本（[versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)插件增强） | `false` | ✔ | ✔ | ✔ | ❌ |
 
@@ -40,9 +37,9 @@ plugins {
 > 配置java插件
 
 ```groovy
-iHub {
-    javaJaxbRuntime = true
-    javaCompatibility = '11'
+iHubJava {
+    jaxbRuntime = true
+    compatibility = '11'
 }
 ```
 

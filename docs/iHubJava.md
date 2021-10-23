@@ -1,8 +1,19 @@
 > `ihub-java`插件用于集成Java相关插件环境、配置一些默认依赖以及兼容性配置
 
-| 插件ID | 插件名称 | 插件类型 | 插件依赖 |
-|-------|---------|--------|---------|
-| `pub.ihub.plugin.ihub-java` | `Java插件` | `Project` | [ihub-bom](iHubBom)、[java](https://docs.gradle.org/current/userguide/java_plugin.html)、[java-library](https://docs.gradle.org/current/userguide/java_library_plugin.html)、[lombok](https://plugins.gradle.org/plugin/io.freefair.lombok)、[project-report](https://docs.gradle.org/current/userguide/project_report_plugin.html)、[build-dashboard](https://docs.gradle.org/current/userguide/build_dashboard_plugin.html) |
+| 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
+|-------|---------|--------|---------|--------|
+| `pub.ihub.plugin.ihub-java` | `Java插件` | `Project` | `iHubJava` | [ihub-bom](iHubBom)、[java](https://docs.gradle.org/current/userguide/java_plugin.html)、[java-library](https://docs.gradle.org/current/userguide/java_library_plugin.html)、[lombok](https://plugins.gradle.org/plugin/io.freefair.lombok)、[project-report](https://docs.gradle.org/current/userguide/project_report_plugin.html)、[build-dashboard](https://docs.gradle.org/current/userguide/build_dashboard_plugin.html) |
+
+## 扩展属性
+
+> 属性使用说明[详见](/explanation?id=属性配置说明)
+
+| Extension | Description | Default | Ext | Prj | Sys | Env |
+| --------- | ----------- | ------- | --- | ------- | ------ | --- |
+| `jaxbRuntime` | Jaxb运行时配置 | `true` | ✔ | ✔ | ✔ | ❌ |
+| `logDependency` | 日志依赖配置 | `true` | ✔ | ✔ | ✔ | ❌ |
+| `compatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
 
 ## 插件安装
 
@@ -33,13 +44,29 @@ config.stopBubbling = true
 lombok.addLombokGeneratedAnnotation = true
 ```
 
-> 可以启用[javaJaxbRuntime](/iHub?id=扩展属性)添加jaxb运行时依赖配置。
+> 可以启用[jaxbRuntime](/iHubJava?id=扩展属性)添加jaxb运行时依赖配置。
 
 | DependencyType | Dependencies |
 | -------------- | ------------ |
 | exclude | `com.sun.xml.bind:jaxb-core` |
 | runtimeOnly | `javax.xml.bind:jaxb-api` |
 | runtimeOnly | `org.glassfish.jaxb:jaxb-runtime` |
+
+> 可以启用[logDependency](/iHubJava?id=扩展属性)添加默认日志依赖配置。
+
+| DependencyType | Dependencies |
+| -------------- | ------------ |
+| exclude | `commons-logging:commons-logging` |
+| exclude | `log4j:log4j` |
+| exclude | `org.apache.logging.log4j:log4j-core` |
+| exclude | `org.slf4j:slf4j-log4j12` |
+| exclude | `org.slf4j:slf4j-jcl` |
+| compileOnly | `cn.hutool:hutool-all` |
+| runtimeOnly | `org.slf4j:jul-to-slf4j` |
+| runtimeOnly | `javax.xml.bind:jaxb-api` |
+| runtimeOnly | `org.slf4j:log4j-over-slf4j` |
+| runtimeOnly | `org.glassfish.jaxb:jaxb-runtime` |
+| implementation | `org.slf4j:slf4j-api` |
 
 > 配置Jar属性
 
@@ -63,4 +90,4 @@ Created-By: Java 11
 
 ```
 
-> 可以通过[javaCompatibility](/iHub?id=扩展属性)配置兼容性。
+> 可以通过[compatibility](/iHubJava?id=扩展属性)配置兼容性。

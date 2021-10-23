@@ -183,20 +183,39 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         def result = gradleBuilder.build()
 
         then: '检查结果'
+        result.output.contains '│ com.sun.xml.bind                                    │ jaxb-core                                  │'
+        result.output.contains '│ commons-logging                                     │ commons-logging                            │'
+        result.output.contains '│ log4j                                               │ log4j                                      │'
+        result.output.contains '│ org.apache.logging.log4j                            │ log4j-core                                 │'
+        result.output.contains '│ org.slf4j                                           │ slf4j-log4j12                              │'
+        result.output.contains '│ org.slf4j                                           │ slf4j-jcl                                  │'
+        result.output.contains '│ compileOnly                            │ cn.hutool:hutool-all                                    │'
+        result.output.contains '│ runtimeOnly                            │ org.slf4j:jul-to-slf4j                                  │'
         result.output.contains '│ runtimeOnly                            │ javax.xml.bind:jaxb-api                                 │'
         result.output.contains '│ runtimeOnly                            │ org.slf4j:log4j-over-slf4j                              │'
-        result.output.contains '│ com.sun.xml.bind                                    │ jaxb-core                                  │'
+        result.output.contains '│ runtimeOnly                            │ org.glassfish.jaxb:jaxb-runtime                         │'
+        result.output.contains '│ implementation                         │ org.slf4j:slf4j-api                                     │'
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '修改版本以及依赖组件模块'
-        propertiesFile << 'iHub.javaCompatibility=8\n'
-        propertiesFile << 'iHub.javaJaxbRuntime=false\n'
+        propertiesFile << 'iHubJava.compatibility=8\n'
+        propertiesFile << 'iHubJava.jaxbRuntime=false\n'
+        propertiesFile << 'iHubJava.logDependency=false\n'
         result = gradleBuilder.build()
 
         then: '检查结果'
-        !result.output.contains('│ runtimeOnly                                │ javax.xml.bind:jaxb-api                             │')
-        !result.output.contains('│ runtimeOnly                                │ org.glassfish.jaxb:jaxb-runtime                     │')
-        !result.output.contains('│ com.sun.xml.bind                            │ jaxb-core                                          │')
+        !result.output.contains('│ com.sun.xml.bind                                    │ jaxb-core                                  │')
+        !result.output.contains('│ commons-logging                                     │ commons-logging                            │')
+        !result.output.contains('│ log4j                                               │ log4j                                      │')
+        !result.output.contains('│ org.apache.logging.log4j                            │ log4j-core                                 │')
+        !result.output.contains('│ org.slf4j                                           │ slf4j-log4j12                              │')
+        !result.output.contains('│ org.slf4j                                           │ slf4j-jcl                                  │')
+        !result.output.contains('│ compileOnly                            │ cn.hutool:hutool-all                                    │')
+        !result.output.contains('│ runtimeOnly                            │ org.slf4j:jul-to-slf4j                                  │')
+        !result.output.contains('│ runtimeOnly                            │ javax.xml.bind:jaxb-api                                 │')
+        !result.output.contains('│ runtimeOnly                            │ org.slf4j:log4j-over-slf4j                              │')
+        !result.output.contains('│ runtimeOnly                            │ org.glassfish.jaxb:jaxb-runtime                         │')
+        !result.output.contains('│ implementation                         │ org.slf4j:slf4j-api                                     │')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

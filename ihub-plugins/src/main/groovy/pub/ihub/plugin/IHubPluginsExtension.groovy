@@ -91,28 +91,6 @@ class IHubPluginsExtension implements IHubProjectExtensionAware {
 
     //</editor-fold>
 
-    //<editor-fold desc="Java相关扩展属性">
-
-    /**
-     * Jaxb运行时配置
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean javaJaxbRuntime = true
-
-    /**
-     * Java兼容性配置
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    String javaCompatibility
-
-    /**
-     * gradle增量编译
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean gradleCompilationIncremental = true
-
-    //</editor-fold>
-
     //<editor-fold desc="Groovy相关扩展属性">
 
     /**

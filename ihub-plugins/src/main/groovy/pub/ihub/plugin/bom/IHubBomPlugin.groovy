@@ -39,22 +39,9 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         extension.importBoms {
             group 'pub.ihub.lib' module 'ihub-bom' version '1.0.2'
         }
-        // 配置默认排除项
-        extension.excludeModules {
-            group 'c3p0' modules 'c3p0'
-            group 'commons-logging' modules 'commons-logging'
-            group 'com.zaxxer' modules 'HikariCP'
-            group 'log4j' modules 'log4j'
-            group 'org.apache.logging.log4j' modules 'log4j-core'
-            group 'org.apache.tomcat' modules 'tomcat-jdbc'
-            group 'org.slf4j' modules 'slf4j-jcl', 'slf4j-log4j12'
-            group 'stax' modules 'stax-api'
-        }
         // 配置默认依赖组件
         extension.dependencies {
             compileOnly 'cn.hutool:hutool-all'
-            implementation 'org.slf4j:slf4j-api'
-            runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
         }
 
         // 配置项目依赖
