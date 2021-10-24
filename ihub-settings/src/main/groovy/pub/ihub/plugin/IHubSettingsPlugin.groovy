@@ -88,6 +88,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 if ((dirs as File).directory) {
                     flatDir dirs: dirs
                 }
+                if (valueOf findProperty(settings, 'iHub.mavenLocalEnabled')) {
+                    mavenLocal()
+                }
                 maven {
                     name 'AliYunGradlePlugin'
                     url 'https://maven.aliyun.com/repository/gradle-plugin'

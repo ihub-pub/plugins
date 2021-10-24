@@ -185,6 +185,8 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
 
         ModuleSpec module(String module)
 
+        void version(String version, boolean enforced)
+
     }
 
     interface ModulesSpec extends VersionSpec {
@@ -274,11 +276,13 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
         String version
         String module
         Set<String> modules
+        boolean enforced
 
         @Override
-        void version(String version) {
+        void version(String version, boolean enforced = false) {
             assertProperty EXCLUDE != type, 'Does not support \'version\' method!'
             this.version = version
+            this.enforced = enforced
         }
 
         @Override

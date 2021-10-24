@@ -28,7 +28,7 @@ import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
-import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 
 
 
@@ -43,7 +43,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
     @Override
     void apply() {
-        withExtension(AFTER) { ext ->
+        withExtension(BEFORE) { ext ->
             // 兼容性配置
             ext.compatibility?.with { version ->
                 withTask(AbstractCompile) {

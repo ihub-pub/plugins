@@ -70,6 +70,7 @@ class IHubSettingsPluginTest extends Specification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
+        !result.output.contains('MavenLocal')
         result.output.contains 'AliYunGradlePlugin'
         result.output.contains 'AliYunSpringPlugin'
         result.output.contains 'SpringRelease'
@@ -79,6 +80,7 @@ class IHubSettingsPluginTest extends Specification {
 
         when: '私有仓库配置'
         propertiesFile << '''
+iHub.mavenLocalEnabled=true
 iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
 iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
 iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
@@ -86,6 +88,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         result = gradleBuilder.build()
 
         then: '检查结果'
+        result.output.contains 'MavenLocal'
         result.output.contains 'AliYunGradlePlugin'
         result.output.contains 'AliYunSpringPlugin'
         result.output.contains 'SpringRelease'
