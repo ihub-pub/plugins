@@ -89,7 +89,7 @@ class IHubBomPluginTest extends IHubSpecification {
                 }
                 iHubBom {
                     importBoms {
-                        group 'org.codehaus.groovy' module 'groovy-bom' version '2.5.14'
+                        group 'org.codehaus.groovy' module 'groovy-bom' version '2.5.14', true
                         group 'cn.hutool' module 'hutool-bom' version '5.6.6'
                     }
                     dependencyVersions {
@@ -119,20 +119,20 @@ class IHubBomPluginTest extends IHubSpecification {
         then: '检查结果'
         result.output.contains '│ org.codehaus.groovy                   │ groovy-bom                   │ 2.5.14                    │'
         result.output.contains '│ cn.hutool                             │ hutool-bom                   │ 5.6.6                     │'
-        result.output.contains '│ cn.hutool                                        │ core                                          │'
-        result.output.contains '│ cn.hutool                                           │ log                                        │'
+        result.output.contains '│ cn.hutool                                           │ core                                       │'
+        result.output.contains '│ cn.hutool                                        │ log                                           │'
         result.output.contains '│ api                        │ :a                                                                  │'
         result.output.contains '│ api                        │ :b                                                                  │'
         result.output.contains '│ api                        │ :c                                                                  │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-xml                             │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-dateutil                        │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-templates                       │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-nio                             │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy                                 │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-json                            │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-groovydoc                       │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-sql                             │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-datetime                        │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-xml                                      │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-dateutil                                 │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-templates                                │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-nio                                      │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy                                          │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-json                                     │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-groovydoc                                │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-sql                                      │'
+        result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-datetime                                 │'
         result.output.contains '│ annotationProcessor        │ org.springframework.boot:spring-boot-configuration-processor        │'
         result.output.contains '│ compileOnlyApi             │ cn.hutool:hutool-all                                                │'
         result.output.contains '│ testCompileOnly            │ cn.hutool:hutool-log                                                │'

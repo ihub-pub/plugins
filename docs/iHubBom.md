@@ -2,7 +2,7 @@
 
 | 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
 |-------|---------|--------|---------|--------|
-| `pub.ihub.plugin.ihub-bom` | `Bom插件` | `Project` | `iHubBom` | [ihub](iHub)、[io.spring.dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin) |
+| `pub.ihub.plugin.ihub-bom` | `Bom插件` | `Project` | `iHubBom` | [ihub](iHub) |
 
 ## 插件安装
 
@@ -19,6 +19,8 @@ iHubBom {
     // 导入mavenBom
     importBoms {
         group 'cn.hutool' module 'hutool-bom' version '5.6.5'
+        // 强制版本
+        group 'cn.hutool' module 'hutool-bom' version '5.6.5', true
     }
     // 配置依赖默认版本
     dependencyVersions {
@@ -50,5 +52,14 @@ iHubBom {
 ```groovy
 importBoms {
     group 'pub.ihub.lib' module 'ihub-bom' version '1.0.0'
+}
+```
+
+> 默认`编译`依赖`hutool-all`组件，便于编码时使用相关工具，如果实际需要相关组件，添加`运行时`依赖即可，组件[详见](https://www.hutool.cn/docs)。
+
+```groovy
+dependencies {
+    compileOnly 'cn.hutool:hutool-all'
+    runtimeOnly 'cn.hutool:hutool-core'
 }
 ```

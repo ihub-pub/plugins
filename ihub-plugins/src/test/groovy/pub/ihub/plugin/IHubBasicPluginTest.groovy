@@ -20,6 +20,8 @@ import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Title
 
+import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
+
 
 
 /**
@@ -171,11 +173,17 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
     }
 
     def 'Java插件配置测试'() {
-        setup: '初始化项目'
+        setup: '初始化项目（此处借用子项目测试，主项目不触发beforeEvaluate）'
         copyProject 'basic.gradle'
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFolder 'a'
+        testProjectDir.newFolder 'b'
+        testProjectDir.newFolder 'c'
         buildFile << """
-            apply {
-                plugin 'pub.ihub.plugin.ihub-java'
+            allprojects {
+                apply {
+                    plugin 'pub.ihub.plugin.ihub-java'
+                }
             }
         """
 
@@ -281,10 +289,12 @@ iHubPublish.publishDocs=true
 
     def 'Java平台Publish配置测试'() {
         setup: '初始化项目'
-        copyProject 'basic.gradle'
         buildFile << """
+            plugins {
+                id 'java-platform'
+                id 'pub.ihub.plugin'
+            }
             apply {
-                plugin 'java-platform'
                 plugin 'pub.ihub.plugin.ihub-publish'
             }
         """
