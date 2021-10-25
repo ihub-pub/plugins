@@ -51,10 +51,10 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
 
     @Override
     void apply() {
-        if (project.plugins.hasPlugin(GroovyPlugin)) {
+        if (hasPlugin(GroovyPlugin)) {
             configCodenarc project
         }
-        if (project.plugins.hasPlugin(JavaPlugin)) {
+        if (hasPlugin(JavaPlugin)) {
             configPmd project
         }
         configJacoco project

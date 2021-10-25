@@ -71,6 +71,15 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
     }
 
     /**
+     * 包含插件
+     * @param type 插件类型
+     * @return 是否包含
+     */
+    protected boolean hasPlugin(Class<? extends Plugin> type) {
+        project.plugins.hasPlugin type
+    }
+
+    /**
      * 应用插件
      * @param classes 插件
      */

@@ -68,7 +68,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         configSigning project, extension
 
         // 添加配置元信息
-        if (project.plugins.hasPlugin(JavaPlugin)) {
+        if (hasPlugin(JavaPlugin)) {
             withExtension(IHubBomExtension) {
                 it.dependencies {
                     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -83,7 +83,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         withExtension(PublishingExtension) {
             it.publications {
                 create('mavenJava', MavenPublication) {
-                    if (project.plugins.hasPlugin(org.gradle.api.plugins.JavaPlatformPlugin)) {
+                    if (hasPlugin(org.gradle.api.plugins.JavaPlatformPlugin)) {
                         from project.components.getByName('javaPlatform')
                         return
                     }
@@ -97,7 +97,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                         if (publishDocs) {
                             tasks << this.registerJavadocsJar()
                         }
-                        if (publishDocs && project.plugins.hasPlugin(GroovyPlugin)) {
+                        if (publishDocs && hasPlugin(GroovyPlugin)) {
                             tasks << this.registerGroovydocJar()
                         }
                         tasks.each {
