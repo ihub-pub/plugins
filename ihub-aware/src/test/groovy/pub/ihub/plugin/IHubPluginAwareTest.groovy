@@ -44,6 +44,7 @@ class IHubPluginAwareTest extends Specification {
 
         expect:
         project.extensions.findByName('iHubDemo') instanceof IHubDemoExtension
+        project.plugins.withType(IHubDemoPlugin).any { it.hasPlugin IHubSimplePlugin }
         'ext1' == project.iHubDemo.findProjectProperty('ext1')
         false == project.iHubDemo.flag
         'text' == project.iHubDemo.str

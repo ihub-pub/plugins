@@ -15,8 +15,10 @@
  */
 package pub.ihub.plugin.bom
 
+import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.plugins.quality.PmdPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
@@ -35,11 +37,13 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
+    private static final String IHUB_BOM_VERSION = '1.0.2'
+
     @Override
     void apply() {
         // 配置ihub-bom
         extension.importBoms {
-            group 'pub.ihub.lib' module 'ihub-bom' version '1.0.2'
+            group 'pub.ihub.lib' module 'ihub-bom' version IHUB_BOM_VERSION
         }
         // 配置默认依赖组件
         extension.dependencies {
@@ -62,6 +66,10 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         project.dependencies
     }
 
+    private static void addDependencies(ConfigurationContainer container, String name, List<Dependency> dependencies) {
+        container.maybeCreate(name).dependencies.addAll dependencies
+    }
+
     private void configProject(IHubBomExtension ext) {
         project.configurations {
             // 导入bom配置
@@ -70,8 +78,10 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                     spec.enforced ? dependencies.enforcedPlatform(it) : dependencies.platform(it)
                 }
             }
-            [API_CONFIGURATION_NAME, 'pmd', ANNOTATION_PROCESSOR_CONFIGURATION_NAME].each { name ->
-                maybeCreate(name).dependencies.addAll bomDependencies
+            addDependencies it, API_CONFIGURATION_NAME, bomDependencies
+            addDependencies it, ANNOTATION_PROCESSOR_CONFIGURATION_NAME, bomDependencies
+            if (hasPlugin(PmdPlugin)) {
+                addDependencies it, 'pmd', bomDependencies
             }
             // 配置组件版本
             dependencies.constraints {
@@ -106,7 +116,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             }
             // 配置组件依赖
             ext.dependencies.each { spec ->
-                maybeCreate(spec.id).dependencies.addAll spec.modules.collect {
+                addDependencies it, spec.id, spec.modules.collect {
                     // 支持导入项目
                     dependencies.create it.startsWith(':') ? project.project(it) : it
                 }
