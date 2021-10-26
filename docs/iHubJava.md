@@ -19,7 +19,7 @@
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-java' version '1.1.8'
+    id 'pub.ihub.plugin.ihub-java' version '${ihub.plugin.version}'
 }
 ```
 
@@ -27,7 +27,7 @@ plugins {
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin' version '1.1.8'
+    id 'pub.ihub.plugin' version '${ihub.plugin.version}'
 }
 
 apply {
