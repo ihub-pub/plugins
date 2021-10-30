@@ -44,12 +44,6 @@
 
 ### 插件安装
 
-```groovy
-plugins {
-    id 'pub.ihub.plugin' version '1.1.8'
-}
-```
-
 使用详见[文档](https://doc.ihub.pub/plugins)
 
 ## 👨‍💻 开源贡献指南
