@@ -1,5 +1,5 @@
 * [📚 简介](/)
-* [🔖 版本](../CHANGELOG.md)
+* [🔖 版本](CHANGELOG.md)
 * 📦 插件
   - [ihub-settings](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
   - [ihub](iHub.md '基础插件，用于配置组件仓库以及一些其他扩展属性 ')
