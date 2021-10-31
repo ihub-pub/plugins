@@ -108,7 +108,9 @@ iHubSettings {
 
 | Plugin   | Version |
 | -------- | ------- |
-| `com.gradle.plugin-publish`     | 0.16.0 |
+| `com.gradle.plugin-publish` | [0.16.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
+| `io.spring.dependency-management` | [1.0.11.RELEASE](https://github.com/spring-gradle-plugins/dependency-management-plugin) |
+| `org.sonarqube` | [3.3](https://plugins.gradle.org/plugin/org.sonarqube) |
 
 > 使用插件时可以不用加版本号，配置如下：
 

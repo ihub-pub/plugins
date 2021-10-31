@@ -45,7 +45,8 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 if (ext.mavenLocalEnabled) {
                     mavenLocal()
                 }
-                maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public')
+                maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public',
+                    'https://repo1.maven.org/maven2')
                 maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
                     'https://maven.google.com')
                 maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',

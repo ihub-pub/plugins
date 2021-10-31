@@ -24,6 +24,7 @@
   <meta name="keywords" content="ihub,java,groovy,gradle,maven,插件,plugins">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/themes/vue.css">
   <script src="https://hm.baidu.com/hm.js?2bea7ad2a40a5cfe2fc30e3429b28f32"></script>
+  <script src="js/version.js"></script>
 </head>
 <body>
   <div id="app"></div>
@@ -58,7 +59,7 @@
             function(hook, vm) {
                 hook.afterEach(function (html, next) {
                     const versionHash = window.location.hash.replace(/#\/([0-9]+\.[0-9]+\.[0-9]+).*/, '$1')
-                    next(html.replaceAll('${ihub.plugin.version}', versionHash === window.location.hash ? '1.1.9' : versionHash));
+                    next(html.replaceAll('${ihub.plugin.version}', versionHash === window.location.hash ? version : versionHash));
                 });
             }
         ]
