@@ -14,7 +14,7 @@
 
 ### ⬆️ Dependency Updates
 
-- ⬆️ 升级组件版本 [@henry-hub (#178) @dependabot (#171) @dependabot](https://github.com/henry-hub (#178) @dependabot (#171) @dependabot) ([#170](https://github.com/ihub-pub/plugins/pull/170))
+- ⬆️ 升级组件版本 [@henry-hub](https://github.com/henry-hub) ([#178](https://github.com/ihub-pub/plugins/pull/178)) [@dependabot](https://github.com/dependabot) ([#171](https://github.com/ihub-pub/plugins/pull/171))  [@dependabot](https://github.com/dependabot) ([#170](https://github.com/ihub-pub/plugins/pull/170))
 - ⬆️ 插件版本升至1.1.8 [@henry-hub](https://github.com/henry-hub) ([#168](https://github.com/ihub-pub/plugins/pull/168))
 
 ### 🧰 Maintenance
