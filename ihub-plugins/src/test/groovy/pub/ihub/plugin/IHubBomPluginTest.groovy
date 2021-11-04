@@ -68,6 +68,7 @@ class IHubBomPluginTest extends IHubSpecification {
                     }
                     dependencyVersions {
                         group 'org.codehaus.groovy' modules 'groovy-all' version '3.0.8'
+                        group 'org.codehaus.groovy' modules 'groovy-xml' version '2.5.14' enforced true
                     }
                 }
             }
@@ -89,7 +90,7 @@ class IHubBomPluginTest extends IHubSpecification {
                 }
                 iHubBom {
                     importBoms {
-                        group 'org.codehaus.groovy' module 'groovy-bom' version '2.5.14', true
+                        group 'org.codehaus.groovy' module 'groovy-bom' version '2.5.14' enforced true
                         group 'cn.hutool' module 'hutool-bom' version '5.6.6'
                     }
                     dependencyVersions {
@@ -150,7 +151,7 @@ class IHubBomPluginTest extends IHubSpecification {
             }
             iHubBom {
                 excludeModules {
-                    group 'pub.ihub' version '1.0.0'
+                    group 'pub.ihub' version '1.0.0' enforced true
                 }
             }
         '''
@@ -158,6 +159,27 @@ class IHubBomPluginTest extends IHubSpecification {
 
         then: '检查结果'
         result.output.contains 'Does not support \'version\' method!'
+    }
+
+    def '配置失败测试-组版本策略强制版本号'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+
+        when: '组版本策略强制版本号'
+        buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-bom'
+            }
+            iHubBom {
+                groupVersions {
+                    group 'cn.hutool' version '5.6.6'
+                }
+            }
+        '''
+        def result = gradleBuilder.buildAndFail()
+
+        then: '检查结果'
+        result.output.contains 'Does not support \'enforced\' method!'
     }
 
     def '配置失败测试-配置组件依赖类型为空'() {

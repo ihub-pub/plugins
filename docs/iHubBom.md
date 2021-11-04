@@ -20,11 +20,13 @@ iHubBom {
     importBoms {
         group 'cn.hutool' module 'hutool-bom' version '5.6.5'
         // 强制版本
-        group 'cn.hutool' module 'hutool-bom' version '5.6.5', true
+        group 'cn.hutool' module 'hutool-bom' version '5.6.5' enforced true
     }
     // 配置依赖默认版本
     dependencyVersions {
         group 'cn.hutool' modules 'core', 'aop' version '5.6.5'
+        // 强制版本
+        group 'org.codehaus.groovy' modules 'groovy-xml' version '2.5.14' enforced true
     }
     // 配置组版本策略
     groupVersions {

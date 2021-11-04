@@ -84,11 +84,10 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 addDependencies it, 'pmd', bomDependencies
             }
             // 配置组件版本
-            dependencies.constraints {
-                ext.dependencyVersions.each { spec ->
-                    spec.modules.each {
-                        add API_CONFIGURATION_NAME, "$spec.id:$it:$spec.version"
-                    }
+            ext.dependencyVersions.each { spec ->
+                addDependencies it, API_CONFIGURATION_NAME, spec.modules.collect {
+                    spec.enforced ? dependencies.enforcedPlatform("$spec.id:$it:$spec.version") :
+                        dependencies.platform("$spec.id:$it:$spec.version")
                 }
             }
 
