@@ -151,7 +151,7 @@ class IHubBomPluginTest extends IHubSpecification {
             }
             iHubBom {
                 excludeModules {
-                    group 'pub.ihub' version '1.0.0' enforced true
+                    group 'pub.ihub' version '1.0.0'
                 }
             }
         '''
@@ -172,7 +172,7 @@ class IHubBomPluginTest extends IHubSpecification {
             }
             iHubBom {
                 groupVersions {
-                    group 'cn.hutool' version '5.6.6'
+                    group 'cn.hutool' version '5.6.6' enforced true
                 }
             }
         '''
