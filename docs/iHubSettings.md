@@ -108,7 +108,7 @@ iHubSettings {
 
 | Plugin   | Version |
 | -------- | ------- |
-| `com.gradle.plugin-publish` | [0.16.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
+| `com.gradle.plugin-publish` | [0.17.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
 | `io.spring.dependency-management` | [1.0.11.RELEASE](https://github.com/spring-gradle-plugins/dependency-management-plugin) |
 | `org.sonarqube` | [3.3](https://plugins.gradle.org/plugin/org.sonarqube) |
 
