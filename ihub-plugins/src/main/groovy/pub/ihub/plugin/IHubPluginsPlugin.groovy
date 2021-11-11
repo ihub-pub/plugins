@@ -76,7 +76,8 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                     rejectVersionIf rejectVersionFilter
                     // 其他配置
                     checkConstraints = true
-                    checkForGradleUpdate = false
+                    gradleReleaseChannel = 'current'
+                    checkForGradleUpdate = true
                 }
             }
             if (!hasPlugin(JavaPlatformPlugin)) {
@@ -176,6 +177,11 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 if (this.extension.autoReplaceLaterVersions) {
                     replaceLastVersion it
                 }
+            }
+        }
+        result.gradle.with {
+            if (enabled) {
+                printConfigContent 'Gradle later version', [['current', running.version, 'later', current.version]]
             }
         }
     }

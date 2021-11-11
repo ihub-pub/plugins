@@ -393,9 +393,17 @@ iHubPublish.publishDocs=true
                         ]
                     ]
                 ]
+            ], gradle: [
+                enabled: true,
+                running: [
+                    version: '7.2'
+                ],
+                current: [
+                    version: '7.3'
+                ]
             ]
             it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []],
-                outdated: [dependencies: []]
+                outdated: [dependencies: []], gradle: [enabled: false]
             it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
                 dependencies: [
                     [
@@ -407,7 +415,7 @@ iHubPublish.publishDocs=true
                         ]
                     ]
                 ]
-            ]
+            ], gradle: [enabled: false]
         }
         project.iHub.autoReplaceLaterVersions = true
         project.buildFile.createNewFile()
@@ -437,7 +445,7 @@ iHubPublish.publishDocs=true
                         ]
                     ]
                 ]
-            ]
+            ], gradle: [enabled: false]
         }
 
         then: '检查结果'
