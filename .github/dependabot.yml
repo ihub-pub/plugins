@@ -12,7 +12,7 @@ updates:
     assignees:
       - "henry-hub"
     commit-message:
-      prefix: "gradle"
+      prefix: "⬆️ gradle"
 
   - package-ecosystem: "gradle"
     directory: "/ihub-plugins/"
@@ -21,4 +21,4 @@ updates:
     assignees:
       - "henry-hub"
     commit-message:
-      prefix: "gradle"
+      prefix: "⬆️ gradle"
