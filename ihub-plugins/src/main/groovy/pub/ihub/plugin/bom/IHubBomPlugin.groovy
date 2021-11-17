@@ -15,16 +15,11 @@
  */
 package pub.ihub.plugin.bom
 
-import org.gradle.api.artifacts.ConfigurationContainer
-import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.api.plugins.quality.PmdPlugin
+import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
-import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
-import static org.gradle.api.plugins.JavaPlugin.API_CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
@@ -33,7 +28,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * BOM（Bill of Materials）组件依赖管理
  * @author henry
  */
-@IHubPlugin(value = IHubBomExtension, beforeApplyPlugins = IHubPluginsPlugin)
+@IHubPlugin(value = IHubBomExtension, beforeApplyPlugins = [IHubPluginsPlugin, DependencyManagementPlugin])
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
@@ -62,35 +57,26 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         }
     }
 
-    private DependencyHandler getDependencies() {
-        project.dependencies
-    }
-
-    private static void addDependencies(ConfigurationContainer container, String name, List<Dependency> dependencies) {
-        container.maybeCreate(name).dependencies.addAll dependencies
-    }
-
     private void configProject(IHubBomExtension ext) {
-        project.configurations {
+        project.dependencyManagement {
             // 导入bom配置
-            List<Dependency> bomDependencies = ext.bomVersions.collect { spec ->
-                "$spec.id:$spec.module:$spec.version"?.with {
-                    spec.enforced ? dependencies.enforcedPlatform(it) : dependencies.platform(it)
-                }
-            }
-            addDependencies it, API_CONFIGURATION_NAME, bomDependencies
-            addDependencies it, ANNOTATION_PROCESSOR_CONFIGURATION_NAME, bomDependencies
-            if (hasPlugin(PmdPlugin)) {
-                addDependencies it, 'pmd', bomDependencies
-            }
-            // 配置组件版本
-            ext.dependencyVersions.each { spec ->
-                addDependencies it, API_CONFIGURATION_NAME, spec.modules.collect {
-                    spec.enforced ? dependencies.enforcedPlatform("$spec.id:$it:$spec.version") :
-                        dependencies.platform("$spec.id:$it:$spec.version")
+            imports {
+                ext.bomVersions.each {
+                    mavenBom "$it.id:$it.module:$it.version"
                 }
             }
 
+            // 配置组件版本
+            dependencies {
+                ext.dependencyVersions.each { config ->
+                    dependencySet(group: config.id, version: config.version) {
+                        config.modules.each { entry it }
+                    }
+                }
+            }
+        }
+
+        project.configurations {
             all {
                 resolutionStrategy {
                     // 配置组件组版本（用于配置无bom组件）
@@ -115,9 +101,9 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             }
             // 配置组件依赖
             ext.dependencies.each { spec ->
-                addDependencies it, spec.id, spec.modules.collect {
+                maybeCreate(spec.id).dependencies.addAll spec.modules.collect {
                     // 支持导入项目
-                    dependencies.create it.startsWith(':') ? project.project(it) : it
+                    project.dependencies.create it.startsWith(':') ? project.project(it) : it
                 }
             }
         }
