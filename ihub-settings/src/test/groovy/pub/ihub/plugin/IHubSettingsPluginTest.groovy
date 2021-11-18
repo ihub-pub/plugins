@@ -111,7 +111,6 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
         then: '检查结果'
         result.output.contains 'com.gradle.plugin-publish'
-        result.output.contains 'io.spring.dependency-management'
         result.output.contains 'org.sonarqube'
         result.output.contains 'BUILD SUCCESSFUL'
     }

@@ -48,6 +48,12 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
     boolean logDependency = true
 
     /**
+     * MapStruct依赖配置
+     */
+    @IHubProperty
+    boolean mapstructDependency = true
+
+    /**
      * Java兼容性配置
      */
     @IHubProperty(type = [PROJECT, SYSTEM])

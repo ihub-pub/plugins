@@ -77,6 +77,13 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                         runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
                     }
                 }
+                // 添加MapStruct依赖 TODO 升级bom组件
+                if (ext.mapstructDependency) {
+                    it.dependencies {
+                        implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+                        annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+                    }
+                }
             }
         }
 

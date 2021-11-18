@@ -12,6 +12,7 @@
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `jaxbRuntime` | Jaxb运行时配置 | `true` | ✔ | ✔ | ✔ | ❌ |
 | `logDependency` | 日志依赖配置 | `true` | ✔ | ✔ | ✔ | ❌ |
+| `mapstructDependency` | MapStruct依赖配置 | `true` | ✔ | ✔ | ❌ | ❌ |
 | `compatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
 
@@ -67,6 +68,13 @@ lombok.addLombokGeneratedAnnotation = true
 | runtimeOnly | `org.slf4j:log4j-over-slf4j` |
 | runtimeOnly | `org.glassfish.jaxb:jaxb-runtime` |
 | implementation | `org.slf4j:slf4j-api` |
+
+> 可以启用[mapstructDependency](/iHubJava?id=扩展属性)添加添加MapStruct依赖配置。
+
+| DependencyType | Dependencies |
+| -------------- | ------------ |
+| implementation | `org.mapstruct:mapstruct` |
+| annotationProcessor | `org.mapstruct:mapstruct-processor` |
 
 > 配置Jar属性
 
