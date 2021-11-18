@@ -172,7 +172,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    def 'Java插件配置测试'() {
+    def 'Java插件默认配置测试'() {
         setup: '初始化项目（此处借用子项目测试，主项目不触发beforeEvaluate）'
         copyProject 'basic.gradle'
         testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
@@ -197,33 +197,54 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains '│ org.apache.logging.log4j                            │ log4j-core                                 │'
         result.output.contains '│ org.slf4j                                           │ slf4j-log4j12                              │'
         result.output.contains '│ org.slf4j                                           │ slf4j-jcl                                  │'
-        result.output.contains '│ compileOnly                            │ cn.hutool:hutool-all                                    │'
-        result.output.contains '│ runtimeOnly                            │ org.slf4j:jul-to-slf4j                                  │'
-        result.output.contains '│ runtimeOnly                            │ javax.xml.bind:jaxb-api                                 │'
-        result.output.contains '│ runtimeOnly                            │ org.slf4j:log4j-over-slf4j                              │'
-        result.output.contains '│ runtimeOnly                            │ org.glassfish.jaxb:jaxb-runtime                         │'
-        result.output.contains '│ implementation                         │ org.slf4j:slf4j-api                                     │'
+        result.output.contains '│ compileOnly                       │ cn.hutool:hutool-all                                         │'
+        result.output.contains '│ runtimeOnly                       │ org.slf4j:jul-to-slf4j                                       │'
+        result.output.contains '│ runtimeOnly                       │ javax.xml.bind:jaxb-api                                      │'
+        result.output.contains '│ runtimeOnly                       │ org.slf4j:log4j-over-slf4j                                   │'
+        result.output.contains '│ runtimeOnly                       │ org.glassfish.jaxb:jaxb-runtime                              │'
+        result.output.contains '│ implementation                    │ org.slf4j:slf4j-api                                          │'
+        result.output.contains '│ implementation                    │ org.mapstruct:mapstruct:1.4.2.Final                          │'
+        result.output.contains '│ annotationProcessor               │ org.mapstruct:mapstruct-processor:1.4.2.Final                │'
         result.output.contains 'BUILD SUCCESSFUL'
+    }
 
-        when: '修改版本以及依赖组件模块'
+    def 'Java插件配置测试'() {
+        setup: '初始化项目（此处借用子项目测试，主项目不触发beforeEvaluate）'
+        copyProject 'basic.gradle'
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFolder 'a'
+        testProjectDir.newFolder 'b'
+        testProjectDir.newFolder 'c'
+        buildFile << """
+            allprojects {
+                apply {
+                    plugin 'pub.ihub.plugin.ihub-java'
+                }
+            }
+        """
         propertiesFile << 'iHubJava.compatibility=8\n'
         propertiesFile << 'iHubJava.jaxbRuntime=false\n'
         propertiesFile << 'iHubJava.logDependency=false\n'
-        result = gradleBuilder.build()
+        propertiesFile << 'iHubJava.mapstructDependency=false\n'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
 
         then: '检查结果'
-        !result.output.contains('│ com.sun.xml.bind                                    │ jaxb-core                                  │')
-        !result.output.contains('│ commons-logging                                     │ commons-logging                            │')
-        !result.output.contains('│ log4j                                               │ log4j                                      │')
-        !result.output.contains('│ org.apache.logging.log4j                            │ log4j-core                                 │')
-        !result.output.contains('│ org.slf4j                                           │ slf4j-log4j12                              │')
-        !result.output.contains('│ org.slf4j                                           │ slf4j-jcl                                  │')
-        !result.output.contains('│ compileOnly                            │ cn.hutool:hutool-all                                    │')
-        !result.output.contains('│ runtimeOnly                            │ org.slf4j:jul-to-slf4j                                  │')
-        !result.output.contains('│ runtimeOnly                            │ javax.xml.bind:jaxb-api                                 │')
-        !result.output.contains('│ runtimeOnly                            │ org.slf4j:log4j-over-slf4j                              │')
-        !result.output.contains('│ runtimeOnly                            │ org.glassfish.jaxb:jaxb-runtime                         │')
-        !result.output.contains('│ implementation                         │ org.slf4j:slf4j-api                                     │')
+        !result.output.contains('jaxb-core')
+        !result.output.contains('commons-logging')
+        !result.output.contains('log4j')
+        !result.output.contains('log4j-core')
+        !result.output.contains('slf4j-log4j12')
+        !result.output.contains('slf4j-jcl')
+        result.output.contains '│ compileOnly                                 │ cn.hutool:hutool-all                               │'
+        !result.output.contains('org.slf4j:jul-to-slf4j')
+        !result.output.contains('javax.xml.bind:jaxb-api')
+        !result.output.contains('org.slf4j:log4j-over-slf4j')
+        !result.output.contains('org.glassfish.jaxb:jaxb-runtime')
+        !result.output.contains('org.slf4j:slf4j-api')
+        !result.output.contains('org.mapstruct:mapstruct')
+        !result.output.contains('org.mapstruct:mapstruct-processor')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
