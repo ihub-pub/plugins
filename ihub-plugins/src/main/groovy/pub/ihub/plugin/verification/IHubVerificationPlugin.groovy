@@ -98,7 +98,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
             withExtension(CodeNarcExtension) {
                 it.configFile = project.rootProject.with {
                     file("$rootDir/conf/codenarc/codenarc.groovy").with {
-                        String tmpPath = "$projectDir/build/tmp"
+                        String tmpPath = "$projectDir/.gradle/pub.ihub.plugin.cache"
                         exists() ? it : file("$tmpPath/codenarc.groovy").tap {
                             mkdir tmpPath
                             createNewFile()

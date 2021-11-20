@@ -36,22 +36,10 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 class IHubJavaExtension implements IHubProjectExtensionAware {
 
     /**
-     * Jaxb运行时配置
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean jaxbRuntime = true
-
-    /**
-     * 日志依赖配置
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean logDependency = true
-
-    /**
-     * MapStruct依赖配置
+     * 默认依赖（“,”分割）
      */
     @IHubProperty
-    boolean mapstructDependency = true
+    String defaultDependencies = 'jaxb,log'
 
     /**
      * Java兼容性配置

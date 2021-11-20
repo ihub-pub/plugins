@@ -61,12 +61,9 @@ trait IHubProjectProperty {
         }
         // 获取扩展属性
         if (null == value) {
-            value = invokeGetMethod name
+            return invokeGetMethod(name)
         }
-        if (null == value) {
-            return value
-        }
-        'false' == value.toString() ? false : fieldType.primitive && value.toString().integer ?
+        fieldType.primitive && 'false' == value.toString() ? false : fieldType.primitive && value.toString().integer ?
             value.toString().toInteger() : value.asType(fieldType)
     }
 
