@@ -41,6 +41,38 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 ])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
+    private static final Map<String, Closure> DEFAULT_DEPENDENCIES_CONFIG = [
+        // 添加jaxb运行时依赖
+        jaxb     : { IHubBomExtension ext ->
+            ext.excludeModules {
+                group 'com.sun.xml.bind' modules 'jaxb-core'
+            }
+            ext.dependencies {
+                runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
+            }
+        },
+        // 添加日志依赖配置
+        log      : { IHubBomExtension ext ->
+            ext.excludeModules {
+                group 'commons-logging' modules 'commons-logging'
+                group 'log4j' modules 'log4j'
+                group 'org.apache.logging.log4j' modules 'log4j-core'
+                group 'org.slf4j' modules 'slf4j-jcl', 'slf4j-log4j12'
+            }
+            ext.dependencies {
+                implementation 'org.slf4j:slf4j-api'
+                runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
+            }
+        },
+        // 添加MapStruct依赖
+        mapstruct: { IHubBomExtension ext ->
+            ext.dependencies {
+                implementation 'org.mapstruct:mapstruct'
+                annotationProcessor 'org.mapstruct:mapstruct-processor'
+            }
+        },
+    ]
+
     @Override
     void apply() {
         withExtension(BEFORE) { ext ->
@@ -55,34 +87,8 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             }
 
             withExtension(IHubBomExtension) {
-                // 添加jaxb运行时依赖
-                if (ext.jaxbRuntime) {
-                    it.excludeModules {
-                        group 'com.sun.xml.bind' modules 'jaxb-core'
-                    }
-                    it.dependencies {
-                        runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
-                    }
-                }
-                // 添加日志依赖配置
-                if (ext.logDependency) {
-                    it.excludeModules {
-                        group 'commons-logging' modules 'commons-logging'
-                        group 'log4j' modules 'log4j'
-                        group 'org.apache.logging.log4j' modules 'log4j-core'
-                        group 'org.slf4j' modules 'slf4j-jcl', 'slf4j-log4j12'
-                    }
-                    it.dependencies {
-                        implementation 'org.slf4j:slf4j-api'
-                        runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
-                    }
-                }
-                // TODO 升级bom组件 添加MapStruct依赖
-                if (ext.mapstructDependency) {
-                    it.dependencies {
-                        implementation 'org.mapstruct:mapstruct:1.4.2.Final'
-                        annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
-                    }
+                ext.defaultDependencies.split(',').each { dependency ->
+                    DEFAULT_DEPENDENCIES_CONFIG[dependency]?.call it
                 }
             }
         }

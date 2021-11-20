@@ -10,9 +10,7 @@
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
-| `jaxbRuntime` | Jaxb运行时配置 | `true` | ✔ | ✔ | ✔ | ❌ |
-| `logDependency` | 日志依赖配置 | `true` | ✔ | ✔ | ✔ | ❌ |
-| `mapstructDependency` | MapStruct依赖配置 | `true` | ✔ | ✔ | ❌ | ❌ |
+| `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置 | `jaxb`、`log` | ✔ | ✔ | ❌ | ❌ |
 | `compatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
 
@@ -36,16 +34,18 @@ apply {
 }
 ```
 
-## 默认配置
+## 配置示例
 
-> 由于Lombok插件6.1.0之后不再自动生成`lombok.config`文件[详见](https://github.com/freefair/gradle-plugins/issues/379)，**当本地没有lombok.config时**，会自动生成如下配置：
-
-```lombok.config
-config.stopBubbling = true
-lombok.addLombokGeneratedAnnotation = true
+```groovy
+iHubJava {
+    defaultDependencies = 'jaxb,log,mapstruct'
+    compatibility = '11'
+}
 ```
 
-> 可以启用[jaxbRuntime](/iHubJava?id=扩展属性)添加jaxb运行时依赖配置。
+## 默认依赖
+
+> `jaxb`：添加jaxb运行时依赖配置。
 
 | DependencyType | Dependencies |
 | -------------- | ------------ |
@@ -53,7 +53,7 @@ lombok.addLombokGeneratedAnnotation = true
 | runtimeOnly | `javax.xml.bind:jaxb-api` |
 | runtimeOnly | `org.glassfish.jaxb:jaxb-runtime` |
 
-> 可以启用[logDependency](/iHubJava?id=扩展属性)添加默认日志依赖配置。
+> `log`：添加默认日志依赖配置。
 
 | DependencyType | Dependencies |
 | -------------- | ------------ |
@@ -62,19 +62,25 @@ lombok.addLombokGeneratedAnnotation = true
 | exclude | `org.apache.logging.log4j:log4j-core` |
 | exclude | `org.slf4j:slf4j-log4j12` |
 | exclude | `org.slf4j:slf4j-jcl` |
-| compileOnly | `cn.hutool:hutool-all` |
 | runtimeOnly | `org.slf4j:jul-to-slf4j` |
-| runtimeOnly | `javax.xml.bind:jaxb-api` |
 | runtimeOnly | `org.slf4j:log4j-over-slf4j` |
-| runtimeOnly | `org.glassfish.jaxb:jaxb-runtime` |
 | implementation | `org.slf4j:slf4j-api` |
 
-> 可以启用[mapstructDependency](/iHubJava?id=扩展属性)添加添加MapStruct依赖配置。
+> `mapstruct`：添加添加MapStruct依赖配置。
 
 | DependencyType | Dependencies |
 | -------------- | ------------ |
 | implementation | `org.mapstruct:mapstruct` |
 | annotationProcessor | `org.mapstruct:mapstruct-processor` |
+
+## 默认配置
+
+> 由于Lombok插件6.1.0之后不再自动生成`lombok.config`文件[详见](https://github.com/freefair/gradle-plugins/issues/379)，**当本地没有lombok.config时**，会自动生成如下配置：
+
+```lombok.config
+config.stopBubbling = true
+lombok.addLombokGeneratedAnnotation = true
+```
 
 > 配置Jar属性
 

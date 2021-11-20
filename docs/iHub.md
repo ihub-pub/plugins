@@ -34,17 +34,6 @@ plugins {
 
 ## 配置示例
 
-> 配置java插件
-
-```groovy
-iHubJava {
-    jaxbRuntime = true
-    compatibility = '11'
-}
-```
-
-> 配置groovy插件
-
 ```groovy
 iHub {
     compileGroovyAllModules = true

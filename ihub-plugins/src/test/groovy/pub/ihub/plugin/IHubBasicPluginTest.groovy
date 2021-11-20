@@ -186,6 +186,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
                 }
             }
         """
+        propertiesFile << 'iHubJava.defaultDependencies=jaxb,log,mapstruct\n'
 
         when: '构建项目'
         def result = gradleBuilder.build()
@@ -197,14 +198,14 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains '│ org.apache.logging.log4j                            │ log4j-core                                 │'
         result.output.contains '│ org.slf4j                                           │ slf4j-log4j12                              │'
         result.output.contains '│ org.slf4j                                           │ slf4j-jcl                                  │'
-        result.output.contains '│ compileOnly                       │ cn.hutool:hutool-all                                         │'
-        result.output.contains '│ runtimeOnly                       │ org.slf4j:jul-to-slf4j                                       │'
-        result.output.contains '│ runtimeOnly                       │ javax.xml.bind:jaxb-api                                      │'
-        result.output.contains '│ runtimeOnly                       │ org.slf4j:log4j-over-slf4j                                   │'
-        result.output.contains '│ runtimeOnly                       │ org.glassfish.jaxb:jaxb-runtime                              │'
-        result.output.contains '│ implementation                    │ org.slf4j:slf4j-api                                          │'
-        result.output.contains '│ implementation                    │ org.mapstruct:mapstruct:1.4.2.Final                          │'
-        result.output.contains '│ annotationProcessor               │ org.mapstruct:mapstruct-processor:1.4.2.Final                │'
+        result.output.contains '│ compileOnly                             │ cn.hutool:hutool-all                                   │'
+        result.output.contains '│ runtimeOnly                             │ org.slf4j:jul-to-slf4j                                 │'
+        result.output.contains '│ runtimeOnly                             │ javax.xml.bind:jaxb-api                                │'
+        result.output.contains '│ runtimeOnly                             │ org.slf4j:log4j-over-slf4j                             │'
+        result.output.contains '│ runtimeOnly                             │ org.glassfish.jaxb:jaxb-runtime                        │'
+        result.output.contains '│ implementation                          │ org.slf4j:slf4j-api                                    │'
+        result.output.contains '│ implementation                          │ org.mapstruct:mapstruct                                │'
+        result.output.contains '│ annotationProcessor                     │ org.mapstruct:mapstruct-processor                      │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -223,9 +224,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
             }
         """
         propertiesFile << 'iHubJava.compatibility=8\n'
-        propertiesFile << 'iHubJava.jaxbRuntime=false\n'
-        propertiesFile << 'iHubJava.logDependency=false\n'
-        propertiesFile << 'iHubJava.mapstructDependency=false\n'
+        propertiesFile << 'iHubJava.defaultDependencies=false\n'
 
         when: '构建项目'
         def result = gradleBuilder.build()
