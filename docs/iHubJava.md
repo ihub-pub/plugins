@@ -10,7 +10,7 @@
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
-| `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置 | `jaxb`、`log` | ✔ | ✔ | ❌ | ❌ |
+| `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置 | `log` | ✔ | ✔ | ❌ | ❌ |
 | `compatibility` | Java兼容性配置 | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译 | `true` | ✔ | ✔ | ✔ | ❌ |
 

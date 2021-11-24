@@ -21,6 +21,7 @@ import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Title
 
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
+import static pub.ihub.plugin.java.IHubJavaPlugin.DEFAULT_DEPENDENCIES_CONFIG
 
 
 
@@ -186,7 +187,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
                 }
             }
         """
-        propertiesFile << 'iHubJava.defaultDependencies=jaxb,log,mapstruct\n'
+        propertiesFile << "iHubJava.defaultDependencies=${DEFAULT_DEPENDENCIES_CONFIG.keySet().join(',')}\n"
 
         when: '构建项目'
         def result = gradleBuilder.build()
