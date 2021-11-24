@@ -41,7 +41,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 ])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
-    private static final Map<String, Closure> DEFAULT_DEPENDENCIES_CONFIG = [
+    static final Map<String, Closure> DEFAULT_DEPENDENCIES_CONFIG = [
         // 添加jaxb运行时依赖
         jaxb     : { IHubBomExtension ext ->
             ext.excludeModules {
