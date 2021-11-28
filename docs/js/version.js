@@ -1,1 +1,1 @@
-const version = '1.1.10'
+const version = '1.1.11'
