@@ -1,3 +1,27 @@
+## 🔖 1.1.11 (2021-11-28)
+
+
+### ✨ Features
+
+- ➖ 移除jaxb默认依赖，可以配置“iHubJava.defaultDependencies=jaxb”手动依赖  [@henry-hub](https://github.com/henry-hub) ([#194](https://github.com/ihub-pub/plugins/pull/194))
+- ✨ ihub-java插件集成MapStruct依赖配置  [@henry-hub](https://github.com/henry-hub) ([#190](https://github.com/ihub-pub/plugins/pull/190))
+
+### 🐛 Bug Fixes
+
+- 🐛 bom插件还原spring-dependency-management管理组件版本  [@henry-hub](https://github.com/henry-hub) ([#188](https://github.com/ihub-pub/plugins/pull/188))
+
+### ⬆️ Dependency Updates
+
+- ⬆️ gradle: Bump spring-boot-buildpack-platform from 2.5.7 to 2.6.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#191](https://github.com/ihub-pub/plugins/pull/191))
+- ⬆️ gradle: Bump spring-boot-gradle-plugin from 2.5.7 to 2.6.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#192](https://github.com/ihub-pub/plugins/pull/192))
+
+### 🧰 Maintenance
+
+- ✏️ ihub-java插件配置整理  [@henry-hub](https://github.com/henry-hub) ([#193](https://github.com/ihub-pub/plugins/pull/193))
+
+
+---
+
 ## 🔖 1.1.10 (2021-11-12)
 
 ### ✨ Features
