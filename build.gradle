@@ -47,7 +47,7 @@ subprojects {
         website     = 'https://github.com/ihub-pub/plugins'
         vcsUrl      = 'https://github.com/ihub-pub/plugins.git'
         description = 'IHub Plugins Gradle Plugin'
-        tags        = ['ihub', 'groovy', 'plugin', 'spring', 'boot', 'java', 'native']
+        tags        = ['ihub', 'groovy', 'spring', 'boot', 'java', 'native']
     }
 
     // 跳过Gradle元数据生成，详见：https://github.com/gradle/gradle/issues/11862
