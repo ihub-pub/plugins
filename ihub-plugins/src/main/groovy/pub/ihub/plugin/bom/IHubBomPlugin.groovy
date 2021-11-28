@@ -16,6 +16,8 @@
 package pub.ihub.plugin.bom
 
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import org.gradle.api.Action
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
@@ -28,7 +30,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * BOM（Bill of Materials）组件依赖管理
  * @author henry
  */
-@IHubPlugin(value = IHubBomExtension, beforeApplyPlugins = [IHubPluginsPlugin, DependencyManagementPlugin])
+@IHubPlugin(value = IHubBomExtension, beforeApplyPlugins = IHubPluginsPlugin)
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
@@ -58,19 +60,25 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
     }
 
     private void configProject(IHubBomExtension ext) {
-        project.dependencyManagement {
-            // 导入bom配置
-            imports {
-                ext.bomVersions.each {
-                    mavenBom "$it.id:$it.module:$it.version"
+        // 导入bom配置
+        if (ext.bomVersions) {
+            dependencyManagement {
+                it.imports {
+                    ext.bomVersions.each {
+                        mavenBom "$it.id:$it.module:$it.version"
+                    }
                 }
             }
+        }
 
-            // 配置组件版本
-            dependencies {
-                ext.dependencyVersions.each { config ->
-                    dependencySet(group: config.id, version: config.version) {
-                        config.modules.each { entry it }
+        // 配置组件版本
+        if (ext.dependencyVersions) {
+            dependencyManagement {
+                it.dependencies {
+                    ext.dependencyVersions.each { config ->
+                        dependencySet(group: config.id, version: config.version) {
+                            config.modules.each { entry it }
+                        }
                     }
                 }
             }
@@ -107,6 +115,11 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 }
             }
         }
+    }
+
+    private void dependencyManagement(Action<DependencyManagementExtension> action) {
+        applyPlugin DependencyManagementPlugin
+        withExtension DependencyManagementExtension, action
     }
 
 }
