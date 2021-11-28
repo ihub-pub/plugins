@@ -48,6 +48,44 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'bom不含bomVersions配置测试'() {
+        setup: '初始化项目'
+        copyProject 'bom.gradle'
+        buildFile << 'iHubBom.bomVersions.clear()'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        !result.output.contains('hutool-bom')
+        result.output.contains '│ cn.hutool                       │ core                         │ 5.6.5                           │'
+        result.output.contains '│ cn.hutool                       │ aop                          │ 5.6.5                           │'
+        result.output.contains '│ cn.hutool                                       │ 5.6.5                                          │'
+        result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
+        result.output.contains '│ pub.ihub                                       │ all                                             │'
+        result.output.contains '│ api                                         │ cn.hutool:hutool-aop                               │'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'bom不含dependencyVersions配置测试'() {
+        setup: '初始化项目'
+        copyProject 'bom.gradle'
+        buildFile << 'iHubBom.dependencyVersions.clear()'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains '│ cn.hutool                        │ hutool-bom                     │ 5.6.5                        │'
+        !result.output.contains('│ core')
+        !result.output.contains('│ aop')
+        result.output.contains '│ cn.hutool                                       │ 5.6.5                                          │'
+        result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
+        result.output.contains '│ pub.ihub                                       │ all                                             │'
+        result.output.contains '│ api                                         │ cn.hutool:hutool-aop                               │'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     def '子项目配置成功测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
