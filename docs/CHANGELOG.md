@@ -1,3 +1,21 @@
+## 🔖 1.2.0 (2021-11-30)
+
+
+### ⬆️ Dependency Updates
+
+- ⬆️ 升级ihub-bom至1.0.4  [@henry-hub](https://github.com/henry-hub) ([#200](https://github.com/ihub-pub/plugins/pull/200))
+- ⬆️ gradle: Bump spring-boot-buildpack-platform from 2.6.0 to 2.6.1 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#198](https://github.com/ihub-pub/plugins/pull/198))
+- ⬆️ gradle: Bump spring-boot-gradle-plugin from 2.6.0 to 2.6.1 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#199](https://github.com/ihub-pub/plugins/pull/199))
+- ⬆️ gradle: Bump pub.ihub.plugin.ihub-settings from 1.1.10 to 1.1.11  [@dependabot](https://github.com/dependabot) ([#195](https://github.com/ihub-pub/plugins/pull/195))
+
+### 🧰 Maintenance
+
+- ✏️ 按需使用io.spring.dependency-management插件  [@henry-hub](https://github.com/henry-hub) ([#197](https://github.com/ihub-pub/plugins/pull/197))
+- ✏️ 禁用ihub插件默认依赖  [@henry-hub](https://github.com/henry-hub) ([#196](https://github.com/ihub-pub/plugins/pull/196))
+
+
+---
+
 ## 🔖 1.1.11 (2021-11-28)
 
 
