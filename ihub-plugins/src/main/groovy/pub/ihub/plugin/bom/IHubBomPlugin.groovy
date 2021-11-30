@@ -34,7 +34,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
-    private static final String IHUB_BOM_VERSION = '1.0.3'
+    private static final String IHUB_BOM_VERSION = '1.0.4'
 
     @Override
     void apply() {
