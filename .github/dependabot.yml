@@ -11,6 +11,8 @@ updates:
       interval: "daily"
     assignees:
       - "henry-hub"
+    allow:
+      - dependency-type: "production"
     commit-message:
       prefix: "⬆️ gradle"
 
@@ -20,5 +22,7 @@ updates:
       interval: "daily"
     assignees:
       - "henry-hub"
+    allow:
+      - dependency-type: "production"
     commit-message:
       prefix: "⬆️ gradle"
