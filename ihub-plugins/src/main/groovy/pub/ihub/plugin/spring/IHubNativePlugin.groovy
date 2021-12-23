@@ -48,8 +48,6 @@ class IHubNativePlugin extends IHubProjectPluginAware<IHubNativeExtension> {
                 it.removeYamlSupport.set ext.aotRemoveYamlSupport
                 it.removeJmxSupport.set ext.aotRemoveJmxSupport
                 it.verify.set ext.aotVerify
-                it.removeUnusedConfig.set ext.aotRemoveUnusedConfig
-                it.failOnMissingSelectorHint.set ext.aotFailOnMissingSelectorHint
             }
         }
     }

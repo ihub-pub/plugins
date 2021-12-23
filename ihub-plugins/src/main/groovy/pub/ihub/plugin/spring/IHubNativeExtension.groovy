@@ -91,16 +91,6 @@ class IHubNativeExtension extends IHubBootExtension implements IHubProjectExtens
      */
     @IHubProperty
     boolean aotVerify = true
-    /**
-     * 移除未使用的配置
-     */
-    @IHubProperty
-    boolean aotRemoveUnusedConfig = true
-    /**
-     * 如果没有为活动选择器提供提示，则抛出错误
-     */
-    @IHubProperty
-    boolean aotFailOnMissingSelectorHint = true
 
     //</editor-fold>
 

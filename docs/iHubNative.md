@@ -19,8 +19,6 @@
 | `aotRemoveYamlSupport` | 移除Yaml支持 | `false` | ✔ | ✔ | ❌ | ❌ |
 | `aotRemoveJmxSupport` | 移除Jmx支持 | `true` | ✔ | ✔ | ❌ | ❌ |
 | `aotVerify` | 开启自动验证 | `true` | ✔ | ✔ | ❌ | ❌ |
-| `aotRemoveUnusedConfig` | 移除未使用的配置 | `true` | ✔ | ✔ | ❌ | ❌ |
-| `aotFailOnMissingSelectorHint` | 如果没有为活动选择器提供提示，则抛出错误 | `true` | ✔ | ✔ | ❌ | ❌ |
 
 ## 插件安装
 
