@@ -20,6 +20,7 @@ import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Title
 
+import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static pub.ihub.plugin.java.IHubJavaPlugin.DEFAULT_DEPENDENCIES_CONFIG
 
@@ -58,6 +59,38 @@ plugins {
 
         then: '检查结果'
         !result.output.contains('Group Maven Bom Version')
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '组件bom配置构建测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\',\'demo-bom\''
+//        buildFile << '''
+//project('a') {
+//    apply {
+//        plugin 'java-platform'
+//        plugin 'pub.ihub.plugin.ihub-publish'
+//    }
+//}
+//project('b') {
+//    apply {
+//        plugin 'pub.ihub.plugin.ihub-java'
+//        plugin 'pub.ihub.plugin.ihub-publish'
+//    }
+//}
+//project('c') {
+//    apply {
+//        plugin 'pub.ihub.plugin.ihub-java'
+//    }
+//}
+//'''
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

@@ -71,6 +71,10 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             }
             printMapConfigContent 'Gradle Plugin Plugins Version', 'ID', 'Version', PLUGIN_VERSIONS
 
+            findProperty(settings, 'iHubSettings.includeBom')?.with {
+                settings.include it
+            }
+
             // 配置子项目
             Map<String, List<String>> projectSpecs = [:]
             settings.rootDir.eachDir { dir ->
