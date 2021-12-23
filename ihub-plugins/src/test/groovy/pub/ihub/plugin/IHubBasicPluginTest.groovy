@@ -61,6 +61,41 @@ plugins {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '组件bom配置构建测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\',\'demo-bom\''
+        testProjectDir.newFolder 'a'
+        testProjectDir.newFolder 'b'
+        testProjectDir.newFolder 'c'
+        buildFile << '''
+project(':a') {
+    apply {
+        plugin 'java-platform'
+        plugin 'pub.ihub.plugin.ihub-publish'
+    }
+}
+project(':b') {
+    apply {
+        plugin 'pub.ihub.plugin.ihub-java'
+        plugin 'pub.ihub.plugin.ihub-publish'
+    }
+}
+project(':c') {
+    apply {
+        plugin 'pub.ihub.plugin.ihub-java'
+    }
+}
+'''
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     def '项目组件仓库配置测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'

@@ -118,6 +118,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
     def '测试扩展属性配置子项目'() {
         when: '配置项目'
         propertiesFile << 'name=demo\n'
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         testProjectDir.newFolder 'rest'
         testProjectDir.newFolder 'service'
         testProjectDir.newFolder 'other'
