@@ -6,17 +6,12 @@
 
 ## 扩展属性
 
-> 属性使用说明[详见](/explanation?id=属性配置说明)`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`aot`开头为`AOT插件属性`
+> 属性使用说明[详见](/explanation?id=属性配置说明)，继承[ihub-boot](iHubBoot?id=扩展属性)组件扩展属性，`bp`开头为`构建镜像时属性`，`aot`开头为`AOT插件属性`
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
-| `bpJvmVersion` | JVM版本 | `默认当前版本` | ✔ | ✔ | ❌ | ❌ |
 | `bpNativeImage` | 是否启用原生映像构建 | `true` | ✔ | ✔ | ❌ | ❌ |
 | `bpNativeImageBuildArguments` | 传递给原生映像命令的参数 | ❌ | ✔ | ✔ | ❌ | ❌ |
-| `bplJvmHeadRoom` | JVM内存 | `8G` | ✔ | ✔ | ❌ | ❌ |
-| `bplJvmLoadedClassCount` | JVM运行时已加载类的数量 | `35% of classes` | ✔ | ✔ | ❌ | ❌ |
-| `bplJvmThreadCount` | JVM运行时用户线程数 | `250` | ✔ | ✔ | ❌ | ❌ |
-| `javaToolOptions` | JVM环境变量 | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `aotMode` | native镜像编译器配置 | `NATIVE` | ✔ | ✔ | ❌ | ❌ |
 | `aotDebugVerify` | 启用验证调试 | `false` | ✔ | ✔ | ✔ | ❌ |
 | `aotRemoveXmlSupport` | 移除XML支持 | `true` | ✔ | ✔ | ❌ | ❌ |

@@ -205,9 +205,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
         bom.dependencies {
             constraints {
                 bom.rootProject.allprojects.each {
-                    println it.name
-                    println it.plugins.hasPlugin(IHubPublishPlugin)
-                    println it.plugins.hasPlugin(JavaPlatformPlugin)
                     if (it.plugins.hasPlugin(IHubPublishPlugin) && !it.plugins.hasPlugin(JavaPlatformPlugin)) {
                         api "${bom.rootProject.group}:$it.name:${bom.rootProject.version}"
                     }
