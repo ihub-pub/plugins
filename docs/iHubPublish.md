@@ -6,7 +6,7 @@
 
 ## 扩展属性
 
-> 属性使用说明[详见](/explanation?id=属性配置说明)仓库配置[详见](/iHub?id=扩展属性)
+> 属性使用说明[详见](/explanation?id=属性配置说明)，仓库配置[详见](/iHub?id=扩展属性)
 
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |

@@ -25,12 +25,14 @@
 | `name` | 配置主项目名称 |
 | `iHubSettings.includeDirs` | 包含项目路径，多目录“,”分割 |
 | `iHubSettings.skippedDirs` | 排除项目路径，多目录“,”分割 |
+| `iHubSettings.includeBom` | 用于配置bom组件，包含所有含[ihub-publish](iHubPublish)组件的子项目 |
 
 > 配置如下：
 
 ```properties
 name=demo
 iHubSettings.includeDirs=rest,service
+iHubSettings.includeBom=ihub-bom
 ```
 
 ## 插件安装

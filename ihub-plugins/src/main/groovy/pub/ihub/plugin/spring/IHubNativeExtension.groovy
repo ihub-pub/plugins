@@ -33,15 +33,10 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
  */
 @IHubExtension('iHubNative')
 @TupleConstructor(allProperties = true, includes = 'project')
-class IHubNativeExtension implements IHubProjectExtensionAware {
+class IHubNativeExtension extends IHubBootExtension implements IHubProjectExtensionAware {
 
     //<editor-fold desc="Build Configuration">
 
-    /**
-     * JVM版本
-     */
-    @IHubProperty
-    String bpJvmVersion
     /**
      * 是否启用原生映像构建
      */
@@ -109,40 +104,10 @@ class IHubNativeExtension implements IHubProjectExtensionAware {
 
     //</editor-fold>
 
-    //<editor-fold desc="Launch Configuration">
-
-    /**
-     * JVM内存
-     */
-    @IHubProperty
-    String bplJvmHeadRoom = '8G'
-    /**
-     * JVM运行时已加载类的数量，默认“35% of classes"
-     */
-    @IHubProperty
-    String bplJvmLoadedClassCount
-    /**
-     * JVM运行时用户线程数，默认“250”
-     */
-    @IHubProperty
-    String bplJvmThreadCount
-    /**
-     * JVM环境变量
-     */
-    @IHubProperty
-    String javaToolOptions
-
-    //</editor-fold>
-
     Map<String, String> getEnvironment() {
-        [
-            BP_JVM_VERSION                 : bpJvmVersion,
+        super.environment + [
             BP_NATIVE_IMAGE                : bpNativeImage.toString(),
             BP_NATIVE_IMAGE_BUILD_ARGUMENTS: bpNativeImageBuildArguments,
-            BPL_JVM_HEAD_ROOM              : bplJvmHeadRoom,
-            BPL_JVM_LOADED_CLASS_COUNT     : bplJvmLoadedClassCount,
-            BPL_JVM_THREAD_COUNT           : bplJvmThreadCount,
-            JAVA_TOOL_OPTIONS              : javaToolOptions,
         ].findAll { it.value }
     }
 

@@ -40,6 +40,9 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
     @Override
     void apply() {
         withExtension(AFTER) { ext ->
+            if (hasPlugin(IHubNativePlugin)) {
+                ext = withExtension IHubNativeExtension
+            }
             withTask(BootRun) {
                 ext.systemProperties it
                 it.optimizedLaunch = ext.runOptimizedLaunch
@@ -64,6 +67,13 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
                     tlsVerify = ext.dockerTlsVerify
                     certPath = ext.dockerCertPath
                     builderRegistry {
+                        url = ext.dockerUrl
+                        username = ext.dockerUsername
+                        password = ext.dockerPassword
+                        email = ext.dockerEmail
+                        token = ext.dockerToken
+                    }
+                    publishRegistry {
                         url = ext.dockerUrl
                         username = ext.dockerUsername
                         password = ext.dockerPassword
