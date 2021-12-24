@@ -18,6 +18,7 @@ package pub.ihub.plugin.bom
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Action
+import pub.ihub.core.IHubLibsVersion
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
@@ -34,13 +35,11 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
-    private static final String IHUB_BOM_VERSION = '1.0.4'
-
     @Override
     void apply() {
         // 配置ihub-bom
         extension.importBoms {
-            group 'pub.ihub.lib' module 'ihub-bom' version IHUB_BOM_VERSION
+            group 'pub.ihub.lib' module 'ihub-libs' version IHubLibsVersion.version
         }
         // 配置默认依赖组件
         extension.dependencies {

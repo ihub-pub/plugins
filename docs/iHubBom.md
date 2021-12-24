@@ -49,7 +49,7 @@ iHubBom {
 
 ```groovy
 importBoms {
-    group 'pub.ihub.lib' module 'ihub-bom' version '1.0.0'
+    group 'pub.ihub.lib' module 'ihub-libs' version '1.0.6'
 }
 ```
 
