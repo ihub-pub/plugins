@@ -1,3 +1,24 @@
+## 🔖 1.2.1 (2021-12-24)
+
+
+### ✨ Features
+
+- ✨ ihub-settings支持自动配置项目bom组件  [@henry-hub](https://github.com/henry-hub) ([#204](https://github.com/ihub-pub/plugins/pull/204))
+
+### ⬆️ Dependency Updates
+
+- ⬆️ 升级spring-aot插件版本至0.11.1  [@henry-hub](https://github.com/henry-hub) ([#205](https://github.com/ihub-pub/plugins/pull/205))
+- ⬆️ gradle: Bump spring-boot-gradle-plugin from 2.6.1 to 2.6.2 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#202](https://github.com/ihub-pub/plugins/pull/202))
+- ⬆️ gradle: Bump spring-boot-buildpack-platform from 2.6.1 to 2.6.2 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#203](https://github.com/ihub-pub/plugins/pull/203))
+- ⬆️ gradle: Bump pub.ihub.plugin.ihub-settings from 1.1.11 to 1.2.0  [@dependabot](https://github.com/dependabot) ([#201](https://github.com/ihub-pub/plugins/pull/201))
+
+### 🧰 Maintenance
+
+- 🎨 默认bom组件改用ihub-libs  [@henry-hub](https://github.com/henry-hub) ([#206](https://github.com/ihub-pub/plugins/pull/206))
+
+
+---
+
 ## 🔖 1.2.0 (2021-11-30)
 
 
