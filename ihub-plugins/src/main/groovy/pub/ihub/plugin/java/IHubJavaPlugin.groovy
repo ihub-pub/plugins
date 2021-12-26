@@ -16,6 +16,8 @@
 package pub.ihub.plugin.java
 
 import io.freefair.gradle.plugins.lombok.LombokPlugin
+import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
+import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -23,6 +25,7 @@ import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
+import org.jmolecules.bytebuddy.JMoleculesPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
@@ -37,13 +40,23 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
  * @author henry
  */
 @IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [
-    IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, LombokPlugin, ProjectReportsPlugin, BuildDashboardPlugin
+    IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, LombokPlugin, ProjectReportsPlugin, BuildDashboardPlugin,
+    ByteBuddyPlugin
 ])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
+    private static final Map<String, String> J_MOLECULES_ARCHITECTURE_DEPENDENCIES = [
+        // CQRS architecture
+        cqrs   : 'org.jmolecules:jmolecules-cqrs-architecture',
+        // Layered architecture
+        layered: 'org.jmolecules:jmolecules-layered-architecture',
+        // Onion architecture
+        onion  : 'org.jmolecules:jmolecules-onion-architecture',
+    ]
+
     static final Map<String, Closure> DEFAULT_DEPENDENCIES_CONFIG = [
         // 添加jaxb运行时依赖
-        jaxb     : { IHubBomExtension ext ->
+        jaxb                     : { IHubBomExtension ext ->
             ext.excludeModules {
                 group 'com.sun.xml.bind' modules 'jaxb-core'
             }
@@ -52,7 +65,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             }
         },
         // 添加日志依赖配置
-        log      : { IHubBomExtension ext ->
+        log                      : { IHubBomExtension ext ->
             ext.excludeModules {
                 group 'commons-logging' modules 'commons-logging'
                 group 'log4j' modules 'log4j'
@@ -65,10 +78,28 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             }
         },
         // 添加MapStruct依赖
-        mapstruct: { IHubBomExtension ext ->
+        mapstruct                : { IHubBomExtension ext ->
             ext.dependencies {
                 implementation 'org.mapstruct:mapstruct'
                 annotationProcessor 'org.mapstruct:mapstruct-processor'
+            }
+        },
+        // 添加jMolecules依赖
+        jmolecules               : { IHubBomExtension ext ->
+            ext.dependencies {
+                implementation 'org.jmolecules:jmolecules-ddd', 'org.jmolecules:jmolecules-events'
+                implementation J_MOLECULES_ARCHITECTURE_DEPENDENCIES[
+                    ext.project.extensions.getByType(IHubJavaExtension).jmoleculesArchitecture
+                ]
+            }
+        },
+        // 添加jMolecules-integrations依赖
+        'jmolecules-integrations': { IHubBomExtension ext ->
+            ext.dependencies {
+                implementation 'org.jmolecules.integrations:jmolecules-spring',
+                    'org.jmolecules.integrations:jmolecules-jpa',
+                    'org.jmolecules.integrations:jmolecules-jackson'
+                testImplementation 'org.jmolecules.integrations:jmolecules-archunit'
             }
         },
     ]
@@ -89,6 +120,12 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             withExtension(IHubBomExtension) {
                 ext.defaultDependencies.split(',').each { dependency ->
                     DEFAULT_DEPENDENCIES_CONFIG[dependency]?.call it
+                    if ('jmolecules' == dependency) {
+                        // 注：启用byteBuddy插件时，org.gradle.parallel设置false
+                        withExtension(AbstractByteBuddyTaskExtension).transformation {
+                            it.plugin = JMoleculesPlugin
+                        }
+                    }
                 }
             }
         }

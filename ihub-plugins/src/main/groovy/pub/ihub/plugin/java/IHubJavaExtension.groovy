@@ -53,4 +53,10 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
     @IHubProperty(type = [PROJECT, SYSTEM])
     boolean gradleCompilationIncremental = true
 
+    /**
+     * JMolecules架构，可选类型：cqrs、layered、onion
+     */
+    @IHubProperty
+    String jmoleculesArchitecture = 'onion'
+
 }
