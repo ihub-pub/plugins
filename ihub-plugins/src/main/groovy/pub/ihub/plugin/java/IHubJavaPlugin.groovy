@@ -16,6 +16,7 @@
 package pub.ihub.plugin.java
 
 import io.freefair.gradle.plugins.lombok.LombokPlugin
+import net.bytebuddy.build.gradle.AbstractByteBuddyTask
 import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
 import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
@@ -124,6 +125,9 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                         // 注：启用byteBuddy插件时，org.gradle.parallel设置false
                         withExtension(AbstractByteBuddyTaskExtension).transformation {
                             it.plugin = JMoleculesPlugin
+                        }
+                        withTask(AbstractByteBuddyTask) {
+                            withTask('classes').dependsOn it
                         }
                     }
                 }

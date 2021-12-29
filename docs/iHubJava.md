@@ -4,7 +4,7 @@
 |-------|---------|--------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `pub.ihub.plugin.ihub-java` | `Java插件` | `Project` | `iHubJava` | [ihub-bom](iHubBom)、[java](https://docs.gradle.org/current/userguide/java_plugin.html)、[java-library](https://docs.gradle.org/current/userguide/java_library_plugin.html)、[lombok](https://plugins.gradle.org/plugin/io.freefair.lombok)、[project-report](https://docs.gradle.org/current/userguide/project_report_plugin.html)、[build-dashboard](https://docs.gradle.org/current/userguide/build_dashboard_plugin.html)、<br>[net.bytebuddy.byte-buddy-gradle-plugin](https://bytebuddy.net) |
 
-> 注：启用`JMoleculesPlugin`插件时，`org.gradle.parallel`设置`false`
+> 注：启用`JMoleculesPlugin`插件时，`org.gradle.parallel`设置`false`，可以消除`prepareKotlinBuildScriptModel`任务警告
 
 ## 扩展属性
 
