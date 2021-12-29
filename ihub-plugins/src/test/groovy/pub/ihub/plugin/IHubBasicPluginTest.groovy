@@ -234,14 +234,21 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains '│ org.apache.logging.log4j                            │ log4j-core                                 │'
         result.output.contains '│ org.slf4j                                           │ slf4j-log4j12                              │'
         result.output.contains '│ org.slf4j                                           │ slf4j-jcl                                  │'
-        result.output.contains '│ compileOnly                             │ cn.hutool:hutool-all                                   │'
-        result.output.contains '│ runtimeOnly                             │ org.slf4j:jul-to-slf4j                                 │'
-        result.output.contains '│ runtimeOnly                             │ javax.xml.bind:jaxb-api                                │'
-        result.output.contains '│ runtimeOnly                             │ org.slf4j:log4j-over-slf4j                             │'
-        result.output.contains '│ runtimeOnly                             │ org.glassfish.jaxb:jaxb-runtime                        │'
-        result.output.contains '│ implementation                          │ org.slf4j:slf4j-api                                    │'
-        result.output.contains '│ implementation                          │ org.mapstruct:mapstruct                                │'
-        result.output.contains '│ annotationProcessor                     │ org.mapstruct:mapstruct-processor                      │'
+        result.output.contains '│ compileOnly                      │ cn.hutool:hutool-all                                          │'
+        result.output.contains '│ runtimeOnly                      │ org.slf4j:jul-to-slf4j                                        │'
+        result.output.contains '│ runtimeOnly                      │ javax.xml.bind:jaxb-api                                       │'
+        result.output.contains '│ runtimeOnly                      │ org.slf4j:log4j-over-slf4j                                    │'
+        result.output.contains '│ runtimeOnly                      │ org.glassfish.jaxb:jaxb-runtime                               │'
+        result.output.contains '│ implementation                   │ org.slf4j:slf4j-api                                           │'
+        result.output.contains '│ implementation                   │ org.mapstruct:mapstruct                                       │'
+        result.output.contains '│ annotationProcessor              │ org.mapstruct:mapstruct-processor                             │'
+        result.output.contains '│ implementation                   │ org.jmolecules:jmolecules-ddd                                 │'
+        result.output.contains '│ implementation                   │ org.jmolecules:jmolecules-events                              │'
+        result.output.contains '│ implementation                   │ org.jmolecules:jmolecules-onion-architecture                  │'
+        result.output.contains '│ implementation                   │ org.jmolecules.integrations:jmolecules-spring                 │'
+        result.output.contains '│ implementation                   │ org.jmolecules.integrations:jmolecules-jpa                    │'
+        result.output.contains '│ implementation                   │ org.jmolecules.integrations:jmolecules-jackson                │'
+        result.output.contains '│ testImplementation               │ org.jmolecules.integrations:jmolecules-archunit               │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -280,6 +287,13 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         !result.output.contains('org.slf4j:slf4j-api')
         !result.output.contains('org.mapstruct:mapstruct')
         !result.output.contains('org.mapstruct:mapstruct-processor')
+        !result.output.contains('org.jmolecules:jmolecules-ddd')
+        !result.output.contains('org.jmolecules:jmolecules-events')
+        !result.output.contains('org.jmolecules:jmolecules-onion-architecture')
+        !result.output.contains('org.jmolecules.integrations:jmolecules-spring')
+        !result.output.contains('org.jmolecules.integrations:jmolecules-jpa')
+        !result.output.contains('org.jmolecules.integrations:jmolecules-jackson')
+        !result.output.contains('org.jmolecules.integrations:jmolecules-archunit')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
