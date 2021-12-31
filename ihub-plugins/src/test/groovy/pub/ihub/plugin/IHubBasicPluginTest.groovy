@@ -436,58 +436,24 @@ iHubPublish.publishDocs=true
         }
         project.plugins.withType(IHubPluginsPlugin) {
             it.dependencyUpdatesOutputFormatter current: [
-                dependencies: [
-                    [
-                        group  : 'cn.hutool',
-                        name   : 'hutool-all',
-                        version: '5.7.13'
-                    ]
-                ]
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.13']]
             ], exceeded: [
-                dependencies: [
-                    [
-                        group  : 'cn.hutool',
-                        name   : 'hutool-all',
-                        version: '5.7.13',
-                        latest : '5.7.12'
-                    ]
-                ]
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.13', latest: '5.7.12']]
             ], outdated: [
-                dependencies: [
-                    [
-                        group    : 'cn.hutool',
-                        name     : 'hutool-all',
-                        version  : '5.7.12',
-                        available: [
-                            release: '5.7.13'
-                        ]
-                    ]
-                ]
-            ], gradle: [
-                enabled: true,
-                running: [
-                    version: '7.2'
-                ],
-                current: [
-                    version: '7.3'
-                ]
-            ]
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [release: '5.7.13']]]
+            ], gradle: [enabled: true, running: [version: '7.2'], current: [version: '7.3']]
             it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []],
                 outdated: [dependencies: []], gradle: [enabled: false]
             it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
-                dependencies: [
-                    [
-                        group    : 'cn.hutool',
-                        name     : 'hutool-all',
-                        version  : '5.7.12',
-                        available: [
-                            milestone: '5.7.13'
-                        ]
-                    ]
-                ]
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [milestone: '5.7.13']]]
             ], gradle: [enabled: false]
         }
         project.iHub.autoReplaceLaterVersions = true
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [release: '5.7.13']]]
+            ], gradle: [enabled: false]
+        }
         project.buildFile.createNewFile()
         project.buildFile << '''
             dependencies {
@@ -498,22 +464,8 @@ iHubPublish.publishDocs=true
         project.plugins.withType(IHubPluginsPlugin) {
             it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
                 dependencies: [
-                    [
-                        group    : 'cn.hutool',
-                        name     : 'hutool-all',
-                        version  : '5.7.12',
-                        available: [
-                            release: '5.7.13'
-                        ]
-                    ],
-                    [
-                        group    : 'cn.hutool',
-                        name     : 'hutool-core',
-                        version  : '5.7.12',
-                        available: [
-                            milestone: '5.7.13'
-                        ]
-                    ]
+                    [group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [release: '5.7.13']],
+                    [group: 'cn.hutool', name: 'hutool-core', version: '5.7.12', available: [milestone: '5.7.13']]
                 ]
             ], gradle: [enabled: false]
         }
