@@ -79,6 +79,7 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                     rejectVersionIf rejectVersionFilter
                     // 其他配置
                     checkConstraints = true
+                    checkBuildEnvironmentConstraints = true
                     gradleReleaseChannel = 'current'
                     checkForGradleUpdate = true
                 }
