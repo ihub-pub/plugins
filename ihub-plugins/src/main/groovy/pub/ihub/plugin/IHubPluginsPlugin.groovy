@@ -149,14 +149,16 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
     private replaceLastVersion(dependencies) {
         project.allprojects.each { prj ->
-            List<String> lines = prj.buildFile.readLines()
-            prj.buildFile.withWriter { writer ->
-                lines.each { line ->
-                    writer.writeLine dependencies.findResult { dep ->
-                        def dependency = "${dep.group}:${dep.name}:${dep.version}"
-                        def latest = "${dep.group}:${dep.name}:${dep.available.release ?: dep.available.milestone}"
-                        line.contains(dependency) ? line.replace(dependency, latest) : null
-                    } ?: line
+            if (prj.buildFile.exists()) {
+                List<String> lines = prj.buildFile.readLines()
+                prj.buildFile.withWriter { writer ->
+                    lines.each { line ->
+                        writer.writeLine dependencies.findResult { dep ->
+                            def dependency = "${dep.group}:${dep.name}:${dep.version}"
+                            def latest = "${dep.group}:${dep.name}:${dep.available.release ?: dep.available.milestone}"
+                            line.contains(dependency) ? line.replace(dependency, latest) : null
+                        } ?: line
+                    }
                 }
             }
         }
