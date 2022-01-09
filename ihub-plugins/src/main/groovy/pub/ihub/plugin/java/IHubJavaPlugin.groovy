@@ -27,6 +27,7 @@ import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.jmolecules.bytebuddy.JMoleculesPlugin
+import pub.ihub.plugin.IHubByteBuddyPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
@@ -122,14 +123,21 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 ext.defaultDependencies.split(',').each { dependency ->
                     DEFAULT_DEPENDENCIES_CONFIG[dependency]?.call it
                     if ('jmolecules' == dependency) {
-                        // 注：启用byteBuddy插件时，org.gradle.parallel设置false
-                        withExtension(AbstractByteBuddyTaskExtension).transformation {
-                            it.plugin = JMoleculesPlugin
-                        }
-                        withTask(AbstractByteBuddyTask) {
-                            withTask('classes').dependsOn it
-                        }
+                        ext.byteBuddyPlugins.put JMoleculesPlugin, null
                     }
+                }
+            }
+
+            if (ext.byteBuddyPlugins) {
+                // 注：启用byteBuddy插件时，org.gradle.parallel设置false
+                withExtension(AbstractByteBuddyTaskExtension).transformation {
+                    it.plugin = IHubByteBuddyPlugin
+                    argument {
+                        value = ext.byteBuddyPlugins
+                    }
+                }
+                withTask(AbstractByteBuddyTask) {
+                    withTask('classes').dependsOn it
                 }
             }
         }

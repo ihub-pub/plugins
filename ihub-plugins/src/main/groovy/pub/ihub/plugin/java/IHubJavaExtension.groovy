@@ -17,6 +17,7 @@ package pub.ihub.plugin.java
 
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
+import net.bytebuddy.build.Plugin
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
@@ -58,5 +59,10 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
      */
     @IHubProperty
     String jmoleculesArchitecture = 'onion'
+
+    /**
+     * 增量编译插件
+     */
+    Map<? extends Class<? extends Plugin>, Map> byteBuddyPlugins = [:]
 
 }
