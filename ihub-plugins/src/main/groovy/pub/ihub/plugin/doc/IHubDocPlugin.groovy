@@ -15,11 +15,14 @@
  */
 package pub.ihub.plugin.doc
 
-
+import com.github.jengelman.gradle.plugins.processes.ProcessesPlugin
+import org.springdoc.openapi.gradle.plugin.OpenApiGradlePlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.java.IHubJavaExtension
 import pub.ihub.plugin.java.IHubJavaPlugin
+
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 
@@ -34,6 +37,11 @@ class IHubDocPlugin extends IHubProjectPluginAware<IHubDocExtension> {
     void apply() {
         withExtension(IHubJavaExtension) {
             it.byteBuddyPlugins.put SwaggerByteBuddyPlugin, [sourcePath: project.projectDir]
+        }
+        withExtension(AFTER) {
+            if (it.applyOpenapiPlugin) {
+                applyPlugin ProcessesPlugin, OpenApiGradlePlugin
+            }
         }
     }
 

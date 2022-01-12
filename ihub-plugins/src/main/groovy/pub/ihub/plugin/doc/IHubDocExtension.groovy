@@ -19,6 +19,10 @@ import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
+import pub.ihub.plugin.IHubProperty
+
+import static pub.ihub.plugin.IHubProperty.Type.PROJECT
+import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
 
 
@@ -30,5 +34,11 @@ import pub.ihub.plugin.IHubProjectExtensionAware
 @CompileStatic
 @TupleConstructor(allProperties = true, includes = 'project')
 class IHubDocExtension implements IHubProjectExtensionAware {
+
+    /**
+     * 启用org.springdoc.openapi-gradle-plugin插件
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
+    boolean applyOpenapiPlugin = false
 
 }

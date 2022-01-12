@@ -31,7 +31,7 @@ import static groovy.transform.TypeCheckingMode.SKIP
  * @author henry
  */
 @CompileStatic
-@SuppressWarnings('UnnecessaryGetter')
+@SuppressWarnings(['UnnecessaryGetter', 'CloseWithoutCloseable'])
 class IHubByteBuddyPlugin implements IHubByteBuddyPluginSupport, WithPreprocessor {
 
     private final List<? extends Plugin> plugins = []
@@ -69,6 +69,12 @@ class IHubByteBuddyPlugin implements IHubByteBuddyPluginSupport, WithPreprocesso
     boolean matches(TypeDescription description) {
         delegates.putIfAbsent description, (plugins + pluginsWithPreprocessor).findAll { it.matches description }
         delegates.get description
+    }
+
+    @Override
+    void close() throws IOException {
+        plugins*.close()
+        pluginsWithPreprocessor*.close()
     }
 
 }

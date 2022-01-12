@@ -61,7 +61,7 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
     String jmoleculesArchitecture = 'onion'
 
     /**
-     * 增量编译插件
+     * 增量编译插件配置
      */
     Map<? extends Class<? extends Plugin>, Map> byteBuddyPlugins = [:]
 

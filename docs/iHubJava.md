@@ -16,6 +16,7 @@
 | `compatibility` | Java兼容性配置                                                   | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译                                                  | `true` | ✔ | ✔ | ✔ | ❌ |
 | `jmoleculesArchitecture` | JMolecules架构（可选类型：cqrs、layered、onion）[详见](https://jmolecules.org) | `onion` | ✔ | ✔ | ❌ | ❌ |
+| `byteBuddyPlugins` | 增量编译插件配置 | `onion` | ✔ | ❌ | ❌ | ❌ |
 
 ## 插件安装
 

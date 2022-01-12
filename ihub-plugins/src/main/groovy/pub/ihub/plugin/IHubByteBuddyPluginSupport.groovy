@@ -17,7 +17,7 @@ package pub.ihub.plugin
 
 import groovy.transform.CompileStatic
 import net.bytebuddy.build.Plugin
-import net.bytebuddy.description.type.TypeDescription
+import net.bytebuddy.description.annotation.AnnotationSource
 
 
 
@@ -26,16 +26,11 @@ import net.bytebuddy.description.type.TypeDescription
  * @author henry
  */
 @CompileStatic
-@SuppressWarnings('CloseWithoutCloseable')
 trait IHubByteBuddyPluginSupport implements Plugin {
 
     Map config
 
-    @Override
-    void close() throws IOException {
-    }
-
-    static boolean isAnnotatedWith(TypeDescription type, Class<?> annotationType) {
+    static <T extends AnnotationSource> boolean isAnnotatedWith(T type, Class<?> annotationType) {
         type.declaredAnnotations.asTypeList().any { it.isAssignableTo annotationType }
     }
 

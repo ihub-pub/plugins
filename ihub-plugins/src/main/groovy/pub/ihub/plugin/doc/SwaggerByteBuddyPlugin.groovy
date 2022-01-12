@@ -15,18 +15,25 @@
  */
 package pub.ihub.plugin.doc
 
-import groovy.transform.TupleConstructor
+import groovy.io.FileType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import net.bytebuddy.build.Plugin.WithPreprocessor
 import net.bytebuddy.description.annotation.AnnotationDescription
 import net.bytebuddy.description.field.FieldDescription
 import net.bytebuddy.description.type.TypeDescription
 import net.bytebuddy.dynamic.ClassFileLocator
 import net.bytebuddy.dynamic.DynamicType.Builder
 import net.bytebuddy.matcher.ElementMatcher
+import org.codehaus.groovy.groovydoc.GroovyClassDoc
+import org.codehaus.groovy.groovydoc.GroovyDoc
+import org.codehaus.groovy.groovydoc.GroovyMethodDoc
+import org.codehaus.groovy.groovydoc.GroovyParameter
+import org.codehaus.groovy.groovydoc.GroovyRootDoc
+import org.codehaus.groovy.tools.groovydoc.GroovyDocTool
 import org.jmolecules.ddd.annotation.Entity
 import org.jmolecules.ddd.annotation.Identity
 import org.jmolecules.ddd.types.Identifier
@@ -42,49 +49,101 @@ import static net.bytebuddy.implementation.SuperMethodCall.INSTANCE
  * Swagger增强编译插件
  * @author henry
  */
-class SwaggerByteBuddyPlugin implements IHubByteBuddyPluginSupport {
+@SuppressWarnings('CloseWithoutCloseable')
+class SwaggerByteBuddyPlugin implements IHubByteBuddyPluginSupport, WithPreprocessor {
 
-    private final static List<Closure<Builder<?>>> CONTROLLER_BUILDER_MAPPING = [
-        { Builder<?> builder, TypeDescription target, JavaSourceClass source ->
-            builder.method { it.declaringType == target }.intercept(INSTANCE).annotateType source.tag
-        },
-        { Builder<?> builder, TypeDescription target, JavaSourceClass source ->
-            source.methods.inject(builder) { b, method ->
-                builder = b.method { it.name == method.tagName }.intercept(INSTANCE)
-                    .annotateMethod method.operation, method.apiResponse
-                method.params.eachWithIndex { JavaSourceDesc param, int i ->
-                    builder = builder.annotateParameter i, param.parameter
+    private GroovyRootDoc rootDoc
+
+    @Override
+    void onPreprocess(TypeDescription target, ClassFileLocator locator) {
+        if (!rootDoc) {
+            String domainSrcPath = [config.sourcePath, 'src', 'main'].join File.separator
+            List srcFiles = []
+            (domainSrcPath as File).eachFileRecurse(FileType.FILES) {
+                if (it.absolutePath.endsWith('.java') || it.absolutePath.endsWith('.groovy')) {
+                    srcFiles << (it.absolutePath - domainSrcPath)
                 }
-                builder
             }
-        },
-    ]
-
-    private final static List<Closure<Builder<?>>> ENTITY_BUILDER_MAPPING = [
-        { Builder<?> builder, TypeDescription target, JavaSourceClass source ->
-            builder.method { it.declaringType == target }
-                .intercept(INSTANCE).annotateType source.schema
-        },
-        { Builder<?> builder, TypeDescription target, JavaSourceClass source ->
-            source.fields.inject(builder) { b, field ->
-                b.field(fieldMatcher(field)).annotateField field.schema
-            }
-        },
-    ]
+            rootDoc = new GroovyDocTool(domainSrcPath).tap {
+                add srcFiles
+            }.rootDoc
+        }
+    }
 
     @Override
     Builder<?> apply(Builder<?> builder, TypeDescription target, ClassFileLocator locator) {
-        List location = [config.sourcePath, 'src', 'main']
-        String fileType = ((location + ['groovy']).join(File.separator) as File).directory ? 'groovy' : 'java'
-        String path = (location + [fileType] + target.name.split('\\.').toList()).join File.separator
-        JavaSourceClass source = getJavaSourceAnnotations path, fileType
-        (isController(target) ? CONTROLLER_BUILDER_MAPPING : ENTITY_BUILDER_MAPPING)
-            .inject(builder) { b, closure -> closure b, target, source }
+        isController(target) ? applyController(builder, target) : applyEntity(builder, target)
     }
 
     @Override
     boolean matches(TypeDescription target) {
         isEntity(target) || isController(target)
+    }
+
+    @Override
+    void close() throws IOException {
+        rootDoc = null
+    }
+
+    private Builder<?> applyController(Builder<?> builder, TypeDescription target) {
+        if (!isAnnotatedWith(target, Tag)) {
+            builder = builder.annotateType getTag(target)
+        }
+        getGroovyClassDoc(target).methods().inject(builder) { b, method ->
+            Map<String, List<String>> tags = (method.rawCommentText =~ /@(\w+) (.*)/).inject([:]) { tags, it ->
+                tags.putIfAbsent(it[1], (tags.get(it[1]) ?: []) << it[2])
+                tags
+            }
+            builder = b.method {
+                it.name == method.name() && !isAnnotatedWith(it, Operation) && !isAnnotatedWith(it, ApiResponse)
+            }.intercept(INSTANCE).annotateMethod getOperation(method), getApiResponse(tags.return)
+            method.parameters().eachWithIndex { param, int i ->
+                builder = builder.annotateParameter i, getParameter(param, tags.param)
+            }
+            builder
+        }
+    }
+
+    private Builder<?> applyEntity(Builder<?> builder, TypeDescription target) {
+        if (!isAnnotatedWith(target, Schema)) {
+            builder = builder.annotateType getSchema(getGroovyClassDoc(target))
+        }
+        getGroovyClassDoc(target).fields().inject(builder) { b, field ->
+            b.field(fieldMatcher(field.name())).annotateField getSchema(field)
+        }
+    }
+
+    private GroovyClassDoc getGroovyClassDoc(TypeDescription target) {
+        target.name.split('\\$').with {
+            GroovyClassDoc classDoc = rootDoc.classes().find { doc -> first().endsWith '.' + doc.name() }
+            size() > 1 ? classDoc.innerClasses().find { doc -> doc.name() == "${classDoc.name()}.${last()}" } : classDoc
+        }
+    }
+
+    private AnnotationDescription getTag(TypeDescription target) {
+        getGroovyClassDoc(target).with {
+            ofType(Tag).define('name', firstSentenceCommentText()).define('description', commentText()
+                .replaceAll('\\s|<.*>', '') - firstSentenceCommentText()).build()
+        }
+    }
+
+    private static AnnotationDescription getOperation(GroovyMethodDoc doc) {
+        ofType(Operation).define('summary', doc.firstSentenceCommentText())
+            .define('description', doc.commentText()).build()
+    }
+
+    private static AnnotationDescription getApiResponse(List<String> returnDesc) {
+        ofType(ApiResponse).define('responseCode', '200')
+            .define('description', returnDesc?.join('') ?: '').build()
+    }
+
+    private static AnnotationDescription getParameter(GroovyParameter doc, List<String> params) {
+        ofType(Parameter).define('name', doc.name()).define('description',
+            params*.split(' ', 2).find { it.first() == doc.name() }?.last()).build()
+    }
+
+    private static AnnotationDescription getSchema(GroovyDoc doc) {
+        ofType(Schema).define('description', doc.commentText()).build()
     }
 
     private static boolean isEntity(TypeDescription target) {
@@ -96,104 +155,10 @@ class SwaggerByteBuddyPlugin implements IHubByteBuddyPluginSupport {
         isAnnotatedWith target, RestController
     }
 
-    private static ElementMatcher<? super FieldDescription> fieldMatcher(field) {
+    private static ElementMatcher<? super FieldDescription> fieldMatcher(name) {
         { target ->
-            target.name == field.tagName
+            target.name == name && !isAnnotatedWith(target, Schema)
         } as ElementMatcher<? super FieldDescription>
-    }
-
-    private static JavaSourceClass getJavaSourceAnnotations(String path, String fileType) {
-        String subClass = null
-        if (path.contains('$')) {
-            path.split('\\$').with {
-                path = first()
-                subClass = last()
-            }
-        }
-        JavaSourceClass source = new JavaSourceClass()
-        String sourceCode = ((path + '.' + fileType) as File).readLines().join '\n'
-        (sourceCode =~ /\/\*\*(([^\*^\/]*|[\*^\/*]*|[^\**\/]*)*)\*\/([^\{|;]*)/).each {
-            def (note, annotate) = it[1].replaceAll(/[\r\n\t]/, '').replaceAll('  ', '').split('\\* \\*')
-                .with { [first(), size() > 1 ? last() : null] }
-            def (name, description) = note.replaceAll(/[ *]/, '').split('<p>')
-                .with { [first(), size() > 1 ? last() : ''] }
-
-            def classMatcher = it[-1] =~ / class (\w+)/
-            def methodMatcher = it[-1] =~ / ([a-z]\w+)\(/
-            def fieldMatcher = it[-1] =~ / ([a-z]\w+)/
-            if (classMatcher.find()) {
-                if (!source.tagName || source.tagName == subClass) {
-                    source.tagName = classMatcher[0][1]
-                    source.name = name
-                    source.description = description
-                }
-                if (source.tagName == subClass) {
-                    source.fields.clear()
-                    source.methods.clear()
-                }
-            } else if (methodMatcher.find()) {
-                def tag = methodMatcher[0][1], params = [], returnDesc = ''
-                annotate?.strip()?.split(' \\* ')?.each {
-                    if (it.startsWith('@param')) {
-                        it.split(' ').with {
-                            params << new JavaSourceDesc(tag, it[1], it[2])
-                        }
-                    } else if (it.startsWith('@return')) {
-                        returnDesc = it.split(' ').last()
-                    }
-                }
-                source.methods << new JavaSourceMethod(tag, name, description, params, returnDesc)
-            } else if (fieldMatcher.find()) {
-                source.fields << new JavaSourceDesc(fieldMatcher[-1][1], name, description)
-            }
-        }
-        source
-    }
-
-    @TupleConstructor
-    static class JavaSourceDesc {
-
-        String tagName
-        String name
-        String description
-
-        AnnotationDescription getSchema() {
-            ofType(Schema).define('description', name + description).build()
-        }
-
-        AnnotationDescription getParameter() {
-            ofType(Parameter).define('name', name).define('description', description).build()
-        }
-
-    }
-
-    static final class JavaSourceClass extends JavaSourceDesc {
-
-        List<JavaSourceDesc> fields = []
-
-        List<JavaSourceMethod> methods = []
-
-        AnnotationDescription getTag() {
-            ofType(Tag).define('name', name).define('description', description).build()
-        }
-
-    }
-
-    @TupleConstructor(includeSuperProperties = true)
-    static final class JavaSourceMethod extends JavaSourceDesc {
-
-        List<JavaSourceDesc> params
-
-        String returnDesc
-
-        AnnotationDescription getOperation() {
-            ofType(Operation).define('summary', name).define('description', description).build()
-        }
-
-        AnnotationDescription getApiResponse() {
-            ofType(ApiResponse).define('responseCode', '200').define('description', returnDesc).build()
-        }
-
     }
 
 }
