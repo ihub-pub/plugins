@@ -11,5 +11,5 @@
   - [ihub-verification](iHubVerification.md '配置代码静态检查以及测试用例覆盖率等 ')
   - [ihub-boot](iHubBoot.md '集成spring-boot插件以及镜像默认配置 ')
   - [ihub-native](iHubNative.md '集成spring-native插件以及镜像默认配置 ')
-  - [ihub-git-hooks](ihubGitHooks.md '配置GitHooks，可以为git操作配置一些钩子命令 ')
+  - [ihub-git-hooks](iHubGitHooks.md '配置GitHooks，可以为git操作配置一些钩子命令 ')
 * [📑 说明](explanation.md)

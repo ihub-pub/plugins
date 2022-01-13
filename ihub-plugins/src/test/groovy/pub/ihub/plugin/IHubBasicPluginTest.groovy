@@ -410,14 +410,29 @@ iHubPublish.publishDocs=true
             plugins {
                 id 'pub.ihub.plugin.ihub-git-hooks'
             }
+        '''
 
+        when: '使用默认目录'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '插件扩展配置'
+        buildFile << '''
             iHubGitHooks {
                 hooks = ['pre-commit': 'build']
             }
         '''
+        result = gradleBuilder.build()
 
-        when: '构建项目'
-        def result = gradleBuilder.build()
+        then: '检查结果'
+        new File(testProjectDir.root, '.gradle/pub.ihub.plugin.hooks/pre-commit').exists()
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '自定义目录'
+        propertiesFile << 'iHubGitHooks.hooksPath=.hooks'
+        result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
