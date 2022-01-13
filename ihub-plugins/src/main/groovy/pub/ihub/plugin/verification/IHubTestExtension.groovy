@@ -80,7 +80,7 @@ class IHubTestExtension implements IHubProjectExtensionAware, IHubSystemProperti
      * 启用本地属性
      */
     @IHubProperty
-    boolean enabledLocalProperties = false
+    boolean enabledLocalProperties = true
     /**
      * 启用测试调试
      */

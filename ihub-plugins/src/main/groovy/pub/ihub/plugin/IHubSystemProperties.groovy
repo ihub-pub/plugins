@@ -56,21 +56,21 @@ trait IHubSystemProperties {
      * 获取本地Java属性配置
      * @return 本地Java属性
      */
-    Map<String, Object> getLocalProperties() {
-        project.rootProject.file('.java-local.properties').with {
+    Map<String, Object> getLocalProperties(String propertiesName = '.java-local.properties') {
+        project.rootProject.file(propertiesName).with {
             exists() ? withInputStream { is ->
                 new Properties().tap { load(is) }
             } : [:]
         } as Map
     }
 
-    void systemProperties(JavaForkOptions task) {
+    void systemProperties(JavaForkOptions task, String propertiesName) {
         task.systemProperties System.properties.subMap(runIncludePropNames?.split(',') ?: []) ?: runProperties
         runSkippedPropNames?.split(',')?.each {
             task.systemProperties.remove it
         }
         if (enabledLocalProperties) {
-            localProperties.each { k, v ->
+            (localProperties + getLocalProperties(propertiesName)).each { k, v ->
                 task.systemProperties.putIfAbsent k, v
             }
         }

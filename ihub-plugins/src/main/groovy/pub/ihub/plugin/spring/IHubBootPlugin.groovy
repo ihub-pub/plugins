@@ -44,7 +44,7 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
                 ext = withExtension IHubNativeExtension
             }
             withTask(BootRun) {
-                ext.systemProperties it
+                ext.systemProperties it, '.boot-java-local.properties'
                 it.optimizedLaunch = ext.runOptimizedLaunch
             }
 
