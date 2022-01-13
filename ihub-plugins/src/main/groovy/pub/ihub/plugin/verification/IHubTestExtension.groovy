@@ -67,12 +67,12 @@ class IHubTestExtension implements IHubProjectExtensionAware, IHubSystemProperti
      */
     Map<String, String> runProperties = System.properties as Map<String, String>
     /**
-     * 运行时包含系统属性名称（“,”分割）
+     * 运行时包含系统属性名称（“,”分割,支持通配符“*”）
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
     String runIncludePropNames
     /**
-     * 运行时排除系统属性名称（“,”分割）
+     * 运行时排除系统属性名称（“,”分割,支持通配符“*”）
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
     String runSkippedPropNames

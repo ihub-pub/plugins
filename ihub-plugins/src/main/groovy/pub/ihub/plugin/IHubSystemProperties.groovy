@@ -35,13 +35,13 @@ trait IHubSystemProperties {
     abstract Map<String, String> getRunProperties()
 
     /**
-     * 包含属性名称（“,”分割）
+     * 包含属性名称（“,”分割,支持通配符“*”）
      * @return 包含属性名称
      */
     abstract String getRunIncludePropNames()
 
     /**
-     * 排除属性名称（“,”分割）
+     * 排除属性名称（“,”分割,支持通配符“*”）
      * @return 排除属性名称
      */
     abstract String getRunSkippedPropNames()
@@ -65,9 +65,17 @@ trait IHubSystemProperties {
     }
 
     void systemProperties(JavaForkOptions task, String propertiesName) {
-        task.systemProperties System.properties.subMap(runIncludePropNames?.split(',') ?: []) ?: runProperties
-        runSkippedPropNames?.split(',')?.each {
-            task.systemProperties.remove it
+        if (runIncludePropNames) {
+            runIncludePropNames.replaceAll(',', '|').replaceAll('\\*', '.*').with { regex ->
+                task.systemProperties System.properties.findAll { it.key ==~ regex }
+            }
+        } else {
+            task.systemProperties runProperties
+        }
+        if (runSkippedPropNames) {
+            runSkippedPropNames.replaceAll(',', '|').replaceAll('\\*', '.*').with { regex ->
+                task.systemProperties.removeAll { it.key ==~ regex }
+            }
         }
         if (enabledLocalProperties) {
             (localProperties + getLocalProperties(propertiesName)).each { k, v ->
