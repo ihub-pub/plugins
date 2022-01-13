@@ -11,13 +11,13 @@
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `enabled` | 启用测试 | `true` | ✔ | ✔ | ✔ | ❌ |
-| `classes` | 包含测试类（“,”分割） | `**/*Test*,**/*FT*,**/*UT*` | ✔ | ✔ | ✔ | ❌ |
+| `classes` | 包含测试类（`,`分割，支持通配符`*`） | `**/*Test*,**/*FT*,**/*UT*` | ✔ | ✔ | ✔ | ❌ |
 | `forkEvery` | 每跑x个测试类后重启fork进程 | `100` | ✔ | ✔ | ✔ | ❌ |
 | `maxParallelForks` | 最多启动进程数 | `1` | ✔ | ✔ | ✔ | ❌ |
 | `runProperties` | 任务运行时属性[详见](/explanation?id=runproperties) | `{System.properties}` | ✔ | ❌ | ❌ | ❌ |
-| `runIncludePropNames` | 运行时包含系统属性名称（“,”分割）[详见](/explanation?id=runincludepropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
-| `runSkippedPropNames` | 运行时排除系统属性名称（“,”分割）[详见](/explanation?id=runskippedpropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
-| `enabledLocalProperties` | 启用本地属性[详见](/explanation?id=enabledlocalproperties) | `false` | ✔ | ✔ | ❌ | ❌ |
+| `runIncludePropNames` | 运行时包含系统属性名称（`,`分割，支持通配符`*`）[详见](/explanation?id=runincludepropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `runSkippedPropNames` | 运行时排除系统属性名称（`,`分割，支持通配符`*`）[详见](/explanation?id=runskippedpropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `enabledLocalProperties` | 启用本地属性[详见](/explanation?id=enabledlocalproperties) | `true` | ✔ | ✔ | ❌ | ❌ |
 | `debug` | 启用测试调试 | `false` | ✔ | ✔ | ✔ | ❌ |
 | `failFast` | 只要有一个测试失败就停止测试 | `false` | ✔ | ✔ | ✔ | ❌ |
 | `testFramework` | 测试框架 | [详见](iHubTest?id=测试框架) | ❌ | ✔ | ❌ | ❌ |

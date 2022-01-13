@@ -111,6 +111,7 @@ class IHubPluginsPluginTest extends Specification {
         '''
 
         when: '构建项目'
+        testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
         def result = gradleBuilder.withArguments('build').build()
 
         then: '检查结果'
@@ -119,6 +120,15 @@ class IHubPluginsPluginTest extends Specification {
         result.task(':sample-multi-rest:test').outcome == SUCCESS
         result.task(':sample-multi-rest:jacocoTestReport').outcome == SUCCESS
         result.task(':sample-multi-rest:jacocoTestCoverageVerification').outcome == SUCCESS
+        result.output.contains 'The following profiles are active: dev'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '添加test本地属性'
+        testProjectDir.newFile('.test-java-local.properties') << 'spring.profiles.active=test'
+        result = gradleBuilder.withArguments('build').build()
+
+        then: 'test本地属性优先'
+        result.output.contains 'The following profiles are active: test'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
