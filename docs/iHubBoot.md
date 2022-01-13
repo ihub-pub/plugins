@@ -11,8 +11,8 @@
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `runProperties` | bootRun属性[详见](/explanation?id=runproperties) | ❌ | ✔ | ❌ | ❌ | ❌ |
-| `runIncludePropNames` | 运行时包含系统属性名称（“,”分割）[详见](/explanation?id=runincludepropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
-| `runSkippedPropNames` | 运行时排除系统属性名称（“,”分割）[详见](/explanation?id=runskippedpropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `runIncludePropNames` | 运行时包含系统属性名称（`,`分割，支持通配符`*`）[详见](/explanation?id=runincludepropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `runSkippedPropNames` | 运行时排除系统属性名称（`,`分割，支持通配符`*`）[详见](/explanation?id=runskippedpropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `enabledLocalProperties` | 启用本地属性[详见](/explanation?id=enabledlocalproperties) | `true` | ✔ | ✔ | ❌ | ❌ |
 | `runOptimizedLaunch` | 优化启动 | `true` | ✔ | ✔ | ✔ | ❌ |
 | `bootJarRequiresUnpack` | 配置需要移除的库 | ❌ | ✔ | ✔ | ❌ | ❌ |

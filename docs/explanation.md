@@ -24,21 +24,21 @@ iHubBoot {
 
 ## runIncludePropNames
 
-> 运行时包含系统属性名称（“,”分割）：用于配置指定系统属性，与[runProperties](/explanation?id=runproperties)互斥，配置如下：
+> 运行时包含系统属性名称（`,`分割，支持通配符`*`）：用于配置指定系统属性，与[runProperties](/explanation?id=runproperties)互斥，配置如下：
 
 ```groovy
 iHubBoot {
-    runIncludePropNames = 'xxx'
+    runIncludePropNames = 'xxx,abc*'
 }
 ```
 
 ## runSkippedPropNames
 
-> 运行时排除系统属性名称（“,”分割）：用于排除系统属性，配置如下：
+> 运行时排除系统属性名称（`,`分割，支持通配符`*`）：用于排除系统属性，配置如下：
 
 ```groovy
 iHubBoot {
-    runSkippedPropNames = 'xxx'
+    runSkippedPropNames = 'xxx,abc*'
 }
 ```
 
@@ -59,3 +59,5 @@ iHubBoot {
 ```properties
 spring.profiles.active=dev
 ```
+
+另外属性文件支持`.boot-java-local.properties`和`.test-java-local.properties`，分别用于扩展`bootRun`和`test`属性，优先级高于`.java-local.properties`
