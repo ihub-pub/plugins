@@ -40,6 +40,8 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         // 配置ihub-bom
         extension.importBoms {
             group 'pub.ihub.lib' module 'ihub-libs' version IHubLibsVersion.version
+            // TODO
+            group 'pub.ihub.lib' module 'ihub-libs' version 'main-SNAPSHOT'
         }
         // 配置默认依赖组件
         extension.dependencies {

@@ -17,7 +17,6 @@ description = '应用模块'
 
 apply {
     plugin 'pub.ihub.plugin.ihub-boot'
-    plugin 'pub.ihub.plugin.ihub-doc'
 }
 
 dependencies {

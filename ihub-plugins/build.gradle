@@ -109,11 +109,5 @@ gradlePlugin {
             description         = 'IHub Gradle Plugins GitHooks'
             implementationClass = 'pub.ihub.plugin.githooks.IHubGitHooksPlugin'
         }
-        iHubDoc {
-            id                  = 'pub.ihub.plugin.ihub-doc'
-            displayName         = 'IHub Doc Gradle Plugin'
-            description         = 'IHub Doc Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.doc.IHubDocPlugin'
-        }
     }
 }

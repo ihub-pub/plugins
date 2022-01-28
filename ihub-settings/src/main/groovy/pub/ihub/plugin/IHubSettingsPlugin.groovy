@@ -42,7 +42,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         'pub.ihub.plugin.ihub-boot',
         'pub.ihub.plugin.ihub-native',
         'pub.ihub.plugin.ihub-git-hooks',
-        'pub.ihub.plugin.ihub-doc',
     ]
 
     private static final Map<String, String> PLUGIN_VERSIONS = [
