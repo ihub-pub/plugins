@@ -1,3 +1,30 @@
+## 🔖 1.2.2 (2022-01-29)
+
+
+### ✨ Features
+
+- ✨ 添加ihub-doc插件  [@henry-hub](https://github.com/henry-hub) ([#215](https://github.com/ihub-pub/plugins/pull/215))
+- 🎨 Java运行时本地系统属性扩展优化  [@henry-hub](https://github.com/henry-hub) ([#217](https://github.com/ihub-pub/plugins/pull/217))
+- ✏️ iHubGitHooks插件支持自定义hooks目录  [@henry-hub](https://github.com/henry-hub) ([#216](https://github.com/ihub-pub/plugins/pull/216))
+- ✨ 集成JMoleculesPlugin  [@henry-hub](https://github.com/henry-hub) ([#209](https://github.com/ihub-pub/plugins/pull/209))
+
+### 🐛 Bug Fixes
+
+- 🐛 修正无配文件项目替换组件版本报错，新年快乐🎆  [@henry-hub](https://github.com/henry-hub) ([#212](https://github.com/ihub-pub/plugins/pull/212))
+
+### ⬆️ Dependency Updates
+
+- ⬆️ gradle: Bump spring-boot-gradle-plugin from 2.6.2 to 2.6.3 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#220](https://github.com/ihub-pub/plugins/pull/220))
+- ⬆️ gradle: Bump ihub-core from 1.0.6 to 1.0.7 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#222](https://github.com/ihub-pub/plugins/pull/222))
+- ⬆️ gradle: Bump jmolecules-bytebuddy from 0.7.0 to 0.8.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#219](https://github.com/ihub-pub/plugins/pull/219))
+- ⬆️ gradle: Bump byte-buddy-gradle-plugin from 1.12.6 to 1.12.7 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#218](https://github.com/ihub-pub/plugins/pull/218))
+- ⬆️ gradle: Bump gradle-versions-plugin from 0.40.0 to 0.41.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#214](https://github.com/ihub-pub/plugins/pull/214))
+- ⬆️ gradle: Bump gradle-versions-plugin from 0.39.0 to 0.40.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#211](https://github.com/ihub-pub/plugins/pull/211))
+- ⬆️ gradle: Bump pub.ihub.plugin.ihub-settings from 1.2.0 to 1.2.1  [@dependabot](https://github.com/dependabot) ([#207](https://github.com/ihub-pub/plugins/pull/207))
+
+
+---
+
 ## 🔖 1.2.1 (2021-12-24)
 
 
