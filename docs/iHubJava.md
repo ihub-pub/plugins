@@ -2,7 +2,7 @@
 
 | 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |-------|---------|--------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `pub.ihub.plugin.ihub-java` | `Java插件` | `Project` | `iHubJava` | [ihub-bom](iHubBom)、[java](https://docs.gradle.org/current/userguide/java_plugin.html)、[java-library](https://docs.gradle.org/current/userguide/java_library_plugin.html)、[lombok](https://plugins.gradle.org/plugin/io.freefair.lombok)、[project-report](https://docs.gradle.org/current/userguide/project_report_plugin.html)、[build-dashboard](https://docs.gradle.org/current/userguide/build_dashboard_plugin.html)、<br>[net.bytebuddy.byte-buddy-gradle-plugin](https://bytebuddy.net) |
+| `pub.ihub.plugin.ihub-java` | `Java插件` | `Project` | `iHubJava` | [ihub-bom](iHubBom)、[java](https://docs.gradle.org/current/userguide/java_plugin.html)、[java-library](https://docs.gradle.org/current/userguide/java_library_plugin.html)、[lombok](https://plugins.gradle.org/plugin/io.freefair.lombok)、[project-report](https://docs.gradle.org/current/userguide/project_report_plugin.html)、[build-dashboard](https://docs.gradle.org/current/userguide/build_dashboard_plugin.html)、<br>[net.bytebuddy.byte-buddy-gradle-plugin](https://bytebuddy.net)、[org.springdoc.openapi-gradle-plugin](https://github.com/springdoc/springdoc-openapi-gradle-plugin)（`可选`） |
 
 > 注：启用`JMoleculesPlugin`插件时，`org.gradle.parallel`设置`false`，可以消除`prepareKotlinBuildScriptModel`任务警告
 
@@ -15,6 +15,7 @@
 | `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置         | `log` | ✔ | ✔ | ❌ | ❌ |
 | `compatibility` | Java兼容性配置                                                   | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译                                                  | `true` | ✔ | ✔ | ✔ | ❌ |
+| `applyOpenapiPlugin` | 启用 [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) 插件                                                  | `false` | ✔ | ✔ | ✔ | ❌ |
 | `jmoleculesArchitecture` | JMolecules架构（可选类型：cqrs、layered、onion）[详见](https://jmolecules.org) | `onion` | ✔ | ✔ | ❌ | ❌ |
 
 ## 插件安装
@@ -41,7 +42,7 @@ apply {
 
 ```groovy
 iHubJava {
-    defaultDependencies = 'jaxb,log,mapstruct,jmolecules'
+    defaultDependencies = 'jaxb,log,doc,mapstruct,jmolecules'
     compatibility = '11'
 }
 ```

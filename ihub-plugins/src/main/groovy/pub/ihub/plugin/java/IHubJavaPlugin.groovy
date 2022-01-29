@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin.java
 
+import com.github.jengelman.gradle.plugins.processes.ProcessesPlugin
 import io.freefair.gradle.plugins.lombok.LombokPlugin
 import net.bytebuddy.build.gradle.AbstractByteBuddyTask
 import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
@@ -27,11 +28,13 @@ import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.jmolecules.bytebuddy.JMoleculesPlugin
+import org.springdoc.openapi.gradle.plugin.OpenApiGradlePlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 
 
@@ -85,6 +88,13 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 annotationProcessor 'org.mapstruct:mapstruct-processor'
             }
         },
+        // 添加Doc依赖
+        doc                      : { IHubBomExtension ext ->
+            ext.dependencies {
+                compileOnly 'io.swagger.core.v3:swagger-annotations'
+                annotationProcessor 'pub.ihub.lib:ihub-process-doc'
+            }
+        },
         // 添加jMolecules依赖
         jmolecules               : { IHubBomExtension ext ->
             ext.dependencies {
@@ -131,6 +141,12 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                         }
                     }
                 }
+            }
+        }
+
+        withExtension(AFTER) {
+            if (it.applyOpenapiPlugin) {
+                applyPlugin ProcessesPlugin, OpenApiGradlePlugin
             }
         }
 

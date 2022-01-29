@@ -59,4 +59,10 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
     @IHubProperty
     String jmoleculesArchitecture = 'onion'
 
+    /**
+     * 启用org.springdoc.openapi-gradle-plugin插件
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
+    boolean applyOpenapiPlugin = false
+
 }
