@@ -29,7 +29,7 @@ dependencies {
     implementation project(':ihub-aware')
     implementation 'pub.ihub.lib:ihub-core:1.0.7'
     implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.2'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.3'
     compileOnly    'org.springframework.boot:spring-boot-buildpack-platform'
     implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.11.1'
     implementation 'io.freefair.gradle:git-plugin:6.3.0'
