@@ -39,30 +39,7 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
     @Override
     void apply() {
-        withExtension { ext ->
-            project.repositories {
-                String dirs = "$project.rootProject.projectDir/libs"
-                if ((dirs as File).directory) {
-                    flatDir dirs: dirs
-                }
-                if (ext.mavenLocalEnabled) {
-                    mavenLocal()
-                }
-                maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public',
-                    'https://repo1.maven.org/maven2')
-                maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
-                    'https://maven.google.com')
-                maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',
-                    'https://repo.spring.io/release')
-                maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
-                // 添加私有仓库
-                ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
-                ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
-                // 添加自定义仓库
-                ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
-                mavenCentral()
-            }
-        }
+        configProjectRepositories()
 
         if (project == project.rootProject) {
             logger.lifecycle 'Build with IHub Plugins ' + IHubPluginsPlugin.package.implementationVersion +
@@ -104,6 +81,33 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
         project.subprojects {
             pluginManager.apply IHubPluginsPlugin
+        }
+    }
+
+    private void configProjectRepositories() {
+        withExtension { ext ->
+            project.repositories {
+                String dirs = "$project.rootProject.projectDir/libs"
+                if ((dirs as File).directory) {
+                    flatDir dirs: dirs
+                }
+                if (ext.mavenLocalEnabled) {
+                    mavenLocal()
+                }
+                maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public',
+                    'https://repo1.maven.org/maven2')
+                maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
+                    'https://maven.google.com')
+                maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',
+                    'https://repo.spring.io/release')
+                maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
+                // 添加私有仓库
+                ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
+                ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
+                // 添加自定义仓库
+                ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
+                mavenCentral()
+            }
         }
     }
 
