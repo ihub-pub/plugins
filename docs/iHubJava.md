@@ -77,6 +77,13 @@ iHubJava {
 | implementation | `org.mapstruct:mapstruct` |
 | annotationProcessor | `org.mapstruct:mapstruct-processor` |
 
+> `doc`：添加Doc注解依赖。
+
+| DependencyType | Dependencies |
+| -------------- | ------------ |
+| compileOnly | `io.swagger.core.v3:swagger-annotations` |
+| annotationProcessor | `pub.ihub.lib:ihub-process-doc` |
+
 > `jmolecules`：添加jMolecules依赖。
 
 | DependencyType | Dependencies |

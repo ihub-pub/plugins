@@ -88,7 +88,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 annotationProcessor 'org.mapstruct:mapstruct-processor'
             }
         },
-        // 添加Doc依赖
+        // 添加Doc注解依赖
         doc                      : { IHubBomExtension ext ->
             ext.dependencies {
                 compileOnly 'io.swagger.core.v3:swagger-annotations'
