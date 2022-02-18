@@ -32,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.3'
     compileOnly    'org.springframework.boot:spring-boot-buildpack-platform'
     implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.11.1'
-    implementation 'io.freefair.gradle:git-plugin:6.3.0'
+    implementation 'io.freefair.gradle:git-plugin:6.4.1'
     implementation 'io.freefair.gradle:lombok-plugin:6.3.0'
     implementation 'io.freefair.gradle:jacoco-plugin:6.3.0'
     implementation 'io.freefair.gradle:github-plugin:6.3.0'
