@@ -39,8 +39,8 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
 
     Project project
     protected T extension
-    private final List<Closure> beforeEvaluateClosure = []
-    private final List<Closure> afterEvaluateClosure = []
+    protected final List<Closure> beforeEvaluateClosure = []
+    protected final List<Closure> afterEvaluateClosure = []
 
     @Override
     void apply(Project project) {

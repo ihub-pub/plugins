@@ -18,16 +18,19 @@ package pub.ihub.plugin.verification
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import groovy.xml.XmlParser
-import io.freefair.gradle.plugins.jacoco.AggregateJacocoReportPlugin
 import org.gradle.api.Project
+import org.gradle.api.attributes.TestSuiteType
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
 import org.gradle.api.plugins.quality.CodeNarcPlugin
 import org.gradle.api.plugins.quality.PmdExtension
 import org.gradle.api.plugins.quality.PmdPlugin
+import org.gradle.api.reporting.ReportingExtension
+import org.gradle.testing.jacoco.plugins.JacocoCoverageReport
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
+import org.gradle.testing.jacoco.plugins.JacocoReportAggregationPlugin
 import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import pub.ihub.plugin.IHubPlugin
@@ -115,7 +118,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
     private void configJacoco(Project project) {
         applyPlugin JacocoPlugin
         if (project != extension.rootProject) {
-            extension.rootProject.pluginManager.apply AggregateJacocoReportPlugin
+            configJacocoAggregation project
         }
         withExtension(AFTER) { ext ->
             withExtension(JacocoPluginExtension) {
@@ -179,6 +182,23 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
             // 一些任务依赖和属性设置
             withTask('check').dependsOn jacocoCoverageVerification
             withTask('test').finalizedBy jacocoTestReport, jacocoCoverageVerification
+        }
+    }
+
+    private void configJacocoAggregation(Project project) {
+        extension.rootProject.with {
+            pluginManager.apply JacocoReportAggregationPlugin
+            configurations {
+                maybeCreate('jacocoAggregation').dependencies.add dependencies.create(project)
+            }
+            extensions.getByType(ReportingExtension).reports {
+                testCodeCoverageReport(JacocoCoverageReport) {
+                    testType = TestSuiteType.UNIT_TEST
+                }
+            }
+            afterEvaluate {
+                tasks.findByName('check')?.dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+            }
         }
     }
 

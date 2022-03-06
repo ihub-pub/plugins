@@ -2,7 +2,7 @@
 
 | 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
 |-------|---------|--------|---------|--------|
-| `pub.ihub.plugin.ihub-verification` | `验证插件` | `Project` | `iHubVerification` | [ihub-bom](iHubBom)、[codenarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)、[pmd](https://docs.gradle.org/current/userguide/pmd_plugin.html)、[jacoco](https://docs.gradle.org/current/userguide/jacoco_plugin.html)、<br>[io.freefair.aggregate-jacoco-report](https://plugins.gradle.org/plugin/io.freefair.aggregate-jacoco-report) |
+| `pub.ihub.plugin.ihub-verification` | `验证插件` | `Project` | `iHubVerification` | [ihub-bom](iHubBom)、[codenarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)、[pmd](https://docs.gradle.org/current/userguide/pmd_plugin.html)、[jacoco](https://docs.gradle.org/current/userguide/jacoco_plugin.html)、<br>[jacoco-report-aggregation](https://docs.gradle.org/current/userguide/jacoco_report_aggregation_plugin.html) |
 
 - 项目包含`groovy`插件时会自动配置`codenarc`
   插件，默认配置[详见](https://github.com/ihub-pub/plugins/blob/main/ihub-plugins/src/main/resources/META-INF/codenarc.groovy)，可以通过配置`$rootDir/conf/codenarc/codenarc.groovy`覆盖默认配置，[示例](https://github.com/ihub-pub/plugins/tree/main/samples/sample-groovy)
@@ -23,7 +23,7 @@ ruleSets = [
 ]
 ```
 - `jacoco`插件用于检查代码测试覆盖率，主要检查维度为：`bundle分支覆盖率`、`bundle指令覆盖率`、`package指令覆盖率`
-  ，如果是主项目会添加`io.freefair.aggregate-jacoco-report`插件，用于多项目时聚合测试报告，打印报告[详见](iHubVerification?id=测试报告)
+  ，如果是主项目会添加`jacoco-report-aggregation`插件，用于多项目时聚合测试报告，打印报告[详见](iHubVerification?id=测试报告)
 
 ## 扩展属性
 
