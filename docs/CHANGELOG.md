@@ -1,3 +1,19 @@
+## 🔖 1.2.3 (2022-03-06)
+
+
+### ⬆️ Dependency Updates
+
+- ⬆️ 升级gradle至7.4  [@henry-hub](https://github.com/henry-hub) ([#238](https://github.com/ihub-pub/plugins/pull/238))
+- ⬆️ gradle: Bump ihub-core from 1.0.7 to 1.0.8 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#237](https://github.com/ihub-pub/plugins/pull/237))
+- ⬆️ gradle: Bump spring-boot-gradle-plugin from 2.6.3 to 2.6.4 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#236](https://github.com/ihub-pub/plugins/pull/236))
+- ⬆️ gradle: Bump byte-buddy-gradle-plugin from 1.12.7 to 1.12.8 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#230](https://github.com/ihub-pub/plugins/pull/230))
+- ⬆️ gradle: Bump lombok-plugin from 6.3.0 to 6.4.1 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#234](https://github.com/ihub-pub/plugins/pull/234))
+- ⬆️ gradle: Bump gradle-versions-plugin from 0.41.0 to 0.42.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#226](https://github.com/ihub-pub/plugins/pull/226))
+- ⬆️ gradle: Bump pub.ihub.plugin.ihub-settings from 1.2.1 to 1.2.2  [@dependabot](https://github.com/dependabot) ([#225](https://github.com/ihub-pub/plugins/pull/225))
+
+
+---
+
 ## 🔖 1.2.2 (2022-01-29)
 
 
