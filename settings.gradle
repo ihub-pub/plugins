@@ -13,15 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven {
-            url 'https://repo.spring.io/release'
-        }
-    }
-}
-
 plugins {
     id 'pub.ihub.plugin.ihub-settings' version '1.2.3'
 }
