@@ -38,13 +38,13 @@ class IHubVerificationPluginTest extends IHubSpecification {
     def 'Java检查插件配置测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
-        buildFile << """
+        buildFile << '''
             apply {
                 plugin 'pub.ihub.plugin.ihub-java'
                 plugin 'pub.ihub.plugin.ihub-test'
                 plugin 'pub.ihub.plugin.ihub-verification'
             }
-        """
+        '''
 
         when: '构建项目'
         def result = gradleBuilder.build()
@@ -65,7 +65,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
 
         when: '构建项目'
         propertiesFile << 'iHubTest.testFramework=SPOCK'
-        result = gradleBuilder.build()
+        result = gradleBuilder.withArguments('-DiHubTest.runIncludePropNames=java.endorsed.dirs').build()
 
         then: '检查结果'
         result.output.contains '│ testImplementation                       │ org.spockframework:spock-spring                       │'
@@ -77,7 +77,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
     def 'Groovy检查插件配置测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
-        buildFile << """
+        buildFile << '''
             apply {
                 plugin 'pub.ihub.plugin.ihub-groovy'
                 plugin 'pub.ihub.plugin.ihub-test'
@@ -86,7 +86,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
             iHubTest {
                 classes = '**/*Test*'
             }
-        """
+        '''
 
         when: '构建项目'
         def result = gradleBuilder.build()

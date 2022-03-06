@@ -4,6 +4,8 @@
 |-------|---------|--------|---------|--------|
 | `pub.ihub.plugin.ihub-native` | `Native插件` | `Project` | `iHubNative` | [ihub-boot](iHubBoot)、[org.springframework.experimental.aot](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#spring-aot-gradle) |
 
+> 注：`Gradle7.4`之后插件配置生命周期发生变化，由于`Spring-AOT`插件还没有正式发布至[Gradle插件仓库](https://plugins.gradle.org)，在使用`ihub-native`插件时，须在主项目配置`org.springframework.experimental.aot`插件，[详见](/iHubNative?id=插件安装)
+
 ## 扩展属性
 
 > 属性使用说明[详见](/explanation?id=属性配置说明)，继承[ihub-boot](iHubBoot?id=扩展属性)组件扩展属性，`bp`开头为`构建镜像时属性`，`aot`开头为`AOT插件属性`
@@ -24,6 +26,7 @@
 
 ```groovy
 plugins {
+    id 'org.springframework.experimental.aot' version '0.11.3'
     id 'pub.ihub.plugin.ihub-native' version '${ihub.plugin.version}'
 }
 ```
@@ -33,6 +36,7 @@ plugins {
 ```groovy
 plugins {
     id 'pub.ihub.plugin' version '${ihub.plugin.version}'
+    id 'org.springframework.experimental.aot' version '0.11.3'
 }
 
 apply {

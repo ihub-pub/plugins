@@ -45,8 +45,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
     ]
 
     private static final Map<String, String> PLUGIN_VERSIONS = [
-        'com.gradle.plugin-publish': '0.18.0',
-        'org.sonarqube'            : '3.3',
+        'com.gradle.plugin-publish'           : '0.18.0',
+        'org.sonarqube'                       : '3.3',
+        'org.springframework.experimental.aot': '0.11.3',
     ]
 
     @Override
