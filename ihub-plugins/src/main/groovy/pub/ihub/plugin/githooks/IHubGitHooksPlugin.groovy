@@ -34,11 +34,14 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
         withExtension(AFTER) {
             if (it.hooksPath) {
                 "git config core.hooksPath $it.hooksPath".execute()
+                logger.lifecycle 'Set git hooks path: ' + it.hooksPath
             } else if (it.hooks) {
                 it.writeHooks()
                 'git config core.hooksPath .gradle/pub.ihub.plugin.hooks'.execute()
+                logger.lifecycle 'Set git hooks path: .gradle/pub.ihub.plugin.hooks'
             } else {
                 'git config --unset core.hooksPath'.execute()
+                logger.lifecycle 'Unset git hooks path, learn more see https://doc.ihub.pub/plugins/#/iHubGitHooks'
             }
         }
     }
