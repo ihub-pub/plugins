@@ -17,6 +17,7 @@ package pub.ihub.plugin.githooks
 
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
+import org.gradle.api.logging.Logger
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
@@ -65,6 +66,25 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     void writeHooks() {
         hooks.forEach this::writeHook
+    }
+
+    static void execute(String hooksPath, Map<String, String> hooks, IHubGitHooksExtension extension) {
+        Logger logger = extension.project.logger
+        try {
+            if (hooksPath) {
+                "git config core.hooksPath $hooksPath".execute()
+                logger.lifecycle 'Set git hooks path: ' + hooksPath
+            } else if (hooks) {
+                extension.writeHooks()
+                'git config core.hooksPath .gradle/pub.ihub.plugin.hooks'.execute()
+                logger.lifecycle 'Set git hooks path: .gradle/pub.ihub.plugin.hooks'
+            } else {
+                'git config --unset core.hooksPath'.execute()
+                logger.lifecycle 'Unset git hooks path, learn more see https://doc.ihub.pub/plugins/#/iHubGitHooks'
+            }
+        } catch (e) {
+            logger.lifecycle 'Git hooks config fail: ' + e.message
+        }
     }
 
 }
