@@ -1,8 +1,8 @@
 > `ihub`插件是基础插件，用于配置[组件仓库](/iHub?id=组件仓库)以及一些其他[扩展属性](/iHub?id=扩展属性)，配置与`build.gradle`。
 
-| 插件ID | 插件名称 | 插件类型 | 扩展名称 | `主项目`插件依赖 |
-|-------|---------|--------|---------|--------|
-| `pub.ihub.plugin` | `基础插件` | `Project` | `iHub` | [io.freefair.git-version](https://plugins.gradle.org/plugin/io.freefair.git-version)、[com.github.ben-manes.versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)、[ihub-bom](iHubBom) |
+| 插件ID | 插件名称 | 插件类型 | 扩展名称 | `主项目`插件依赖                                                                                                                                                                                                                                    |
+|-------|---------|--------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `pub.ihub.plugin` | `基础插件` | `Project` | `iHub` | [io.freefair.git-version](https://plugins.gradle.org/plugin/io.freefair.git-version)、[com.github.ben-manes.versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)、<br>[ihub-git-hooks](iHubGitHooks)、[ihub-bom](iHubBom) |
 
 注：当主项目不含[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)插件时，会默认导入`ihub-bom`插件
 

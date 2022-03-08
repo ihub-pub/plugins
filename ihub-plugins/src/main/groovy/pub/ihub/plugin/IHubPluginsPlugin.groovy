@@ -22,6 +22,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPlatformPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
+import pub.ihub.plugin.githooks.IHubGitHooksPlugin
 import pub.ihub.plugin.publish.IHubPublishPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
@@ -44,7 +45,7 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
         if (project == project.rootProject) {
             logger.lifecycle 'Build with IHub Plugins ' + IHubPluginsPlugin.package.implementationVersion +
                 ', You can see the documentation to learn more, See https://doc.ihub.pub/plugins.'
-            applyPlugin GitVersionPlugin
+            applyPlugin GitVersionPlugin, IHubGitHooksPlugin
             printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
             // 配置组件升级任务
             applyPlugin VersionsPlugin
