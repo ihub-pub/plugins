@@ -1,8 +1,8 @@
 > `ihub-verification`插件用于配置代码静态检查以及测试用例覆盖率等。
 
-| 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
-|-------|---------|--------|---------|--------|
-| `pub.ihub.plugin.ihub-verification` | `验证插件` | `Project` | `iHubVerification` | [ihub-bom](iHubBom)、[codenarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)、[pmd](https://docs.gradle.org/current/userguide/pmd_plugin.html)、[jacoco](https://docs.gradle.org/current/userguide/jacoco_plugin.html)、<br>[jacoco-report-aggregation](https://docs.gradle.org/current/userguide/jacoco_report_aggregation_plugin.html) |
+| 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖                                                                                                                                                                                                                                                                                                                                                           |
+|-------|---------|--------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `pub.ihub.plugin.ihub-verification` | `验证插件` | `Project` | `iHubVerification` | [ihub-bom](iHubBom)、[codenarc](https://docs.gradle.org/current/userguide/codenarc_plugin.html)、[pmd](https://docs.gradle.org/current/userguide/pmd_plugin.html)、[jacoco](https://docs.gradle.org/current/userguide/jacoco_plugin.html)、<br>[jacoco-report-aggregation](https://docs.gradle.org/current/userguide/jacoco_report_aggregation_plugin.html)（`主项目`） |
 
 - 项目包含`groovy`插件时会自动配置`codenarc`
   插件，默认配置[详见](https://github.com/ihub-pub/plugins/blob/main/ihub-plugins/src/main/resources/META-INF/codenarc.groovy)，可以通过配置`$rootDir/conf/codenarc/codenarc.groovy`覆盖默认配置，[示例](https://github.com/ihub-pub/plugins/tree/main/samples/sample-groovy)

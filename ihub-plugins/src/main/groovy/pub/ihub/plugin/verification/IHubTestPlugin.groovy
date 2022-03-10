@@ -16,8 +16,14 @@
 package pub.ihub.plugin.verification
 
 import org.gradle.api.Action
+import org.gradle.api.Project
+import org.gradle.api.attributes.TestSuiteType
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.TestReportAggregationPlugin
+import org.gradle.api.reporting.ReportingExtension
+import org.gradle.api.tasks.testing.AggregateTestReport
 import org.gradle.api.tasks.testing.Test
+import org.gradle.api.tasks.testing.TestReport
 import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
@@ -59,6 +65,10 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
             withExtension IHubBomExtension, it
         }
 
+        if (project != project.rootProject) {
+            configTestAggregation project
+        }
+
         withExtension(AFTER) { ext ->
             withTask('test') { Test it ->
                 ext.systemProperties it, '.test-java-local.properties'
@@ -86,6 +96,23 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
             withTask(Test) {
                 // 这是为了解决在项目根目录上执行test时Jacoco找不到依赖的类的问题
                 it.systemProperties.'user.dir' = it.workingDir
+            }
+        }
+    }
+
+    private void configTestAggregation(Project project) {
+        project.rootProject.with {
+            pluginManager.apply TestReportAggregationPlugin
+            configurations {
+                maybeCreate('testReportAggregation').dependencies.add dependencies.create(project)
+            }
+            extensions.getByType(ReportingExtension).reports {
+                testAggregateTestReport(AggregateTestReport) {
+                    testType = TestSuiteType.UNIT_TEST
+                }
+            }
+            afterEvaluate {
+                tasks.findByName('check')?.dependsOn tasks.named('testAggregateTestReport', TestReport)
             }
         }
     }

@@ -2,7 +2,7 @@
 
 | 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
 |-------|---------|--------|---------|--------|
-| `pub.ihub.plugin.ihub-test` | `测试插件` | `Project` | `iHubTest` | [ihub-bom](iHubBom) |
+| `pub.ihub.plugin.ihub-test` | `测试插件` | `Project` | `iHubTest` | [ihub-bom](iHubBom)、[test-report-aggregation](https://docs.gradle.org/current/userguide/test_report_aggregation_plugin.html)（`主项目`） |
 
 ## 扩展属性
 
