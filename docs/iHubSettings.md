@@ -111,7 +111,6 @@ iHubSettings {
 | Plugin   | Version |
 | -------- | ------- |
 | `com.gradle.plugin-publish` | [0.18.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
-| `org.sonarqube` | [3.3](https://plugins.gradle.org/plugin/org.sonarqube) |
 
 > 使用插件时可以不用加版本号，配置如下：
 

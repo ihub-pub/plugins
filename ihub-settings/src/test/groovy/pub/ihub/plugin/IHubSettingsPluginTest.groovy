@@ -74,6 +74,7 @@ class IHubSettingsPluginTest extends Specification {
         result.output.contains 'AliYunGradlePlugin'
         result.output.contains 'AliYunSpringPlugin'
         result.output.contains 'SpringRelease'
+        result.output.contains 'Gradle Central Plugin Repository'
         !result.output.contains('ReleaseRepo')
         !result.output.contains('SnapshotRepo')
         !result.output.contains('CustomizeRepo')
@@ -92,6 +93,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         result.output.contains 'AliYunGradlePlugin'
         result.output.contains 'AliYunSpringPlugin'
         result.output.contains 'SpringRelease'
+        result.output.contains 'Gradle Central Plugin Repository'
         result.output.contains 'ReleaseRepo'
         result.output.contains 'SnapshotRepo'
         result.output.contains 'CustomizeRepo'
@@ -111,7 +113,6 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
         then: '检查结果'
         result.output.contains 'com.gradle.plugin-publish'
-        result.output.contains 'org.sonarqube'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
