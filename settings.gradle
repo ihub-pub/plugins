@@ -13,6 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+// TODO 升级1.2.4移除
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+}
 plugins {
     id 'pub.ihub.plugin.ihub-settings' version '1.2.3'
 }

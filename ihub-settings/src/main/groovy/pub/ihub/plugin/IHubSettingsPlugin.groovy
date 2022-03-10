@@ -45,9 +45,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
     ]
 
     private static final Map<String, String> PLUGIN_VERSIONS = [
-        'com.gradle.plugin-publish'           : '0.18.0',
-        'org.sonarqube'                       : '3.3',
-        'org.springframework.experimental.aot': '0.11.3',
+        'com.gradle.plugin-publish': '0.20.0',
     ]
 
     @Override
@@ -109,6 +107,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     name 'SpringRelease'
                     url 'https://repo.spring.io/release'
                 }
+                gradlePluginPortal()
                 // 添加私有仓库
                 boolean repoAllowInsecureProtocol = valueOf findProperty(settings, 'iHub.repoAllowInsecureProtocol')
                 findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
