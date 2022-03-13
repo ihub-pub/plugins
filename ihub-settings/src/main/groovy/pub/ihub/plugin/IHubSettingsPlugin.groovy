@@ -95,19 +95,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 if (valueOf findProperty(settings, 'iHub.mavenLocalEnabled')) {
                     mavenLocal()
                 }
-                maven {
-                    name 'AliYunGradlePlugin'
-                    url 'https://maven.aliyun.com/repository/gradle-plugin'
-                }
-                maven {
-                    name 'AliYunSpringPlugin'
-                    url 'https://maven.aliyun.com/repository/spring-plugin'
-                }
+                gradlePluginPortal()
                 maven {
                     name 'SpringRelease'
                     url 'https://repo.spring.io/release'
                 }
-                gradlePluginPortal()
                 // 添加私有仓库
                 boolean repoAllowInsecureProtocol = valueOf findProperty(settings, 'iHub.repoAllowInsecureProtocol')
                 findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
