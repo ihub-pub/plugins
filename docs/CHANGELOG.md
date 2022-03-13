@@ -1,3 +1,26 @@
+## 🔖 1.2.4 (2022-03-13)
+
+
+### ✨ Features
+
+- ✨ 集成test-report-aggregation聚合测试报告  [@henry-hub](https://github.com/henry-hub) ([#243](https://github.com/ihub-pub/plugins/pull/243))
+
+### 🐛 Bug Fixes
+
+- 🐛 升级gradle至7.4.1，修复升级7.4导致的插件仓库配置失效的问题  [@henry-hub](https://github.com/henry-hub) ([#242](https://github.com/ihub-pub/plugins/pull/242))
+
+### ⬆️ Dependency Updates
+
+- ⬆️ gradle: Bump pub.ihub.plugin.ihub-settings from 1.2.2 to 1.2.3  [@dependabot](https://github.com/dependabot) ([#240](https://github.com/ihub-pub/plugins/pull/240))
+
+### 🧰 Maintenance
+
+- ♻️ 重构ihub-bom插件  [@henry-hub](https://github.com/henry-hub) ([#244](https://github.com/ihub-pub/plugins/pull/244))
+- ✏️ 主项目默认添加ihub-git-hooks插件  [@henry-hub](https://github.com/henry-hub) ([#241](https://github.com/ihub-pub/plugins/pull/241))
+
+
+---
+
 ## 🔖 1.2.3 (2022-03-06)
 
 
