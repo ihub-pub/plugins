@@ -28,6 +28,7 @@ import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
  */
 @Slf4j
 @Title('BOM插件DSL扩展测试套件')
+@SuppressWarnings(['AbcMetric', 'MethodSize'])
 class IHubBomPluginTest extends IHubSpecification {
 
     def '基础配置成功测试'() {
@@ -38,13 +39,13 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ cn.hutool                        │ hutool-bom                     │ 5.6.5                        │'
-        result.output.contains '│ cn.hutool                       │ core                         │ 5.6.5                           │'
-        result.output.contains '│ cn.hutool                       │ aop                          │ 5.6.5                           │'
-        result.output.contains '│ cn.hutool                                       │ 5.6.5                                          │'
+        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.8                         │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.8                        │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.8                        │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.8                                        │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
-        result.output.contains '│ api                                         │ cn.hutool:hutool-aop                               │'
+        result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -57,13 +58,13 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        !result.output.contains('hutool-bom')
-        result.output.contains '│ cn.hutool                       │ core                         │ 5.6.5                           │'
-        result.output.contains '│ cn.hutool                       │ aop                          │ 5.6.5                           │'
-        result.output.contains '│ cn.hutool                                       │ 5.6.5                                          │'
+        !result.output.contains('ihub-bom')
+        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.8                        │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.8                        │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.8                                        │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
-        result.output.contains '│ api                                         │ cn.hutool:hutool-aop                               │'
+        result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -76,13 +77,13 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ cn.hutool                        │ hutool-bom                     │ 5.6.5                        │'
-        !result.output.contains('│ core')
-        !result.output.contains('│ aop')
-        result.output.contains '│ cn.hutool                                       │ 5.6.5                                          │'
+        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.8                         │'
+        !result.output.contains('│ ihub-process')
+        !result.output.contains('│ ihub-core')
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.8                                        │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
-        result.output.contains '│ api                                         │ cn.hutool:hutool-aop                               │'
+        result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -111,12 +112,12 @@ class IHubBomPluginTest extends IHubSpecification {
             }
             iHubBom {
                 excludeModules {
-                    group 'cn.hutool' modules 'core'
+                    group 'pub.ihub.lib' modules 'core'
                 }
                 dependencies {
                     api ':a', ':b', ':c'
-                    compileOnlyApi 'cn.hutool:hutool-core'
-                    testCompileOnly 'cn.hutool:hutool-log'
+                    compileOnlyApi 'pub.ihub.lib:ihub-core'
+                    testCompileOnly 'pub.ihub.lib:ihub-process'
                 }
             }
             subprojects {
@@ -128,19 +129,20 @@ class IHubBomPluginTest extends IHubSpecification {
                 iHubBom {
                     importBoms {
                         group 'org.codehaus.groovy' module 'groovy-bom' version '2.5.14'
-                        group 'cn.hutool' module 'hutool-bom' version '5.6.6'
+                        group 'pub.ihub.lib' module 'ihub-bom' version '1.0.7'
                     }
                     dependencyVersions {
                         group 'org.codehaus.groovy' modules 'groovy-all' version '2.5.14'
                     }
                     groupVersions {
-                        group 'cn.hutool' version '5.6.6'
+                        group 'pub.ihub.lib' version '1.0.7'
                     }
                     excludeModules {
-                        group 'cn.hutool'
+                        group 'pub.ihub.lib'
+                        group 'com.demo' modules 'core'
                     }
                     dependencies {
-                        compileOnlyApi 'cn.hutool:hutool-all'
+                        compileOnlyApi 'pub.ihub.lib:ihub-core'
                     }
                 }
             }
@@ -148,7 +150,19 @@ class IHubBomPluginTest extends IHubSpecification {
         testProjectDir.newFile('a/' + DEFAULT_BUILD_FILE) << '''
             iHubBom {
                 excludeModules {
-                    group 'cn.hutool' modules 'log'
+                    group 'pub.ihub.lib' modules 'ihub-core'
+                    group 'com.demo' modules 'core', 'common'
+                }
+                groupVersions {
+                    group 'pub.ihub.lib' version '1.0.6'
+                }
+                dependencyVersions {
+                    group 'org.codehaus.groovy' modules 'groovy-core' version '2.5.14'
+                }
+                dependencies {
+                    compileOnlyApi 'pub.ihub.lib:ihub-process'
+                    testRuntimeOnly 'pub.ihub.lib:ihub-core'
+                    testImplementation 'pub.ihub.lib:ihub-core'
                 }
             }
         '''
@@ -156,9 +170,8 @@ class IHubBomPluginTest extends IHubSpecification {
 
         then: '检查结果'
         result.output.contains '│ org.codehaus.groovy                   │ groovy-bom                   │ 2.5.14                    │'
-        result.output.contains '│ cn.hutool                             │ hutool-bom                   │ 5.6.6                     │'
-        result.output.contains '│ cn.hutool                                           │ core                                       │'
-        result.output.contains '│ cn.hutool                                        │ log                                           │'
+        result.output.contains '│ pub.ihub.lib                          │ ihub-bom                     │ 1.0.7                     │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.7                                        │'
         result.output.contains '│ api                        │ :a                                                                  │'
         result.output.contains '│ api                        │ :b                                                                  │'
         result.output.contains '│ api                        │ :c                                                                  │'
@@ -172,8 +185,17 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-sql                                      │'
         result.output.contains '│ implementation             │ org.codehaus.groovy:groovy-datetime                                 │'
         result.output.contains '│ annotationProcessor        │ org.springframework.boot:spring-boot-configuration-processor        │'
-        result.output.contains '│ compileOnlyApi             │ cn.hutool:hutool-all                                                │'
-        result.output.contains '│ testCompileOnly            │ cn.hutool:hutool-log                                                │'
+        result.output.contains '│ compileOnlyApi             │ pub.ihub.lib:ihub-core                                              │'
+        result.output.contains '│ testCompileOnly            │ pub.ihub.lib:ihub-process                                           │'
+        result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-process                          │'
+        result.output.contains '│ testRuntimeOnly                             │ pub.ihub.lib:ihub-core                             │'
+        result.output.contains '│ testImplementation                          │ pub.ihub.lib:ihub-core                             │'
+        result.output.contains '│ pub.ihub.lib                                        │ core                                       │'
+        result.output.contains '│ pub.ihub.lib                                     │ all                                           │'
+        result.output.contains '│ pub.ihub.lib                                     │ ihub-core                                     │'
+        result.output.contains '│ pub.ihub.lib                                      │ all                                          │'
+        result.output.contains '│ com.demo                                         │ core                                          │'
+        result.output.contains '│ com.demo                                         │ common                                        │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

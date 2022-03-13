@@ -100,15 +100,15 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 // 排除组件依赖
                 ext.excludeModules.each {
                     if (it.modules.contains('all')) {
-                        exclude group: it.id
+                        exclude group: it.group
                     } else {
-                        it.modules.each { module -> exclude group: it.id, module: module }
+                        it.modules.each { module -> exclude group: it.group, module: module }
                     }
                 }
             }
             // 配置组件依赖
             ext.dependencies.each { spec ->
-                maybeCreate(spec.id).dependencies.addAll spec.modules.collect {
+                maybeCreate(spec.type).dependencies.addAll spec.dependencies.collect {
                     // 支持导入项目
                     project.dependencies.create it.startsWith(':') ? project.project(it) : it
                 }

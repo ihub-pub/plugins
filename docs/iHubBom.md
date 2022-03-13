@@ -18,15 +18,15 @@ plugins {
 iHubBom {
     // 导入mavenBom
     importBoms {
-        group 'cn.hutool' module 'hutool-bom' version '5.6.5'
+        group 'pub.ihub.lib' module 'ihub-bom' version '1.0.8'
     }
     // 配置依赖默认版本
     dependencyVersions {
-        group 'cn.hutool' modules 'core', 'aop' version '5.6.5'
+        group 'pub.ihub.lib' modules 'ihub-core', 'ihub-process' version '1.0.8'
     }
     // 配置组版本策略
     groupVersions {
-        group 'cn.hutool' version '5.6.5'
+        group 'pub.ihub.lib' version '1.0.8'
     }
     // 排除组件依赖
     excludeModules {
@@ -36,7 +36,7 @@ iHubBom {
     }
     // 配置组件依赖
     dependencies {
-        api 'cn.hutool:hutool-aop'
+        api 'pub.ihub.lib:ihub-core'
         // 支持依赖其他项目模块
 //        api ':a', ':b', ':c'
     }
