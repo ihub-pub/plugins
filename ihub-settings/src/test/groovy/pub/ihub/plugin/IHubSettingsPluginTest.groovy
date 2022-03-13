@@ -71,8 +71,6 @@ class IHubSettingsPluginTest extends Specification {
 
         then: '检查结果'
         !result.output.contains('MavenLocal')
-        result.output.contains 'AliYunGradlePlugin'
-        result.output.contains 'AliYunSpringPlugin'
         result.output.contains 'SpringRelease'
         result.output.contains 'Gradle Central Plugin Repository'
         !result.output.contains('ReleaseRepo')
@@ -90,8 +88,6 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
         then: '检查结果'
         result.output.contains 'MavenLocal'
-        result.output.contains 'AliYunGradlePlugin'
-        result.output.contains 'AliYunSpringPlugin'
         result.output.contains 'SpringRelease'
         result.output.contains 'Gradle Central Plugin Repository'
         result.output.contains 'ReleaseRepo'

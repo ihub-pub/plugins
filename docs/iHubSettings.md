@@ -97,8 +97,6 @@ iHubSettings {
 | Name | Description | Url |
 | ---- | ----------- | --- |
 | `ProjectDirs` | 项目本地插件 | `{rootProject.projectDir}/gradle/plugins` |
-| `AliYunGradlePlugin` | 阿里云Gradle代理插件仓库 | https://maven.aliyun.com/repository/gradle-plugin |
-| `AliYunSpringPlugin` | 阿里云Spring代理插件仓库 | https://maven.aliyun.com/repository/spring-plugin |
 | `SpringRelease` | Spring Release仓库 | https://repo.spring.io/release |
 | `ReleaseRepo` | 私有Release仓库 | https://repo.xxx.com/release |
 | `SnapshotRepo` | 私有Snapshot仓库 | https://repo.xxx.com/snapshot |
