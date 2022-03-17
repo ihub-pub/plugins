@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin.githooks
 
+import org.gradle.api.GradleException
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
@@ -30,9 +31,47 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
 
     @Override
+    @SuppressWarnings('UnusedVariable')
     void apply() {
         withExtension(AFTER) {
             it.execute it.hooksPath, it.hooks, it
+        }
+
+        File commitMsgFile = project.rootDir.toPath().resolve('.git').resolve('COMMIT_EDITMSG').toFile()
+        if (!commitMsgFile.exists()) {
+            logger.warn 'Not found file: {}', commitMsgFile.toURI()
+            return
+        }
+
+        project.task('commitCheck') {
+            it.group = 'ihub'
+            String header
+            Map footers
+            // TODO 扩展信息取值
+            List types = ['refactor', 'fix', 'feat', 'build', 'chore', 'style', 'test', 'docs', 'perf', 'ci', 'revert']
+            List footerTypes = ['Closes']
+
+            it.doFirst {
+                List<String> lines = commitMsgFile.readLines()
+                assertRule !lines.empty, 'Commit msg is empty!'
+                logger.lifecycle 'Extract commit msg:'
+                logger.lifecycle '---------------------------------------------'
+                lines.each { logger.lifecycle it }
+                logger.lifecycle '---------------------------------------------'
+                header = lines.first()
+                footers = lines.findAll { it ==~ /^(${footerTypes.join('|')}): .+/ }.collectEntries { it.split ': ' }
+            }
+
+            it.doLast {
+                assertRule header ==~ /^(${types.join('|')})(\(.+\))?!?: .{1,100}/, 'Commit msg header check fail!'
+                // TODO footerTypes必填校验
+            }
+        }
+    }
+
+    private static void assertRule(boolean condition, String message) {
+        if (!condition) {
+            throw new GradleException(message)
         }
     }
 
