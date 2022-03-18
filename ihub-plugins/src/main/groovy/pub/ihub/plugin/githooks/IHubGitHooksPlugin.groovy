@@ -15,7 +15,13 @@
  */
 package pub.ihub.plugin.githooks
 
+import cn.hutool.core.io.FileUtil
+import cn.hutool.core.util.URLUtil
+import cn.hutool.core.util.XmlUtil
 import org.gradle.api.GradleException
+import org.gradle.api.Project
+import org.w3c.dom.Document
+import org.w3c.dom.Node
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
@@ -37,7 +43,7 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
             it.execute it.hooksPath, it.hooks, it
         }
 
-        File commitMsgFile = project.rootDir.toPath().resolve('.git').resolve('COMMIT_EDITMSG').toFile()
+        File commitMsgFile = project.rootProject.file '.git/COMMIT_EDITMSG'
         if (!commitMsgFile.exists()) {
             logger.warn 'Not found file: {}', commitMsgFile.toURI()
             return
@@ -67,6 +73,48 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
                 // TODO footerTypes必填校验
             }
         }
+
+        // 如果IDEA安装了Conventional Commit插件，自动生成并配置自定义配置
+        if (URLUtil.url(System.getProperty('idea.plugins.path')).readLines().contains('idea-conventional-commit')) {
+            afterEvaluate {
+                configConventionalCommit project
+            }
+        }
+    }
+
+    private static String generateConventionalCommitConfig(Project rootProject) {
+        String tmpPath = "$rootProject.projectDir/.gradle/pub.ihub.plugin.cache"
+        rootProject.mkdir tmpPath
+        rootProject.file("$tmpPath/conventionalCommit.json").tap {
+            createNewFile()
+            // TODO 生成conventionalCommit.json
+        }.path
+    }
+
+    private static void configConventionalCommit(Project project) {
+        Project rootProject = project.rootProject
+        String pluginConfigPath = rootProject.file('.idea/conventionalCommit.xml').path
+        Document document
+        Node component
+        if (FileUtil.exist(pluginConfigPath)) {
+            document = XmlUtil.readXML pluginConfigPath
+            component = XmlUtil.getNodeByXPath 'component[@name="general"]', document.documentElement
+            if (XmlUtil.getNodeByXPath('option[@name="customFilePath"]', component)) {
+                return
+            }
+        } else {
+            document = XmlUtil.createXml 'project'
+            component = XmlUtil.appendChild(document.documentElement.tap {
+                setAttribute 'version', '4'
+            }, 'component').tap {
+                setAttribute 'name', 'general'
+            }
+        }
+        XmlUtil.appendChild(component, 'option').with {
+            setAttribute 'name', 'customFilePath'
+            setAttribute 'value', generateConventionalCommitConfig(rootProject)
+        }
+        XmlUtil.toFile document, pluginConfigPath
     }
 
     private static void assertRule(boolean condition, String message) {
