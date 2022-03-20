@@ -119,9 +119,72 @@ class IHubGitHooksPluginTest extends IHubSpecification {
         result.output.contains 'Commit msg header check fail!'
     }
 
+    def 'GitHooks插件commitCheck任务测试-scope检查'() {
+        when: '开启范围检查'
+        buildFile << '''
+            iHubGitHooks {
+                type 'build' scopes 'gradle' checkScope true
+            }
+        '''
+        commitMsgFile << 'build(other): text'
+        def result = gradleBuilder.withArguments('commitCheck').buildAndFail()
+
+        then: '检查结果'
+        result.output.contains 'Commit msg header scope not in [gradle]!'
+
+        when: '执行任务'
+        commitMsgFile.write 'build(gradle): text', true
+        result = gradleBuilder.withArguments('commitCheck').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'GitHooks插件commitCheck任务测试-注脚必填检查'() {
+        when: 'Footer必填'
+        buildFile << '''
+            iHubGitHooks {
+                footer 'Footer' required true
+            }
+        '''
+        commitMsgFile << 'feat: text'
+        def result = gradleBuilder.withArguments('commitCheck').buildAndFail()
+
+        then: '检查结果'
+        result.output.contains 'Commit msg footer missing \'Footer\'!'
+
+        when: '执行任务'
+        commitMsgFile.write 'feat: text\n\nFooter: footer', true
+        result = gradleBuilder.withArguments('commitCheck').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'GitHooks插件commitCheck任务测试-注脚类型必填检查'() {
+        when: 'Footer必填'
+        buildFile << '''
+            iHubGitHooks {
+                footer 'Footer' requiredWithType 'feat'
+            }
+        '''
+        commitMsgFile << 'feat: text'
+        def result = gradleBuilder.withArguments('commitCheck').buildAndFail()
+
+        then: '检查结果'
+        result.output.contains 'Commit msg footer missing \'Footer\' where type is \'feat\'!'
+
+        when: '执行任务'
+        commitMsgFile.write 'feat: text\n\nFooter: footer', true
+        result = gradleBuilder.withArguments('commitCheck').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     def 'GitHooks插件commitCheck任务测试-成功'() {
         setup: '初始化项目'
-        commitMsgFile << 'feat(some): text'
+        commitMsgFile << 'feat(some): text\n\nCloses: 123'
 
         when: '执行任务'
         def result = gradleBuilder.withArguments('commitCheck').build()
