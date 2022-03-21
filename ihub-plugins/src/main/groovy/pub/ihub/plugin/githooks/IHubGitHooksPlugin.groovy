@@ -15,9 +15,7 @@
  */
 package pub.ihub.plugin.githooks
 
-
 import cn.hutool.core.util.URLUtil
-import org.gradle.api.GradleException
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
@@ -36,7 +34,6 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
     void apply() {
         withExtension(AFTER) {
             // TODO 确认默认模板
-            // TODO 完善测试用例
             // TODO 完善文档
             it.configDefaultGitCommitCheck()
             it.execute it.hooksPath, it.hooks
@@ -55,7 +52,7 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
                 }
 
                 List<String> lines = commitMsgFile.readLines()
-                assertRule !lines.empty, 'Commit msg is empty!'
+                extension.assertRule !lines.empty, 'Commit msg is empty!'
                 logger.lifecycle 'Extract commit msg:'
                 logger.lifecycle '---------------------------------------------'
                 lines.each { logger.lifecycle it }
@@ -67,26 +64,18 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
             }
 
             it.doLast {
-                def (type, scope) = (header =~ extension.headerRegex).with {
-                    // 信息头整体格式检查
-                    assertRule matches(), 'Commit msg header check fail!'
-                    getAt(0)[1, 3]
-                }
+                // 信息头整体格式检查
+                def (type, scope) = extension.checkHeader header
                 // 范围检查
-                extension.types.find { it.name == type }.with {
-                    assertRule !checkScope || scopes*.name.contains(scope),
-                        "Commit msg header scope not in [${it.scopes*.name.join(', ')}]!"
-                }
+                extension.types.find { it.name == type }.checkScope scope
                 extension.footers.each {
                     String footerValue = footers[it.name]
                     // 注脚必填检查
-                    assertRule !it.required || footerValue, "Commit msg footer missing '$it.name'!"
+                    it.checkRequired footerValue
                     // 注脚类型必填检查
-                    assertRule !it.types.contains(type) || footerValue,
-                        "Commit msg footer missing '$it.name' where type is '$type'!"
+                    it.checkRequiredWithType type, footerValue
                     // 注脚值正则校验
-                    assertRule !it.valueRegex || !footerValue || footerValue ==~ it.valueRegex,
-                        "Commit msg footer '$it.name' check fail with regex: '$it.valueRegex'!"
+                    it.checkValue footerValue
                 }
             }
         }
@@ -97,12 +86,6 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
             withExtension(AFTER) {
                 it.configConventionalCommit()
             }
-        }
-    }
-
-    private static void assertRule(boolean condition, String message) {
-        if (!condition) {
-            throw new GradleException(message + ' See https://doc.ihub.pub/plugins/#/iHubGitHooks')
         }
     }
 

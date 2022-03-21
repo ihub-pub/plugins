@@ -21,6 +21,7 @@ import groovy.json.JsonBuilder
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.TupleConstructor
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.w3c.dom.Document
@@ -31,6 +32,7 @@ import pub.ihub.plugin.IHubProperty
 
 import java.nio.file.Path
 
+import static groovy.transform.TypeCheckingMode.SKIP
 import static java.nio.file.Files.createDirectories
 import static java.nio.file.Files.write
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
@@ -44,6 +46,7 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
  */
 @IHubExtension('iHubGitHooks')
 @CompileStatic
+@SuppressWarnings(['ConfusingMethodName', 'JUnitPublicProperty'])
 @TupleConstructor(allProperties = true, includes = 'project')
 class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
@@ -112,8 +115,8 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
         }
     }
 
-    void footers(String... footerTypes) {
-        this.footers.addAll footerTypes.collect { new FooterSpec(it) }
+    void footers(String... footers) {
+        this.footers.addAll footers.collect { new FooterSpec(it) }
     }
 
     FooterSpec footer(String name) {
@@ -122,8 +125,12 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
         }
     }
 
-    String getHeaderRegex() {
-        /^(${types*.name.join('|')})(\((.+)\))?!?: $descriptionRegex/
+    @CompileStatic(SKIP)
+    List<String> checkHeader(String header) {
+        (header =~ /^(${types*.name.join('|')})(\((.+)\))?!?: $descriptionRegex/).with {
+            assertRule matches(), 'Commit msg header check fail!'
+            it[0][1, 3] as List<String>
+        }
     }
 
     void writeHook(String hookName, String command) {
@@ -192,6 +199,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
         XmlUtil.toFile document, pluginConfigPath
     }
 
+    @CompileStatic(SKIP)
     private String generateConventionalCommitConfig(Project rootProject) {
         String tmpPath = "$rootProject.projectDir/.gradle/pub.ihub.plugin.cache"
         rootProject.mkdir tmpPath
@@ -208,6 +216,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
         project.layout.projectDirectory.dir('.gradle').dir('pub.ihub.plugin.hooks').asFile
     }
 
+    @CompileStatic
     @TupleConstructor(includes = 'name')
     @EqualsAndHashCode(includes = 'name')
     private class ConfigSpec<T> {
@@ -226,11 +235,12 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     }
 
-    @EqualsAndHashCode(callSuper = true, allProperties = true, excludes = 'scopes,checkScope')
+    @CompileStatic
+    @EqualsAndHashCode(callSuper = true)
     private class TypeSpec extends ConfigSpec<TypeSpec> {
 
-        Set<ConfigSpec> scopes = []
-        boolean checkScope = false
+        private final Set<ConfigSpec> scopes = []
+        private boolean requiredScope = false
 
         TypeSpec(String name) {
             super(name)
@@ -247,8 +257,14 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
             }
         }
 
-        void checkScope(boolean checkScope) {
-            this.checkScope = checkScope && scopes
+        TypeSpec requiredScope(boolean requiredScope) {
+            this.requiredScope = requiredScope
+            this
+        }
+
+        void checkScope(String scope) {
+            assertRule !requiredScope || scopes*.name.contains(scope),
+                "Commit msg header scope not in [${scopes*.name.join(', ')}]!"
         }
 
         @Override
@@ -264,21 +280,22 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     }
 
-    @EqualsAndHashCode(callSuper = true, allProperties = true, excludes = 'required,types,valueRegex')
+    @CompileStatic
+    @EqualsAndHashCode(callSuper = true)
     private class FooterSpec extends ConfigSpec<FooterSpec> {
 
         /**
          * 是否必填
          */
-        boolean required = false
+        private boolean required = false
         /**
          * 需要必填的类型
          */
-        String[] types = []
+        private String[] types = []
         /**
          * 注脚值正则表达式
          */
-        String valueRegex
+        private String valueRegex
 
         FooterSpec(String name) {
             super(name)
@@ -299,11 +316,31 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
             this
         }
 
+        void checkRequired(String footerValue) {
+            assertRule !required || footerValue, "Commit msg footer missing '$name'!"
+        }
+
+        void checkRequiredWithType(String type, String footerValue) {
+            assertRule !types.contains(type) || footerValue,
+                "Commit msg footer missing '$name' where type is '$type'!"
+        }
+
+        void checkValue(String footerValue) {
+            assertRule !valueRegex || !footerValue || footerValue ==~ valueRegex,
+                "Commit msg footer '$name' check fail with regex: '$valueRegex'!"
+        }
+
         @Override
         Map generateConfig() {
             [name: name, description: description ?: '']
         }
 
+    }
+
+    static void assertRule(boolean condition, String message) {
+        if (!condition) {
+            throw new GradleException(message + ' See https://doc.ihub.pub/plugins/#/iHubGitHooks')
+        }
     }
 
 }

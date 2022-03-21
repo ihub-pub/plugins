@@ -123,7 +123,7 @@ class IHubGitHooksPluginTest extends IHubSpecification {
         when: '开启范围检查'
         buildFile << '''
             iHubGitHooks {
-                type 'build' scopes 'gradle' checkScope true
+                type 'build' scopes 'gradle' requiredScope true
             }
         '''
         commitMsgFile << 'build(other): text'
@@ -182,8 +182,93 @@ class IHubGitHooksPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'GitHooks插件commitCheck任务测试-注脚值正则校验'() {
+        when: '注解值开启校验但无注解值'
+        buildFile << '''
+            iHubGitHooks {
+                footer 'Closes' valueRegex '\\\\d+'
+            }
+        '''
+        commitMsgFile << 'feat: text'
+        def result = gradleBuilder.withArguments('commitCheck').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '注解值开启校验注解值错误'
+        commitMsgFile.write 'feat: text\n\nCloses: abc', true
+        result = gradleBuilder.withArguments('commitCheck').buildAndFail()
+
+        then: '检查结果'
+        result.output.contains 'Commit msg footer \'Closes\' check fail with regex: \'\\d+\'!'
+
+        when: '注解值开启校验且注解值正确'
+        commitMsgFile.write 'feat: text\n\nCloses: 123', true
+        result = gradleBuilder.withArguments('commitCheck').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'GitHooks插件commitCheck任务测试-生成自定义配置'() {
+        when: '非IDEA环境，没有插件目录'
+        def result = gradleBuilder.withArguments('-Didea.plugins.path=').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+        !new File(testProjectDir.root, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
+        !new File(testProjectDir.root, '.idea/conventionalCommit.xml').exists()
+
+        when: 'IDEA环境，没有Conventional Commit插件'
+        result = gradleBuilder.withArguments('-Didea.plugins.path=' + testProjectDir.root.path).build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+        !new File(testProjectDir.root, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
+        !new File(testProjectDir.root, '.idea/conventionalCommit.xml').exists()
+
+        when: 'IDEA环境且有Conventional Commit插件'
+        def pluginsPath = testProjectDir.newFolder('.plugins', 'idea-conventional-commit').parentFile.path
+        result = gradleBuilder.withArguments('-Didea.plugins.path=' + pluginsPath).build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+        new File(testProjectDir.root, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
+        new File(testProjectDir.root, '.idea/conventionalCommit.xml').exists()
+
+        when: '模拟插件配置已存在且没有自定义配置'
+        new File(testProjectDir.root, '.idea/conventionalCommit.xml').write '''<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="general">
+    <option name="other" value="text" />
+  </component>
+</project>''', true
+        result = gradleBuilder.withArguments('-Didea.plugins.path=' + pluginsPath).build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '模拟插件配置已存在且设置了自定义配置'
+        new File(testProjectDir.root, '.idea/conventionalCommit.xml').write '''<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="general">
+    <option name="customFilePath" value="path" />
+  </component>
+</project>''', true
+        result = gradleBuilder.withArguments('-Didea.plugins.path=' + pluginsPath).build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     def 'GitHooks插件commitCheck任务测试-成功'() {
         setup: '初始化项目'
+        buildFile << '''
+            iHubGitHooks {
+                type 'type' scope 'scope' description 'Scope description'
+                footer 'Other' description 'Other description'
+            }
+        '''
         commitMsgFile << 'feat(some): text\n\nCloses: 123'
 
         when: '执行任务'
