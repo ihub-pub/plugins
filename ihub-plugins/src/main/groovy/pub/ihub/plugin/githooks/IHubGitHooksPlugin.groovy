@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin.githooks
 
+import cn.hutool.core.util.URLUtil
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
@@ -32,7 +33,57 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
     @Override
     void apply() {
         withExtension(AFTER) {
-            it.execute it.hooksPath, it.hooks, it
+            it.configDefaultGitCommitCheck()
+            it.execute it.hooksPath, it.hooks
+        }
+
+        project.task('commitCheck') {
+            it.group = 'ihub'
+            String header
+            Map footers
+
+            it.doFirst {
+                File commitMsgFile = project.rootProject.file '.git/COMMIT_EDITMSG'
+                if (!commitMsgFile.exists()) {
+                    logger.warn 'Not found file: {}', commitMsgFile.toURI()
+                    return
+                }
+
+                List<String> lines = commitMsgFile.readLines()
+                extension.assertRule !lines.empty, 'Commit msg is empty!'
+                logger.lifecycle 'Extract commit msg:'
+                logger.lifecycle '---------------------------------------------'
+                lines.each { logger.lifecycle it }
+                logger.lifecycle '---------------------------------------------'
+                header = lines.first()
+                footers = lines.findAll {
+                    it ==~ /^(${extension.footers*.name.join('|')}): .+/
+                }.collectEntries { it.split ': ' }
+            }
+
+            it.doLast {
+                // 信息头整体格式检查
+                def (type, scope) = extension.checkHeader header
+                // 范围检查
+                extension.types.find { it.name == type }.checkScope scope
+                extension.footers.each {
+                    String footerValue = footers[it.name]
+                    // 注脚必填检查
+                    it.checkRequired footerValue
+                    // 注脚类型必填检查
+                    it.checkRequiredWithType type, footerValue
+                    // 注脚值正则校验
+                    it.checkValue footerValue
+                }
+            }
+        }
+
+        // 如果IDEA安装了Conventional Commit插件，自动生成并配置自定义配置
+        String ideaPluginsPath = System.getProperty 'idea.plugins.path'
+        if (ideaPluginsPath && URLUtil.url(ideaPluginsPath).readLines().contains('idea-conventional-commit')) {
+            withExtension(AFTER) {
+                it.configConventionalCommit()
+            }
         }
     }
 

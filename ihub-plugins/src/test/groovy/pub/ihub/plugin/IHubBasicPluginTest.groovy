@@ -407,43 +407,6 @@ iHubPublish.publishDocs=true
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    def 'GitHooks插件配置测试'() {
-        setup: '初始化项目'
-        buildFile << '''
-            plugins {
-                id 'pub.ihub.plugin.ihub-git-hooks'
-            }
-        '''
-
-        when: '使用默认目录'
-        def result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
-        result.output.contains 'Unset git hooks path'
-
-        when: '插件扩展配置'
-        buildFile << '''
-            iHubGitHooks {
-                hooks = ['pre-commit': 'build']
-            }
-        '''
-        result = gradleBuilder.build()
-
-        then: '检查结果'
-        new File(testProjectDir.root, '.gradle/pub.ihub.plugin.hooks/pre-commit').exists()
-        result.output.contains 'BUILD SUCCESSFUL'
-        result.output.contains 'Set git hooks path: .gradle/pub.ihub.plugin.hooks'
-
-        when: '自定义目录'
-        propertiesFile << 'iHubGitHooks.hooksPath=.hooks'
-        result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
-        result.output.contains 'Set git hooks path: .hooks'
-    }
-
     def '自定义依赖升级打印方法测试'() {
         setup: '初始化项目'
         Project project = ProjectBuilder.builder().build()
