@@ -50,23 +50,23 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 @TupleConstructor(allProperties = true, includes = 'project')
 class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
-    private static final Map<String, String> DEFAULT_TYPES = [
-        refactor: 'Changes which neither fix a bug nor add a feature',
-        fix     : 'Changes which patch a bug',
-        feat    : 'Changes which introduce a new feature',
-        build   : 'Changes which affect the build system or external dependencies.',
-        chore   : 'Changes which aren\'t user-facing',
-        style   : 'Changes which don\'t affect code logic, such as white-spaces, formatting, missing semi-colons',
-        test    : 'Changes which add missing tests or correct existing tests',
-        docs    : 'Changes which affect documentation',
-        perf    : 'Changes which improve performance',
-        ci      : 'Changes which affect CI configuration files and scripts.',
-        revert  : 'Changes which revert a previous commit',
+    private static final Map<String, List<String>> DEFAULT_TYPES = [
+        refactor: ['代码重构', 'Changes which neither fix a bug nor add a feature'],
+        fix     : ['修复错误', 'Changes which patch a bug'],
+        feat    : ['引入新功能', 'Changes which introduce a new feature'],
+        build   : ['架构改动', 'Changes which affect the build system or external dependencies'],
+        chore   : ['与业务无关的改动', 'Changes which aren\'t user-facing'],
+        style   : ['结构改进/代码格式化', 'Changes which don\'t affect code logic, such as white-spaces, formatting, missing semi-colons'],
+        test    : ['更新测试', 'Changes which add missing tests or correct existing tests'],
+        docs    : ['更新文档', 'Changes which affect documentation'],
+        perf    : ['性能改善', 'Changes which improve performance'],
+        ci      : ['CI/CD', 'Changes which affect CI configuration files and scripts'],
+        revert  : ['代码回滚', 'Changes which revert a previous commit'],
     ]
 
     private static final Map<String, List<String>> DEFAULT_SCOPES = [
-        build: ['npm', 'gulp', 'broccoli'],
-        ci   : ['travis', 'circle', 'browser-stack', 'sauce-labs'],
+        build: ['gradle', 'maven', 'ant'],
+        ci   : ['github', 'gitlab', 'jenkins', 'travis'],
     ]
 
     private static final Map<String, String> DEFAULT_FOOTERS = [
@@ -105,7 +105,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     void types(String... types) {
         this.types.addAll types.collect {
-            new TypeSpec(it).description(DEFAULT_TYPES[it]).scopes((DEFAULT_SCOPES[it] ?: []) as String[])
+            new TypeSpec(it).description(DEFAULT_TYPES[it] as String[]).scopes((DEFAULT_SCOPES[it] ?: []) as String[])
         }
     }
 
@@ -116,7 +116,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
     }
 
     void footers(String... footers) {
-        this.footers.addAll footers.collect { new FooterSpec(it) }
+        this.footers.addAll footers.collect { new FooterSpec(it).description DEFAULT_FOOTERS[it] }
     }
 
     FooterSpec footer(String name) {

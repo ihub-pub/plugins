@@ -33,8 +33,6 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
     @Override
     void apply() {
         withExtension(AFTER) {
-            // TODO 确认默认模板
-            // TODO 完善文档
             it.configDefaultGitCommitCheck()
             it.execute it.hooksPath, it.hooks
         }
