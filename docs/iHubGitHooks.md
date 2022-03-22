@@ -5,8 +5,28 @@
 |-------|---------|--------|---------|
 | `pub.ihub.plugin.ihub-git-hooks` | `GitHooks插件` | `Project` | `iHubGitHooks` |
 
-> 插件支持配置commit-msg模板，基于[约定式提交](https://www.conventionalcommits.org/)规范提供默认`commit-msg`检查模板<br>
-> IDEA环境下支持自动生成[`Conventional Commit`](https://plugins.jetbrains.com/plugin/13389-conventional-commit)IDEA插件配置文件`conventionalCommit.json`，[详见](https://github.com/ihub-pub/plugins/issues/247)
+## 提交信息检查
+
+> 插件基于[约定式提交](https://www.conventionalcommits.org/)规范提供了`commit-msg`检查提交信息功能，详见[功能](https://github.com/ihub-pub/plugins/issues/247)，提交信息规范如下：
+
+```text
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+``` 
+
+> 插件提供一个检查任务`commitCheck`，用于检查提交信息是否符合规范，使用如下：
+
+```shell
+#!/bin/bash
+./gradlew commitCheck
+```
+
+**也可以通过扩展属性配置，见[示例](iHubGitHooks?id=插件扩展配置使用示例)**
+
+> IDEA环境下支持自动生成[`Conventional Commit`](https://plugins.jetbrains.com/plugin/13389-conventional-commit)IDEA插件配置文件`conventionalCommit.json`，并且完成自动配置
 
 ## 扩展属性
 
