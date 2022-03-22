@@ -222,7 +222,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
     private class ConfigSpec<T> {
 
         String name
-        String description
+        String description = ''
 
         T description(String... description) {
             this.description = description.join '<br/>'
@@ -230,7 +230,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
         }
 
         Map generateConfig() {
-            [(name): [description: description ?: '']]
+            [(name): [description: description]]
         }
 
     }
@@ -271,8 +271,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
         Map generateConfig() {
             [
                 (name): [
-                    description: (description ?: '') +
-                        (scopes ? '<br/>Example scopes: ' + scopes*.name.join(', ') : ''),
+                    description: description + (scopes ? '<br/>Example scopes: ' + scopes*.name.join(', ') : ''),
                     scopes     : scopes.collectEntries { it.generateConfig() }
                 ]
             ]
@@ -332,7 +331,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
         @Override
         Map generateConfig() {
-            [name: name, description: description ?: '']
+            [name: name, description: description]
         }
 
     }
