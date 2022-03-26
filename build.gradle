@@ -22,7 +22,8 @@ plugins {
 
 iHubGitHooks {
     hooks = [
-        'pre-commit': './gradlew build -x test'
+        'pre-commit': './gradlew build -x test',
+        'commit-msg': './gradlew commitCheck'
     ]
 }
 

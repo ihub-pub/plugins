@@ -14,7 +14,7 @@ updates:
     allow:
       - dependency-type: "production"
     commit-message:
-      prefix: "⬆️ gradle"
+      prefix: "gradle"
 
   - package-ecosystem: "gradle"
     directory: "/ihub-plugins/"
@@ -25,4 +25,4 @@ updates:
     allow:
       - dependency-type: "production"
     commit-message:
-      prefix: "⬆️ gradle"
+      prefix: "gradle"
