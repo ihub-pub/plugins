@@ -1,3 +1,26 @@
+## 🔖 1.2.5 (2022-03-26)
+
+
+### ✨ Features
+
+- ✨ ihub-git-hooks支持配置commit-msg模板  [@henry-hub](https://github.com/henry-hub) ([#248](https://github.com/ihub-pub/plugins/pull/248))
+
+### 📝 Documentation
+
+- 📝 文档调整  [@henry-hub](https://github.com/henry-hub) ([#249](https://github.com/ihub-pub/plugins/pull/249))
+
+### ⬆️ Dependency Updates
+
+- ⬆️ gradle: Bump spring-boot-gradle-plugin from 2.6.4 to 2.6.5 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#250](https://github.com/ihub-pub/plugins/pull/250))
+- ⬆️ gradle: Bump pub.ihub.plugin.ihub-settings from 1.2.3 to 1.2.4  [@dependabot](https://github.com/dependabot) ([#245](https://github.com/ihub-pub/plugins/pull/245))
+
+### 🧰 Maintenance
+
+- ✏️ 移除阿里云Gradle插件代理仓库  [@henry-hub](https://github.com/henry-hub) ([#246](https://github.com/ihub-pub/plugins/pull/246))
+
+
+---
+
 ## 🔖 1.2.4 (2022-03-13)
 
 
