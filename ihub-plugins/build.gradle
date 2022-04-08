@@ -36,7 +36,7 @@ dependencies {
     implementation 'io.freefair.gradle:lombok-plugin:6.4.2'
     implementation 'io.freefair.gradle:github-plugin:6.4.2'
     implementation 'com.github.ben-manes:gradle-versions-plugin:0.42.0'
-    implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.8'
+    implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.9'
     implementation 'org.jmolecules.integrations:jmolecules-bytebuddy:0.8.0'
     implementation 'cn.hutool:hutool-http'
 
