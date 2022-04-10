@@ -1,3 +1,21 @@
+## 🔖 1.2.6 (2022-04-10)
+
+
+### ⬆️ Dependency Updates
+
+- build(gradle): 升级plugin-publish、spring-aot组件版本  [@henry-hub](https://github.com/henry-hub) ([#261](https://github.com/ihub-pub/plugins/pull/261))
+- gradle: bump ihub-core from 1.0.8 to 1.0.9 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#260](https://github.com/ihub-pub/plugins/pull/260))
+- build(gradle): 升级gradle至7.4.2  [@henry-hub](https://github.com/henry-hub) ([#259](https://github.com/ihub-pub/plugins/pull/259))
+- gradle: bump springdoc-openapi-gradle-plugin from 1.3.3 to 1.3.4 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#252](https://github.com/ihub-pub/plugins/pull/252))
+- gradle: bump jmolecules-bytebuddy from 0.8.0 to 0.9.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#254](https://github.com/ihub-pub/plugins/pull/254))
+- gradle: bump byte-buddy-gradle-plugin from 1.12.8 to 1.12.9 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#257](https://github.com/ihub-pub/plugins/pull/257))
+- gradle: bump lombok-plugin from 6.4.1 to 6.4.2 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#256](https://github.com/ihub-pub/plugins/pull/256))
+- gradle: bump spring-boot-gradle-plugin from 2.6.5 to 2.6.6 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#253](https://github.com/ihub-pub/plugins/pull/253))
+- gradle: Bump pub.ihub.plugin.ihub-settings from 1.2.4 to 1.2.5  [@dependabot](https://github.com/dependabot) ([#251](https://github.com/ihub-pub/plugins/pull/251))
+
+
+---
+
 ## 🔖 1.2.5 (2022-03-26)
 
 
