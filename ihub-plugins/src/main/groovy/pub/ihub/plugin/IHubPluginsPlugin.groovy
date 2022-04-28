@@ -45,8 +45,10 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
         if (project == project.rootProject) {
             logger.lifecycle 'Build with IHub Plugins ' + IHubPluginsPlugin.package.implementationVersion +
                 ', You can see the documentation to learn more, See https://doc.ihub.pub/plugins.'
-            applyPlugin GitVersionPlugin, IHubGitHooksPlugin
             printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
+
+            configProjectWithGit()
+
             // 配置组件升级任务
             applyPlugin VersionsPlugin
             withTask DependencyUpdatesTask, {
@@ -110,6 +112,22 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 mavenCentral()
             }
         }
+    }
+
+    private void configProjectWithGit() {
+        // 推断版本号
+        if (extension.useInferringVersion && 'unspecified' == project.version.toString()) {
+            try {
+                String gitTag = 'git describe --tags'.execute().text.trim()
+                logger.lifecycle 'Inferring version use git tag: {}', gitTag
+                project.version = (gitTag =~ /^v?(\d+).(\d+).(\d+)-\d+-g\w{7}$/)[0][1..3]
+                    .with { major, minor, patch -> "$major.$minor.${(patch as int) + 1}-SNAPSHOT" }
+            } catch (e) {
+                logger.lifecycle 'Failed to get current git tag', e
+            }
+        }
+
+        applyPlugin GitVersionPlugin, IHubGitHooksPlugin
     }
 
     private Closure mavenRepo(String repoName, String repoUrl, String repoArtifactUrls = null) {
