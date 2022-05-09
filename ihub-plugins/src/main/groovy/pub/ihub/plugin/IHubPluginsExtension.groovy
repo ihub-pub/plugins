@@ -109,6 +109,12 @@ class IHubPluginsExtension implements IHubProjectExtensionAware {
     @IHubProperty(type = [PROJECT, SYSTEM])
     boolean autoReplaceLaterVersions = false
 
+    /**
+     * 使用推断版本号
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
+    boolean useInferringVersion = false
+
     //</editor-fold>
 
 }

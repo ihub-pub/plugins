@@ -458,4 +458,46 @@ iHubPublish.publishDocs=true
         project.tasks.getByName 'dependencyUpdates'
     }
 
+    def '推断版本号单元测试'() {
+        setup: '初始化项目'
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubPluginsPlugin
+        project.version = 'unspecified'
+
+        when: '测试配置方法'
+        project.extensions.getByType(IHubPluginsExtension).useInferringVersion = true
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.configProjectWithGit()
+        }
+
+        then: '检查结果'
+        project.version.toString() ==~ /^\d+.\d+.\d+-SNAPSHOT$/
+    }
+
+    def '推断版本号配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+
+        when: '模拟开启推测版本且无git环境'
+        def result = gradleBuilder
+            .withEnvironment(USE_INFERRING_VERSION: 'true')
+            .build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+        result.output.contains 'Failed to get current git tag'
+
+        when: '模拟开启推测版本且指定了具体版本号'
+        result = gradleBuilder
+            .withEnvironment(USE_INFERRING_VERSION: 'true')
+            .withArguments('-Pversion=1.0.0')
+            .build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+        result.output.contains 'Using explicit version 1.0.0'
+        !result.output.contains('Inferring version use git tag: ')
+        !result.output.contains('Failed to get current git tag')
+    }
+
 }
