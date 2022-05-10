@@ -73,6 +73,7 @@ class IHubSettingsPluginTest extends Specification {
         !result.output.contains('MavenLocal')
         result.output.contains 'SpringRelease'
         result.output.contains 'Gradle Central Plugin Repository'
+        result.output.contains 'MavenRepo'
         !result.output.contains('ReleaseRepo')
         !result.output.contains('SnapshotRepo')
         !result.output.contains('CustomizeRepo')
