@@ -1,3 +1,13 @@
+## 🔖 1.2.8 (2022-05-10)
+
+
+### 🐛 Bug Fixes
+
+- fix(gradle): 插件仓库配置添加中央仓库  [@henry-hub](https://github.com/henry-hub) ([#271](https://github.com/ihub-pub/plugins/pull/271))
+
+
+---
+
 ## 🔖 1.2.7 (2022-05-10)
 
 
