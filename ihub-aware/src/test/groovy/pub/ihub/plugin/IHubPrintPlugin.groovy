@@ -30,7 +30,7 @@ class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
     @Override
     void apply() {
         printConfigContent 'test', []
-        printConfigContent 'test', [['123', '456', '798']]
+        printConfigContent 'test', [['123', '456', '789']]
         printConfigContent 'test', [
             ['123', '12345', '123'],
             ['12345', '123', '1234567'],
