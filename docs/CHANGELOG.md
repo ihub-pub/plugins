@@ -1,3 +1,21 @@
+## 🔖 1.2.7 (2022-05-10)
+
+
+### ✨ Features
+
+- feat(version): 支持通过最新的tag推断下一个版本号  [@henry-hub](https://github.com/henry-hub) ([#267](https://github.com/ihub-pub/plugins/pull/267))
+
+### ⬆️ Dependency Updates
+
+- gradle: bump ihub-core from 1.0.9 to 1.0.10 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#269](https://github.com/ihub-pub/plugins/pull/269))
+- gradle: bump byte-buddy-gradle-plugin from 1.12.9 to 1.12.10 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#268](https://github.com/ihub-pub/plugins/pull/268))
+- gradle: bump spring-boot-gradle-plugin from 2.6.6 to 2.6.7 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#266](https://github.com/ihub-pub/plugins/pull/266))
+- gradle: bump lombok-plugin from 6.4.2 to 6.4.3 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#265](https://github.com/ihub-pub/plugins/pull/265))
+- gradle: bump pub.ihub.plugin.ihub-settings from 1.2.5 to 1.2.6  [@dependabot](https://github.com/dependabot) ([#262](https://github.com/ihub-pub/plugins/pull/262))
+
+
+---
+
 ## 🔖 1.2.6 (2022-04-10)
 
 
