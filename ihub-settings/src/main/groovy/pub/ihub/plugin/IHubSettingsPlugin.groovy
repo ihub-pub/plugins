@@ -96,6 +96,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     mavenLocal()
                 }
                 gradlePluginPortal()
+                mavenCentral()
                 maven {
                     name 'SpringRelease'
                     url 'https://repo.spring.io/release'
