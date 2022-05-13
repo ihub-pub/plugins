@@ -24,6 +24,9 @@ dependencies {
     implementation project(':sample-multi-service')
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // TODO spring-boot-dependencies维护的bytebuddy版本为1.11，与mockito版本4.5不兼容
+    runtimeOnly 'net.bytebuddy:byte-buddy:1.12.10'
 }
 
 iHubTest {
