@@ -34,7 +34,7 @@ dependencies {
     implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.11.5'
     implementation 'io.freefair.gradle:git-plugin:6.4.3'
     implementation 'io.freefair.gradle:lombok-plugin:6.4.3'
-    implementation 'io.freefair.gradle:github-plugin:6.4.3'
+    implementation 'io.freefair.gradle:github-plugin:6.4.3.1'
     implementation 'com.github.ben-manes:gradle-versions-plugin:0.42.0'
     implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.10'
     implementation 'org.jmolecules.integrations:jmolecules-bytebuddy:0.9.0'
