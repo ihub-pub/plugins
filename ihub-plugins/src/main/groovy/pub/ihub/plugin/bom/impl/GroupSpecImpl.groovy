@@ -31,9 +31,9 @@ class GroupSpecImpl<T extends Group> implements GroupSpec<T> {
 
     @Override
     T group(String group) {
-        newInstance(group).tap {
-            specs << it
-        }
+        T spec = newInstance group
+        specs << spec
+        spec
     }
 
     protected T newInstance(String group) {
