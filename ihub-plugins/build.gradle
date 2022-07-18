@@ -28,7 +28,7 @@ repositories {
 dependencies {
     implementation project(':ihub-aware')
     implementation 'pub.ihub.lib:ihub-core:1.0.10'
-    implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+    implementation 'io.spring.gradle:dependency-management-plugin:1.0.12.RELEASE'
     implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.7'
     compileOnly    'org.springframework.boot:spring-boot-buildpack-platform'
     implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.11.5'
