@@ -28,7 +28,7 @@ repositories {
 dependencies {
     implementation project(':ihub-aware')
     implementation 'pub.ihub.lib:ihub-core:1.0.10'
-    implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+    implementation 'io.spring.gradle:dependency-management-plugin:1.0.12.RELEASE'
     implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.7'
     compileOnly    'org.springframework.boot:spring-boot-buildpack-platform'
     implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.11.5'
@@ -37,7 +37,7 @@ dependencies {
     implementation 'io.freefair.gradle:github-plugin:6.4.3'
     implementation 'com.github.ben-manes:gradle-versions-plugin:0.42.0'
     implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.10'
-    implementation 'org.jmolecules.integrations:jmolecules-bytebuddy:0.9.0'
+    implementation 'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0'
     implementation 'cn.hutool:hutool-http'
 
     implementation 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0'
