@@ -42,6 +42,12 @@ class IHubPluginsExtension implements IHubProjectExtensionAware {
     boolean mavenLocalEnabled = false
 
     /**
+     * 是否启用阿里云代理仓库
+     */
+    @IHubProperty
+    boolean mavenAliYunEnabled = true
+
+    /**
      * 正式版本仓库
      */
     @IHubProperty
