@@ -103,6 +103,7 @@ project(':c') {
         when: '构建项目'
         propertiesFile << '''
 iHub.mavenLocalEnabled=true
+iHub.mavenAliYunEnabled=false
 iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
 iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
 iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
@@ -115,6 +116,9 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         then: '检查结果'
         result.output.contains('flatDir')
         result.output.contains('MavenLocal')
+        !result.output.contains('AliYunPublic')
+        !result.output.contains('AliYunGoogle')
+        !result.output.contains('AliYunSpring')
         result.output.contains('ReleaseRepo')
         result.output.contains('SnapshotRepo')
         result.output.contains('CustomizeRepo')
