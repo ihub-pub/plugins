@@ -37,7 +37,7 @@ import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 
 import static cn.hutool.http.HttpUtil.get
-import static io.freefair.gradle.plugins.github.internal.GitUtils.currentlyRunningOnGithubActions
+import static io.freefair.gradle.util.GitUtil.githubActions
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
@@ -52,7 +52,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     @Override
     void apply() {
         // 引入GithubPom插件
-        if (currentlyRunningOnGithubActions()) {
+        if (githubActions) {
             applyPlugin GithubPomPlugin
             afterEvaluate {
                 withExtension(PublishingExtension) {
