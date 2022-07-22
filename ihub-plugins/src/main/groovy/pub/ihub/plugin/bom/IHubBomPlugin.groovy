@@ -48,6 +48,8 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
         // 配置项目依赖
         withExtension(AFTER) { ext ->
+            configVersions ext
+
             configProject ext
 
             ext.refreshCommonSpecs()
@@ -58,7 +60,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         }
     }
 
-    private void configProject(IHubBomExtension ext) {
+    private void configVersions(IHubBomExtension ext) {
         // 导入bom配置
         if (ext.bomVersions) {
             dependencyManagement {
@@ -82,7 +84,9 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 }
             }
         }
+    }
 
+    private void configProject(IHubBomExtension ext) {
         project.configurations {
             all {
                 resolutionStrategy {
@@ -103,6 +107,18 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                         exclude group: it.group
                     } else {
                         it.modules.each { module -> exclude group: it.group, module: module }
+                    }
+                }
+                // 配置组件需要能力
+                ext.capabilities.each { spec ->
+                    incoming.beforeResolve {
+                        dependencies.find { spec.dependency ==~ /$it.group|$it.module|$it.name/ }?.with { dep ->
+                            dep.capabilities {
+                                spec.capabilities.each { module ->
+                                    it.requireCapability module.contains(':') ? module : "${dep.group}:$module"
+                                }
+                            }
+                        }
                     }
                 }
             }

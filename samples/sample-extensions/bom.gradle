@@ -44,4 +44,9 @@ iHubBom {
         // 支持依赖其他项目模块
 //        api ':a', ':b', ':c'
     }
+    // 配置组件能力
+    capabilities {
+        dependency 'org.slf4j:slf4j-ext', 'org.javassist:javassist'
+        dependency 'org.springframework.cloud:spring-cloud-starter-openfeign', 'spring-cloud-starter-loadbalancer'
+    }
 }

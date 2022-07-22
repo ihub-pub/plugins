@@ -17,10 +17,12 @@ package pub.ihub.plugin.java
 
 import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
+import org.gradle.api.plugins.JavaPluginExtension
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
 
+import static groovy.transform.TypeCheckingMode.SKIP
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
@@ -64,5 +66,22 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
     boolean applyOpenapiPlugin = false
+
+    /**
+     * 可选功能配置
+     * @param feature 功能
+     * @param capabilities 能力
+     */
+    @CompileStatic(SKIP)
+    void register(String feature, String... capabilities) {
+        project.extensions.getByType(JavaPluginExtension).with {
+            capabilities.each { capability ->
+                registerFeature(feature) {
+                    it.usingSourceSet sourceSets.main
+                    it.capability project.group.toString(), capability, project.version.toString()
+                }
+            }
+        }
+    }
 
 }
