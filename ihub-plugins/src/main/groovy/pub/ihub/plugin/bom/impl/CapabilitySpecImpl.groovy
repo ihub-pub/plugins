@@ -15,8 +15,8 @@ final class CapabilitySpecImpl implements CapabilitySpec {
     final List<Capability> specs = []
 
     @Override
-    void dependency(String dependency, String... capabilities) {
-        specs << new Capability(dependency: dependency, capabilities: capabilities as Set<String>)
+    void requireCapability(String dependency, String... capabilities) {
+        specs << new Capability(dependency, capabilities as Set<String>)
     }
 
 }

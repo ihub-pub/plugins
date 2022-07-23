@@ -10,6 +10,6 @@ import pub.ihub.plugin.bom.impl.Capability
  */
 interface CapabilitySpec extends ActionSpec<Capability> {
 
-    void dependency(String dependency, String... capabilities)
+    void requireCapability(String dependency, String... capabilities)
 
 }

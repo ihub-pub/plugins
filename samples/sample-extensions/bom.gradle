@@ -46,7 +46,7 @@ iHubBom {
     }
     // 配置组件能力
     capabilities {
-        dependency 'org.slf4j:slf4j-ext', 'org.javassist:javassist'
-        dependency 'org.springframework.cloud:spring-cloud-starter-openfeign', 'spring-cloud-starter-loadbalancer'
+        requireCapability 'org.slf4j:slf4j-ext', 'org.javassist:javassist'
+        requireCapability 'org.springframework.cloud:spring-cloud-starter-openfeign', 'spring-cloud-starter-loadbalancer'
     }
 }

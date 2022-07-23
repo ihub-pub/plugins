@@ -109,13 +109,19 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                         it.modules.each { module -> exclude group: it.group, module: module }
                     }
                 }
-                // 配置组件需要能力
-                ext.capabilities.each { spec ->
+            }
+            // 配置组件需要能力
+            ext.capabilities.each { spec ->
+                compileClasspath {
                     incoming.beforeResolve {
                         dependencies.find { spec.dependency ==~ /$it.group|$it.module|$it.name/ }?.with { dep ->
-                            dep.capabilities {
-                                spec.capabilities.each { module ->
-                                    it.requireCapability module.contains(':') ? module : "${dep.group}:$module"
+                            project.dependencies {
+                                runtimeOnly("$dep.module") {
+                                    capabilities {
+                                        spec.capabilities.each { module ->
+                                            requireCapability module.contains(':') ? module : "${dep.group}:$module"
+                                        }
+                                    }
                                 }
                             }
                         }

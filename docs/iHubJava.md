@@ -135,3 +135,25 @@ Created-By: Java 11
 ```
 
 > 可以通过[compatibility](/iHubJava?id=扩展属性)配置兼容性。
+
+## 可选功能配置
+
+> `registerFeature`：支持配置可选功能，[详见](https://docs.gradle.org/current/userguide/feature_variants.html)
+
+| Field        | Dependencies |
+|--------------| ------------ |
+| `feature`      | 功能 |
+| `capabilities` | 能力 |
+
+> 配置示例
+
+```groovy
+iHubJava {
+    registerFeature 'servlet', 'cloud-support', 'servlet-support'
+    registerFeature 'reactor', 'cloud-support', 'reactor-support'
+}
+dependencies {
+    servletApi 'org.springframework.boot:spring-boot-starter-web'
+    reactorApi 'org.springframework.boot:spring-boot-starter-webflux'
+}
+```

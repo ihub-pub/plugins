@@ -40,6 +40,13 @@ iHubBom {
         // 支持依赖其他项目模块
 //        api ':a', ':b', ':c'
     }
+    // 配置组件能力，参见 https://docs.gradle.org/current/userguide/feature_variants.html#sec::consuming_feature_variants
+    capabilities {
+        // 支持单个组件(org.slf4j:slf4j-ext)、按组(org.slf4j)、按模块名(slf4j-ext)进行配置
+        requireCapability 'org.slf4j:slf4j-ext', 'org.javassist:javassist'
+        // 能力可以省略组，默认同组件
+        requireCapability 'org.springframework.cloud:spring-cloud-starter-openfeign', 'spring-cloud-starter-loadbalancer'
+    }
 }
 ```
 

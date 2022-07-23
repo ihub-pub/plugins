@@ -73,11 +73,11 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
      * @param capabilities 能力
      */
     @CompileStatic(SKIP)
-    void register(String feature, String... capabilities) {
+    void registerFeature(String feature, String... capabilities) {
         project.extensions.getByType(JavaPluginExtension).with {
-            capabilities.each { capability ->
-                registerFeature(feature) {
-                    it.usingSourceSet sourceSets.main
+            registerFeature(feature) {
+                it.usingSourceSet sourceSets.main
+                capabilities.each { capability ->
                     it.capability project.group.toString(), capability, project.version.toString()
                 }
             }

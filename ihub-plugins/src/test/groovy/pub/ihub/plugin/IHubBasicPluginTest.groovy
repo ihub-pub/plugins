@@ -312,8 +312,8 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
                 plugin 'pub.ihub.plugin.ihub-java'
             }
             iHubJava {
-                register 'servlet', 'cloud-support', 'servlet-support'
-                register 'reactor', 'cloud-support', 'reactor-support'
+                registerFeature 'servlet', 'cloud-support', 'servlet-support'
+                registerFeature 'reactor', 'cloud-support', 'reactor-support'
             }
             dependencies {
                 servletApi 'org.springframework.boot:spring-boot-starter-web'
