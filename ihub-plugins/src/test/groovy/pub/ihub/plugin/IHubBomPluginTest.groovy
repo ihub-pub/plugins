@@ -46,6 +46,30 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
         result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
+        result.output.contains '│ org.slf4j:slf4j-ext                                        │ org.javassist:javassist             │'
+        result.output.contains '│ org.springframework.cloud:spring-cloud-starter-openfeign   │ spring-cloud-starter-loadbalancer   │'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'bom配置组件需要能力配置测试'() {
+        setup: '初始化项目'
+        copyProject 'bom.gradle'
+        buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-java'
+            }
+            dependencies {
+                api 'org.slf4j:slf4j-ext'
+                api 'org.springframework.cloud:spring-cloud-starter-openfeign'
+            }
+        '''
+        testProjectDir.newFolder 'src', 'main', 'java'
+        testProjectDir.newFile 'src/main/java/Demo.java'
+
+        when: '构建项目'
+        def result = gradleBuilder.withArguments('build').build()
+
+        then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

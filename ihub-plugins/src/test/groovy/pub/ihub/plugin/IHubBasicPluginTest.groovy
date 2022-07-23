@@ -304,6 +304,30 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'Java插件可选功能配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-java'
+            }
+            iHubJava {
+                registerFeature 'servlet', 'cloud-support', 'servlet-support'
+                registerFeature 'reactor', 'cloud-support', 'reactor-support'
+            }
+            dependencies {
+                servletApi 'org.springframework.boot:spring-boot-starter-web'
+                reactorApi 'org.springframework.boot:spring-boot-starter-webflux'
+            }
+        '''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     def 'Publish插件配置测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'

@@ -25,6 +25,8 @@ import pub.ihub.plugin.bom.impl.Dependency
 import pub.ihub.plugin.bom.impl.DependencySpecImpl
 import pub.ihub.plugin.bom.impl.Exclude
 import pub.ihub.plugin.bom.impl.ExcludeSpecImpl
+import pub.ihub.plugin.bom.impl.Capability
+import pub.ihub.plugin.bom.impl.CapabilitySpecImpl
 import pub.ihub.plugin.bom.impl.Group
 import pub.ihub.plugin.bom.impl.GroupSpecImpl
 import pub.ihub.plugin.bom.impl.Module
@@ -34,11 +36,13 @@ import pub.ihub.plugin.bom.impl.ModulesSpecImpl
 import pub.ihub.plugin.bom.specs.ActionSpec
 import pub.ihub.plugin.bom.specs.ConfigSpec
 import pub.ihub.plugin.bom.specs.DependencySpec
+import pub.ihub.plugin.bom.specs.CapabilitySpec
 import pub.ihub.plugin.bom.specs.GroupSpec
 import pub.ihub.plugin.bom.specs.ModuleSpec
 import pub.ihub.plugin.bom.specs.ModulesSpec
 import pub.ihub.plugin.bom.specs.VersionSpec
 
+import java.lang.reflect.Modifier
 import java.util.function.Supplier
 
 import static groovy.transform.TypeCheckingMode.SKIP
@@ -61,6 +65,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
     final Set<Group> groupVersions = []
     final Set<Exclude> excludeModules = []
     final Set<Dependency> dependencies = []
+    final Set<Capability> capabilities = []
 
     /**
      * 导入mavenBom
@@ -107,6 +112,15 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
         actionExecute action, dependencies, DependencySpecImpl::new
     }
 
+    /**
+     * 要求能力
+     * @param action 配置
+     */
+    @CompileStatic(SKIP)
+    void capabilities(Action<CapabilitySpec> action) {
+        actionExecute action, capabilities, CapabilitySpecImpl::new
+    }
+
     @CompileStatic(SKIP)
     private static <A extends ActionSpec<T>, T extends ConfigSpec> void actionExecute(Action<A> action, Set<T> specs,
                                                                                       Supplier<A> getter) {
@@ -115,9 +129,10 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
         actionSpec.specs*.appendTo specs
     }
 
+    @CompileStatic(SKIP)
     void refreshCommonSpecs() {
         if (!root) {
-            ['bomVersions', 'dependencyVersions', 'groupVersions', 'excludeModules', 'dependencies'].each {
+            IHubBomExtension.declaredFields.findAll { Modifier.isFinal it.modifiers }.name.each {
                 refreshCommonSpecs it
             }
         }
@@ -136,6 +151,7 @@ class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
         printConfig 'groupVersions', 'Group Maven Default Version', 'Group', 'Version'
         printConfig 'excludeModules', 'Exclude Group Modules', 'Group', 'Module'
         printConfig 'dependencies', 'Config Default Dependencies', 'DependencyType', 'Dependencies'
+        printConfig 'capabilities', 'Config Default Require Capabilities', 'Dependency', 'Capabilities'
     }
 
     boolean isRoot() {
