@@ -1,3 +1,31 @@
+## 🔖 1.2.9 (2022-07-24)
+
+
+### ✨ Features
+
+- feat(bom): 支持配置组件功能以及组件需要能力  [@henry-hub](https://github.com/henry-hub) ([#294](https://github.com/ihub-pub/plugins/pull/294))
+- feat(repo): 支持阿里云代理仓库启用参数  [@henry-hub](https://github.com/henry-hub) ([#289](https://github.com/ihub-pub/plugins/pull/289))
+
+### ⬆️ Dependency Updates
+
+- gradle: bump ihub-core from 1.0.10 to 1.0.11 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#295](https://github.com/ihub-pub/plugins/pull/295))
+- gradle: bump spring-boot-gradle-plugin from 2.6.7 to 2.7.2 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#293](https://github.com/ihub-pub/plugins/pull/293))
+- build(gradle): 升级plugin-publish、spring-aot组件版本  [@henry-hub](https://github.com/henry-hub) ([#292](https://github.com/ihub-pub/plugins/pull/292))
+- gradle: bump lombok-plugin from 6.4.3 to 6.5.0.3 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#287](https://github.com/ihub-pub/plugins/pull/287))
+- gradle: bump byte-buddy-gradle-plugin from 1.12.10 to 1.12.12 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#291](https://github.com/ihub-pub/plugins/pull/291))
+- gradle: bump dependency-management-plugin from 1.0.11.RELEASE to 1.0.12.RELEASE in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#290](https://github.com/ihub-pub/plugins/pull/290))
+- gradle: bump jmolecules-bytebuddy from 0.9.0 to 1.6.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#283](https://github.com/ihub-pub/plugins/pull/283))
+- build(gradle): 升级gradle至7.5  [@henry-hub](https://github.com/henry-hub) ([#288](https://github.com/ihub-pub/plugins/pull/288))
+- build(gradle): 升级spring-aot组件版本  [@henry-hub](https://github.com/henry-hub) ([#274](https://github.com/ihub-pub/plugins/pull/274))
+- gradle: bump pub.ihub.plugin.ihub-settings from 1.2.6 to 1.2.8  [@dependabot](https://github.com/dependabot) ([#272](https://github.com/ihub-pub/plugins/pull/272))
+
+### 🧰 Maintenance
+
+- ci(github): 发布release前需要完整构建，避免再次发版翻车  [@henry-hub](https://github.com/henry-hub) ([#273](https://github.com/ihub-pub/plugins/pull/273))
+
+
+---
+
 ## 🔖 1.2.8 (2022-05-10)
 
 
