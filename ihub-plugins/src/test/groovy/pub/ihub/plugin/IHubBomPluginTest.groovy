@@ -132,6 +132,9 @@ class IHubBomPluginTest extends IHubSpecification {
                     dependencyVersions {
                         group 'org.codehaus.groovy' modules 'groovy-all' version '3.0.8'
                     }
+                    capabilities {
+                        requireCapability 'org.slf4j:slf4j-ext', 'org.javassist:javassist'
+                    }
                 }
             }
             iHubBom {
@@ -167,6 +170,9 @@ class IHubBomPluginTest extends IHubSpecification {
                     }
                     dependencies {
                         compileOnlyApi 'pub.ihub.lib:ihub-core'
+                    }
+                    capabilities {
+                        requireCapability 'org.slf4j:slf4j-ext', 'other-support'
                     }
                 }
             }
