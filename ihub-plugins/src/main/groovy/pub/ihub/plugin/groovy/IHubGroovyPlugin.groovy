@@ -45,8 +45,7 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
                     'groovy-sql',
                     'groovy-templates',
                     'groovy-xml',
-                ]).collect { withExtension(IHubPluginsExtension).enableGroovy4 ?
-                        "org.apache.groovy:$it" : "org.codehaus.groovy:$it" } as String[])
+                ]).collect { "${withExtension(IHubPluginsExtension).enableGroovy4 ? 'org.apache.groovy' : 'org.codehaus.groovy'}:$it" } as String[])
             }
         }
     }
