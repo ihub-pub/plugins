@@ -105,6 +105,12 @@ class IHubPluginsExtension implements IHubProjectExtensionAware {
     @IHubProperty
     boolean compileGroovyAllModules = false
 
+    /**
+     * 是否启用Groovy 4
+     */
+    @IHubProperty
+    boolean enableGroovy4 = false
+
     //</editor-fold>
 
     //<editor-fold desc="其他扩展属性">
