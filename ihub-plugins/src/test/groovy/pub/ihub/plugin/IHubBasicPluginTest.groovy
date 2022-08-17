@@ -204,7 +204,6 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         when: '修改版本以及依赖组件模块'
         propertiesFile << 'iHub.compileGroovyAllModules=true\n'
-        propertiesFile << 'groovy.version=2.5.14\n'
         result = gradleBuilder.build()
 
         then: '检查结果'
@@ -213,11 +212,11 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         when: '启用Groovy 4选项开关'
         propertiesFile << 'iHub.enableGroovy4=true\n'
-        propertiesFile << 'groovy.version=4.0.4\n'
         result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains '│ implementation                          │ org.apache.groovy:groovy-all                           │'
+        result.output.contains '│ org.spockframework               │ spock-spring               │ 2.2-M3-groovy-4.0                │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
