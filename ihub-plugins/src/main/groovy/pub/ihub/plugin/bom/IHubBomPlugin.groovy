@@ -114,7 +114,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             ext.capabilities.each { spec ->
                 compileClasspath {
                     incoming.beforeResolve {
-                        dependencies.find { spec.dependency ==~ /$it.group|$it.module|$it.name/ }?.with { dep ->
+                        dependencies.find { spec.dependency ==~ /$it.group|$it.group:$it.name|$it.name/ }?.with { dep ->
                             project.dependencies {
                                 runtimeOnly("$dep.module") {
                                     capabilities {

@@ -34,6 +34,11 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
     @Override
     void apply() {
         withExtension(IHubBomExtension) {
+            if (withExtension(IHubPluginsExtension).enableGroovy4) {
+                it.dependencyVersions {
+                    group 'org.spockframework' modules 'spock-spring' version '2.2-M3-groovy-4.0'
+                }
+            }
             it.dependencies {
                 implementation((withExtension(IHubPluginsExtension).compileGroovyAllModules ? ['groovy-all'] : [
                     'groovy',
