@@ -210,6 +210,15 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         then: '检查结果'
         result.output.contains '│ implementation                         │ org.codehaus.groovy:groovy-all                          │'
         result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '启用Groovy 4选项开关'
+        propertiesFile << 'iHub.enableGroovy4=true\n'
+        propertiesFile << 'groovy.version=4.0.4\n'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains '│ implementation                          │ org.apache.groovy:groovy-all                           │'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def 'Java插件默认配置测试'() {
