@@ -65,6 +65,8 @@ jobs:
 
   codacy:
     if: ${{ github.event_name == 'push' && github.repository_owner == 'ihub-pub' }}
+    permissions:
+      security-events: write
     name: Codacy Security Scan
     runs-on: ubuntu-latest
     steps:
