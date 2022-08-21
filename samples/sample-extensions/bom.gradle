@@ -22,15 +22,15 @@ description = 'BOM插件DSL扩展配置样例'
 iHubBom {
     // 导入mavenBom
     importBoms {
-        group 'pub.ihub.lib' module 'ihub-bom' version '1.0.8'
+        group 'pub.ihub.lib' module 'ihub-bom' version '1.0.11'
     }
     // 配置依赖默认版本
     dependencyVersions {
-        group 'pub.ihub.lib' modules 'ihub-core', 'ihub-process' version '1.0.8'
+        group 'pub.ihub.lib' modules 'ihub-core', 'ihub-process' version '1.0.11'
     }
     // 配置组版本策略
     groupVersions {
-        group 'pub.ihub.lib' version '1.0.8'
+        group 'pub.ihub.lib' version '1.0.11'
     }
     // 排除组件依赖
     excludeModules {
@@ -47,6 +47,6 @@ iHubBom {
     // 配置组件能力
     capabilities {
         requireCapability 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter', 'pub.ihub.lib:reactor-support'
-        requireCapability 'ihub-boot-cloud-spring-boot-starter', 'servlet-support'
+        requireCapability 'ihub-boot-cloud-spring-boot-starter', 'nacos-support'
     }
 }
