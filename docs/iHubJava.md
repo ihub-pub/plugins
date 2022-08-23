@@ -12,7 +12,8 @@
 
 | Extension | Description                                                 | Default | Ext | Prj | Sys | Env |
 | --------- |-------------------------------------------------------------| ------- | --- | ------- | ------ | --- |
-| `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置         | `log` | ✔ | ✔ | ❌ | ❌ |
+| `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置         | `false` | ✔ | ✔ | ❌ | ❌ |
+| `compileEncoding` | Java编译编码 | `UTF-8` | ✔ | ✔ | ✔ | ❌ |
 | `compatibility` | Java兼容性配置                                                   | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译                                                  | `true` | ✔ | ✔ | ✔ | ❌ |
 | `applyOpenapiPlugin` | 启用 [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) 插件                                                  | `false` | ✔ | ✔ | ✔ | ❌ |
