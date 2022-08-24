@@ -118,14 +118,14 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
     @Override
     void apply() {
         withExtension(BEFORE) { ext ->
-            // 兼容性配置
-            ext.compatibility?.with { version ->
-                withTask(AbstractCompile) {
+            withTask(AbstractCompile) {
+                // 兼容性配置
+                ext.compatibility?.with { version ->
                     it.sourceCompatibility = version
                     it.targetCompatibility = version
-                    it.options.encoding = 'UTF-8'
-                    it.options.incremental = ext.gradleCompilationIncremental
                 }
+                it.options.encoding = ext.compileEncoding
+                it.options.incremental = ext.gradleCompilationIncremental
             }
 
             withExtension(IHubBomExtension) {
