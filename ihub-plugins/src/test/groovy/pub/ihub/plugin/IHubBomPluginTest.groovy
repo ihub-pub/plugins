@@ -39,15 +39,15 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.8                         │'
-        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.8                        │'
-        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.8                        │'
-        result.output.contains '│ pub.ihub.lib                                      │ 1.0.8                                        │'
+        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.12                        │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
         result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
-        result.output.contains '│ org.slf4j:slf4j-ext                                        │ org.javassist:javassist             │'
-        result.output.contains '│ org.springframework.cloud:spring-cloud-starter-openfeign   │ spring-cloud-starter-loadbalancer   │'
+        result.output.contains '│ pub.ihub.lib:ihub-boot-cloud-spring-boot-starter         │ pub.ihub.lib:reactor-support          │'
+        result.output.contains '│ ihub-boot-cloud-spring-boot-starter                      │ nacos-support                         │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -59,8 +59,7 @@ class IHubBomPluginTest extends IHubSpecification {
                 plugin 'pub.ihub.plugin.ihub-java'
             }
             dependencies {
-                api 'org.slf4j:slf4j-ext'
-                api 'org.springframework.cloud:spring-cloud-starter-openfeign'
+                api 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter'
             }
         '''
         testProjectDir.newFolder 'src', 'main', 'java'
@@ -83,9 +82,9 @@ class IHubBomPluginTest extends IHubSpecification {
 
         then: '检查结果'
         !result.output.contains('ihub-bom')
-        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.8                        │'
-        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.8                        │'
-        result.output.contains '│ pub.ihub.lib                                      │ 1.0.8                                        │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
         result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
@@ -101,10 +100,10 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.8                         │'
+        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.12                        │'
         !result.output.contains('│ ihub-process')
         !result.output.contains('│ ihub-core')
-        result.output.contains '│ pub.ihub.lib                                      │ 1.0.8                                        │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
         result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
