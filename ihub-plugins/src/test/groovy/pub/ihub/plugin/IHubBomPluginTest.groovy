@@ -39,10 +39,10 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.11                        │'
-        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.11                       │'
-        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.11                       │'
-        result.output.contains '│ pub.ihub.lib                                      │ 1.0.11                                       │'
+        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.12                        │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
         result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
@@ -58,21 +58,10 @@ class IHubBomPluginTest extends IHubSpecification {
             apply {
                 plugin 'pub.ihub.plugin.ihub-java'
             }
-            // TODO
-            iHubBom {
-                importBoms {
-                    group 'pub.ihub.lib' module 'ihub-bom' version '1.0.12-SNAPSHOT'
-                }
-                groupVersions {
-                    group 'pub.ihub.lib' version '1.0.12-SNAPSHOT'
-                }
-            }
             dependencies {
                 api 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter'
             }
         '''
-        // TODO
-        propertiesFile << 'iHub.snapshotRepoUrl=https://s01.oss.sonatype.org/content/repositories/snapshots/'
         testProjectDir.newFolder 'src', 'main', 'java'
         testProjectDir.newFile 'src/main/java/Demo.java'
 
@@ -93,9 +82,9 @@ class IHubBomPluginTest extends IHubSpecification {
 
         then: '检查结果'
         !result.output.contains('ihub-bom')
-        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.11                       │'
-        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.11                       │'
-        result.output.contains '│ pub.ihub.lib                                      │ 1.0.11                                       │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.12                       │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
         result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
@@ -111,10 +100,10 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.11                        │'
+        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.12                        │'
         !result.output.contains('│ ihub-process')
         !result.output.contains('│ ihub-core')
-        result.output.contains '│ pub.ihub.lib                                      │ 1.0.11                                       │'
+        result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
         result.output.contains '│ org.slf4j                                      │ slf4j-api                                       │'
         result.output.contains '│ pub.ihub                                       │ all                                             │'
         result.output.contains '│ api                                        │ pub.ihub.lib:ihub-core                              │'
