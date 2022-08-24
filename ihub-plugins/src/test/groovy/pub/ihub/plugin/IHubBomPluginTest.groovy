@@ -219,7 +219,7 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-process                          │'
         result.output.contains '│ testRuntimeOnly                             │ pub.ihub.lib:ihub-core                             │'
         result.output.contains '│ testImplementation                          │ pub.ihub.lib:ihub-core                             │'
-        result.output.contains '│ pub.ihub.lib                                        │ core                                       │'
+        result.output.contains '│ pub.ihub.lib                                      │ core                                         │'
         result.output.contains '│ pub.ihub.lib                                     │ all                                           │'
         result.output.contains '│ pub.ihub.lib                                     │ ihub-core                                     │'
         result.output.contains '│ pub.ihub.lib                                      │ all                                          │'
