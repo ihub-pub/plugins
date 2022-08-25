@@ -52,7 +52,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * PMD版本
      */
     @IHubProperty
-    String pmdVersion = '6.38.0'
+    String pmdVersion = '6.48.0'
 
     //</editor-fold>
 
@@ -67,7 +67,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * Codenarc版本
      */
     @IHubProperty
-    String codenarcVersion = '2.2.0'
+    String codenarcVersion = '3.1.0'
 
     //</editor-fold>
 
@@ -77,7 +77,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * Jacoco版本
      */
     @IHubProperty
-    String jacocoVersion = '0.8.7'
+    String jacocoVersion = '0.8.8'
     /**
      * 是否启用bundle分支覆盖检查
      */
