@@ -18,10 +18,12 @@ package pub.ihub.plugin.bom
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Action
+import org.gradle.api.plugins.GroovyPlugin
 import pub.ihub.core.IHubLibsVersion
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
+import pub.ihub.plugin.java.IHubJavaExtension
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
@@ -126,6 +128,12 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                             }
                         }
                     }
+                }
+            }
+            // Groovy增量编译与Java注释处理器不能同时使用
+            if (hasPlugin(GroovyPlugin) && withExtension(IHubJavaExtension).gradleCompilationIncremental) {
+                ext.dependencies.removeIf {
+                    it.type == 'annotationProcessor'
                 }
             }
             // 配置组件依赖

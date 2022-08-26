@@ -21,6 +21,7 @@ import net.bytebuddy.build.gradle.AbstractByteBuddyTask
 import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
 import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
+import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.ProjectReportsPlugin
@@ -44,8 +45,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
  * @author henry
  */
 @IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [
-    IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, LombokPlugin, ProjectReportsPlugin, BuildDashboardPlugin,
-    ByteBuddyPlugin
+    IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin, BuildDashboardPlugin, ByteBuddyPlugin
 ])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
@@ -147,6 +147,9 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         withExtension(AFTER) {
             if (it.applyOpenapiPlugin) {
                 applyPlugin ProcessesPlugin, OpenApiGradlePlugin
+            }
+            if (!hasPlugin(GroovyPlugin)) {
+                applyPlugin LombokPlugin
             }
         }
 
