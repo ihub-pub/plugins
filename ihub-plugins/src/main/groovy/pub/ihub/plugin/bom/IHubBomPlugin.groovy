@@ -52,6 +52,12 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         withExtension(AFTER) { ext ->
             configVersions ext
 
+            // Groovy增量编译与Java注释处理器不能同时使用
+            if (hasPlugin(GroovyPlugin) && withExtension(IHubJavaExtension).gradleCompilationIncremental) {
+                ext.dependencies.removeIf {
+                    it.type == 'annotationProcessor'
+                }
+            }
             configProject ext
 
             ext.refreshCommonSpecs()
@@ -128,12 +134,6 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                             }
                         }
                     }
-                }
-            }
-            // Groovy增量编译与Java注释处理器不能同时使用
-            if (hasPlugin(GroovyPlugin) && withExtension(IHubJavaExtension).gradleCompilationIncremental) {
-                ext.dependencies.removeIf {
-                    it.type == 'annotationProcessor'
                 }
             }
             // 配置组件依赖

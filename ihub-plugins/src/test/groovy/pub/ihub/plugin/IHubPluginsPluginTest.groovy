@@ -112,7 +112,7 @@ class IHubPluginsPluginTest extends Specification {
 
         when: '构建项目'
         testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
-        def result = gradleBuilder.withArguments('build').build()
+        def result = gradleBuilder.withArguments('build', '-DiHubJava.gradleCompilationIncremental=false').build()
 
         then: '检查结果'
         result.task(':sample-multi-rest:pmdMain').outcome == SUCCESS
