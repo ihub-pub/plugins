@@ -51,3 +51,9 @@
 ## 👨‍💻 开源贡献指南
 
 请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
+
+## ⭐ Stargazers & Forkers
+
+[![Stargazers repo roster for @ihub-pub/plugins](https://reporoster.com/stars/ihub-pub/plugins)](https://github.com/ihub-pub/plugins/stargazers)
+
+[![Forkers repo roster for @ihub-pub/plugins](https://reporoster.com/forks/ihub-pub/plugins)](https://github.com/ihub-pub/plugins/network/members)

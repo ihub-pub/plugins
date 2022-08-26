@@ -41,7 +41,7 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
      * 默认依赖（“,”分割）
      */
     @IHubProperty
-    String defaultDependencies = 'false'
+    String defaultDependencies = 'log'
 
     /**
      * Java编译编码
