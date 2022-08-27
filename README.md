@@ -8,7 +8,7 @@
 [![Gradle Build](https://img.shields.io/github/workflow/status/ihub-pub/plugins/Build?label=Build&logo=GitHub+Actions&logoColor=white)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
 [![CodeFactor](https://img.shields.io/codefactor/grade/github/ihub-pub/plugins/main?color=white&label=Codefactor&labelColor=F44A6A&logo=CodeFactor&logoColor=white)](https://www.codefactor.io/repository/github/ihub-pub/plugins)
 [![Codecov](https://img.shields.io/codecov/c/github/ihub-pub/plugins?token=ZQ0WR3ZSWG&color=white&label=Codecov&labelColor=F01F7A&logo=Codecov&logoColor=white)](https://codecov.io/gh/ihub-pub/plugins)
-[![GitHub](https://img.shields.io/badge/GitHub-181717.svg?style=flat&logo=GitHub)](https://github.com/ihub-pub "IHubPub")
+[![GitHub](https://img.shields.io/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717)](https://github.com/ihub-pub/plugins "IHubPub")
 [![Gitee](https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee)](https://gitee.com/ihub-pub "IHubPub")
 [![Docs](https://img.shields.io/badge/Docs-8CA1AF.svg?style=flat&logo=Read+the+Docs&logoColor=white)](https://doc.ihub.pub/plugins "Docs")
 [![Join the chat at https://gitter.im/ihub-pub/plugins](https://img.shields.io/badge/Gitter-45af90.svg?style=flat&logo=Gitter&logoColor=white&)](https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge "Chat On Gitter")
