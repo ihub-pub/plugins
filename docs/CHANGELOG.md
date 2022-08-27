@@ -1,3 +1,35 @@
+## 🔖 1.2.10 (2022-08-27)
+
+
+### ✨ Features
+
+- feat(encoding): ihub-java插件添加Java编译编码配置，默认UTF-8  [@henry-hub](https://github.com/henry-hub) ([#305](https://github.com/ihub-pub/plugins/pull/305))
+- feat(java): 调整组件能力依赖方式  [@henry-hub](https://github.com/henry-hub) ([#304](https://github.com/ihub-pub/plugins/pull/304))
+- feat(groovy4): 配置groovy4时对应的spock组件版本  [@henry-hub](https://github.com/henry-hub) ([#301](https://github.com/ihub-pub/plugins/pull/301))
+- feat(groovy): 添加“是否启用Groovy 4”的开关  [@zhanghuabin](https://github.com/zhanghuabin) ([#299](https://github.com/ihub-pub/plugins/pull/299))
+
+### 🐛 Bug Fixes
+
+- fix(java): 修正组件多个能力配置失败的问题  [@henry-hub](https://github.com/henry-hub) ([#302](https://github.com/ihub-pub/plugins/pull/302))
+
+### ⬆️ Dependency Updates
+
+- gradle: bump ihub-core from 1.0.11 to 1.0.12 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#306](https://github.com/ihub-pub/plugins/pull/306))
+- gradle: bump spring-boot-gradle-plugin from 2.7.2 to 2.7.3 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#303](https://github.com/ihub-pub/plugins/pull/303))
+- gradle: bump springdoc-openapi-gradle-plugin from 1.3.4 to 1.4.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#298](https://github.com/ihub-pub/plugins/pull/298))
+- gradle: bump dependency-management-plugin from 1.0.12.RELEASE to 1.0.13.RELEASE in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#300](https://github.com/ihub-pub/plugins/pull/300))
+- feat(version): 升级PMD、Codenarc、Jacoco版本  [@henry-hub](https://github.com/henry-hub) ([#307](https://github.com/ihub-pub/plugins/pull/307))
+- gradle: bump pub.ihub.plugin.ihub-settings from 1.2.8 to 1.2.9  [@dependabot](https://github.com/dependabot) ([#297](https://github.com/ihub-pub/plugins/pull/297))
+
+### 🧰 Maintenance
+
+- fix(java): Groovy增量编译与Java注释处理器不能同时使用  [@henry-hub](https://github.com/henry-hub) ([#309](https://github.com/ihub-pub/plugins/pull/309))
+- fix(test): 修正测试用例  [@henry-hub](https://github.com/henry-hub) ([#308](https://github.com/ihub-pub/plugins/pull/308))
+- ci(github): 调整工作流组件版本  [@henry-hub](https://github.com/henry-hub) ([#296](https://github.com/ihub-pub/plugins/pull/296))
+
+
+---
+
 ## 🔖 1.2.9 (2022-07-24)
 
 
