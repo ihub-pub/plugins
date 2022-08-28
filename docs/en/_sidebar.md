@@ -1,10 +1,8 @@
-* [📚 简介](/)
-* [🚀 快速上手](gettingStarted.md)
-* ✈️ 入门篇
-    - [入门一](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
-* 🛰️ 进阶篇
-    - [进阶一](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
-* 🛸 插件集
+* [📚 Introduction](/)
+* [🚀 Getting Started](gettingStarted.md)
+* ✈️ Basics
+* 🛰️ Advanced
+* 🛸 Plugins
     - [ihub-settings](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
     - [ihub](iHub.md '基础插件，用于配置组件仓库以及一些其他扩展属性 ')
     - [ihub-bom](iHubBom.md '配置项目依赖组件版本以及兼容性管理 ')
@@ -16,5 +14,5 @@
     - [ihub-boot](iHubBoot.md '集成spring-boot插件以及镜像默认配置 ')
     - [ihub-native](iHubNative.md '集成spring-native插件以及镜像默认配置 ')
     - [ihub-git-hooks](iHubGitHooks.md '配置GitHooks，可以为git操作配置一些钩子命令 ')
-* [📑 说明](explanation.md)
-* [🔖 版本](CHANGELOG.md)
+* [📑 Glossary](explanation.md)
+* [🔖 ChangeLog](CHANGELOG.md)
