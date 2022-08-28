@@ -36,6 +36,8 @@
         nameLink: '/',
         homepage: 'https://raw.githubusercontents.com/ihub-pub/plugins/main/README.md',
         alias: {
+            '/en': '/en/README.md',
+            '/en/(.*)': '/en/$1',
             '.*?/_navbar.md': '/_navbar.md',
             '/([0-9]+\.[0-9]+\.[0-9]+)/_sidebar.md': 'https://raw.githubusercontents.com/ihub-pub/plugins/$1/docs/_sidebar.md',
             '/([0-9]+\.[0-9]+\.[0-9]+)/(.*)': 'https://raw.githubusercontents.com/ihub-pub/plugins/$1/docs/$2.md',
