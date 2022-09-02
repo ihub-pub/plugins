@@ -3,6 +3,7 @@
 * ✈️ 入门篇
     - [Gradle基础入门](basics/gradleBasic.md 'Gradle基础入门 ')
     - [单项目基础配置](basics/singleBasic.md '单项目基础配置')
+    - [Groovy项目基础配置](basics/groovyBasic.md 'Groovy项目基础配置')
 * 🛰️ 进阶篇
     - [进阶一](demo.md '置插件仓库、插件版本以及子项目管理 ')
 * 🛸 插件集

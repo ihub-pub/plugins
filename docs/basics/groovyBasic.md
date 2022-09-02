@@ -1,4 +1,4 @@
-> 单一Java项目配置，参见[项目模板](https://github.com/ihub-pub/single-template)
+> Groovy项目配置，参见[项目模板](https://github.com/ihub-pub/groovy-template)
 
 ## 配置 wrapper
 
@@ -16,7 +16,7 @@ plugins {
 
 ## 配置 build.gradle
 
-> 引入Java插件（[ihub-java](/iHubJava)）、测试插件（[ihub-test](/iHubTest)）以及验证插件（[ihub-verification](/iHubVerification)），配置[ihub-git-hooks](/iHubGitHooks)插件钩子命令：
+> 引入Groovy插件（[ihub-groovy](/iHubGroovy)）、测试插件（[ihub-test](/iHubTest)）以及验证插件（[ihub-verification](/iHubVerification)），配置[ihub-git-hooks](/iHubGitHooks)插件钩子命令：
 
 ```groovy
 plugins {
@@ -24,7 +24,7 @@ plugins {
 }
 
 apply {
-    plugin 'pub.ihub.plugin.ihub-java'
+    plugin 'pub.ihub.plugin.ihub-groovy'
     plugin 'pub.ihub.plugin.ihub-test'
     plugin 'pub.ihub.plugin.ihub-verification'
 }
