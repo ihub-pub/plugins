@@ -1,9 +1,9 @@
 * [📚 简介](/)
 * [🚀 快速上手](gettingStarted.md)
 * ✈️ 入门篇
-    - [入门一](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
+    - [Gradle基础入门](basics/gradleBasic.md 'Gradle基础入门 ')
 * 🛰️ 进阶篇
-    - [进阶一](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
+    - [进阶一](demo.md '置插件仓库、插件版本以及子项目管理 ')
 * 🛸 插件集
     - [ihub-settings](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
     - [ihub](iHub.md '基础插件，用于配置组件仓库以及一些其他扩展属性 ')
