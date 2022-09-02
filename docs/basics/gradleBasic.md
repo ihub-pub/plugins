@@ -1,5 +1,3 @@
-# Gradle基础入门
-
 > `Gradle`是源于 [Apache Ant](https://ant.apache.org/) 和 [Apache Maven](https://maven.apache.org/) 概念的项目自动化构建开源工具，它使用一种基于 [Groovy](https://groovy.apache.org/) 的特定领域语言 (DSL) 来声明项目设置，抛弃了基于 XML 的各种繁琐配置面向 Java 应用为主。当前其支持的语言暂时有 Java、Groovy、Kotlin、Scala、Android、C++ 和 Swift。 下面是 Gradle 和 Apache Maven 的一个比较：
 
 [![Gradle vs Maven](https://gradle.org/images/gradle-vs-maven.gif)](https://gradle.org/maven-vs-gradle/)
@@ -10,7 +8,7 @@
 > 环境，便于保持项目环境统一，在项目根目录下添加`gradle/wrapper/gradle-wrapper.properties`配置文件，详细配置见入门文档，配置内容如下：
 
 ```properties
-distributionUrl=https\://services.gradle.org/distributions/gradle-7.2-bin.zip
+distributionUrl=https\://services.gradle.org/distributions/gradle-7.5.1-bin.zip
 ```
 
 > gradle-wrapper.jar、gradlew、gradlew.bat 文件可以通过命令自动生成，项目结构如下：
