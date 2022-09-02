@@ -5,7 +5,7 @@
     - [单项目基础配置](basics/singleBasic.md '单项目基础配置')
     - [Groovy项目基础配置](basics/groovyBasic.md 'Groovy项目基础配置')
 * 🛰️ 进阶篇
-    - [进阶一](demo.md '置插件仓库、插件版本以及子项目管理 ')
+    - [一主多子项目配置](advanced/multiAdvanced.md '一主多子项目配置')
 * 🛸 插件集
     - [ihub-settings](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
     - [ihub](iHub.md '基础插件，用于配置组件仓库以及一些其他扩展属性 ')
