@@ -216,7 +216,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         then: '检查结果'
         result.output.contains '│ implementation                          │ org.apache.groovy:groovy-all                           │'
-        result.output.contains '│ org.spockframework               │ spock-spring               │ 2.2-M3-groovy-4.0                │'
+        result.output.contains '│ org.spockframework                │ spock-spring                │ 2.3-groovy-4.0                 │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
