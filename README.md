@@ -44,16 +44,12 @@
 
 ## 🎉 上手指南
 
-### 插件安装
+[快速上手](https://doc.ihub.pub/plugins/#/gettingStarted)
 
-使用详见[文档](https://doc.ihub.pub/plugins)
-
-## 👨‍💻 开源贡献指南
+## 🧭 开源贡献指南
 
 请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
 
-## ⭐ Stargazers & Forkers
+## 👨‍💻 Contributors
 
-[![Stargazers repo roster for @ihub-pub/plugins](https://reporoster.com/stars/ihub-pub/plugins)](https://github.com/ihub-pub/plugins/stargazers)
-
-[![Forkers repo roster for @ihub-pub/plugins](https://reporoster.com/forks/ihub-pub/plugins)](https://github.com/ihub-pub/plugins/network/members)
+[![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
