@@ -1,18 +1,3 @@
-## 🔖 1.2.11 (2022-09-30)
-
-
-### ⬆️ Dependency Updates
-
-- gradle: bump ihub-core from 1.0.12 to 1.0.14 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#323](https://github.com/ihub-pub/plugins/pull/323))
-- gradle: bump spring-boot-gradle-plugin from 2.7.3 to 2.7.4 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#322](https://github.com/ihub-pub/plugins/pull/322))
-- gradle: bump dependency-management-plugin from 1.0.13.RELEASE to 1.0.14.RELEASE in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#321](https://github.com/ihub-pub/plugins/pull/321))
-- gradle: bump lombok-plugin from 6.5.0.3 to 6.5.1 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#316](https://github.com/ihub-pub/plugins/pull/316))
-- build(gradle): 升级gradle至7.5.1  [@henry-hub](https://github.com/henry-hub) ([#311](https://github.com/ihub-pub/plugins/pull/311))
-- gradle: bump pub.ihub.plugin.ihub-settings from 1.2.9 to 1.2.10  [@dependabot](https://github.com/dependabot) ([#310](https://github.com/ihub-pub/plugins/pull/310))
-
-
----
-
 ## 🔖 1.2.10 (2022-08-27)
 
 
