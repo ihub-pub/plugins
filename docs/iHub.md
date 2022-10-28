@@ -13,7 +13,7 @@
 | Extension | Description | Default | Ext | Prj | Sys | Env |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `mavenLocalEnabled` | 是否启用本地仓库 | `false` | ❌ | ✔ | ❌ | ❌ |
-| `mavenAliYunEnabled` | 是否启用阿里云代理仓库 | `true` | ❌ | ✔ | ❌ | ❌ |
+| `mavenAliYunEnabled` | 是否启用阿里云代理仓库 | `true` | ❌ | ✔ | ✔ | ✔ |
 | `releaseRepoUrl` | 正式版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
 | `snapshotRepoUrl` | 快照版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
 | `repoAllowInsecureProtocol` | 是否允许不安全协议（是否允许http） | `false` | ✔ | ✔ | ❌ | ❌ |
