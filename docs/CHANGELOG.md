@@ -1,3 +1,31 @@
+## 🔖 1.2.11 (2022-10-28)
+
+
+### ✨ Features
+
+- feat: 启用阿里云代理仓库开关支持系统属性和环境变量属性配置  [@henry-hub](https://github.com/henry-hub) ([#329](https://github.com/ihub-pub/plugins/pull/329))
+
+### 🐛 Bug Fixes
+
+- fix(spock): 修复spock测试缺失spring测试组件依赖的问题  [@henry-hub](https://github.com/henry-hub) ([#328](https://github.com/ihub-pub/plugins/pull/328))
+- test(version): 修复版本号推断测试用例  [@henry-hub](https://github.com/henry-hub) ([#327](https://github.com/ihub-pub/plugins/pull/327))
+
+### ⬆️ Dependency Updates
+
+- gradle: bump ihub-core from 1.0.14 to 1.0.15 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#330](https://github.com/ihub-pub/plugins/pull/330))
+- gradle: bump spring-boot-gradle-plugin from 2.7.4 to 2.7.5 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#326](https://github.com/ihub-pub/plugins/pull/326))
+- gradle: bump dependency-management-plugin from 1.0.14.RELEASE to 1.1.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#325](https://github.com/ihub-pub/plugins/pull/325))
+- gradle: bump gradle-versions-plugin from 0.42.0 to 0.43.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#324](https://github.com/ihub-pub/plugins/pull/324))
+- gradle: bump ihub-core from 1.0.12 to 1.0.14 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#323](https://github.com/ihub-pub/plugins/pull/323))
+- gradle: bump spring-boot-gradle-plugin from 2.7.3 to 2.7.4 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#322](https://github.com/ihub-pub/plugins/pull/322))
+- gradle: bump dependency-management-plugin from 1.0.13.RELEASE to 1.0.14.RELEASE in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#321](https://github.com/ihub-pub/plugins/pull/321))
+- gradle: bump lombok-plugin from 6.5.0.3 to 6.5.1 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#316](https://github.com/ihub-pub/plugins/pull/316))
+- build(gradle): 升级gradle至7.5.1  [@henry-hub](https://github.com/henry-hub) ([#311](https://github.com/ihub-pub/plugins/pull/311))
+- gradle: bump pub.ihub.plugin.ihub-settings from 1.2.9 to 1.2.10  [@dependabot](https://github.com/dependabot) ([#310](https://github.com/ihub-pub/plugins/pull/310))
+
+
+---
+
 ## 🔖 1.2.10 (2022-08-27)
 
 
