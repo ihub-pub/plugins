@@ -34,9 +34,9 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
     @Override
     void apply() {
         withExtension(IHubBomExtension) {
-            if (withExtension(IHubPluginsExtension).enableGroovy4) {
+            if (withExtension(IHubPluginsExtension).enableGroovy3) {
                 it.dependencyVersions {
-                    group 'org.spockframework' modules 'spock-spring' version '2.3-groovy-4.0'
+                    group 'org.spockframework' modules 'spock-spring' version '2.3-groovy-3.0'
                 }
             }
             it.dependencies {
@@ -50,7 +50,7 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
                     'groovy-sql',
                     'groovy-templates',
                     'groovy-xml',
-                ]).collect { "${withExtension(IHubPluginsExtension).enableGroovy4 ? 'org.apache.groovy' : 'org.codehaus.groovy'}:$it" } as String[])
+                ]).collect { "${withExtension(IHubPluginsExtension).enableGroovy3 ? 'org.codehaus.groovy' : 'org.apache.groovy'}:$it" } as String[])
             }
         }
     }
