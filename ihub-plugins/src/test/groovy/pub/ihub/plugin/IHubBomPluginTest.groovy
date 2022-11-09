@@ -126,10 +126,10 @@ class IHubBomPluginTest extends IHubSpecification {
             allprojects {
                 iHubBom {
                     importBoms {
-                        group 'org.codehaus.groovy' module 'groovy-bom' version '3.0.8'
+                        group 'org.apache.groovy' module 'groovy-bom' version '4.0.5'
                     }
                     dependencyVersions {
-                        group 'org.codehaus.groovy' modules 'groovy-all' version '3.0.8'
+                        group 'org.apache.groovy' modules 'groovy-all' version '4.0.5'
                     }
                     capabilities {
                         requireCapability 'org.slf4j:slf4j-ext', 'org.javassist:javassist'
@@ -154,11 +154,11 @@ class IHubBomPluginTest extends IHubSpecification {
                 }
                 iHubBom {
                     importBoms {
-                        group 'org.codehaus.groovy' module 'groovy-bom' version '2.5.14'
+                        group 'org.apache.groovy' module 'groovy-bom' version '4.0.4'
                         group 'pub.ihub.lib' module 'ihub-bom' version '1.0.7'
                     }
                     dependencyVersions {
-                        group 'org.codehaus.groovy' modules 'groovy-all' version '2.5.14'
+                        group 'org.apache.groovy' modules 'groovy-all' version '4.0.4'
                     }
                     groupVersions {
                         group 'pub.ihub.lib' version '1.0.7'
@@ -186,7 +186,7 @@ class IHubBomPluginTest extends IHubSpecification {
                     group 'pub.ihub.lib' version '1.0.6'
                 }
                 dependencyVersions {
-                    group 'org.codehaus.groovy' modules 'groovy-core' version '2.5.14'
+                    group 'org.apache.groovy' modules 'groovy-core' version '4.0.4'
                 }
                 dependencies {
                     compileOnlyApi 'pub.ihub.lib:ihub-process'
@@ -198,23 +198,23 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ org.codehaus.groovy                   │ groovy-bom                   │ 2.5.14                    │'
-        result.output.contains '│ pub.ihub.lib                          │ ihub-bom                     │ 1.0.7                     │'
+        result.output.contains '│ org.apache.groovy                   │ groovy-bom                   │ 4.0.4                       │'
+        result.output.contains '│ pub.ihub.lib                        │ ihub-bom                     │ 1.0.7                       │'
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.7                                        │'
-        result.output.contains '│ api                                  │ :a                                                        │'
-        result.output.contains '│ api                                  │ :b                                                        │'
-        result.output.contains '│ api                                  │ :c                                                        │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-xml                            │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-dateutil                       │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-templates                      │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-nio                            │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy                                │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-json                           │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-groovydoc                      │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-sql                            │'
-        result.output.contains '│ implementation                       │ org.codehaus.groovy:groovy-datetime                       │'
-        result.output.contains '│ compileOnlyApi                       │ pub.ihub.lib:ihub-core                                    │'
-        result.output.contains '│ testCompileOnly                      │ pub.ihub.lib:ihub-process                                 │'
+        result.output.contains '│ api                                   │ :a                                                       │'
+        result.output.contains '│ api                                   │ :b                                                       │'
+        result.output.contains '│ api                                   │ :c                                                       │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-xml                             │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-dateutil                        │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-templates                       │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-nio                             │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy                                 │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-json                            │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-groovydoc                       │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-sql                             │'
+        result.output.contains '│ implementation                        │ org.apache.groovy:groovy-datetime                        │'
+        result.output.contains '│ compileOnlyApi                        │ pub.ihub.lib:ihub-core                                   │'
+        result.output.contains '│ testCompileOnly                       │ pub.ihub.lib:ihub-process                                │'
         result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-process                          │'
         result.output.contains '│ testRuntimeOnly                             │ pub.ihub.lib:ihub-core                             │'
         result.output.contains '│ testImplementation                          │ pub.ihub.lib:ihub-core                             │'

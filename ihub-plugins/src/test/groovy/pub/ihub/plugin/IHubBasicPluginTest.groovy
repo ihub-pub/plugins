@@ -191,15 +191,15 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-xml                             │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-dateutil                        │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-templates                       │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-nio                             │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy                                 │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-json                            │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-groovydoc                       │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-sql                             │'
-        result.output.contains '│ implementation                      │ org.codehaus.groovy:groovy-datetime                        │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-xml                              │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-dateutil                         │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-templates                        │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-nio                              │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy                                  │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-json                             │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-groovydoc                        │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-sql                              │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-datetime                         │'
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '修改版本以及依赖组件模块'
@@ -207,16 +207,16 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ implementation                         │ org.codehaus.groovy:groovy-all                          │'
+        result.output.contains '│ implementation                          │ org.apache.groovy:groovy-all                           │'
         result.output.contains 'BUILD SUCCESSFUL'
 
-        when: '启用Groovy 4选项开关'
-        propertiesFile << 'iHub.enableGroovy4=true\n'
+        when: '启用Groovy 3选项开关'
+        propertiesFile << 'iHub.enableGroovy3=true\n'
         result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ implementation                          │ org.apache.groovy:groovy-all                           │'
-        result.output.contains '│ org.spockframework                │ spock-spring                │ 2.3-groovy-4.0                 │'
+        result.output.contains '│ implementation                         │ org.codehaus.groovy:groovy-all                          │'
+        result.output.contains '│ org.spockframework                │ spock-spring                │ 2.3-groovy-3.0                 │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
