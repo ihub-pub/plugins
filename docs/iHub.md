@@ -23,7 +23,7 @@
 | `repoPassword` | 仓库密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `customizeRepoUrl` | 自定义仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
 | `compileGroovyAllModules` | 是否添加groovy所有模块 | `false` | ❌ | ✔ | ❌ | ❌ |
-| `enableGroovy4` | 是否启用Groovy 4 | `false` | ❌ | ✔ | ❌ | ❌ |
+| `enableGroovy3` | 是否启用Groovy 3 | `false` | ❌ | ✔ | ❌ | ❌ |
 | `autoReplaceLaterVersions` | 自动替换最新版本（[versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)插件增强） | `false` | ✔ | ✔ | ✔ | ❌ |
 | `useInferringVersion` | 使用推断版本号，根据最新`git tag`推断下一个版本号，支持tag格式`{major}.{minor}.{patch}`或`v{major}.{minor}.{patch}`，推断方式`patch + 1` | `false` | ❌ | ✔ | ✔ | ✔ |
 
