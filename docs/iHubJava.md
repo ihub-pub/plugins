@@ -69,6 +69,7 @@ iHubJava {
 | exclude | `org.slf4j:slf4j-jcl` |
 | runtimeOnly | `org.slf4j:jul-to-slf4j` |
 | runtimeOnly | `org.slf4j:log4j-over-slf4j` |
+| runtimeOnly | `org.slf4j:jcl-over-slf4j` |
 | implementation | `org.slf4j:slf4j-api` |
 
 > `mapstruct`：添加添加MapStruct依赖配置。
