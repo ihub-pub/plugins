@@ -18,6 +18,26 @@
 
 ---
 
+## 🔖 1.2.12 (2022-11-28)
+
+
+### ✨ Features
+
+- feat(java): iHubJava的log依赖中添加jcl-over-slf4j  [@henry-hub](https://github.com/henry-hub) ([#341](https://github.com/ihub-pub/plugins/pull/341))
+- feat(groovy): 调整groovy版本开关，默认groovy4，可以通过enableGroovy3切换至groovy3  [@henry-hub](https://github.com/henry-hub) ([#332](https://github.com/ihub-pub/plugins/pull/332))
+
+### ⬆️ Dependency Updates
+
+- build(gradle): 升级gradle至7.6  [@henry-hub](https://github.com/henry-hub) ([#340](https://github.com/ihub-pub/plugins/pull/340))
+- gradle: bump spring-boot-gradle-plugin from 2.7.5 to 2.7.6 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#337](https://github.com/ihub-pub/plugins/pull/337))
+- gradle: bump ihub-core from 1.0.16 to 1.0.17 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#339](https://github.com/ihub-pub/plugins/pull/339))
+- gradle: bump springdoc-openapi-gradle-plugin from 1.4.0 to 1.5.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#334](https://github.com/ihub-pub/plugins/pull/334))
+- gradle: bump gradle-versions-plugin from 0.43.0 to 0.44.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#333](https://github.com/ihub-pub/plugins/pull/333))
+- gradle: bump pub.ihub.plugin.ihub-settings from 1.2.10 to 1.2.11  [@dependabot](https://github.com/dependabot) ([#331](https://github.com/ihub-pub/plugins/pull/331))
+
+
+---
+
 ## 🔖 1.2.11 (2022-10-28)
 
 
