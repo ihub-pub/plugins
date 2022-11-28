@@ -108,7 +108,7 @@ iHubSettings {
 
 | Plugin   | Version |
 | -------- | ------- |
-| `com.gradle.plugin-publish` | [0.18.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
+| `com.gradle.plugin-publish` | [1.1.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
 
 > 使用插件时可以不用加版本号，配置如下：
 
