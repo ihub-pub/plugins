@@ -35,14 +35,13 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
     void apply() {
         withExtension(IHubBomExtension) {
             if (withExtension(IHubPluginsExtension).enableGroovy3) {
-                it.dependencyVersions {
-                    group 'org.spockframework' modules 'spock-spring' version '2.3-groovy-3.0'
-                    group 'com.athaydes' modules 'spock-reports' version '2.3.2-groovy-3.0'
+                it.importBoms {
+                    group 'org.codehaus.groovy' module 'groovy-bom' version '3.0.13'
+                    group 'org.spockframework' module 'spock-bom' version '2.3-groovy-3.0'
                 }
-            } else {
-                // TODO
                 it.dependencyVersions {
-                    group 'com.athaydes' modules 'spock-reports' version '2.4.0-groovy-4.0'
+                    group 'org.codehaus.groovy' modules 'groovy-all' version '3.0.13'
+                    group 'com.athaydes' modules 'spock-reports' version '2.3.2-groovy-3.0'
                 }
             }
             it.dependencies {
