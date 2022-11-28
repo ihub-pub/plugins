@@ -371,6 +371,12 @@ iHubPublish.publishDocs=true
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        result = gradleBuilder.withArguments('-Pversion=main').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def 'Groovy Publish配置测试'() {
