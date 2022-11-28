@@ -37,6 +37,12 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
             if (withExtension(IHubPluginsExtension).enableGroovy3) {
                 it.dependencyVersions {
                     group 'org.spockframework' modules 'spock-spring' version '2.3-groovy-3.0'
+                    group 'com.athaydes' modules 'spock-reports' version '2.3.2-groovy-3.0'
+                }
+            } else {
+                // TODO
+                it.dependencyVersions {
+                    group 'com.athaydes' modules 'spock-reports' version '2.4.0-groovy-4.0'
                 }
             }
             it.dependencies {
