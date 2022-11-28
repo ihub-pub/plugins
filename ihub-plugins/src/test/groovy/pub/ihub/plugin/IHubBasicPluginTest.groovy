@@ -252,6 +252,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains '│ runtimeOnly                      │ org.slf4j:jul-to-slf4j                                        │'
         result.output.contains '│ runtimeOnly                      │ javax.xml.bind:jaxb-api                                       │'
         result.output.contains '│ runtimeOnly                      │ org.slf4j:log4j-over-slf4j                                    │'
+        result.output.contains '│ runtimeOnly                      │ org.slf4j:jcl-over-slf4j                                      │'
         result.output.contains '│ runtimeOnly                      │ org.glassfish.jaxb:jaxb-runtime                               │'
         result.output.contains '│ implementation                   │ org.slf4j:slf4j-api                                           │'
         result.output.contains '│ implementation                   │ org.mapstruct:mapstruct                                       │'
@@ -299,6 +300,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         !result.output.contains('org.slf4j:jul-to-slf4j')
         !result.output.contains('javax.xml.bind:jaxb-api')
         !result.output.contains('org.slf4j:log4j-over-slf4j')
+        !result.output.contains('org.slf4j:jcl-over-slf4j')
         !result.output.contains('org.glassfish.jaxb:jaxb-runtime')
         !result.output.contains('org.slf4j:slf4j-api')
         !result.output.contains('org.mapstruct:mapstruct')
