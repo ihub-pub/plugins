@@ -216,8 +216,8 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         then: '检查结果'
         result.output.contains '│ implementation                         │ org.codehaus.groovy:groovy-all                          │'
-        result.output.contains '│ org.spockframework               │ spock-spring                │ 2.3-groovy-3.0                  │'
-        result.output.contains '│ com.athaydes                     │ spock-reports               │ 2.3.2-groovy-3.0                │'
+        result.output.contains '│ org.spockframework                 │ spock-bom                 │ 2.3-groovy-3.0                  │'
+        result.output.contains '│ com.athaydes                      │ spock-reports               │ 2.3.2-groovy-3.0               │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -252,6 +252,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains '│ runtimeOnly                      │ org.slf4j:jul-to-slf4j                                        │'
         result.output.contains '│ runtimeOnly                      │ javax.xml.bind:jaxb-api                                       │'
         result.output.contains '│ runtimeOnly                      │ org.slf4j:log4j-over-slf4j                                    │'
+        result.output.contains '│ runtimeOnly                      │ org.slf4j:jcl-over-slf4j                                      │'
         result.output.contains '│ runtimeOnly                      │ org.glassfish.jaxb:jaxb-runtime                               │'
         result.output.contains '│ implementation                   │ org.slf4j:slf4j-api                                           │'
         result.output.contains '│ implementation                   │ org.mapstruct:mapstruct                                       │'
@@ -299,6 +300,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         !result.output.contains('org.slf4j:jul-to-slf4j')
         !result.output.contains('javax.xml.bind:jaxb-api')
         !result.output.contains('org.slf4j:log4j-over-slf4j')
+        !result.output.contains('org.slf4j:jcl-over-slf4j')
         !result.output.contains('org.glassfish.jaxb:jaxb-runtime')
         !result.output.contains('org.slf4j:slf4j-api')
         !result.output.contains('org.mapstruct:mapstruct')
@@ -366,6 +368,12 @@ iHubPublish.publishDocs=true
 '''
         result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password')
             .withEnvironment('GITHUB_ACTIONS': 'false').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        result = gradleBuilder.withArguments('-Pversion=main').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'

@@ -78,7 +78,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             }
             ext.dependencies {
                 implementation 'org.slf4j:slf4j-api'
-                runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j'
+                runtimeOnly 'org.slf4j:jul-to-slf4j', 'org.slf4j:log4j-over-slf4j', 'org.slf4j:jcl-over-slf4j'
             }
         },
         // 添加MapStruct依赖
