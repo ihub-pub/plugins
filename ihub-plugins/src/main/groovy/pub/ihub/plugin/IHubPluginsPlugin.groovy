@@ -122,7 +122,7 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
             try {
                 String gitTag = 'git describe --tags'.execute().text.trim()
                 logger.lifecycle 'Inferring version use git tag: {}', gitTag
-                project.version = (gitTag =~ /^v?(\d+).(\d+).(\d+)(-\d+-g\w{7})?$/)[0][1..3]
+                project.version = (gitTag =~ /^v?(\d+).(\d+).(\d+)(-\w+\d*)?(-\d+-g\w{7})?$/)[0][1..3]
                     .with { major, minor, patch -> "$major.$minor.${(patch as int) + 1}-SNAPSHOT" }
             } catch (e) {
                 logger.lifecycle 'Failed to get current git tag', e
