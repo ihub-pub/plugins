@@ -26,7 +26,7 @@ dependencies {
     compileOnly    'io.freefair.gradle:plugin-utils:6.6'
     implementation 'io.freefair.gradle:git-plugin:6.6'
     implementation 'io.freefair.gradle:lombok-plugin:6.6'
-    implementation 'io.freefair.gradle:github-plugin:6.6'
+    implementation 'io.freefair.gradle:github-plugin:6.6.1'
     implementation 'com.github.ben-manes:gradle-versions-plugin:0.44.0'
     implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12'
     implementation 'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0'
