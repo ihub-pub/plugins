@@ -16,12 +16,6 @@
 description = 'IHub Gradle Plugins'
 
 repositories {
-    maven {
-        url 'https://maven.aliyun.com/repository/spring-plugin'
-    }
-    maven {
-        url 'https://maven.aliyun.com/repository/public'
-    }
     gradlePluginPortal()
 }
 
@@ -29,9 +23,6 @@ dependencies {
     implementation project(':ihub-aware')
     implementation 'pub.ihub.lib:ihub-core:1.0.17'
     implementation 'io.spring.gradle:dependency-management-plugin:1.1.0'
-    implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.0'
-    compileOnly    'org.springframework.boot:spring-boot-buildpack-platform'
-    implementation 'org.springframework.experimental.aot:org.springframework.experimental.aot.gradle.plugin:0.12.1'
     compileOnly    'io.freefair.gradle:plugin-utils:6.6.1'
     implementation 'io.freefair.gradle:git-plugin:6.6.1'
     implementation 'io.freefair.gradle:lombok-plugin:6.6.1'
@@ -43,6 +34,8 @@ dependencies {
 
     implementation 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0'
     implementation 'org.springdoc:springdoc-openapi-gradle-plugin:1.5.0'
+
+    testImplementation project(':ihub-test')
 }
 
 gradlePlugin {
@@ -88,18 +81,6 @@ gradlePlugin {
             displayName         = 'IHub Verification Gradle Plugin'
             description         = 'IHub Verification Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.verification.IHubVerificationPlugin'
-        }
-        iHubBoot {
-            id                  = 'pub.ihub.plugin.ihub-boot'
-            displayName         = 'IHub Boot Gradle Plugin'
-            description         = 'IHub Boot Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.spring.IHubBootPlugin'
-        }
-        iHubNative {
-            id                  = 'pub.ihub.plugin.ihub-native'
-            displayName         = 'IHub Native Gradle Plugin'
-            description         = 'IHub Native Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.spring.IHubNativePlugin'
         }
         ihubGitHooks {
             id                  = 'pub.ihub.plugin.ihub-git-hooks'
