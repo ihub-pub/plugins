@@ -16,6 +16,7 @@
 package pub.ihub.plugin
 
 import groovy.util.logging.Slf4j
+import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
 

@@ -18,6 +18,7 @@ package pub.ihub.plugin
 import groovy.util.logging.Slf4j
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
+import pub.ihub.plugin.test.IHubSpecification
 import pub.ihub.plugin.verification.IHubTestExtension
 import pub.ihub.plugin.verification.IHubTestPlugin
 import pub.ihub.plugin.verification.IHubVerificationExtension
