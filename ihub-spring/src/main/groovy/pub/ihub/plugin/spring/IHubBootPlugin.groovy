@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2022 Henry 李恒 (henry.box@outlook.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
  * IHub Spring Boot Plugin
- * 参考官方入门文档：https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/
+ * 参考官方入门文档：https://docs.spring.io/spring-boot/docs/3.0.0/gradle-plugin/reference/htmlsingle/
  * @author henry
  */
 @IHubPlugin(value = IHubBootExtension, beforeApplyPlugins = [IHubJavaPlugin, SpringBootPlugin])
@@ -40,9 +40,6 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
     @Override
     void apply() {
         withExtension(AFTER) { ext ->
-            if (hasPlugin(IHubNativePlugin)) {
-                ext = withExtension IHubNativeExtension
-            }
             withTask(BootRun) {
                 ext.systemProperties it, '.boot-java-local.properties'
                 it.optimizedLaunch = ext.runOptimizedLaunch

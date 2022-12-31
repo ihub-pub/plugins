@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin
+package pub.ihub.plugin.test
 
 import groovy.util.logging.Slf4j
 import org.gradle.internal.impldep.org.junit.Rule
@@ -25,6 +25,7 @@ import static java.io.File.separator
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
+import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyDirectoryStructure
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyFile
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.getFile
 import static org.gradle.internal.impldep.org.eclipse.jgit.lib.Constants.OS_USER_DIR
@@ -59,6 +60,15 @@ class IHubSpecification extends Specification {
     protected void copyProject(String buildFileName) {
         "${getFile(System.getProperty(OS_USER_DIR)).parentFile.path + separator}samples${separator}sample-extensions"
             .with { copyFile getFile(it + separator + buildFileName), buildFile }
+    }
+
+    protected void copyProject(String name, String... dirs) {
+        "${getFile(System.getProperty(OS_USER_DIR)).parentFile.path + separator}samples$separator$name".with {
+            copyFile getFile(it + separator + DEFAULT_BUILD_FILE), buildFile
+            dirs.each { dir ->
+                copyDirectoryStructure getFile(it + separator + dir), testProjectDir.newFolder(dir)
+            }
+        }
     }
 
 }
