@@ -23,7 +23,7 @@ dependencies {
     implementation project(':ihub-aware')
     implementation 'pub.ihub.lib:ihub-core:1.0.17'
     implementation 'io.spring.gradle:dependency-management-plugin:1.1.0'
-    compileOnly    'io.freefair.gradle:plugin-utils:6.6'
+    compileOnly    'io.freefair.gradle:plugin-utils:6.6.1'
     implementation 'io.freefair.gradle:git-plugin:6.6'
     implementation 'io.freefair.gradle:lombok-plugin:6.6'
     implementation 'io.freefair.gradle:github-plugin:6.6'
