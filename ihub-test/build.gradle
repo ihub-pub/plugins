@@ -19,3 +19,14 @@ dependencies {
     implementation gradleTestKit()
     implementation 'org.spockframework:spock-core'
 }
+
+gradlePlugin {
+    plugins {
+        ihubAware {
+            id                  = 'pub.ihub.plugin.ihub-test'
+            displayName         = 'IHub Gradle Plugins Test'
+            description         = 'IHub Gradle Plugins Test'
+            implementationClass = 'pub.ihub.plugin.test.IHubSpecification'
+        }
+    }
+}
