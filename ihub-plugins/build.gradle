@@ -33,7 +33,7 @@ dependencies {
     implementation 'cn.hutool:hutool-http'
 
     implementation 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0'
-    implementation 'org.springdoc:springdoc-openapi-gradle-plugin:1.5.0'
+    implementation 'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0'
 
     testImplementation project(':ihub-test')
 }
