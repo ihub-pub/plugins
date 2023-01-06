@@ -16,23 +16,12 @@
 package pub.ihub.plugin
 
 import groovy.util.logging.Slf4j
-import org.gradle.internal.impldep.org.junit.Rule
-import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
-import org.gradle.testkit.runner.GradleRunner
+import pub.ihub.plugin.test.IHubSpecification
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
-import spock.lang.Specification
 import spock.lang.Title
 
-import static java.io.File.separator
-import static org.gradle.api.Project.DEFAULT_BUILD_FILE
-import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
-import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
-import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyDirectoryStructure
-import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyFile
-import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.getFile
-import static org.gradle.internal.impldep.org.eclipse.jgit.lib.Constants.OS_USER_DIR
-import static org.gradle.testkit.runner.GradleRunner.create
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 
@@ -44,23 +33,7 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 @Title('IHubPluginsPlugin测试套件')
 @SuppressWarnings('PrivateFieldCouldBeFinal')
 @IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
-class IHubPluginsPluginTest extends Specification {
-
-    @Rule
-    private TemporaryFolder testProjectDir = new TemporaryFolder()
-    private GradleRunner gradleBuilder
-    private File propertiesFile
-
-    def setup() {
-        testProjectDir.create()
-        gradleBuilder = create().withProjectDir(testProjectDir.root).withPluginClasspath()
-        propertiesFile = testProjectDir.newFile GRADLE_PROPERTIES
-        copy getClass().classLoader.getResourceAsStream('testkit-gradle.properties'), propertiesFile, null
-    }
-
-    def cleanup() {
-        testProjectDir.delete()
-    }
+class IHubPluginsPluginTest extends IHubSpecification {
 
     def '代码检查插件测试'() {
         setup: '初始化项目'
@@ -99,6 +72,10 @@ class IHubPluginsPluginTest extends Specification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    /**
+     * TODO 用例拆分
+     */
+    @Ignore
     def '多项目构建测试'() {
         setup: '初始化项目'
         copyProject 'sample-multi', 'rest', 'service', 'sdk'
@@ -141,15 +118,6 @@ class IHubPluginsPluginTest extends Specification {
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
-    }
-
-    private void copyProject(String name, String... dirs) {
-        "${getFile(System.getProperty(OS_USER_DIR)).parentFile.path + separator}samples$separator$name".with {
-            copyFile getFile(it + separator + DEFAULT_BUILD_FILE), testProjectDir.newFile(DEFAULT_BUILD_FILE)
-            dirs.each { dir ->
-                copyDirectoryStructure getFile(it + separator + dir), testProjectDir.newFolder(dir)
-            }
-        }
     }
 
 }

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = '应用模块'
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-boot'
+plugins {
+    id 'pub.ihub.plugin.ihub-boot'
 }
+
+description = '应用模块'
 
 dependencies {
     implementation project(':sample-multi-sdk')

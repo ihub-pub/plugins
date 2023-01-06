@@ -5,7 +5,7 @@
 
 ---
 
-[![Gradle Build](https://img.shields.io/github/workflow/status/ihub-pub/plugins/Build?label=Build&logo=GitHub+Actions&logoColor=white)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
+[![Gradle Build](https://img.shields.io/github/actions/workflow/status/ihub-pub/plugins/gradle-build.yml?branch=main&label=Build&logo=GitHub+Actions&logoColor=white)](https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml)
 [![CodeFactor](https://img.shields.io/codefactor/grade/github/ihub-pub/plugins/main?color=white&label=Codefactor&labelColor=F44A6A&logo=CodeFactor&logoColor=white)](https://www.codefactor.io/repository/github/ihub-pub/plugins)
 [![Codecov](https://img.shields.io/codecov/c/github/ihub-pub/plugins?token=ZQ0WR3ZSWG&color=white&label=Codecov&labelColor=F01F7A&logo=Codecov&logoColor=white)](https://codecov.io/gh/ihub-pub/plugins)
 [![GitHub](https://img.shields.io/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717)](https://github.com/ihub-pub/plugins "IHubPub")

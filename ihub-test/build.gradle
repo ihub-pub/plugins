@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2022 Henry 李恒 (henry.box@outlook.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.2.12'
+description = 'IHub Gradle Plugins Test'
+
+dependencies {
+    implementation gradleTestKit()
+    implementation 'org.spockframework:spock-core'
 }
 
-iHubSettings {
-    includeProjects 'ihub-aware', 'ihub-plugins', 'ihub-spring', 'ihub-settings', 'ihub-test' noPrefix
+gradlePlugin {
+    plugins {
+        ihubAware {
+            id                  = 'pub.ihub.plugin.ihub-test'
+            displayName         = 'IHub Gradle Plugins Test'
+            description         = 'IHub Gradle Plugins Test'
+            implementationClass = 'pub.ihub.plugin.test.IHubSpecification'
+        }
+    }
 }
