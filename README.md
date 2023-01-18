@@ -51,6 +51,10 @@
 
 请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
 
-## 👨‍💻 Contributors
+## 👨‍💻 贡献者
 
 [![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
+
+---
+
+![Alt](https://repobeats.axiom.co/api/embed/4441d734b23bb0e27ed283af1ba3bb1f51e3bb83.svg "Repobeats analytics image")
