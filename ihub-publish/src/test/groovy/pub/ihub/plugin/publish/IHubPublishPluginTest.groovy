@@ -18,6 +18,12 @@ import spock.lang.Title
 
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 
+
+
+/**
+ * IHubPublishPlugin测试套件
+ * @author henry
+ */
 @Slf4j
 @Title('IHubPublishPlugin测试套件')
 class IHubPublishPluginTest extends IHubSpecification {

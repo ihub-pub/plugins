@@ -46,7 +46,8 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
  * @author henry
  */
 @IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [
-    IHubPluginsPlugin, IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin, BuildDashboardPlugin, ByteBuddyPlugin
+    IHubPluginsPlugin, IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin,
+    BuildDashboardPlugin, ByteBuddyPlugin
 ])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 

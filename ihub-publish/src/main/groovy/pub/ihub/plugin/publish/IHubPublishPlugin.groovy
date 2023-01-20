@@ -102,7 +102,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         withExtension(PublishingExtension) {
             it.publications {
                 create('mavenJava', MavenPublication) {
-                    if (hasPlugin(org.gradle.api.plugins.JavaPlatformPlugin)) {
+                    if (hasPlugin(JavaPlatformPlugin)) {
                         from project.components.getByName('javaPlatform')
                         return
                     }

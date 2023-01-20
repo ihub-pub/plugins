@@ -23,7 +23,6 @@ import spock.lang.IgnoreIf
 import spock.lang.Title
 
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
-import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 
 

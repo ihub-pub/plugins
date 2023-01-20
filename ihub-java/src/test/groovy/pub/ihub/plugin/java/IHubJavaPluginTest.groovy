@@ -19,6 +19,9 @@ import spock.lang.Title
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static pub.ihub.plugin.java.IHubJavaPlugin.DEFAULT_DEPENDENCIES_CONFIG
 
+/**
+ * @author henry
+ */
 @Slf4j
 @Title('IHubJavaPlugin测试套件')
 class IHubJavaPluginTest extends IHubSpecification {
@@ -141,7 +144,7 @@ class IHubJavaPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    def '项目包含Groovy插件时移除annotationProcessor依赖'() {
+    def '项目包含Groovy插件时移除annotationProcessor依赖测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
         testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
