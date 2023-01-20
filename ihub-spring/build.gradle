@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     implementation project(':ihub-aware'), project(':ihub-plugins')
-    implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.1'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.2'
     compileOnly    'org.springframework.boot:spring-boot-buildpack-platform'
     implementation 'org.graalvm.buildtools:native-gradle-plugin:0.9.19'
 
