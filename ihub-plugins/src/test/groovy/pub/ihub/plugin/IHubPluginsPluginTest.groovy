@@ -16,8 +16,9 @@
 package pub.ihub.plugin
 
 import groovy.util.logging.Slf4j
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 import pub.ihub.plugin.test.IHubSpecification
-import spock.lang.Ignore
 import spock.lang.IgnoreIf
 import spock.lang.Title
 
@@ -35,83 +36,228 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 @IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
 class IHubPluginsPluginTest extends IHubSpecification {
 
-    def '代码检查插件测试'() {
+    def '基础构建测试'() {
         setup: '初始化项目'
-        copyProject 'sample-groovy', 'src', 'conf'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'rootProject.name = \'sample-groovy\''
+        copyProject 'basic.gradle'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'Group Maven Bom Version'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def 'Java平台构建测试'() {
+        setup: '初始化项目'
+        buildFile << '''
+plugins {
+    id 'java-platform'
+    id 'pub.ihub.plugin'
+}
+'''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        !result.output.contains('Group Maven Bom Version')
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '项目组件仓库配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+
+        when: '构建项目'
+        propertiesFile << '''
+iHub.mavenLocalEnabled=true
+iHub.mavenAliYunEnabled=false
+iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
+iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
+iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
+iHub.repoAllowInsecureProtocol=true
+iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
+'''
+        testProjectDir.newFolder 'libs'
+        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+
+        then: '检查结果'
+        result.output.contains('flatDir')
+        result.output.contains('MavenLocal')
+        !result.output.contains('AliYunPublic')
+        !result.output.contains('AliYunGoogle')
+        !result.output.contains('AliYunSpring')
+        result.output.contains('ReleaseRepo')
+        result.output.contains('SnapshotRepo')
+        result.output.contains('CustomizeRepo')
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        propertiesFile << 'iHub.repoIncludeGroup=pub.ihub.demo'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '扩展属性测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+        gradle.taskGraph.whenReady {
+            println 'repoUsername:' + iHub.repoUsername
+        }
+        '''
+
+        when: '读取默认属性'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:null'
+
+        when: '读取扩展属性'
+        buildFile << '''
+        iHub {
+            repoUsername = 'type\\next'
+        }
+        '''
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\next'
+
+        when: '读取项目属性'
+        propertiesFile << 'iHub.repoUsername=type\\nprj'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\nprj'
+
+        when: '读取环境属性'
+        result = gradleBuilder.withEnvironment(REPO_USERNAME: 'type\nenv').build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\nenv'
+
+        when: '读取系统属性'
+        result = gradleBuilder.withEnvironment(REPO_USERNAME: 'type\nenv').withArguments('-DiHub.repoUsername=type\nsys').build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\nsys'
+    }
+
+    def '自定义依赖升级打印方法测试'() {
+        setup: '初始化项目'
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubPluginsPlugin
+
+        when: '测试配置方法'
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.rejectVersionFilter currentVersion: '5.7.12', candidate: [version: '5.7.13']
+            it.rejectVersionFilter currentVersion: '5.7.12.ga', candidate: [version: '5.7.13.m']
+            it.rejectVersionFilter currentVersion: '5.7.12.m', candidate: [version: '5.7.13.ga']
+        }
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.dependencyUpdatesOutputFormatter current: [
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.13']]
+            ], exceeded: [
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.13', latest: '5.7.12']]
+            ], outdated: [
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [release: '5.7.13']]]
+            ], gradle: [enabled: true, running: [version: '7.2'], current: [version: '7.3']]
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []],
+                outdated: [dependencies: []], gradle: [enabled: false]
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [milestone: '5.7.13']]]
+            ], gradle: [enabled: false]
+        }
+        project.iHub.autoReplaceLaterVersions = true
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
+                dependencies: [[group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [release: '5.7.13']]]
+            ], gradle: [enabled: false]
+        }
+        project.buildFile.createNewFile()
+        project.buildFile << '''
+            dependencies {
+                api 'cn.hutool:hutool-all:5.7.12',
+                    'cn.hutool:hutool-core:5.7.12'
+            }
+        '''
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.dependencyUpdatesOutputFormatter current: [dependencies: []], exceeded: [dependencies: []], outdated: [
+                dependencies: [
+                    [group: 'cn.hutool', name: 'hutool-all', version: '5.7.12', available: [release: '5.7.13']],
+                    [group: 'cn.hutool', name: 'hutool-core', version: '5.7.12', available: [milestone: '5.7.13']]
+                ]
+            ], gradle: [enabled: false]
+        }
+
+        then: '检查结果'
+        project.tasks.getByName 'dependencyUpdates'
+    }
+
+    def '推断版本号单元测试'() {
+        setup: '初始化项目'
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubPluginsPlugin
+        project.version = 'unspecified'
+
+        when: '测试配置方法'
+        project.extensions.getByType(IHubPluginsExtension).useInferringVersion = true
+        project.plugins.withType(IHubPluginsPlugin) {
+            it.configProjectWithGit()
+        }
+
+        then: '检查结果'
+        project.version.toString() ==~ /^\d+.\d+.\d+-SNAPSHOT$/
+    }
+
+    def '推断版本号配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+
+        when: '模拟开启推测版本且无git环境'
+        def result = gradleBuilder
+            .withEnvironment(USE_INFERRING_VERSION: 'true')
+            .build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+        result.output.contains 'Failed to get current git tag'
+
+        when: '模拟开启推测版本且指定了具体版本号'
+        result = gradleBuilder
+            .withEnvironment(USE_INFERRING_VERSION: 'true')
+            .withArguments('-Pversion=1.0.0')
+            .build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+        result.output.contains 'Using explicit version 1.0.0'
+        !result.output.contains('Inferring version use git tag: ')
+        !result.output.contains('Failed to get current git tag')
+    }
+
+    def '多项目构建测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFolder 'a'
+        testProjectDir.newFolder 'b'
+        testProjectDir.newFolder 'c'
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
 
         then: '检查结果'
-        result.output.contains '┌──────────────────────────────────────────────────────────────────────────────────────────────────┐'
-        result.output.contains '│                               SAMPLE-GROOVY Jacoco Report Coverage                               │'
-        result.output.contains '├──────────────────────┬────────────────┬─────────────────┬──────────────────┬─────────────────────┤'
-        result.output.contains '│ Type                 │ Total          │ Missed          │ Covered          │ Coverage            │'
-        result.output.contains '├──────────────────────┼────────────────┼─────────────────┼──────────────────┼─────────────────────┤'
-        result.output.contains '│ INSTRUCTION          │ 13             │ 0               │ 13               │ 100.00%             │'
-        result.output.contains '│ BRANCH               │ 0              │ 0               │ 0                │ n/a                 │'
-        result.output.contains '│ LINE                 │ 1              │ 0               │ 1                │ 100.00%             │'
-        result.output.contains '│ COMPLEXITY           │ 1              │ 0               │ 1                │ 100.00%             │'
-        result.output.contains '│ METHOD               │ 1              │ 0               │ 1                │ 100.00%             │'
-        result.output.contains '│ CLASS                │ 1              │ 0               │ 1                │ 100.00%             │'
-        result.output.contains '└──────────────────────┴────────────────┴─────────────────┴──────────────────┴─────────────────────┘'
-        result.output.contains '┌──────────────────────────────────────────────────────────────────────────────────────────────────┐'
-        result.output.contains '│                                      Jacoco Report Coverage                                      │'
-        result.output.contains '├──────────────────┬─────────────┬───────────┬────────────┬────────────┬────────────┬──────────────┤'
-        result.output.contains '│ Project          │ Instruct    │ Branch    │ Line       │ Cxty       │ Method     │ Class        │'
-        result.output.contains '├──────────────────┼─────────────┼───────────┼────────────┼────────────┼────────────┼──────────────┤'
-        result.output.contains '│ sample-groovy    │ 100.00%     │ n/a       │ 100.00%    │ 100.00%    │ 100.00%    │ 100.00%      │'
-        result.output.contains '│ total            │ 100.00%     │ n/a       │ 100.00%    │ 100.00%    │ 100.00%    │ 100.00%      │'
-        result.output.contains '└──────────────────┴─────────────┴───────────┴────────────┴────────────┴────────────┴──────────────┘'
-        result.task(':codenarcMain').outcome == SUCCESS
-        result.task(':codenarcTest').outcome == SUCCESS
-        result.task(':test').outcome == SUCCESS
-        result.task(':jacocoTestReport').outcome == SUCCESS
-        result.task(':jacocoTestCoverageVerification').outcome == SUCCESS
-        result.output.contains 'BUILD SUCCESSFUL'
-    }
-
-    /**
-     * TODO 用例拆分
-     */
-    @Ignore
-    def '多项目构建测试'() {
-        setup: '初始化项目'
-        copyProject 'sample-multi', 'rest', 'service', 'sdk'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << '''
-            rootProject.name = 'sample-multi'
-            include 'rest', 'service', 'sdk'
-            project(':rest').name = 'sample-multi-rest'
-            project(':service').name = 'sample-multi-service'
-            project(':sdk').name = 'sample-multi-sdk'
-        '''
-
-        when: '构建项目'
-        testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
-        def result = gradleBuilder.withArguments('build', '-DiHubJava.gradleCompilationIncremental=false').build()
-
-        then: '检查结果'
-        result.task(':sample-multi-rest:pmdMain').outcome == SUCCESS
-        result.task(':sample-multi-rest:pmdTest').outcome == SUCCESS
-        result.task(':sample-multi-rest:test').outcome == SUCCESS
-        result.task(':sample-multi-rest:jacocoTestReport').outcome == SUCCESS
-        result.task(':sample-multi-rest:jacocoTestCoverageVerification').outcome == SUCCESS
-        result.output.contains 'The following 1 profile is active: "dev"'
-        result.output.contains 'BUILD SUCCESSFUL'
-
-        when: '添加test本地属性'
-        testProjectDir.newFile('.test-java-local.properties') << 'spring.profiles.active=test'
-        result = gradleBuilder.withArguments('build').build()
-
-        then: 'test本地属性优先'
-        result.output.contains 'The following 1 profile is active: "test"'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def '自定义依赖升级打印测试'() {
         setup: '初始化项目'
-        copyProject 'sample-groovy', 'src', 'conf'
+        copyProject 'basic.gradle'
 
         when: '检查组件版本'
         def result = gradleBuilder.withArguments('dependencyUpdates').build()

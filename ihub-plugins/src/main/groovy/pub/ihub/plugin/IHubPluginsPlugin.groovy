@@ -18,12 +18,9 @@ package pub.ihub.plugin
 import com.github.benmanes.gradle.versions.VersionsPlugin
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.freefair.gradle.plugins.git.GitVersionPlugin
-import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPlatformPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.githooks.IHubGitHooksPlugin
-import pub.ihub.plugin.publish.IHubPublishPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
@@ -66,19 +63,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
             }
             if (!hasPlugin(JavaPlatformPlugin)) {
                 applyPlugin IHubBomPlugin
-            }
-            // 配置项目bom组件
-            extension.findProjectProperty('iHubSettings.includeBom')?.with { includeBom ->
-                Project bom = project.findProject(includeBom.toString())
-                bom.with {
-                    pluginManager.apply JavaPlatformPlugin
-                    pluginManager.apply IHubPublishPlugin
-                    extensions.getByType(JavaPlatformExtension).allowDependencies()
-                    extensions.getByType(IHubPluginsExtension).autoReplaceLaterVersions = false
-                }
-                afterEvaluate {
-                    configDependencies bom
-                }
             }
         }
 
@@ -226,18 +210,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
         result.gradle.with {
             if (enabled) {
                 printConfigContent 'Gradle later version', [['current', running.version, 'later', current.version]]
-            }
-        }
-    }
-
-    private void configDependencies(Project bom) {
-        bom.dependencies {
-            constraints {
-                bom.rootProject.allprojects.each {
-                    if (it.plugins.hasPlugin(IHubPublishPlugin) && !it.plugins.hasPlugin(JavaPlatformPlugin)) {
-                        api "${bom.rootProject.group}:$it.name:${bom.rootProject.version}"
-                    }
-                }
             }
         }
     }

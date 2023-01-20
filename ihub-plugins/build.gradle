@@ -15,27 +15,11 @@
  */
 description = 'IHub Gradle Plugins'
 
-repositories {
-    gradlePluginPortal()
-}
-
 dependencies {
-    implementation project(':ihub-aware')
-    implementation 'pub.ihub.lib:ihub-core:1.0.17'
-    implementation 'io.spring.gradle:dependency-management-plugin:1.1.0'
-    compileOnly    'io.freefair.gradle:plugin-utils:6.6.1'
-    implementation 'io.freefair.gradle:git-plugin:6.6.1'
-    implementation 'io.freefair.gradle:lombok-plugin:6.6.1'
-    implementation 'io.freefair.gradle:github-plugin:6.6.1'
-    implementation 'com.github.ben-manes:gradle-versions-plugin:0.44.0'
-    implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12'
-    implementation 'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0'
-    implementation 'cn.hutool:hutool-http'
-
-    implementation 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0'
-    implementation 'org.springdoc:springdoc-openapi-gradle-plugin:1.5.0'
-
-    testImplementation project(':ihub-test')
+    // TODO
+    api project(':ihub-githooks'), project(':ihub-bom')
+    implementation 'io.freefair.gradle:git-plugin'
+    implementation 'com.github.ben-manes:gradle-versions-plugin'
 }
 
 gradlePlugin {
@@ -45,48 +29,6 @@ gradlePlugin {
             displayName         = 'IHub Plugins Gradle Plugin'
             description         = 'IHub Plugins Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
-        }
-        iHubBom {
-            id                  = 'pub.ihub.plugin.ihub-bom'
-            displayName         = 'IHub Bom Plugin'
-            description         = 'IHub Bom Plugin'
-            implementationClass = 'pub.ihub.plugin.bom.IHubBomPlugin'
-        }
-        iHubJava {
-            id                  = 'pub.ihub.plugin.ihub-java'
-            displayName         = 'IHub Java Gradle Plugin'
-            description         = 'IHub Java Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.java.IHubJavaPlugin'
-        }
-        iHubGroovy {
-            id                  = 'pub.ihub.plugin.ihub-groovy'
-            displayName         = 'IHub Groovy Gradle Plugin'
-            description         = 'IHub Groovy Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.groovy.IHubGroovyPlugin'
-        }
-        iHubPublish {
-            id                  = 'pub.ihub.plugin.ihub-publish'
-            displayName         = 'IHub Publish Gradle Plugin'
-            description         = 'IHub Publish Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.publish.IHubPublishPlugin'
-        }
-        iHubTest {
-            id                  = 'pub.ihub.plugin.ihub-test'
-            displayName         = 'IHub Test Gradle Plugin'
-            description         = 'IHub Test Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.verification.IHubTestPlugin'
-        }
-        iHubVerification {
-            id                  = 'pub.ihub.plugin.ihub-verification'
-            displayName         = 'IHub Verification Gradle Plugin'
-            description         = 'IHub Verification Gradle Plugin'
-            implementationClass = 'pub.ihub.plugin.verification.IHubVerificationPlugin'
-        }
-        ihubGitHooks {
-            id                  = 'pub.ihub.plugin.ihub-git-hooks'
-            displayName         = 'IHub Gradle Plugins GitHooks'
-            description         = 'IHub Gradle Plugins GitHooks'
-            implementationClass = 'pub.ihub.plugin.githooks.IHubGitHooksPlugin'
         }
     }
 }

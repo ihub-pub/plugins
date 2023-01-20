@@ -15,25 +15,3 @@ updates:
       - dependency-type: "production"
     commit-message:
       prefix: "gradle"
-
-  - package-ecosystem: "gradle"
-    directory: "/ihub-plugins/"
-    schedule:
-      interval: "daily"
-    assignees:
-      - "henry-hub"
-    allow:
-      - dependency-type: "production"
-    commit-message:
-      prefix: "gradle"
-
-  - package-ecosystem: "gradle"
-    directory: "/ihub-spring/"
-    schedule:
-      interval: "daily"
-    assignees:
-      - "henry-hub"
-    allow:
-      - dependency-type: "production"
-    commit-message:
-      prefix: "gradle"

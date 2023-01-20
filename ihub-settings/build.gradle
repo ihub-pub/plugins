@@ -15,10 +15,6 @@
  */
 description = 'IHub Gradle Plugins Settings'
 
-dependencies {
-    implementation project(':ihub-aware')
-}
-
 gradlePlugin {
     plugins {
         iHubSettings {
