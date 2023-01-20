@@ -16,6 +16,7 @@ import groovy.util.logging.Slf4j
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import pub.ihub.plugin.test.IHubSpecification
+import spock.lang.IgnoreIf
 import spock.lang.Title
 
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
@@ -32,6 +33,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
 
     private Project project
 
+    @IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
     def '代码检查插件测试'() {
         setup: '初始化项目'
         copyProject 'sample-groovy', 'src', 'conf'
@@ -167,6 +169,34 @@ class IHubVerificationPluginTest extends IHubSpecification {
         then: '检查结果'
         project.extensions.findByName('iHubVerification') instanceof IHubVerificationExtension
         project.extensions.findByName('iHubTest') instanceof IHubTestExtension
+    }
+
+    def 'Jacoco聚合报告配置测试'() {
+        setup: '初始化项目'
+        buildFile << '''
+            plugins {
+                id 'java'
+                id 'pub.ihub.plugin.ihub-test'
+                id 'pub.ihub.plugin.ihub-verification'
+            }
+            subprojects {
+                apply {
+                    plugin 'java'
+                    plugin 'pub.ihub.plugin.ihub-test'
+                    plugin 'pub.ihub.plugin.ihub-verification'
+                }
+            }
+        '''
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFolder 'a'
+        testProjectDir.newFolder 'b'
+        testProjectDir.newFolder 'c'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
 }

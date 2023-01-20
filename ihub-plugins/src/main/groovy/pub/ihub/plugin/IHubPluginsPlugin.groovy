@@ -20,7 +20,6 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.freefair.gradle.plugins.git.GitVersionPlugin
 import org.gradle.api.plugins.JavaPlatformPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
-import pub.ihub.plugin.githooks.IHubGitHooksPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
@@ -113,7 +112,7 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
             }
         }
 
-        applyPlugin GitVersionPlugin, IHubGitHooksPlugin
+        applyPlugin GitVersionPlugin
     }
 
     private Closure mavenRepo(String repoName, String repoUrl, String repoArtifactUrls = null) {

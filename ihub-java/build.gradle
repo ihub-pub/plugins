@@ -16,9 +16,7 @@
 description = 'IHub Java Gradle Plugins'
 
 dependencies {
-    // TODO
-    api project(':ihub-plugins')
-    api project(':ihub-bom')
+    api project(':ihub-plugins'), project(':ihub-bom')
     implementation 'io.freefair.gradle:lombok-plugin'
     implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin'
     implementation 'org.jmolecules.integrations:jmolecules-bytebuddy'

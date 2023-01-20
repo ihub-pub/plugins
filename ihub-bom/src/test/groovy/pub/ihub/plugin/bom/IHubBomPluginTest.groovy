@@ -55,7 +55,6 @@ class IHubBomPluginTest extends IHubSpecification {
             plugins {
                 id 'pub.ihub.plugin.ihub-bom'
                 id 'java'
-                id 'java-library'
             }
             iHubBom {
                 capabilities {

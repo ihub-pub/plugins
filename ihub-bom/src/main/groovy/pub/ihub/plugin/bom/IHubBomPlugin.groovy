@@ -54,6 +54,10 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 ext.printConfigContent()
             }
         }
+
+        project.subprojects {
+            pluginManager.apply IHubBomPlugin
+        }
     }
 
     private void configVersions(IHubBomExtension ext) {

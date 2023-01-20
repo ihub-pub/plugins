@@ -16,7 +16,6 @@
 description = 'IHub Verification Gradle Plugins'
 
 dependencies {
-    // TODO 确认plugins
     implementation project(':ihub-plugins'), project(':ihub-bom')
 }
 

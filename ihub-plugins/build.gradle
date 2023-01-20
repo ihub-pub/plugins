@@ -16,8 +16,7 @@
 description = 'IHub Gradle Plugins'
 
 dependencies {
-    // TODO
-    api project(':ihub-githooks'), project(':ihub-bom')
+    api project(':ihub-bom')
     implementation 'io.freefair.gradle:git-plugin'
     implementation 'com.github.ben-manes:gradle-versions-plugin'
 }
