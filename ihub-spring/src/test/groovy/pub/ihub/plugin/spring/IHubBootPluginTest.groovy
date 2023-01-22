@@ -17,11 +17,7 @@ package pub.ihub.plugin.spring
 
 import groovy.util.logging.Slf4j
 import pub.ihub.plugin.test.IHubSpecification
-import spock.lang.Ignore
 import spock.lang.Title
-
-import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
-import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
 
 
@@ -83,43 +79,6 @@ class IHubBootPluginTest extends IHubSpecification {
         result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
-    }
-
-    /**
-     * TODO 用例拆分
-     */
-    @Ignore
-    def '多项目构建测试'() {
-        setup: '初始化项目'
-        copyProject 'sample-multi', 'rest', 'service', 'sdk'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << '''
-            rootProject.name = 'sample-multi'
-            include 'rest', 'service', 'sdk'
-            project(':rest').name = 'sample-multi-rest'
-            project(':service').name = 'sample-multi-service'
-            project(':sdk').name = 'sample-multi-sdk'
-        '''
-
-        when: '构建项目'
-        testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
-        def result = gradleBuilder.withArguments('build').build()
-
-        then: '检查结果'
-        result.task(':sample-multi-rest:pmdMain').outcome == SUCCESS
-        result.task(':sample-multi-rest:pmdTest').outcome == SUCCESS
-        result.task(':sample-multi-rest:test').outcome == SUCCESS
-        result.task(':sample-multi-rest:jacocoTestReport').outcome == SUCCESS
-        result.task(':sample-multi-rest:jacocoTestCoverageVerification').outcome == SUCCESS
-        result.output.contains 'The following 1 profile is active: "dev"'
-        result.output.contains 'BUILD SUCCESSFUL'
-
-        when: '添加test本地属性'
-        testProjectDir.newFile('.test-java-local.properties') << 'spring.profiles.active=test'
-        result = gradleBuilder.withArguments('build').build()
-
-        then: 'test本地属性优先'
-        result.output.contains 'The following 1 profile is active: "test"'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
