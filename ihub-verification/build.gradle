@@ -16,7 +16,7 @@
 description = 'IHub Verification Gradle Plugins'
 
 dependencies {
-    implementation project(':ihub-plugins'), project(':ihub-bom')
+    implementation project(':ihub-basic'), project(':ihub-bom')
 }
 
 gradlePlugin {
