@@ -51,10 +51,8 @@
 
 请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
 
-## 👨‍💻 贡献者
+## 👨‍💻 Contributors
+
+![Alt](https://repobeats.axiom.co/api/embed/577279f67858fb89c702e0cf0bc604e42decca5d.svg "Repobeats analytics image")
 
 [![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
-
----
-
-![Alt](https://repobeats.axiom.co/api/embed/4441d734b23bb0e27ed283af1ba3bb1f51e3bb83.svg "Repobeats analytics image")

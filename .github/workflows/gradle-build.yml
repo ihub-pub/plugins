@@ -64,7 +64,7 @@ jobs:
           retention-days: 1
 
   codacy:
-    if: ${{ github.event_name == 'push' && github.repository_owner == 'ihub-pub' && false }}
+    if: ${{ github.event_name == 'push' && github.repository_owner == 'ihub-pub' }}
     permissions:
       contents: read
       security-events: write
