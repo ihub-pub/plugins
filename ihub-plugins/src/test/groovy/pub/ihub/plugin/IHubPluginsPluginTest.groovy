@@ -32,7 +32,6 @@ import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 @Slf4j
 @Title('IHubPluginsPlugin测试套件')
 @SuppressWarnings('PrivateFieldCouldBeFinal')
-@IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
 class IHubPluginsPluginTest extends IHubSpecification {
 
     def '基础构建测试'() {
@@ -254,6 +253,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    @IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
     def '自定义依赖升级打印测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'

@@ -41,7 +41,7 @@ jobs:
         if: ${{ github.event_name != 'schedule' }}
         uses: ihub-pub/bot@main
         with:
-          run: ihub-plugins:test -DiHubTest.failFast=true -Dfast.test=true
+          run: test -DiHubTest.failFast=true -Dfast.test=true
 
       - name: Test with Gradle (all)
         if: ${{ github.event_name == 'schedule' }}
