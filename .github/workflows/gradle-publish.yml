@@ -15,7 +15,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-#          cache: 'gradle' TODO 暂时关闭缓存
+          cache: 'gradle'
 
       - name: Build with Gradle
         uses: ihub-pub/bot@main
@@ -32,7 +32,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-#          cache: 'gradle' TODO 暂时关闭缓存
+          cache: 'gradle'
 
       - name: Publish to Gradle Plugins
         run: |
