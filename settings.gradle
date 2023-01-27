@@ -18,5 +18,9 @@ plugins {
 }
 
 iHubSettings {
-    includeProjects 'ihub-aware', 'ihub-plugins', 'ihub-spring', 'ihub-settings', 'ihub-test' noPrefix
+    rootDir.eachDir { file ->
+        if (file.name.startsWith('ihub-')) {
+            includeProjects file.name noPrefix
+        }
+    }
 }

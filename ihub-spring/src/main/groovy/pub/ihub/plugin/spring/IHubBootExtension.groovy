@@ -20,7 +20,7 @@ import groovy.transform.TupleConstructor
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
-import pub.ihub.plugin.IHubSystemProperties
+import pub.ihub.plugin.verification.IHubSystemProperties
 
 import static pub.ihub.plugin.IHubProperty.Type.ENV
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT

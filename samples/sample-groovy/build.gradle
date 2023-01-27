@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 plugins {
-    id 'pub.ihub.plugin'
+    id 'pub.ihub.plugin.ihub-groovy'
+    id 'pub.ihub.plugin.ihub-test'
+    id 'pub.ihub.plugin.ihub-verification'
 }
 
 description = '测试以及代码检查插件样例'
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
-}
