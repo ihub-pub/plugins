@@ -52,7 +52,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * PMD版本
      */
     @IHubProperty
-    String pmdVersion = '6.52.0'
+    String pmdVersion = '6.53.0'
 
     //</editor-fold>
 
@@ -67,7 +67,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * Codenarc版本
      */
     @IHubProperty
-    String codenarcVersion = '3.1.0'
+    String codenarcVersion = '3.2.0'
 
     //</editor-fold>
 

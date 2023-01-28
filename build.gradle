@@ -83,9 +83,9 @@ subprojects {
     dependencies {
         implementation platform(rootProject)
         implementation gradleApi()
-        if (!(project in [project(':ihub-aware'), project(':ihub-test')])) {
-            implementation project(':ihub-aware')
-            testImplementation project(':ihub-test')
+        if (!(project in [project(':ihub-base'), project(':ihub-base-test')])) {
+            implementation project(':ihub-base')
+            testImplementation project(':ihub-base-test')
         }
     }
 

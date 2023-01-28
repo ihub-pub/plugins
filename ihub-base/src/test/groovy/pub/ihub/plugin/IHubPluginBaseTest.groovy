@@ -27,8 +27,8 @@ import spock.lang.Title
  * @author henry
  */
 @Slf4j
-@Title('IHubAware测试套件')
-class IHubPluginAwareTest extends Specification {
+@Title('IHubBase测试套件')
+class IHubPluginBaseTest extends Specification {
 
     private Project project
 
