@@ -103,7 +103,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
         when: '构建项目'
         testProjectDir.newFolder 'conf', 'pmd'
         testProjectDir.newFile 'conf/pmd/ruleset.xml'
-        testProjectDir.newFile '.java-local.properties'
+        testProjectDir.newFile('.java-local.properties') << 'local.test=property'
         result = gradleBuilder.withArguments('-DiHubTest.runSkippedPropNames=java.endorsed.dirs').build()
 
         then: '检查结果'
