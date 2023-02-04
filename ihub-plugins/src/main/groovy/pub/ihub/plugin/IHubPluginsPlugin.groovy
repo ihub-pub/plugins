@@ -60,9 +60,11 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                     checkForGradleUpdate = true
                 }
             }
-            if (!hasPlugin(JavaPlatformPlugin)) {
-                applyPlugin IHubBomPlugin
-            }
+        }
+
+        // 非Java平台组件项目默认应用IHubBom插件
+        if (!hasPlugin(JavaPlatformPlugin)) {
+            applyPlugin IHubBomPlugin
         }
 
         project.subprojects {
