@@ -17,12 +17,12 @@ description = 'IHub Java Gradle Plugins'
 
 dependencies {
     api project(':ihub-plugins'), project(':ihub-bom')
-    implementation 'io.freefair.gradle:lombok-plugin'
-    implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin'
-    implementation 'org.jmolecules.integrations:jmolecules-bytebuddy'
+    implementation 'io.freefair.gradle:lombok-plugin:6.6.1'
+    implementation 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12'
+    implementation 'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0'
 
-    implementation 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin'
-    implementation 'org.springdoc:springdoc-openapi-gradle-plugin'
+    implementation 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0'
+    implementation 'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0'
 }
 
 gradlePlugin {

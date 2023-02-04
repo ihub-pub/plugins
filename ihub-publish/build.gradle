@@ -17,8 +17,8 @@ description = 'IHub Publish Gradle Plugins'
 
 dependencies {
     implementation project(':ihub-bom'), project(':ihub-plugins')
-    compileOnly    'io.freefair.gradle:plugin-utils'
-    implementation 'io.freefair.gradle:github-plugin'
+    compileOnly    'io.freefair.gradle:plugin-utils:6.6.1'
+    implementation 'io.freefair.gradle:github-plugin:6.6.1'
     implementation 'cn.hutool:hutool-http'
 }
 
