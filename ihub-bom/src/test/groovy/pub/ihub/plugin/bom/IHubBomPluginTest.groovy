@@ -126,10 +126,11 @@ class IHubBomPluginTest extends IHubSpecification {
         '''
 
         when: '添加子项目'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\', \'demo-bom\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         buildFile << '''
             allprojects {
                 iHubBom {
