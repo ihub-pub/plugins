@@ -47,7 +47,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
                 id 'pub.ihub.plugin.ihub-verification'
             }
             dependencies {
-                implementation 'org.codehaus.groovy:groovy-all'
+                implementation 'org.codehaus.groovy:groovy-all:3.0.13'
             }
         '''
         testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'rootProject.name = \'sample-groovy\''

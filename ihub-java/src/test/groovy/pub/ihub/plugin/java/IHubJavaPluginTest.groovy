@@ -52,7 +52,6 @@ class IHubJavaPluginTest extends IHubSpecification {
         result.output.contains '│ org.apache.logging.log4j                            │ log4j-core                                 │'
         result.output.contains '│ org.slf4j                                           │ slf4j-log4j12                              │'
         result.output.contains '│ org.slf4j                                           │ slf4j-jcl                                  │'
-        result.output.contains '│ compileOnly                      │ cn.hutool:hutool-all                                          │'
         result.output.contains '│ compileOnly                      │ io.swagger.core.v3:swagger-annotations                        │'
         result.output.contains '│ runtimeOnly                      │ org.slf4j:jul-to-slf4j                                        │'
         result.output.contains '│ runtimeOnly                      │ javax.xml.bind:jaxb-api                                       │'
@@ -101,7 +100,6 @@ class IHubJavaPluginTest extends IHubSpecification {
         !result.output.contains('log4j-core')
         !result.output.contains('slf4j-log4j12')
         !result.output.contains('slf4j-jcl')
-        result.output.contains '│ compileOnly                                 │ cn.hutool:hutool-all                               │'
         !result.output.contains('org.slf4j:jul-to-slf4j')
         !result.output.contains('javax.xml.bind:jaxb-api')
         !result.output.contains('org.slf4j:log4j-over-slf4j')

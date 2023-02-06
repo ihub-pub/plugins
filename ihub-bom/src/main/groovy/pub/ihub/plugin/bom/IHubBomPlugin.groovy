@@ -42,10 +42,6 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         extension.importBoms {
             group 'pub.ihub.lib' module 'ihub-libs' version IHubLibsVersion.version
         }
-        // 配置默认依赖组件
-        extension.dependencies {
-            compileOnly 'cn.hutool:hutool-all'
-        }
 
         // 配置项目依赖
         withExtension(AFTER) { ext ->
