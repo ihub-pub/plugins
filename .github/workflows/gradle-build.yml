@@ -16,7 +16,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-          cache: 'gradle'
+          # cache: 'gradle'
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@main
