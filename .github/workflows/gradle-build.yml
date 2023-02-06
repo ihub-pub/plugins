@@ -15,13 +15,13 @@ jobs:
         uses: actions/setup-java@main
         with:
           java-version: '17'
-          distribution: 'temurin'
-          # cache: 'gradle'
+          distribution: 'adopt'
+          cache: 'gradle'
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@main
+        uses: ihub-pub/bot@main
         with:
-          arguments: build
+          run: build -x test
 
   test:
     if: ${{ github.event_name != 'push' }}
