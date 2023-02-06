@@ -20,7 +20,7 @@ jobs:
       - name: Build with Gradle
         uses: ihub-pub/bot@main
         with:
-          run: build -DiHubTest.failFast=true
+          run: build -DiHubTest.failFast=true -Porg.gradle.caching=false
 
   publish:
     needs: build
