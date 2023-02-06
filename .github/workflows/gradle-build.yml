@@ -101,26 +101,6 @@ jobs:
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@main
 
-  OSSAR-Scan:
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
-    name: OSSAR Scan
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@main
-
-    - name: Run OSSAR
-      uses: github/ossar-action@main
-      id: ossar
-
-    - name: Upload OSSAR results
-      uses: github/codeql-action/upload-sarif@main
-      with:
-        sarif_file: ${{ steps.ossar.outputs.sarifFile }}
-
   validation:
     name: Validate Gradle Wrapper
     runs-on: ubuntu-latest
