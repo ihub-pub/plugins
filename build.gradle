@@ -15,6 +15,10 @@
  */
 plugins {
     id 'pub.ihub.plugin'
+    id 'pub.ihub.plugin.ihub-git-hooks'
+    id 'pub.ihub.plugin.ihub-java' apply false
+    id 'pub.ihub.plugin.ihub-verification' apply false
+    id 'pub.ihub.plugin.ihub-publish' apply false
     id 'com.gradle.plugin-publish' apply false
     // Jacoco暂时支持TestKit，如下插件用于集成Jacoco报告，详见：https://github.com/gradle/gradle/issues/1465
     id 'pl.droidsonroids.jacoco.testkit' version '1.0.9'
@@ -42,6 +46,36 @@ subprojects {
     repositories {
         gradlePluginPortal()
     }
+
+//<editor-fold desc="组件依赖版本管理">
+
+    iHubBom.bomVersions.clear()
+    dependencies {
+        api platform('pub.ihub.lib:ihub-libs:1.0.17')
+        constraints {
+            api 'io.spring.gradle:dependency-management-plugin:1.1.0',
+                'io.freefair.gradle:plugin-utils:6.6.1',
+                'io.freefair.gradle:git-plugin:6.6.1',
+                'io.freefair.gradle:lombok-plugin:6.6.1',
+                'io.freefair.gradle:github-plugin:6.6.1',
+                'com.github.ben-manes:gradle-versions-plugin:0.45.0',
+                'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12',
+                'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0',
+                'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0',
+                'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
+                'org.springframework.boot:spring-boot-gradle-plugin:3.0.2',
+                'org.graalvm.buildtools:native-gradle-plugin:0.9.19'
+        }
+    }
+    // TODO gradle groovy版本没有升级至4.0，强制指定3.0版本
+    iHubBom {
+        groupVersions {
+            group 'org.spockframework' version '2.3-groovy-3.0'
+            group 'com.athaydes' version '2.3.2-groovy-3.0'
+        }
+    }
+
+//</editor-fold>
 
     dependencies {
         implementation gradleApi()

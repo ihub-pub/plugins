@@ -17,9 +17,9 @@ description = 'IHub Spring Gradle Plugins'
 
 dependencies {
     implementation project(':ihub-java'), project(':ihub-verification')
-    implementation 'org.springframework.boot:spring-boot-gradle-plugin:3.0.2'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin'
     compileOnly    'org.springframework.boot:spring-boot-buildpack-platform'
-    implementation 'org.graalvm.buildtools:native-gradle-plugin:0.9.19'
+    implementation 'org.graalvm.buildtools:native-gradle-plugin'
 }
 
 gradlePlugin {
