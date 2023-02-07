@@ -47,7 +47,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
                 id 'pub.ihub.plugin.ihub-verification'
             }
             dependencies {
-                implementation 'org.codehaus.groovy:groovy-all:3.0.13'
+                implementation 'org.apache.groovy:groovy'
             }
         '''
         testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'rootProject.name = \'sample-groovy\''
@@ -61,7 +61,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
         result.output.contains '├──────────────────────┬────────────────┬─────────────────┬──────────────────┬─────────────────────┤'
         result.output.contains '│ Type                 │ Total          │ Missed          │ Covered          │ Coverage            │'
         result.output.contains '├──────────────────────┼────────────────┼─────────────────┼──────────────────┼─────────────────────┤'
-        result.output.contains '│ INSTRUCTION          │ 13             │ 0               │ 13               │ 100.00%             │'
+        result.output.contains '│ INSTRUCTION          │ 6              │ 0               │ 6                │ 100.00%             │'
         result.output.contains '│ BRANCH               │ 0              │ 0               │ 0                │ n/a                 │'
         result.output.contains '│ LINE                 │ 1              │ 0               │ 1                │ 100.00%             │'
         result.output.contains '│ COMPLEXITY           │ 1              │ 0               │ 1                │ 100.00%             │'
