@@ -47,7 +47,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
                 id 'pub.ihub.plugin.ihub-verification'
             }
             dependencies {
-                implementation 'org.codehaus.groovy:groovy-all'
+                implementation 'org.codehaus.groovy:groovy-all:3.0.13'
             }
         '''
         testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'rootProject.name = \'sample-groovy\''
@@ -103,7 +103,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
         when: '构建项目'
         testProjectDir.newFolder 'conf', 'pmd'
         testProjectDir.newFile 'conf/pmd/ruleset.xml'
-        testProjectDir.newFile '.java-local.properties'
+        testProjectDir.newFile('.java-local.properties') << 'local.test=property'
         result = gradleBuilder.withArguments('-DiHubTest.runSkippedPropNames=java.endorsed.dirs').build()
 
         then: '检查结果'

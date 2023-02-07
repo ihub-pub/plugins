@@ -33,13 +33,14 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
     @Override
     void apply() {
+        // 如果项目为bom组件项目时，不执行插件
+        if (project.name == extension.findProjectProperty('iHubSettings.includeBom')) {
+            return
+        }
+
         // 配置ihub-bom
         extension.importBoms {
             group 'pub.ihub.lib' module 'ihub-libs' version IHubLibsVersion.version
-        }
-        // 配置默认依赖组件
-        extension.dependencies {
-            compileOnly 'cn.hutool:hutool-all'
         }
 
         // 配置项目依赖
@@ -53,10 +54,6 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             project.gradle.taskGraph.whenReady {
                 ext.printConfigContent()
             }
-        }
-
-        project.subprojects {
-            pluginManager.apply IHubBomPlugin
         }
     }
 

@@ -126,10 +126,11 @@ class IHubBomPluginTest extends IHubSpecification {
         '''
 
         when: '添加子项目'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\', \'demo-bom\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         buildFile << '''
             allprojects {
                 iHubBom {
@@ -214,7 +215,6 @@ class IHubBomPluginTest extends IHubSpecification {
         // B Group Maven Default Version
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.7                                        │'
         // Config Default Dependencies (root project)
-        result.output.contains '│ compileOnly                                 │ cn.hutool:hutool-all                               │'
         result.output.contains '│ runtimeOnly                                 │ pub.ihub.lib:ihub-core                             │'
         result.output.contains '│ implementation                              │ pub.ihub.lib:ihub-process                          │'
         result.output.contains '│ annotationProcessor                         │ pub.ihub.lib:ihub-process                          │'

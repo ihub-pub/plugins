@@ -40,12 +40,11 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
                     group 'org.spockframework' module 'spock-bom' version '2.3-groovy-3.0'
                 }
                 it.dependencyVersions {
-                    group 'org.codehaus.groovy' modules 'groovy-all' version '3.0.13'
                     group 'com.athaydes' modules 'spock-reports' version '2.3.2-groovy-3.0'
                 }
             }
             it.dependencies {
-                implementation((withExtension(IHubPluginsExtension).compileGroovyAllModules ? ['groovy-all'] : [
+                implementation(([
                     'groovy',
                     'groovy-datetime',
                     'groovy-dateutil',

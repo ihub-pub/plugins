@@ -1,7 +1,7 @@
 name: Publish
 on:
   release:
-    types: published
+    types: prereleased
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,7 +20,7 @@ jobs:
       - name: Build with Gradle
         uses: ihub-pub/bot@main
         with:
-          run: build -DiHubTest.failFast=true
+          run: --no-build-cache build -DiHubTest.failFast=true
 
   publish:
     needs: build

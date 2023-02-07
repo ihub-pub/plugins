@@ -20,49 +20,12 @@ plugins {
     id 'pl.droidsonroids.jacoco.testkit' version '1.0.9'
 }
 
-apply {
-    plugin 'java-platform'
-    plugin 'pub.ihub.plugin.ihub-publish'
-}
-
 iHubGitHooks {
     hooks = [
         'pre-commit': './gradlew build -x test',
         'commit-msg': './gradlew commitCheck'
     ]
 }
-
-//<editor-fold desc="组件依赖版本管理">
-
-repositories {
-    gradlePluginPortal()
-}
-
-javaPlatform {
-    allowDependencies()
-}
-
-iHubBom.bomVersions.clear()
-
-dependencies {
-    constraints {
-        api 'pub.ihub.lib:ihub-core:1.0.17',
-            'io.spring.gradle:dependency-management-plugin:1.1.0',
-            'io.freefair.gradle:plugin-utils:6.6.1',
-            'io.freefair.gradle:git-plugin:6.6.1',
-            'io.freefair.gradle:lombok-plugin:6.6.1',
-            'io.freefair.gradle:github-plugin:6.6.1',
-            'com.github.ben-manes:gradle-versions-plugin:0.44.0',
-            'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12',
-            'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0',
-            'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0',
-            'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
-            'org.springframework.boot:spring-boot-gradle-plugin:3.0.1',
-            'org.graalvm.buildtools:native-gradle-plugin:0.9.19'
-    }
-}
-
-//</editor-fold>
 
 subprojects {
     apply {
@@ -80,7 +43,6 @@ subprojects {
     }
 
     dependencies {
-        implementation platform(rootProject)
         implementation gradleApi()
         if (!(project in [project(':ihub-base'), project(':ihub-base-test')])) {
             implementation project(':ihub-base')

@@ -41,13 +41,13 @@ jobs:
         if: ${{ github.event_name != 'schedule' }}
         uses: ihub-pub/bot@main
         with:
-          run: test -DiHubTest.failFast=true -Dfast.test=true
+          run: --no-build-cache test -DiHubTest.failFast=true -Dfast.test=true
 
       - name: Test with Gradle (all)
         if: ${{ github.event_name == 'schedule' }}
         uses: ihub-pub/bot@main
         with:
-          run: test -DiHubTest.failFast=true
+          run: --no-build-cache test -DiHubTest.failFast=true
 
       - name: Upload Coverage Reports
         if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
@@ -88,6 +88,18 @@ jobs:
         uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: results.sarif
+
+  dependency-review:
+    if: ${{ github.event_name == 'pull_request' && github.repository_owner == 'ihub-pub' }}
+    permissions:
+      contents: read
+    name: Dependency Review Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@main
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@main
 
   validation:
     name: Validate Gradle Wrapper
