@@ -97,16 +97,6 @@ class IHubPluginsExtension implements IHubProjectExtensionAware {
 
     //</editor-fold>
 
-    //<editor-fold desc="Groovy相关扩展属性">
-
-    /**
-     * 是否启用Groovy 3
-     */
-    @IHubProperty
-    boolean enableGroovy3 = false
-
-    //</editor-fold>
-
     //<editor-fold desc="其他扩展属性">
 
     /**

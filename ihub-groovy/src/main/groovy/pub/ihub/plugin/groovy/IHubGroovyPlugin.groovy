@@ -17,7 +17,6 @@ package pub.ihub.plugin.groovy
 
 import org.gradle.api.plugins.GroovyPlugin
 import pub.ihub.plugin.IHubPlugin
-import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaPlugin
@@ -34,15 +33,6 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
     @Override
     void apply() {
         withExtension(IHubBomExtension) {
-            if (withExtension(IHubPluginsExtension).enableGroovy3) {
-                it.importBoms {
-                    group 'org.codehaus.groovy' module 'groovy-bom' version '3.0.13'
-                    group 'org.spockframework' module 'spock-bom' version '2.3-groovy-3.0'
-                }
-                it.dependencyVersions {
-                    group 'com.athaydes' modules 'spock-reports' version '2.3.2-groovy-3.0'
-                }
-            }
             it.dependencies {
                 implementation(([
                     'groovy',
@@ -54,7 +44,7 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
                     'groovy-sql',
                     'groovy-templates',
                     'groovy-xml',
-                ]).collect { "${withExtension(IHubPluginsExtension).enableGroovy3 ? 'org.codehaus.groovy' : 'org.apache.groovy'}:$it" } as String[])
+                ]).collect { "org.apache.groovy:$it" } as String[])
             }
         }
     }

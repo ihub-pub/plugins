@@ -49,15 +49,4 @@ class IHubGroovyPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    def 'Groovy插件配置测试-启用Groovy 3选项开关'() {
-        when: '启用Groovy 3选项开关'
-        propertiesFile << 'iHub.enableGroovy3=true\n'
-        def result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains '│ org.spockframework                 │ spock-bom                 │ 2.3-groovy-3.0                  │'
-        result.output.contains '│ com.athaydes                 │ spock-reports                 │ 2.3.2-groovy-3.0                  │'
-        result.output.contains 'BUILD SUCCESSFUL'
-    }
-
 }
