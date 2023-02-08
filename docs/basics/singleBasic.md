@@ -3,7 +3,7 @@
 ## 配置 wrapper
 
 ```properties
-distributionUrl=https\://services.gradle.org/distributions/gradle-7.5.1-bin.zip
+distributionUrl=https\://services.gradle.org/distributions/gradle-${ihub.plugin.gradleVersion}-bin.zip
 ```
 
 ## 配置 setting.gradle
@@ -20,13 +20,10 @@ plugins {
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin'
-}
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-java'
-    plugin 'pub.ihub.plugin.ihub-test'
-    plugin 'pub.ihub.plugin.ihub-verification'
+    id 'pub.ihub.plugin.ihub-java'
+    id 'pub.ihub.plugin.ihub-test'
+    id 'pub.ihub.plugin.ihub-verification'
+    id 'pub.ihub.plugin.ihub-git-hooks'
 }
 
 iHubGitHooks {

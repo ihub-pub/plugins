@@ -4,7 +4,15 @@
 |-------|---------|--------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `pub.ihub.plugin` | `基础插件` | `Project` | `iHub` | [io.freefair.git-version](https://plugins.gradle.org/plugin/io.freefair.git-version)、[com.github.ben-manes.versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)、<br>[ihub-git-hooks](iHubGitHooks)、[ihub-bom](iHubBom) |
 
-注：当主项目不含[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)插件时，会默认导入`ihub-bom`插件
+> 插件功能
+
+| | 功能描述 |
+|--|--|
+| 1 | 配置组件仓库，仓库明细[见](/iHub?id=组件仓库) |
+| 2 | 当主项目不含[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)插件时，会默认导入`ihub-bom`插件 |
+| 3 | 如果项目包含子项目，子项目也会引入本插件 |
+| 4 | 主项目引入`git-version`插件自动配置项目版本，`增强支持推断版本号` |
+| 5 | 主项目引入`ben-manes.versions`插件用于检查组件版本号，`增强支持自动替换最新版本` |
 
 ## 扩展属性
 
@@ -22,8 +30,6 @@
 | `repoUsername` | 仓库用户名 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `repoPassword` | 仓库密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `customizeRepoUrl` | 自定义仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `compileGroovyAllModules` | 是否添加groovy所有模块 | `false` | ❌ | ✔ | ❌ | ❌ |
-| `enableGroovy3` | 是否启用Groovy 3 | `false` | ❌ | ✔ | ❌ | ❌ |
 | `autoReplaceLaterVersions` | 自动替换最新版本（[versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)插件增强） | `false` | ✔ | ✔ | ✔ | ❌ |
 | `useInferringVersion` | 使用推断版本号，根据最新`git tag`推断下一个版本号，支持tag格式`{major}.{minor}.{patch}`或`v{major}.{minor}.{patch}`，推断方式`patch + 1` | `false` | ❌ | ✔ | ✔ | ✔ |
 

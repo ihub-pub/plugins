@@ -18,15 +18,15 @@ plugins {
 iHubBom {
     // 导入mavenBom
     importBoms {
-        group 'pub.ihub.lib' module 'ihub-bom' version '1.0.8'
+        group 'pub.ihub.lib' module 'ihub-bom' version '${ihub.lib.version}'
     }
     // 配置依赖默认版本
     dependencyVersions {
-        group 'pub.ihub.lib' modules 'ihub-core', 'ihub-process' version '1.0.8'
+        group 'pub.ihub.lib' modules 'ihub-core', 'ihub-process' version '${ihub.lib.version}'
     }
     // 配置组版本策略
     groupVersions {
-        group 'pub.ihub.lib' version '1.0.8'
+        group 'pub.ihub.lib' version '${ihub.lib.version}'
     }
     // 排除组件依赖
     excludeModules {
@@ -56,15 +56,6 @@ iHubBom {
 
 ```groovy
 importBoms {
-    group 'pub.ihub.lib' module 'ihub-libs' version '1.0.6'
-}
-```
-
-> 默认`编译`依赖`hutool-all`组件，便于编码时使用相关工具，如果实际需要相关组件，添加`运行时`依赖即可，组件[详见](https://www.hutool.cn/docs)。
-
-```groovy
-dependencies {
-    compileOnly 'cn.hutool:hutool-all'
-    runtimeOnly 'cn.hutool:hutool-core'
+    group 'pub.ihub.lib' module 'ihub-libs' version '${ihub.lib.version}'
 }
 ```

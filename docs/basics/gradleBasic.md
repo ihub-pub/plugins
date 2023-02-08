@@ -8,7 +8,7 @@
 > 环境，便于保持项目环境统一，在项目根目录下添加`gradle/wrapper/gradle-wrapper.properties`配置文件，详细配置见入门文档，配置内容如下：
 
 ```properties
-distributionUrl=https\://services.gradle.org/distributions/gradle-7.5.1-bin.zip
+distributionUrl=https\://services.gradle.org/distributions/gradle-${ihub.plugin.gradleVersion}-bin.zip
 ```
 
 > gradle-wrapper.jar、gradlew、gradlew.bat 文件可以通过命令自动生成，项目结构如下：

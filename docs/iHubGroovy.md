@@ -26,7 +26,7 @@ apply {
 
 ## 组件依赖
 
-> 项目默认会依赖如下组件，可以配置[compileGroovyAllModules](/iHub?id=配置示例)依赖`groovy-all`。
+> 项目默认会依赖如下组件：
 
 | 默认依赖组件 |
 | --------- |

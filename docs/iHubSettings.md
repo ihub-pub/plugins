@@ -104,16 +104,18 @@ iHubSettings {
 
 ## 默认版本
 
-> 插件配置了以下插件默认版本：
+> 插件配置了`ihub系列插件`及以下插件默认版本：
 
-| Plugin   | Version |
-| -------- | ------- |
-| `com.gradle.plugin-publish` | [1.1.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
+| Plugin                      | Version                                                                     |
+|-----------------------------|-----------------------------------------------------------------------------|
+| `com.gradle.plugin-publish` | [1.1.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)        |
+| `pub.ihub.plugin.*`         | [${ihub.plugin.version}](https://plugins.gradle.org/plugin/pub.ihub.plugin) |
 
 > 使用插件时可以不用加版本号，配置如下：
 
 ```groovy
 plugins {
+    id 'pub.ihub.plugin'
     id 'com.gradle.plugin-publish'
 }
 ```
