@@ -30,7 +30,7 @@
 | [pub.ihub.plugin.ihub-test](https://doc.ihub.pub/plugins/#/iHubTest)                 | `测试插件` | `Project` | 配置测试任务 |
 | [pub.ihub.plugin.ihub-verification](https://doc.ihub.pub/plugins/#/iHubVerification) | `验证插件` | `Project` | 配置代码静态检查以及测试用例覆盖率等 |
 | [pub.ihub.plugin.ihub-boot](https://doc.ihub.pub/plugins/#/iHubBoot)                 | `Boot插件` | `Project` | 集成spring-boot插件以及镜像默认配置 |
-| [pub.ihub.plugin.ihub-native](https://doc.ihub.pub/plugins/#/iHubNative)             | `Native插件` | `Project` | 集成spring-native插件以及镜像默认配置 |
+| [pub.ihub.plugin.ihub-native](https://doc.ihub.pub/plugins/#/iHubNative)             | `Native插件` | `Project` | 基于ihub-boot扩展引入org.graalvm.buildtools.native插件 |
 | [pub.ihub.plugin.ihub-git-hooks](https://doc.ihub.pub/plugins/#/iHubGitHooks)        | `GitHooks插件` | `Project` | 配置GitHooks，可以为git操作配置一些钩子命令 |
 
 ## 🔰 支持版本
