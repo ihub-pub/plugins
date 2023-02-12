@@ -35,6 +35,43 @@
 
 ---
 
+## 🔖 1.3.0 (2023-02-12)
+
+
+### ✨ Features
+
+- feat(groovy): 移除enableGroovy3扩展属性  [@henry-hub](https://github.com/henry-hub) ([#370](https://github.com/ihub-pub/plugins/pull/370))
+- feat(groovy): 移除compileGroovyAllModules扩展属性  [@henry-hub](https://github.com/henry-hub) ([#368](https://github.com/ihub-pub/plugins/pull/368))
+- revert(bom): 还原公共平台组件配置  [@henry-hub](https://github.com/henry-hub) ([#366](https://github.com/ihub-pub/plugins/pull/366))
+- test: 补充测试用例  [@henry-hub](https://github.com/henry-hub) ([#364](https://github.com/ihub-pub/plugins/pull/364))
+- refactor: 基础模块名称调整  [@henry-hub](https://github.com/henry-hub) ([#363](https://github.com/ihub-pub/plugins/pull/363))
+- refactor: 各插件重构为独立组件  [@henry-hub](https://github.com/henry-hub) ([#356](https://github.com/ihub-pub/plugins/pull/356))
+- feat(spring): 独立spring插件  [@henry-hub](https://github.com/henry-hub) ([#352](https://github.com/ihub-pub/plugins/pull/352))
+
+### 🐛 Bug Fixes
+
+- fix(bom): bom组件项目不使用ihub-bom插件  [@henry-hub](https://github.com/henry-hub) ([#367](https://github.com/ihub-pub/plugins/pull/367))
+
+### ⬆️ Dependency Updates
+
+- gradle: bump pub.ihub.lib:ihub-libs from 1.0.17 to 1.1.0  [@dependabot](https://github.com/dependabot) ([#369](https://github.com/ihub-pub/plugins/pull/369))
+- gradle: bump pub.ihub.plugin.ihub-settings from 1.2.11 to 1.2.12  [@dependabot](https://github.com/dependabot) ([#342](https://github.com/ihub-pub/plugins/pull/342))
+- gradle: bump com.github.ben-manes:gradle-versions-plugin from 0.44.0 to 0.45.0  [@dependabot](https://github.com/dependabot) ([#365](https://github.com/ihub-pub/plugins/pull/365))
+- gradle: bump spring-boot-gradle-plugin from 3.0.1 to 3.0.2  [@dependabot](https://github.com/dependabot) ([#362](https://github.com/ihub-pub/plugins/pull/362))
+- gradle: bump spring-boot-gradle-plugin from 3.0.0 to 3.0.1 in /ihub-spring  [@dependabot](https://github.com/dependabot) ([#354](https://github.com/ihub-pub/plugins/pull/354))
+- gradle: bump native-gradle-plugin from 0.9.18 to 0.9.19 in /ihub-spring  [@dependabot](https://github.com/dependabot) ([#353](https://github.com/ihub-pub/plugins/pull/353))
+- gradle: bump lombok-plugin from 6.6 to 6.6.1 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#350](https://github.com/ihub-pub/plugins/pull/350))
+- gradle: bump lombok-plugin from 6.5.1 to 6.6 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#345](https://github.com/ihub-pub/plugins/pull/345))
+- gradle: bump spring-boot-gradle-plugin from 2.7.5 to 3.0.0 in /ihub-plugins  [@dependabot](https://github.com/dependabot) ([#338](https://github.com/ihub-pub/plugins/pull/338))
+
+### 🧰 Maintenance
+
+- test(verification): 修正测试用例  [@henry-hub](https://github.com/henry-hub) ([#371](https://github.com/ihub-pub/plugins/pull/371))
+- ci(gradle): 修正ihub-test模块配置  [@henry-hub](https://github.com/henry-hub) ([#355](https://github.com/ihub-pub/plugins/pull/355))
+
+
+---
+
 ## 🔖 1.2.12 (2022-11-28)
 
 
