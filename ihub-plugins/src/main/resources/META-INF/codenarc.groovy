@@ -28,7 +28,6 @@ ruleset {
         'DuplicateNumberLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\d*\.groovy/
         'DuplicateStringLiteral' priority: 4, doNotApplyToFilesMatching: /.*(FT|IT|UT|Test)_?\d*\.groovy/
     }
-    ruleset('rulesets/enhanced.xml')
     ruleset('rulesets/exceptions.xml')
     ruleset('rulesets/formatting.xml') {
         'LineLength' ignoreLineRegex: /.*'.*'.*|.*".*".*|.*\u6d4b\u8bd5.*|class .*/
