@@ -26,12 +26,14 @@ gradlePlugin {
             displayName         = 'IHub Test Gradle Plugin'
             description         = 'IHub Test Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.verification.IHubTestPlugin'
+            tags.set(['ihub', 'java', 'test'])
         }
         iHubVerification {
             id                  = 'pub.ihub.plugin.ihub-verification'
             displayName         = 'IHub Verification Gradle Plugin'
             description         = 'IHub Verification Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.verification.IHubVerificationPlugin'
+            tags.set(['ihub', 'java', 'verification'])
         }
     }
 }

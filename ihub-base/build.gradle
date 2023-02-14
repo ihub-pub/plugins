@@ -22,6 +22,7 @@ gradlePlugin {
             displayName         = 'IHub Gradle Plugins Base'
             description         = 'IHub Gradle Plugins Base'
             implementationClass = 'pub.ihub.plugin.IHubPluginMethods'
+            tags.set(['ihub', 'plugin'])
         }
     }
 }

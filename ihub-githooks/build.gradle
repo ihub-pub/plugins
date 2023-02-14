@@ -26,6 +26,7 @@ gradlePlugin {
             displayName         = 'IHub Gradle Plugins GitHooks'
             description         = 'IHub Gradle Plugins GitHooks'
             implementationClass = 'pub.ihub.plugin.githooks.IHubGitHooksPlugin'
+            tags.set(['ihub', 'git', 'plugin', 'gitHooks'])
         }
     }
 }

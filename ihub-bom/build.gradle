@@ -27,6 +27,7 @@ gradlePlugin {
             displayName         = 'IHub Bom Plugin'
             description         = 'IHub Bom Plugin'
             implementationClass = 'pub.ihub.plugin.bom.IHubBomPlugin'
+            tags.set(['ihub', 'java', 'bom'])
         }
     }
 }
