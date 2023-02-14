@@ -29,6 +29,7 @@ gradlePlugin {
             displayName         = 'IHub Publish Gradle Plugin'
             description         = 'IHub Publish Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.publish.IHubPublishPlugin'
+            tags.set(['ihub', 'java', 'publish'])
         }
     }
 }

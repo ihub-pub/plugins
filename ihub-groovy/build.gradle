@@ -26,6 +26,7 @@ gradlePlugin {
             displayName         = 'IHub Groovy Gradle Plugin'
             description         = 'IHub Groovy Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.groovy.IHubGroovyPlugin'
+            tags.set(['ihub', 'groovy'])
         }
     }
 }

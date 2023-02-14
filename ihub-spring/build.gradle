@@ -29,12 +29,14 @@ gradlePlugin {
             displayName         = 'IHub Boot Gradle Plugin'
             description         = 'IHub Boot Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.spring.IHubBootPlugin'
+            tags.set(['ihub', 'java', 'spring', 'boot'])
         }
         iHubNative {
             id                  = 'pub.ihub.plugin.ihub-native'
             displayName         = 'IHub Native Gradle Plugin'
             description         = 'IHub Native Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.spring.IHubNativePlugin'
+            tags.set(['ihub', 'java', 'spring', 'native'])
         }
     }
 }
