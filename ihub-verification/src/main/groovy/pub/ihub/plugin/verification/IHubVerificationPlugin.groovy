@@ -174,7 +174,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
                 }
 
                 task.doLast {
-                    File xml = reports.xml.destination
+                    File xml = reports.xml.outputLocation.asFile.get()
                     printJacocoReportCoverage xml
                 }
             }
@@ -221,6 +221,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
         }, 'Type', 'Total', 'Missed', 'Covered', 'Coverage'
 
         if (!extension.findExtProperty(extension.rootProject, 'printJacocoReportCoverage', false)) {
+            // 此处弃用方法待观察 https://github.com/gradle/gradle/issues/20151
             project.gradle.buildFinished {
                 printFinishedJacocoReportCoverage()
             }
