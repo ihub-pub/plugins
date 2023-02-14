@@ -27,6 +27,7 @@ gradlePlugin {
             displayName         = 'IHub Gradle Plugins Base Test'
             description         = 'IHub Gradle Plugins Base Test'
             implementationClass = 'pub.ihub.plugin.test.IHubSpecification'
+            tags.set(['ihub', 'plugin', 'test'])
         }
     }
 }
