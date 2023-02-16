@@ -64,7 +64,7 @@ subprojects {
                 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0',
                 'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
                 'org.springframework.boot:spring-boot-gradle-plugin:3.0.2',
-                'org.graalvm.buildtools:native-gradle-plugin:0.9.19'
+                'org.graalvm.buildtools:native-gradle-plugin:0.9.20'
         }
     }
     // TODO gradle groovy版本没有升级至4.0，强制指定3.0版本
