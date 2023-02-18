@@ -23,11 +23,8 @@
     <a target="_blank" href="https://github.com/ihub-pub/plugins">
         <img src="https://img.shields.io/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717" alt="IHubPub"/>
     </a>
-    <a target="_blank" href="https://gitee.com/ihub-pub">
+    <a target="_blank" href="https://gitee.com/ihub-pub/plugins">
         <img src="https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee" alt="IHubPub"/>
-    </a>
-    <a target="_blank" href="https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-        <img src="https://img.shields.io/badge/Gitter-45af90.svg?style=flat&logo=Gitter&logoColor=white&" alt="Chat On Gitter"/>
     </a>
     <a target="_blank" href="https://www.jetbrains.com">
         <img src="https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black" alt="Thanks to JetBrains for sponsoring"/>
