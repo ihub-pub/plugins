@@ -15,3 +15,9 @@ updates:
       - dependency-type: "production"
     commit-message:
       prefix: "gradle"
+
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
