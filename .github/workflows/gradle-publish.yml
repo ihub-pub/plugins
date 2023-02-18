@@ -23,7 +23,7 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
-        run: gradle build -DiHubTest.failFast=true
+        run: gradle --no-build-cache build -DiHubTest.failFast=true
 
   publish:
     needs: build
