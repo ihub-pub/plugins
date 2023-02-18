@@ -8,6 +8,9 @@
 ---
 
 <p align="center">
+    <a target="_blank" href="https://bestpractices.coreinfrastructure.org/projects/6921">
+        <img alt="CII Best Practices Level" src="https://img.shields.io/cii/level/6921">
+    </a>
     <a target="_blank" href="https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml">
         <img src="https://img.shields.io/github/actions/workflow/status/ihub-pub/plugins/gradle-build.yml?branch=main&label=Build&logo=GitHub+Actions&logoColor=white" alt="Gradle Build"/>
     </a>
@@ -22,9 +25,6 @@
     </a>
     <a target="_blank" href="https://gitee.com/ihub-pub">
         <img src="https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee" alt="IHubPub"/>
-    </a>
-    <a target="_blank" href="https://doc.ihub.pub/plugins">
-        <img src="https://img.shields.io/badge/Docs-8CA1AF.svg?style=flat&logo=Read+the+Docs&logoColor=white" alt="Docs"/>
     </a>
     <a target="_blank" href="https://gitter.im/ihub-pub/plugins?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
         <img src="https://img.shields.io/badge/Gitter-45af90.svg?style=flat&logo=Gitter&logoColor=white&" alt="Chat On Gitter"/>
