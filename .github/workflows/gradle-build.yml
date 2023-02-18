@@ -90,6 +90,7 @@ jobs:
           sarif_file: results.sarif
 
   analysis:
+    if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
     name: Scorecards analysis
     runs-on: ubuntu-latest
     permissions:
@@ -99,7 +100,6 @@ jobs:
       id-token: write
       actions: read
       contents: read
-
     steps:
       - name: "Checkout code"
         uses: actions/checkout@main
