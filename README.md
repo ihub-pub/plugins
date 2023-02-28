@@ -21,10 +21,10 @@
         <img src="https://img.shields.io/codecov/c/github/ihub-pub/plugins?token=ZQ0WR3ZSWG&color=white&label=Codecov&labelColor=F01F7A&logo=Codecov&logoColor=white" alt="Codecov"/>
     </a>
     <a target="_blank" href="https://github.com/ihub-pub/plugins">
-        <img src="https://img.shields.io/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717" alt="IHubPub"/>
+        <img src="https://img.shields.io/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717" alt="GitHub Star"/>
     </a>
-    <a target="_blank" href="https://gitee.com/ihub-pub/plugins">
-        <img src="https://img.shields.io/badge/Gitee-C71D23.svg?style=flat&logo=Gitee" alt="IHubPub"/>
+    <a href='https://gitee.com/ihub-pub/plugins/stargazers'>
+        <img src='https://gitee.com/ihub-pub/plugins/badge/star.svg?theme=dark' alt='Gitee Star'/>
     </a>
     <a target="_blank" href="https://www.jetbrains.com">
         <img src="https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black" alt="Thanks to JetBrains for sponsoring"/>
