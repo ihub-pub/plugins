@@ -45,7 +45,7 @@ plugins {
 
 ```groovy
 iHub {
-    compileGroovyAllModules = true
+    autoReplaceLaterVersions = true
 }
 ```
 
