@@ -8,14 +8,15 @@
 
 ## 扩展属性
 
-> 属性使用说明[详见](/explanation?id=属性配置说明)
+> 属性使用说明[详见](/explanation?id=属性配置说明)，由于插件会在`beforeEvaluate`阶段处理一些配置，根项目时不会处理这个阶段，`Ext`配置可能会失效，建议优先使用`Prj`配置
 
 | Extension | Description                                                 | Default | Ext | Prj | Sys | Env |
-| --------- |-------------------------------------------------------------| ------- | --- | ------- | ------ | --- |
-| `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置         | `log` | ❌ | ✔ | ❌ | ❌ |
-| `compileEncoding` | Java编译编码 | `UTF-8` | ❌ | ✔ | ✔ | ❌ |
-| `compatibility` | Java兼容性配置                                                   | ❌ | ❌ | ✔ | ✔ | ❌ |
-| `gradleCompilationIncremental` | gradle增量编译                                                  | `true` | ❌ | ✔ | ✔ | ❌ |
+| --------- |-------------------------------------------------------------| ----- | --- | ------- | ------ | --- |
+| `defaultDependencies` | 默认依赖（“,”分割）[详见](iHubJava?id=默认依赖)，可以设置`false`关闭默认配置         | `log` | ✔ | ✔ | ❌ | ❌ |
+| `compileEncoding` | Java编译编码 | `UTF-8` | ✔ | ✔ | ✔ | ❌ |
+| `compatibility` | Java兼容性配置                                                   | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `gradleCompilationIncremental` | gradle增量编译                                                  | `true` | ✔ | ✔ | ✔ | ❌ |
+| `complierArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked                                                  | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `applyOpenapiPlugin` | 启用 [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) 插件                                                  | `false` | ✔ | ✔ | ✔ | ❌ |
 | `jmoleculesArchitecture` | JMolecules架构（可选类型：cqrs、layered、onion）[详见](https://jmolecules.org) | `onion` | ✔ | ✔ | ❌ | ❌ |
 

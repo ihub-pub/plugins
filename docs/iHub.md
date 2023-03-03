@@ -24,13 +24,13 @@
 | `mavenAliYunEnabled` | 是否启用阿里云代理仓库 | `false` | ❌ | ✔ | ✔ | ✔ |
 | `releaseRepoUrl` | 正式版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
 | `snapshotRepoUrl` | 快照版本仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `repoAllowInsecureProtocol` | 是否允许不安全协议（是否允许http） | `false` | ✔ | ✔ | ❌ | ❌ |
-| `repoIncludeGroup` | 仓库包含组（用于限制仓库范围） | ❌ | ✔ | ✔ | ❌ | ❌ |
-| `repoIncludeGroupRegex` | 仓库包含组正则（用于限制仓库范围） | `.*` | ✔ | ✔ | ❌ | ❌ |
-| `repoUsername` | 仓库用户名 | ❌ | ✔ | ✔ | ✔ | ✔ |
-| `repoPassword` | 仓库密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
+| `repoAllowInsecureProtocol` | 是否允许不安全协议（是否允许http） | `false` | ❌ | ✔ | ❌ | ❌ |
+| `repoIncludeGroup` | 仓库包含组（用于限制仓库范围） | ❌ | ❌ | ✔ | ❌ | ❌ |
+| `repoIncludeGroupRegex` | 仓库包含组正则（用于限制仓库范围） | `.*` | ❌ | ✔ | ❌ | ❌ |
+| `repoUsername` | 仓库用户名 | ❌ | ❌ | ✔ | ✔ | ✔ |
+| `repoPassword` | 仓库密码 | ❌ | ❌ | ✔ | ✔ | ✔ |
 | `customizeRepoUrl` | 自定义仓库 | ❌ | ❌ | ✔ | ❌ | ❌ |
-| `autoReplaceLaterVersions` | 自动替换最新版本（[versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)插件增强） | `false` | ✔ | ✔ | ✔ | ❌ |
+| `autoReplaceLaterVersions` | 自动替换最新版本（[versions](https://plugins.gradle.org/plugin/com.github.ben-manes.versions)插件增强） | `false` | ❌ | ✔ | ✔ | ❌ |
 | `useInferringVersion` | 使用推断版本号，根据最新`git tag`推断下一个版本号，支持tag格式`{major}.{minor}.{patch}`或`v{major}.{minor}.{patch}`，推断方式`patch + 1` | `false` | ❌ | ✔ | ✔ | ✔ |
 
 ## 插件安装
