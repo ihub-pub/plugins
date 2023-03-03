@@ -180,8 +180,8 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
             }
 
             // 一些任务依赖和属性设置
-            withTask('check').dependsOn jacocoCoverageVerification
-            withTask('test').finalizedBy jacocoTestReport, jacocoCoverageVerification
+            withTask('check').finalizedBy jacocoCoverageVerification
+            withTask('test').finalizedBy jacocoTestReport
         }
     }
 
@@ -197,7 +197,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
                 }
             }
             afterEvaluate {
-                tasks.findByName('check')?.dependsOn tasks.named('testCodeCoverageReport', JacocoReport)
+                tasks.findByName('test')?.finalizedBy tasks.named('testCodeCoverageReport', JacocoReport)
             }
         }
     }

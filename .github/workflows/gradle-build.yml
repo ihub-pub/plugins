@@ -65,13 +65,34 @@ jobs:
             */build/reports/tests
           retention-days: 1
 
-  matrix-test:
+  project-matrix:
     if: ${{ github.event_name == 'pull_request' }}
-    name: test ihub-${{ matrix.project_name }}
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.name.outputs.test }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: name
+        name: Project Name Matrix
+        run: |
+          projects=()
+          for file in ./*
+          do
+          if [[ $file =~ "ihub-" ]]
+          then
+            projects[${#projects[@]}]=$(basename $file)
+          fi
+          done
+          p=$(IFS=,; echo "${projects[*]}")
+          p=${p//,/\",\"}
+          echo "test=[\"$p\"]" >> $GITHUB_OUTPUT
+
+  matrix-test:
+    runs-on: ubuntu-latest
+    needs: project-matrix
     strategy:
       matrix:
-        project_name: [ base, base-test, bom, githooks, groovy, java, plugins, publish, settings, spring, verification ]
+        project_name: ${{ fromJson(needs.project-matrix.outputs.matrix) }}
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c8454efe5d0bdefd25384362fe217428ca277d57 # v2.2.0
@@ -89,13 +110,13 @@ jobs:
           cache: 'gradle'
 
       - name: Test with Gradle
-        run: gradle ihub-${{ matrix.project_name }}:test -DiHubTest.failFast=true
+        run: gradle ${{ matrix.project_name }}:test -DiHubTest.failFast=true
 
       - name: Upload Test Result
         if: ${{ failure() }}
         uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
         with:
-          name: tests
+          name: ${{ matrix.project_name }}-test
           path: |
             */build/reports/tests
           retention-days: 1
