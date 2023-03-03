@@ -63,7 +63,7 @@ plugins {
 ```
 
 ### 配置
-> 在你项目的`gradle.properties`文件中可以添加如下配置：
+> 在你的项目的`gradle.properties`文件中可以添加如下配置：
 
 ```properties
 # 是否启用本地仓库
