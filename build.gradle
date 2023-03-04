@@ -51,7 +51,7 @@ subprojects {
 
     iHubBom.bomVersions.clear()
     dependencies {
-        api platform('pub.ihub.lib:ihub-libs:1.1.0')
+        api platform('pub.ihub.lib:ihub-libs:1.1.1')
         constraints {
             api 'io.spring.gradle:dependency-management-plugin:1.1.0',
                 'io.freefair.gradle:plugin-utils:6.6.3',
