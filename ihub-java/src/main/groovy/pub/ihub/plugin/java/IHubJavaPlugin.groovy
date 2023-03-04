@@ -128,7 +128,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 }
                 it.options.encoding = ext.compileEncoding
                 it.options.incremental = ext.gradleCompilationIncremental
-                it.options.compilerArgs += ext.complierArgs.with { args ->
+                it.options.compilerArgs += ext.compilerArgs.with { args ->
                     args ? args.tokenize() : []
                 }
             }

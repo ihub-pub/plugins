@@ -65,7 +65,7 @@ class IHubJavaExtension implements IHubProjectExtensionAware {
      * 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String complierArgs
+    String compilerArgs
 
     /**
      * JMolecules架构，可选类型：cqrs、layered、onion
