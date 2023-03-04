@@ -16,7 +16,7 @@
 | `compileEncoding` | Java编译编码 | `UTF-8` | ✔ | ✔ | ✔ | ❌ |
 | `compatibility` | Java兼容性配置                                                   | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译                                                  | `true` | ✔ | ✔ | ✔ | ❌ |
-| `complierArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked                                                  | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `compilerArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked                                                  | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `applyOpenapiPlugin` | 启用 [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) 插件                                                  | `false` | ✔ | ✔ | ✔ | ❌ |
 | `jmoleculesArchitecture` | JMolecules架构（可选类型：cqrs、layered、onion）[详见](https://jmolecules.org) | `onion` | ✔ | ✔ | ❌ | ❌ |
 
