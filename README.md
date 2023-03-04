@@ -69,7 +69,7 @@ plugins {
 # 是否启用本地仓库
 iHub.mavenLocalEnabled=true
 # 是否启用阿里云代理仓库
-iHub.mavenCentralEnabled=true
+iHub.mavenAliYunEnabled=true
 ```
 
 ### 使用
