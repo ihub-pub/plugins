@@ -15,6 +15,7 @@
  */
 plugins {
     id 'pub.ihub.plugin'
+    id 'pub.ihub.plugin.ihub-copyright'
     id 'pub.ihub.plugin.ihub-git-hooks'
     id 'pub.ihub.plugin.ihub-java' apply false
     id 'pub.ihub.plugin.ihub-verification' apply false
