@@ -15,6 +15,7 @@
 | `signingSecretKey` | 签名密钥 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `signingPassword` | 签名密码 | ❌ | ✔ | ✔ | ✔ | ✔ |
 | `publishDocs` | 是否发布文档 | `false` | ✔ | ✔ | ✔ | ❌ |
+| `applyGithubPom` | 是否应用GithubPom插件 | `false` | ✔ | ✔ | ✔ | ❌ |
 
 ## 插件安装
 
