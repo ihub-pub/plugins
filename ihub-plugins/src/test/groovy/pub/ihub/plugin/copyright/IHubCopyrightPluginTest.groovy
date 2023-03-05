@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -88,7 +91,15 @@ class IHubCopyrightPluginTest extends IHubSpecification {
         when: '使用COPYRIGHT配置'
         testProjectDir.newFile('COPYRIGHT') << 'COPYRIGHT'
         testProjectDir.newFolder '.idea/copyright'
-        testProjectDir.newFile('.idea/copyright/profiles_settings.xml') << '''
+        testProjectDir.newFile('.idea/copyright/profiles_settings.xml') << settings
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains except
+
+        where:
+        settings                                                     | except
+        '''
 <component name="CopyrightManager">
   <settings>
     <module2copyright>
@@ -99,11 +110,15 @@ class IHubCopyrightPluginTest extends IHubSpecification {
       <option name="addBlankAfter" value="false" />
     </LanguageOptions>
   </settings>
-</component>'''
-        def result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
+</component>'''                                           | 'BUILD SUCCESSFUL'
+        '''
+<component name="CopyrightManager">
+  <settings>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="addBlankAfter" value="false" />
+    </LanguageOptions>
+  </settings>
+</component>'''                                           | 'BUILD SUCCESSFUL'
     }
 
 }
