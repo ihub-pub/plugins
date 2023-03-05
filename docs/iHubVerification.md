@@ -33,7 +33,7 @@ ruleSets = [
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `pmdConsoleOutput` | 控制台是否打印PMD信息 | `false` | ✔ | ✔ | ❌ | ❌ |
 | `pmdIgnoreFailures` | PMD检查是否忽略失败 | `false` | ✔ | ✔ | ✔ | ❌ |
-| `pmdVersion` | PMD版本 | `6.53.0` | ✔ | ✔ | ❌ | ❌ |
+| `pmdVersion` | PMD版本 | `6.55.0` | ✔ | ✔ | ❌ | ❌ |
 | `codenarcIgnoreFailures` | Codenarc检查是否忽略失败 | `false` | ✔ | ✔ | ✔ | ❌ |
 | `codenarcVersion` | Codenarc版本 | `3.2.0` | ✔ | ✔ | ❌ | ❌ |
 | `jacocoVersion` | Jacoco版本 | `0.8.8` | ✔ | ✔ | ❌ | ❌ |

@@ -9,6 +9,8 @@
 * 🛸 插件集
     - [ihub-settings](iHubSettings.md '置插件仓库、插件版本以及子项目管理 ')
     - [ihub](iHub.md '基础插件，用于配置组件仓库以及一些其他扩展属性 ')
+    - [ihub-version](iHubVersion.md '集成并加强了第三方version插件 ')
+    - [ihub-copyright](iHubCopyright.md '自动配置IDEA版权信息 ')
     - [ihub-bom](iHubBom.md '配置项目依赖组件版本以及兼容性管理 ')
     - [ihub-java](iHubJava.md '集成Java相关插件环境、配置一些默认依赖以及兼容性配置 ')
     - [ihub-groovy](iHubGroovy.md '集成Groovy相关插件环境以及配置Groovy默认组件依赖 ')
