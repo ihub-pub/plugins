@@ -12,11 +12,10 @@
  */
 package pub.ihub.plugin.verification
 
-import groovy.util.logging.Slf4j
+
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import pub.ihub.plugin.test.IHubSpecification
-import spock.lang.IgnoreIf
 import spock.lang.Title
 
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
@@ -27,13 +26,11 @@ import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
 /**
  * @author henry
  */
-@Slf4j
 @Title('IHubVerificationPlugin测试套件')
 class IHubVerificationPluginTest extends IHubSpecification {
 
     private Project project
 
-    @IgnoreIf({ System.getProperty('fast.test')?.toBoolean() })
     def '代码检查插件测试'() {
         setup: '初始化项目'
         copyProject 'sample-groovy', 'src', 'conf'

@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin
 
-import groovy.util.logging.Slf4j
 import org.gradle.internal.impldep.org.junit.Rule
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
@@ -26,12 +25,9 @@ import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
 
-
-
 /**
  * @author henry
  */
-@Slf4j
 @Title('IHubSettingsPlugin测试套件')
 @SuppressWarnings('PrivateFieldCouldBeFinal')
 class IHubSettingsPluginTest extends Specification {

@@ -12,14 +12,12 @@
  */
 package pub.ihub.plugin.groovy
 
-import groovy.util.logging.Slf4j
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
 /**
  * @author henry
  */
-@Slf4j
 @Title('IHubGroovyPlugin测试套件')
 class IHubGroovyPluginTest extends IHubSpecification {
 

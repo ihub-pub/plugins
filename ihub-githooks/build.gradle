@@ -16,17 +16,17 @@
 description = 'IHub Git Hooks Gradle Plugins'
 
 dependencies {
-    implementation 'cn.hutool:hutool-http'
+    implementation 'cn.hutool:hutool-core'
 }
 
 gradlePlugin {
     plugins {
         ihubGitHooks {
             id                  = 'pub.ihub.plugin.ihub-git-hooks'
-            displayName         = 'IHub Gradle Plugins GitHooks'
-            description         = 'IHub Gradle Plugins GitHooks'
+            displayName         = 'IHub Gradle GitHooks Gradle Plugin'
+            description         = 'IHub Gradle GitHooks Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.githooks.IHubGitHooksPlugin'
-            tags.set(['ihub', 'git', 'gitHooks'])
+            tags.set(['ihub', 'git', 'gitHooks', 'idea'])
         }
     }
 }

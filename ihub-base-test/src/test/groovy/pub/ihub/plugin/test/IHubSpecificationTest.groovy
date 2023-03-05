@@ -12,17 +12,13 @@
  */
 package pub.ihub.plugin.test
 
-import groovy.util.logging.Slf4j
 import spock.lang.Title
 
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 
-
-
 /**
  * @author henry
  */
-@Slf4j
 @Title('IHubSpecification测试套件')
 class IHubSpecificationTest extends IHubSpecification {
 

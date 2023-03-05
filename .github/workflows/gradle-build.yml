@@ -126,6 +126,18 @@ jobs:
             */build/reports/tests
           retention-days: 1
 
+  check:
+    runs-on: ubuntu-latest
+    needs: [ build, matrix-test ]
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@c8454efe5d0bdefd25384362fe217428ca277d57 # v2.2.0
+        with:
+          egress-policy: block
+
+      - name: Check Status
+        run: echo "Check Status"
+
   codacy:
     if: ${{ github.event_name == 'push' && github.repository_owner == 'ihub-pub' }}
     permissions:

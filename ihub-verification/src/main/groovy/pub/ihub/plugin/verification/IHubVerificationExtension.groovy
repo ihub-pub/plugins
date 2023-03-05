@@ -36,6 +36,10 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 @TupleConstructor(allProperties = true, includes = 'project')
 class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtProperty {
 
+    private static final String DEFAULT_PMD_VERSION = '6.55.0'
+    private static final String DEFAULT_JACOCO_VERSION = '0.8.8'
+    private static final String DEFAULT_CODENARC_VERSION = '3.2.0'
+
     //<editor-fold desc="PMD Configuration">
 
     /**
@@ -52,7 +56,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * PMD版本
      */
     @IHubProperty
-    String pmdVersion = '6.53.0'
+    String pmdVersion = DEFAULT_PMD_VERSION
 
     //</editor-fold>
 
@@ -67,7 +71,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * Codenarc版本
      */
     @IHubProperty
-    String codenarcVersion = '3.2.0'
+    String codenarcVersion = DEFAULT_CODENARC_VERSION
 
     //</editor-fold>
 
@@ -77,7 +81,7 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * Jacoco版本
      */
     @IHubProperty
-    String jacocoVersion = '0.8.8'
+    String jacocoVersion = DEFAULT_JACOCO_VERSION
     /**
      * 是否启用bundle分支覆盖检查
      */

@@ -19,6 +19,7 @@ dependencies {
     api project(':ihub-bom')
     implementation 'io.freefair.gradle:git-plugin'
     implementation 'com.github.ben-manes:gradle-versions-plugin'
+    implementation 'cn.hutool:hutool-core'
 }
 
 gradlePlugin {
@@ -29,6 +30,20 @@ gradlePlugin {
             description         = 'IHub Plugins Gradle Plugin'
             implementationClass = 'pub.ihub.plugin.IHubPluginsPlugin'
             tags.set(['ihub', 'groovy', 'java'])
+        }
+        ihubVersion {
+            id                  = 'pub.ihub.plugin.ihub-version'
+            displayName         = 'IHub Gradle Version Gradle Plugin'
+            description         = 'IHub Gradle Version Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.version.IHubVersionPlugin'
+            tags.set(['ihub', 'git', 'version'])
+        }
+        ihubCopyright {
+            id                  = 'pub.ihub.plugin.ihub-copyright'
+            displayName         = 'IHub Gradle Copyright Gradle Plugin'
+            description         = 'IHub Gradle Copyright Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.copyright.IHubCopyrightPlugin'
+            tags.set(['ihub', 'git', 'copyright', 'idea'])
         }
     }
 }
