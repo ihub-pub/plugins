@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,7 +15,6 @@
  */
 package pub.ihub.plugin.copyright
 
-import cn.hutool.core.util.EscapeUtil
 import cn.hutool.core.util.XmlUtil
 import org.gradle.api.Project
 import org.w3c.dom.Document
@@ -29,8 +31,6 @@ import pub.ihub.plugin.IHubProjectPluginAware
  */
 @IHubPlugin(beforeApplyPlugins = IHubPluginsPlugin)
 class IHubCopyrightPlugin extends IHubProjectPluginAware {
-
-    private static final String COPYRIGHT_NAME = 'ihub'
 
     @Override
     protected void apply() {
@@ -56,40 +56,45 @@ class IHubCopyrightPlugin extends IHubProjectPluginAware {
 
     private static void configCopyright(Project rootProject, String notice) {
         rootProject.mkdir '.idea/copyright'
+        String copyrightName = rootProject.name
         Document component = XmlUtil.createXml 'component'
         Node copyright = XmlUtil.appendChild component.documentElement.tap {
             setAttribute 'name', 'CopyrightManager'
         }, 'copyright'
-        appendOption copyright, 'myName', COPYRIGHT_NAME
+        appendOption copyright, 'myName', copyrightName
         notice = notice?.trim()
         if (notice) {
-            appendOption copyright, 'notice', EscapeUtil.escapeXml(notice).replaceAll('\n', '&#10;')
+            appendOption copyright, 'notice', notice
         }
-        XmlUtil.toFile component, rootProject.file(".idea/copyright/${COPYRIGHT_NAME}.xml").path
-        configCopyrightManager rootProject
+        XmlUtil.toFile component, rootProject.file(".idea/copyright/${copyrightName}.xml").path
+        configCopyrightManager rootProject, copyrightName
     }
 
-    private static void configCopyrightManager(Project rootProject) {
+    private static void configCopyrightManager(Project rootProject, String copyrightName) {
         File settings = rootProject.file '.idea/copyright/profiles_settings.xml'
         List modules = ['Project Files', 'All Changed Files']
         Document component
         if (settings.exists()) {
             component = XmlUtil.readXML settings.path
-            Node module2copyright = XmlUtil.getNodeByXPath 'module2copyright',
+            Node elements = XmlUtil.getNodeByXPath 'module2copyright',
                 XmlUtil.getNodeByXPath('settings', component.documentElement)
-            modules.each { module ->
-                if (!XmlUtil.getNodeByXPath("element[@module=\"$module\"]", module2copyright)) {
-                    appendChild module2copyright, 'element', [module: module, copyright: COPYRIGHT_NAME]
+            if (elements) {
+                modules.each { module ->
+                    if (!XmlUtil.getNodeByXPath("element[@module=\"$module\"]", elements)) {
+                        appendChild elements, 'element', [module: module, copyright: copyrightName]
+                    }
                 }
+                XmlUtil.toFile component, settings.path
+                return
             }
         } else {
             component = XmlUtil.createXml 'component'
-            Node module2copyright = appendChild appendChild(component.documentElement.tap {
-                setAttribute 'name', 'CopyrightManager'
-            }, 'settings'), 'module2copyright'
-            modules.each { module ->
-                appendChild module2copyright, 'element', [module: module, copyright: COPYRIGHT_NAME]
-            }
+        }
+        Node elements = appendChild appendChild(component.documentElement.tap {
+            setAttribute 'name', 'CopyrightManager'
+        }, 'settings'), 'module2copyright'
+        modules.each { module ->
+            appendChild elements, 'element', [module: module, copyright: copyrightName]
         }
         XmlUtil.toFile component, settings.path
     }
