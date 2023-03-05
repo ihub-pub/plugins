@@ -15,16 +15,12 @@
  */
 package pub.ihub.plugin.spring
 
-import groovy.util.logging.Slf4j
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
-
-
 
 /**
  * @author henry
  */
-@Slf4j
 @Title('IHubBootPlugin测试套件')
 class IHubBootPluginTest extends IHubSpecification {
 

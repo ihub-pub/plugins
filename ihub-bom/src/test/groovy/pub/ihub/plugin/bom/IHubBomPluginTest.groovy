@@ -12,7 +12,7 @@
  */
 package pub.ihub.plugin.bom
 
-import groovy.util.logging.Slf4j
+
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
@@ -24,7 +24,6 @@ import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 /**
  * @author henry
  */
-@Slf4j
 @Title('BOM插件DSL扩展测试套件')
 @SuppressWarnings(['AbcMetric', 'MethodSize'])
 class IHubBomPluginTest extends IHubSpecification {

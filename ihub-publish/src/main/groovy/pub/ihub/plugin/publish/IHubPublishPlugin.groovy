@@ -88,7 +88,6 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                     pluginManager.apply JavaPlatformPlugin
                     pluginManager.apply IHubPublishPlugin
                     extensions.getByType(JavaPlatformExtension).allowDependencies()
-                    extensions.getByType(IHubPluginsExtension).autoReplaceLaterVersions = false
                 }
                 afterEvaluate {
                     configDependencies bom

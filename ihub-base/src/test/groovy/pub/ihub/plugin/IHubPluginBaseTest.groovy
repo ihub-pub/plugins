@@ -15,18 +15,14 @@
  */
 package pub.ihub.plugin
 
-import groovy.util.logging.Slf4j
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import spock.lang.Specification
 import spock.lang.Title
 
-
-
 /**
  * @author henry
  */
-@Slf4j
 @Title('IHubBase测试套件')
 class IHubPluginBaseTest extends Specification {
 

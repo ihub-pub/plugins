@@ -15,7 +15,7 @@
  */
 package pub.ihub.plugin.test
 
-import groovy.util.logging.Slf4j
+
 import org.gradle.internal.impldep.org.junit.Rule
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
@@ -36,7 +36,6 @@ import static org.gradle.testkit.runner.GradleRunner.create
 /**
  * @author henry
  */
-@Slf4j
 class IHubSpecification extends Specification {
 
     @Rule

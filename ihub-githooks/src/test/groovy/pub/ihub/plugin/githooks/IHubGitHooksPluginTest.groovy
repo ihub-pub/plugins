@@ -12,16 +12,12 @@
  */
 package pub.ihub.plugin.githooks
 
-import groovy.util.logging.Slf4j
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
-
-
 
 /**
  * @author henry
  */
-@Slf4j
 @Title('GitHooks测试套件')
 class IHubGitHooksPluginTest extends IHubSpecification {
 
@@ -35,7 +31,7 @@ class IHubGitHooksPluginTest extends IHubSpecification {
             }
         '''
         testProjectDir.newFolder '.git'
-        commitMsgFile = testProjectDir.newFile('.git/COMMIT_EDITMSG')
+        commitMsgFile = testProjectDir.newFile '.git/COMMIT_EDITMSG'
     }
 
     def 'GitHooks插件配置测试'() {
