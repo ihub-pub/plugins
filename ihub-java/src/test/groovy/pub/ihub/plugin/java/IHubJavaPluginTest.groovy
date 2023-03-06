@@ -165,8 +165,8 @@ class IHubJavaPluginTest extends IHubSpecification {
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
 
-        when: '禁用增量编译'
-        result = gradleBuilder.withArguments('-DiHubJava.gradleCompilationIncremental=false').build()
+        when: '启用增量编译'
+        result = gradleBuilder.withArguments('-DiHubJava.gradleCompilationIncremental=true').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'

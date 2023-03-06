@@ -127,7 +127,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                     it.targetCompatibility = version
                 }
                 it.options.encoding = ext.compileEncoding
-                it.options.incremental = ext.gradleCompilationIncremental
+                it.options.incremental = !hasPlugin(GroovyPlugin) && ext.gradleCompilationIncremental
                 it.options.compilerArgs += ext.compilerArgs.with { args ->
                     args ? args.tokenize() : []
                 }
@@ -147,8 +147,8 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                     }
                 }
 
-                // Groovy增量编译与Java注释处理器不能同时使用
-                if (hasPlugin(GroovyPlugin) && ext.gradleCompilationIncremental) {
+                // Groovy与Java注释处理器不能同时使用
+                if (hasPlugin(GroovyPlugin)) {
                     it.dependencies.removeIf {
                         it.type == 'annotationProcessor'
                     }
