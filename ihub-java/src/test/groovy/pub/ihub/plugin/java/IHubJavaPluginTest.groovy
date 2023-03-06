@@ -12,6 +12,7 @@
  */
 package pub.ihub.plugin.java
 
+import groovy.util.logging.Slf4j
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
@@ -21,6 +22,7 @@ import static pub.ihub.plugin.java.IHubJavaPlugin.DEFAULT_DEPENDENCIES_CONFIG
 /**
  * @author henry
  */
+@Slf4j
 @Title('IHubJavaPlugin测试套件')
 class IHubJavaPluginTest extends IHubSpecification {
 
@@ -163,8 +165,8 @@ class IHubJavaPluginTest extends IHubSpecification {
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
 
-        when: '禁用增量编译'
-        result = gradleBuilder.withArguments('-DiHubJava.gradleCompilationIncremental=false').build()
+        when: '启用增量编译'
+        result = gradleBuilder.withArguments('-DiHubJava.gradleCompilationIncremental=true').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
