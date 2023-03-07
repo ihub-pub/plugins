@@ -1,8 +1,7 @@
 name: Gradle Dependency Submission
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 16 * * *'
 
 permissions:
   contents: read
