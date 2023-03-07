@@ -1,3 +1,52 @@
+## 🔖 1.3.1 (2023-03-07)
+
+
+### ✨ Features
+
+- feat(copyright): 新增ihub-copyright插件  [@henry-hub](https://github.com/henry-hub) ([#409](https://github.com/ihub-pub/plugins/pull/409))
+- feat(verification): 调整jacoco聚合报告任务依赖关系  [@henry-hub](https://github.com/henry-hub) ([#403](https://github.com/ihub-pub/plugins/pull/403))
+- feat(java): ihub-java插件添加编译扩展属性complierArgs  [@henry-hub](https://github.com/henry-hub) ([#402](https://github.com/ihub-pub/plugins/pull/402))
+- feat(repo): 默认禁用阿里云代理仓库  [@henry-hub](https://github.com/henry-hub) ([#385](https://github.com/ihub-pub/plugins/pull/385))
+
+### 🐛 Bug Fixes
+
+- build(gradle): 纠正typo：complierArgs -> compilerArgs  [@zhanghuabin](https://github.com/zhanghuabin) ([#408](https://github.com/ihub-pub/plugins/pull/408))
+
+### ⬆️ Dependency Updates
+
+- build(gradle): 升级gradle至8.0.2  [@henry-hub](https://github.com/henry-hub) ([#406](https://github.com/ihub-pub/plugins/pull/406))
+- gradle: bump pub.ihub.lib:ihub-libs from 1.1.0 to 1.1.1  [@dependabot](https://github.com/dependabot) ([#405](https://github.com/ihub-pub/plugins/pull/405))
+- gradle: bump org.springframework.boot:spring-boot-gradle-plugin from 3.0.3 to 3.0.4  [@dependabot](https://github.com/dependabot) ([#404](https://github.com/ihub-pub/plugins/pull/404))
+- build(deps): bump github/codeql-action from 2.2.4 to 2.2.5  [@dependabot](https://github.com/dependabot) ([#400](https://github.com/ihub-pub/plugins/pull/400))
+- gradle: bump io.freefair.gradle:lombok-plugin from 6.6.2 to 6.6.3  [@dependabot](https://github.com/dependabot) ([#396](https://github.com/ihub-pub/plugins/pull/396))
+- gradle: bump io.freefair.gradle:github-plugin from 6.6.2 to 6.6.3  [@dependabot](https://github.com/dependabot) ([#397](https://github.com/ihub-pub/plugins/pull/397))
+- gradle: bump io.freefair.gradle:git-plugin from 6.6.2 to 6.6.3  [@dependabot](https://github.com/dependabot) ([#395](https://github.com/ihub-pub/plugins/pull/395))
+- gradle: bump io.freefair.gradle:plugin-utils from 6.6.2 to 6.6.3  [@dependabot](https://github.com/dependabot) ([#398](https://github.com/ihub-pub/plugins/pull/398))
+- gradle: bump org.springframework.boot:spring-boot-gradle-plugin from 3.0.2 to 3.0.3  [@dependabot](https://github.com/dependabot) ([#393](https://github.com/ihub-pub/plugins/pull/393))
+- build(deps): bump gradle/wrapper-validation-action from 1.0.5 to 1.0.6  [@dependabot](https://github.com/dependabot) ([#389](https://github.com/ihub-pub/plugins/pull/389))
+- build(deps): bump step-security/harden-runner from 2.1.0 to 2.2.0  [@dependabot](https://github.com/dependabot) ([#390](https://github.com/ihub-pub/plugins/pull/390))
+- gradle: bump org.graalvm.buildtools:native-gradle-plugin from 0.9.19 to 0.9.20  [@dependabot](https://github.com/dependabot) ([#381](https://github.com/ihub-pub/plugins/pull/381))
+- gradle: bump io.freefair.gradle:plugin-utils from 6.6.1 to 6.6.2  [@dependabot](https://github.com/dependabot) ([#376](https://github.com/ihub-pub/plugins/pull/376))
+- gradle: bump io.freefair.gradle:github-plugin from 6.6.1 to 6.6.2  [@dependabot](https://github.com/dependabot) ([#377](https://github.com/ihub-pub/plugins/pull/377))
+- gradle: bump io.freefair.gradle:git-plugin from 6.6.1 to 6.6.2  [@dependabot](https://github.com/dependabot) ([#378](https://github.com/ihub-pub/plugins/pull/378))
+- gradle: bump io.freefair.gradle:lombok-plugin from 6.6.1 to 6.6.2  [@dependabot](https://github.com/dependabot) ([#379](https://github.com/ihub-pub/plugins/pull/379))
+- gradle: bump pub.ihub.plugin.ihub-settings from 1.3.0-rc4 to 1.3.0  [@dependabot](https://github.com/dependabot) ([#373](https://github.com/ihub-pub/plugins/pull/373))
+
+### 🧰 Maintenance
+
+- chore(java): 没有Lombok插件时不生成lombok.config配置  [@henry-hub](https://github.com/henry-hub) ([#416](https://github.com/ihub-pub/plugins/pull/416))
+- feat(publish): 添加扩展参数applyGithubPom  [@henry-hub](https://github.com/henry-hub) ([#411](https://github.com/ihub-pub/plugins/pull/411))
+- chore(verification): 根项目test、check任务不再依赖两个聚合任务  [@henry-hub](https://github.com/henry-hub) ([#410](https://github.com/ihub-pub/plugins/pull/410))
+- [StepSecurity] ci: Harden GitHub Actions  [@step-security-bot](https://github.com/step-security-bot) ([#399](https://github.com/ihub-pub/plugins/pull/399))
+- build(publish): 修正插件tags配置  [@henry-hub](https://github.com/henry-hub) ([#387](https://github.com/ihub-pub/plugins/pull/387))
+- ci(security): 修正安全检测的一些问题  [@henry-hub](https://github.com/henry-hub) ([#386](https://github.com/ihub-pub/plugins/pull/386))
+- [StepSecurity] Apply security best practices  [@step-security-bot](https://github.com/step-security-bot) ([#384](https://github.com/ihub-pub/plugins/pull/384))
+- ci(github): 工作流的Actions使用具体版本号  [@henry-hub](https://github.com/henry-hub) ([#383](https://github.com/ihub-pub/plugins/pull/383))
+- fix(verification): 替换测试报告弃用方法  [@henry-hub](https://github.com/henry-hub) ([#375](https://github.com/ihub-pub/plugins/pull/375))
+
+
+---
+
 ## 🔖 1.3.0 (2023-02-12)
 
 
