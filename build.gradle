@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 plugins {
+    id 'java-platform'
     id 'pub.ihub.plugin'
     id 'pub.ihub.plugin.ihub-copyright'
     id 'pub.ihub.plugin.ihub-git-hooks'
@@ -48,24 +49,18 @@ subprojects {
         gradlePluginPortal()
     }
 
-//<editor-fold desc="组件依赖版本管理">
-
     iHubBom.bomVersions.clear()
     dependencies {
-        api platform('pub.ihub.lib:ihub-libs:1.1.1')
-        constraints {
-            api 'io.spring.gradle:dependency-management-plugin:1.1.0',
-                'io.freefair.gradle:plugin-utils:6.6.3',
-                'io.freefair.gradle:git-plugin:6.6.3',
-                'io.freefair.gradle:lombok-plugin:6.6.3',
-                'io.freefair.gradle:github-plugin:6.6.3',
-                'com.github.ben-manes:gradle-versions-plugin:0.45.0',
-                'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12',
-                'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0',
-                'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0',
-                'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
-                'org.springframework.boot:spring-boot-gradle-plugin:3.0.4',
-                'org.graalvm.buildtools:native-gradle-plugin:0.9.20'
+        platform(rootProject).with {
+            implementation it
+            pmd it
+            annotationProcessor it
+            testAnnotationProcessor it
+        }
+        implementation gradleApi()
+        if (!(project in [project(':ihub-base'), project(':ihub-base-test')])) {
+            implementation project(':ihub-base')
+            testImplementation project(':ihub-base-test')
         }
     }
     // TODO gradle groovy版本没有升级至4.0，强制指定3.0版本
@@ -77,24 +72,37 @@ subprojects {
         }
     }
 
-//</editor-fold>
-
-    dependencies {
-        implementation gradleApi()
-        if (!(project in [project(':ihub-base'), project(':ihub-base-test')])) {
-            implementation project(':ihub-base')
-            testImplementation project(':ihub-base-test')
-        }
-    }
-
     gradlePlugin {
         website     = 'https://github.com/ihub-pub/plugins'
         vcsUrl      = 'https://github.com/ihub-pub/plugins.git'
         description = 'IHub Plugins Gradle Plugin'
     }
+}
 
-    // 跳过Gradle元数据生成，详见：https://github.com/gradle/gradle/issues/11862
-    tasks.withType(GenerateModuleMetadata) {
-        enabled = false
+//<editor-fold desc="组件依赖版本管理">
+
+javaPlatform {
+    allowDependencies()
+}
+
+//iHubBom.bomVersions.clear()
+
+dependencies {
+    api platform('pub.ihub.lib:ihub-libs:1.1.1')
+    constraints {
+        api 'io.spring.gradle:dependency-management-plugin:1.1.0',
+            'io.freefair.gradle:plugin-utils:6.6.3',
+            'io.freefair.gradle:git-plugin:6.6.3',
+            'io.freefair.gradle:lombok-plugin:6.6.3',
+            'io.freefair.gradle:github-plugin:6.6.3',
+            'com.github.ben-manes:gradle-versions-plugin:0.45.0',
+            'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12',
+            'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0',
+            'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0',
+            'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
+            'org.springframework.boot:spring-boot-gradle-plugin:3.0.4',
+            'org.graalvm.buildtools:native-gradle-plugin:0.9.20'
     }
 }
+
+//</editor-fold>
