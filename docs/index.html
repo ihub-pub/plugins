@@ -62,7 +62,7 @@
                 hook.afterEach(function (html, next) {
                     const versionHash = window.location.hash.replace(/#\/([0-9]+\.[0-9]+\.[0-9]+).*/, '$1')
                     next(html.replaceAll('${ihub.plugin.version}', versionHash === window.location.hash ? version : versionHash)
-                        .replaceAll('${ihub.lib.version}', '1.1.0').replaceAll('${ihub.plugin.gradleVersion}', '8.0.1'));
+                        .replaceAll('${ihub.lib.version}', '1.1.0').replaceAll('${ihub.plugin.gradleVersion}', '8.0.2'));
                 });
             }
         ]
