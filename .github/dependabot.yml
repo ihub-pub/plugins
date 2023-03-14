@@ -14,7 +14,7 @@ updates:
     allow:
       - dependency-type: "production"
     commit-message:
-      prefix: "gradle"
+      prefix: "build(deps)"
 
 
   - package-ecosystem: github-actions
