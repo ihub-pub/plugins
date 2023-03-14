@@ -165,7 +165,7 @@ jobs:
           max-allowed-issues: 2147483647
 
       - name: Upload SARIF results file
-        uses: github/codeql-action/upload-sarif@32dc499307d133bb5085bae78498c0ac2cf762d5 # v2.2.5
+        uses: github/codeql-action/upload-sarif@16964e90ba004cdf0cd845b866b5df21038b7723 # v2.2.6
         with:
           sarif_file: results.sarif
 
@@ -203,7 +203,7 @@ jobs:
           retention-days: 5
 
       - name: "Upload to code-scanning"
-        uses: github/codeql-action/upload-sarif@32dc499307d133bb5085bae78498c0ac2cf762d5 # v2.2.5
+        uses: github/codeql-action/upload-sarif@16964e90ba004cdf0cd845b866b5df21038b7723 # v2.2.6
         with:
           sarif_file: results.sarif
 
