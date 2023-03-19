@@ -160,7 +160,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
                 logger.lifecycle 'Set git hooks path: .gradle/pub.ihub.plugin.hooks'
             } else {
                 'git config --unset core.hooksPath'.execute()
-                logger.lifecycle 'Unset git hooks path, learn more see https://doc.ihub.pub/plugins/#/iHubGitHooks'
+                logger.lifecycle 'Unset git hooks path, learn more see https://doc.ihub.pub/plugins/iHubGitHooks'
             }
         } catch (e) {
             logger.lifecycle 'Git hooks config fail: ' + e.message
@@ -338,7 +338,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     static void assertRule(boolean condition, String message) {
         if (!condition) {
-            throw new GradleException(message + ' See https://doc.ihub.pub/plugins/#/iHubGitHooks')
+            throw new GradleException(message + ' See https://doc.ihub.pub/plugins/iHubGitHooks')
         }
     }
 

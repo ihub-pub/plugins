@@ -5,6 +5,11 @@ pom.xml
 pom.xml.asc
 lombok.config
 
+# Node.js #
+.temp
+.cache
+node_modules
+
 # Gradle #
 .gradle
 build
