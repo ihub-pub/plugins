@@ -102,6 +102,6 @@ iHubVerification {
 > 测试用例执行完成会生成用例报告，控制台会打印测试覆盖率
 
 - 单个项目测试覆盖率示例
-![](img/printJacocoReportCoverage.png)
+![](/img/printJacocoReportCoverage.png)
 - 项目汇总测试覆盖率示例
-![](img/printFinishedJacocoReportCoverage.png)
+![](/img/printFinishedJacocoReportCoverage.png)
