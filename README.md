@@ -94,7 +94,7 @@ iHub.mavenAliYunEnabled=true
 
 ## 🔖 版本历史
 
-详细版本历史见 [CHANGELOG](https://doc.ihub.pub/plugins/CHANGELOG)，兼容性版本说明如下：
+详细版本历史见 [Releases](https://github.com/ihub-pub/plugins/releases)，兼容性版本说明如下：
 
 | Version | Java | Gradle |
 |---------|------|--------|
