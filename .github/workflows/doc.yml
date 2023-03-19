@@ -10,6 +10,8 @@ permissions:
 
 jobs:
   docs:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
 
     steps:
