@@ -39,6 +39,8 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+      - name: Set max_old_space_size
+        run: export NODE_OPTIONS=--max_old_space_size=4096
       - name: Build VuePress site
         run: npm run docs:build
 
