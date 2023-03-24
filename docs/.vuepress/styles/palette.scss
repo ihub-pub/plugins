@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,19 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import type { NavbarConfig } from '@vuepress/theme-default'
 
-export const navbar: NavbarConfig = [
-    {
-        text: 'IHub',
-        link: 'https://ihub.pub',
-    },
-    {
-        text: 'Releases',
-        link: 'https://github.com/ihub-pub/plugins/releases',
-    },
-    {
-        text: 'Gitee',
-        link: 'https://gitee.com/ihub-pub/plugins',
-    },
-]
+// you can change colors here
+$theme-color: #3eaf7c;

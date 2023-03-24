@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-:root {
-    scroll-behavior: smooth;
-    table {
-        font-size: 15px;
-    }
-}
+export * from "./en.js";
+export * from "./zh.js";

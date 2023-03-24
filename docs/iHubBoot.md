@@ -1,10 +1,15 @@
 # ihub-boot
 
-> `ihub-boot`插件用于集成`spring-boot`插件以及镜像默认配置。
+## 插件信息
 
-| 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖 |
-|-------|---------|--------|---------|--------|
-| `pub.ihub.plugin.ihub-boot` | `Boot插件` | `Project` | `iHubBoot` | [ihub-java](iHubJava)、[org.springframework.boot](https://plugins.gradle.org/plugin/org.springframework.boot) |
+| 信息 | 描述 |
+|----|----|
+| 插件ID | `pub.ihub.plugin.ihub-boot` |
+| 插件名称 | `Boot插件` |
+| 插件描述 | `ihub-boot`插件用于集成`spring-boot`插件以及镜像默认配置。 |
+| 插件类型 | `Project` |
+| 扩展名称 | `iHubBoot` |
+| 插件依赖 | [ihub-java](iHubJava)、[org.springframework.boot](https://plugins.gradle.org/plugin/org.springframework.boot) |
 
 ## 扩展属性
 
@@ -40,13 +45,31 @@
 
 ## 插件安装
 
+::: code-tabs#build
+
+@tab Groovy
+
 ```groovy
 plugins {
     id 'pub.ihub.plugin.ihub-boot' version '${ihub.plugin.version}'
 }
 ```
 
+@tab Kotlin
+
+```kotlin
+plugins {
+    id("pub.ihub.plugin.ihub-boot") version "${ihub.plugin.version}"
+}
+```
+
+:::
+
 或
+
+::: code-tabs#build
+
+@tab Groovy
 
 ```groovy
 plugins {
@@ -58,7 +81,25 @@ apply {
 }
 ```
 
+@tab Kotlin
+
+```kotlin
+plugins {
+    id("pub.ihub.plugin") version "${ihub.plugin.version}"
+}
+
+apply {
+    plugin("pub.ihub.plugin.ihub-boot")
+}
+```
+
+:::
+
 ## 配置示例
+
+::: code-tabs#build
+
+@tab Groovy
 
 ```groovy
 iHubBoot {
@@ -67,3 +108,5 @@ iHubBoot {
     ]
 }
 ```
+
+:::
