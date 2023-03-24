@@ -28,20 +28,14 @@ jobs:
       - name: Use Node.js 16.x
         uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
         with:
-          node-version: "16.13.1"
-      - name: Cache NPM dependencies
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8 # v3.3.1
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-npm-cache
-          restore-keys: |
-            ${{ runner.OS }}-npm-cache
+          node-version: 18
+          cache: npm
 
       - name: Install Dependencies
         run: npm install
-      - name: Set max_old_space_size
-        run: export NODE_OPTIONS=--max_old_space_size=4096
       - name: Build VuePress site
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
         run: npm run docs:build
 
       - name: Deploy to GitHub Pages
