@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-:root {
-    scroll-behavior: smooth;
-    table {
-        font-size: 15px;
-    }
-}
+import {sidebar} from "vuepress-theme-hope";
+
+export const enSidebar = sidebar({
+    "/en/": [
+        "",
+        {
+            icon: "notice",
+            text: "Basics",
+            prefix: "en/basics/",
+            link: "en/basics/",
+            children: "structure",
+        },
+        {
+            icon: "hot",
+            text: "Advanced",
+            prefix: "en/advanced/",
+            link: "en/advanced/",
+            children: "structure",
+        },
+        {
+            icon: "list",
+            text: "Plugins",
+            children: [],
+        },
+        "explanation",
+    ],
+});

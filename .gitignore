@@ -8,6 +8,7 @@ lombok.config
 # Node.js #
 .temp
 .cache
+dist
 node_modules
 
 # Gradle #

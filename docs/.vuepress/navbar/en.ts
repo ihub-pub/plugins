@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-:root {
-    scroll-behavior: smooth;
-    table {
-        font-size: 15px;
-    }
-}
+import {navbar} from "vuepress-theme-hope";
+
+export const enNavbar = navbar([
+    {text: "IHub", icon: "home", link: "https://ihub.pub/"},
+    {text: "Docs", icon: "repo", link: "https://doc.ihub.pub/"},
+    {text: "Gitee", icon: "gitee", link: "https://gitee.com/ihub-pub/plugins/"},
+    {text: "Releases", icon: "tag", link: "https://github.com/ihub-pub/plugins/releases/"},
+]);

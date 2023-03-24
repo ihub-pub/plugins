@@ -1,4 +1,7 @@
-# 快速上手
+---
+title: 快速上手
+icon: light
+---
 
 > 开始使用本插件之前先要了解`Gradle`相关的基础配置，可移步至入门篇-[Gradle基础入门](basics/gradleBasic)，本插件主要用于简化`setting.gradle`和`build.gradle`配置
 

@@ -16,11 +16,9 @@
 import { defineUserConfig } from 'vuepress'
 import { searchPlugin } from '@vuepress/plugin-search'
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
-import { defaultTheme } from '@vuepress/theme-default'
-import { sidebar } from './configs/sidebar.js'
-import { navbar } from './configs/navbar.js'
 
-const vvv = '1.0.0'
+import theme from "./theme.js"
+
 export default defineUserConfig({
     base: '/plugins/',
     lang: 'zh-CN',
@@ -31,29 +29,16 @@ export default defineUserConfig({
         ['meta', { name: 'keywords', content: 'ihub,java,groovy,gradle,maven,插件,组件,plugins,libs,技术,博客' }]
     ],
 
-    theme: defaultTheme({
-        logo: 'https://doc.ihub.pub/ihub.png',
-        logoDark: 'https://doc.ihub.pub/ihub_white.png',
-        repo: 'ihub-pub/plugins',
-        docsDir: 'docs',
-        editLinkText: '在 GitHub 上编辑此页',
-        lastUpdatedText: '上次更新',
-        contributorsText: '贡献者',
-        // custom containers
-        tip: '提示',
-        warning: '注意',
-        danger: '警告',
-        // 404 page
-        notFound: [
-            '这里什么都没有',
-            '我们怎么到这来了？',
-            '这是一个 404 页面',
-            '看起来我们进入了错误的链接',
-        ],
-        backToHome: '返回首页',
-        navbar: navbar,
-        sidebar: sidebar,
-    }),
+    locales: {
+        "/": {
+            lang: "zh-CN",
+        },
+        "/en/": {
+            lang: "en-US",
+        },
+    },
+
+    theme,
 
     plugins: [
         searchPlugin({
