@@ -1,14 +1,16 @@
 # ihub-settings
 
-> `ihub-settings`插件用于配置插件仓库、插件版本以及子项目管理，该插件属于[设置插件](https://docs.gradle.org/current/dsl/org.gradle.api.initialization.Settings.html#org.gradle.api.initialization.Settings)，配置与`settings.gradle`。
+::: info 插件说明
+`ihub-settings`插件用于配置插件仓库、插件版本以及子项目管理，配置与`settings.gradle`。
+:::
 
 | 插件ID | 插件名称 | 插件类型 | 扩展名称 |
-|-------|---------|--------|---------|
-| `pub.ihub.plugin.ihub-settings` | `设置插件` | `Settings` | `iHubSettings` |
+|-------|---------|------|---------|
+| `pub.ihub.plugin.ihub-settings` | `设置插件` | `Settings`[^Settings] | `iHubSettings` |
 
 ## 扩展属性
 
-> DSL扩展配置支持如下配置：
+### DSL扩展配置支持配置
 
 | 扩展方法 | 扩展描述 |
 | --------- | ----------- |
@@ -20,7 +22,7 @@
 | `onlySubproject` | 仅含三级子项目（不含当前项目，三级项目为`主项目`的子项目） |
 | `skippedDirs` | 忽略三级子项目目录 |
 
-> `gradle.properties`配置支持如下属性：
+### `gradle.properties`配置支持属性
 
 | Property  | Description |
 | --------- | ----------- |
@@ -39,17 +41,13 @@ iHubSettings.includeBom=ihub-bom
 
 ## 插件安装
 
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '${ihub.plugin.version}'
-}
-```
+@include(./snippet/setting.gradle.md)
 
 ## 配置示例
 
-> 配置子项目：
+### 配置子项目
 
-目录结构：
+- 目录结构：
 
 ```
 +---rest
@@ -57,7 +55,11 @@ plugins {
 \---service
 ```
 
-配置：
+- 配置：
+
+::: code-tabs#build
+
+@tab Groovy
 
 ```groovy
 iHubSettings {
@@ -65,9 +67,21 @@ iHubSettings {
 }
 ```
 
-> 配置三级子项目：
+@tab Kotlin
 
-目录结构：
+```kotlin
+import pub.ihub.plugin.IHubSettingsExtension
+
+configure<IHubSettingsExtension> {
+    includeProjects("rest", "sdk", "service")
+}
+```
+
+:::
+
+### 配置三级子项目
+
+- 目录结构：
 
 ```
 +---rest
@@ -79,7 +93,11 @@ iHubSettings {
     \---c
 ```
 
-配置：
+- 配置：
+
+::: code-tabs#build
+
+@tab Groovy
 
 ```groovy
 iHubSettings {
@@ -90,11 +108,28 @@ iHubSettings {
 }
 ```
 
-> `注意`：插件默认排除了常见非项目目录，`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle`
+@tab Kotlin
+
+```kotlin
+import pub.ihub.plugin.IHubSettingsExtension
+
+configure<IHubSettingsExtension> {
+    includeProjects("rest", "service").suffix("-suffix")
+    includeProjects("test").noPrefix
+    includeProjects("other").prefix("prefix-").skippedDirs("c").subproject
+    includeProjects("subproject").prefix("prefix-").suffix("-suffix").onlySubproject
+}
+```
+
+:::
+
+::: warning
+插件默认排除了常见非项目目录，`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle`
+:::
 
 ## 默认插件仓库
 
-> 私有仓库、自定义仓库配置参见[扩展属性](iHub#扩展属性)
+私有仓库、自定义仓库配置参见[扩展属性](iHub#扩展属性)
 
 | Name | Description | Url |
 | ---- | ----------- | --- |
@@ -106,14 +141,18 @@ iHubSettings {
 
 ## 默认版本
 
-> 插件配置了`ihub系列插件`及以下插件默认版本：
+插件配置了`ihub系列插件`及以下插件默认版本：
 
 | Plugin                      | Version                                                                     |
 |-----------------------------|-----------------------------------------------------------------------------|
 | `com.gradle.plugin-publish` | [1.1.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)        |
-| `pub.ihub.plugin.*`         | [${ihub.plugin.version}](https://plugins.gradle.org/plugin/pub.ihub.plugin) |
+| `pub.ihub.plugin.*`         | [1.3.1](https://plugins.gradle.org/plugin/pub.ihub.plugin) |
 
-> 使用插件时可以不用加版本号，配置如下：
+使用插件时可以不用加版本号，配置如下：
+
+::: code-tabs#build
+
+@tab Groovy
 
 ```groovy
 plugins {
@@ -121,3 +160,16 @@ plugins {
     id 'com.gradle.plugin-publish'
 }
 ```
+
+@tab Kotlin
+
+```kotlin
+plugins {
+    id("pub.ihub.plugin")
+    id("com.gradle.plugin-publish")
+}
+```
+
+:::
+
+@include(./snippet/explanation.md)

@@ -8,6 +8,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
