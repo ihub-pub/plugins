@@ -1,18 +1,64 @@
 # ihub-copyright
 
-> `ihub-copyright`插件是版权插件，用于自动配置`IDEA`版权设置，自动伪代码添加或更新版权信息。
+::: info 插件说明
+`ihub-copyright`插件是版权插件，用于自动配置`IDEA`版权设置，自动伪代码添加或更新版权信息。
+:::
 
 | 插件ID | 插件名称 | 插件类型 | 插件依赖         |
 |-------|---------|--------|--------------|
-| `pub.ihub.plugin.ihub-copyright` | `版权插件` | `Project` | [ihub](iHub) |
+| `pub.ihub.plugin.ihub-copyright` | `版权插件` | `Project`[^Project] | [ihub](iHub) |
 
 ## 插件安装
 
+::: code-tabs#build
+
+@tab Groovy
+
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-copyright' version '${ihub.plugin.version}'
+    id 'pub.ihub.plugin.ihub-copyright'
 }
 ```
+
+@tab Kotlin
+
+```kotlin
+plugins {
+    id("pub.ihub.plugin.ihub-copyright")
+}
+```
+
+:::
+
+或
+
+::: code-tabs#build
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin'
+}
+
+apply {
+    plugin 'pub.ihub.plugin.ihub-copyright'
+}
+```
+
+@tab Kotlin
+
+```kotlin
+plugins {
+    id("pub.ihub.plugin")
+}
+
+apply {
+    plugin("pub.ihub.plugin.ihub-copyright")
+}
+```
+
+:::
 
 ## 配置示例
 
@@ -35,3 +81,5 @@ limitations under the License.
 ```
 
 2. 通过`LICENSE`文件提取版权信息，目前会识别`Apache License`、`MIT License`配置通用版权信息，其他版权会使用IDEA默认版权配置
+
+@include(./snippet/explanation.md)

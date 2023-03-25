@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { defineUserConfig } from 'vuepress'
-import { searchPlugin } from '@vuepress/plugin-search'
+import { searchProPlugin } from "vuepress-plugin-search-pro"
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics'
 
 import theme from "./theme.js"
@@ -38,15 +38,13 @@ export default defineUserConfig({
         },
     },
 
+    pagePatterns: ["**/*.md", "!snippet/*.md"],
     theme,
 
     plugins: [
-        searchPlugin({
-            locales: {
-                '/': {
-                    placeholder: '搜索',
-                },
-            },
+        searchProPlugin({
+            // 索引全部内容
+            indexContent: true,
         }),
         googleAnalyticsPlugin({
             id: 'G-G60CQD0XTC',

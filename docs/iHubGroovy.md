@@ -1,34 +1,38 @@
 # ihub-groovy
 
-> `ihub-groovy`插件用于集成Groovy相关插件环境以及配置Groovy默认[组件依赖](iHubGroovy#组件依赖)。
+::: info 插件说明
+`ihub-groovy`插件用于集成Groovy相关插件环境以及配置Groovy默认[组件依赖](#组件依赖)。
+:::
 
 | 插件ID | 插件名称 | 插件类型 | 插件依赖 |
 |-------|---------|--------|---------|
-| `pub.ihub.plugin.ihub-groovy` | `Groovy插件` | `Project` | [ihub-java](iHubJava)、[groovy](https://docs.gradle.org/current/userguide/groovy_plugin.html) |
+| `pub.ihub.plugin.ihub-groovy` | `Groovy插件` | `Project`[^Project] | [ihub-java](iHubJava)、[groovy](https://docs.gradle.org/current/userguide/groovy_plugin.html) |
 
 ## 插件安装
 
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-groovy' version '${ihub.plugin.version}'
-}
-```
+::: code-tabs#build
 
-或
+@tab Groovy
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin' version '${ihub.plugin.version}'
-}
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-groovy'
+    id 'pub.ihub.plugin.ihub-groovy'
 }
 ```
+
+@tab Kotlin
+
+```kotlin
+plugins {
+    id("pub.ihub.plugin.ihub-groovy")
+}
+```
+
+:::
 
 ## 组件依赖
 
-> 项目默认会依赖如下组件：
+项目默认会依赖如下组件：
 
 | 默认依赖组件 |
 | --------- |
@@ -41,3 +45,5 @@ apply {
 | `groovy-sql` |
 | `groovy-templates` |
 | `groovy-xml` |
+
+@include(./snippet/explanation.md)

@@ -8,6 +8,7 @@ permissions:
 
 jobs:
   gradle-action-detection:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

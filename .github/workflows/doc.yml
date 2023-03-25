@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   docs:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
     permissions:
       contents: write
     runs-on: ubuntu-latest

@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   build:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
@@ -32,7 +33,7 @@ jobs:
         run: gradle build -x test
 
   test:
-    if: ${{ github.event_name == 'schedule' }}
+    if: ${{ github.event_name == 'schedule' && github.repository_owner == 'ihub-pub' }}
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
@@ -68,7 +69,7 @@ jobs:
           retention-days: 1
 
   project-matrix:
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request' && github.repository_owner == 'ihub-pub' }}
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.name.outputs.test }}
@@ -176,6 +177,7 @@ jobs:
           sarif_file: results.sarif
 
   analysis:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
     name: Scorecards analysis
     runs-on: ubuntu-latest
     permissions:
@@ -233,6 +235,7 @@ jobs:
         uses: actions/dependency-review-action@f46c48ed6d4f1227fb2d9ea62bf6bcbed315589e # v3.0.4
 
   validation:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
     name: Validate Gradle Wrapper
     runs-on: ubuntu-latest
     steps:

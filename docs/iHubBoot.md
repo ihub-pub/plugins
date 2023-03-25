@@ -1,21 +1,22 @@
 # ihub-boot
 
-## 插件信息
+::: info 插件说明
+`ihub-boot`插件用于集成`spring-boot`插件以及镜像默认配置。
+:::
 
 | 信息 | 描述 |
 |----|----|
 | 插件ID | `pub.ihub.plugin.ihub-boot` |
 | 插件名称 | `Boot插件` |
-| 插件描述 | `ihub-boot`插件用于集成`spring-boot`插件以及镜像默认配置。 |
-| 插件类型 | `Project` |
+| 插件类型 | `Project`[^Project] |
 | 扩展名称 | `iHubBoot` |
 | 插件依赖 | [ihub-java](iHubJava)、[org.springframework.boot](https://plugins.gradle.org/plugin/org.springframework.boot) |
 
 ## 扩展属性
 
-> 属性使用说明[详见](explanation#属性配置说明)，`run`开头为`运行时属性`，`bootJar`开头为`打包Jar时属性`，`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`docker`开头为`Docker仓库相关属性`，[参考](https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/)
+`run`开头为`运行时属性`，`bootJar`开头为`打包Jar时属性`，`bp`开头为`构建镜像时属性`，`bpl`开头为`启动时属性`，`docker`开头为`Docker仓库相关属性`，[参考](https://docs.spring.io/spring-boot/docs/2.5.3/gradle-plugin/reference/htmlsingle/)
 
-| Extension | Description | Default | Ext | Prj | Sys | Env |
+| Extension | Description | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `runProperties` | bootRun属性[详见](explanation#runproperties) | ❌ | ✔ | ❌ | ❌ | ❌ |
 | `runIncludePropNames` | 运行时包含系统属性名称（`,`分割，支持通配符`*`）[详见](explanation#runincludepropnames) | ❌ | ✔ | ✔ | ✔ | ❌ |
@@ -51,7 +52,7 @@
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-boot' version '${ihub.plugin.version}'
+    id 'pub.ihub.plugin.ihub-boot'
 }
 ```
 
@@ -59,37 +60,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("pub.ihub.plugin.ihub-boot") version "${ihub.plugin.version}"
-}
-```
-
-:::
-
-或
-
-::: code-tabs#build
-
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin' version '${ihub.plugin.version}'
-}
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-boot'
-}
-```
-
-@tab Kotlin
-
-```kotlin
-plugins {
-    id("pub.ihub.plugin") version "${ihub.plugin.version}"
-}
-
-apply {
-    plugin("pub.ihub.plugin.ihub-boot")
+    id("pub.ihub.plugin.ihub-boot")
 }
 ```
 
@@ -109,4 +80,16 @@ iHubBoot {
 }
 ```
 
+@tab Kotlin
+
+```kotlin
+import pub.ihub.plugin.spring.IHubBootExtension
+
+configure<IHubBootExtension> {
+    runProperties = mapOf("spring.profiles.active" to "dev")
+}
+```
+
 :::
+
+@include(./snippet/explanation.md)
