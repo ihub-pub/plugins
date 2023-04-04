@@ -1,7 +1,7 @@
 <p align="center">
     <a target="_blank" href="https://ihub.pub/">
-        <img src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/ihub.svg" height="150" alt="IHub">
-        <img src="https://cdn.jsdelivr.net/gh/ihub-pub/ihub-pub.github.io/ihub_plugins.svg" height="150" alt="IHub">
+        <img src="https://doc.ihub.pub/ihub.svg" height="150" alt="IHub">
+        <img src="https://doc.ihub.pub/ihub_plugins.svg" height="150" alt="IHub">
     </a>
 </p>
 
