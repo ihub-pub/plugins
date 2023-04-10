@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,34 +15,56 @@
  */
 package pub.ihub.plugin
 
-import groovy.transform.TupleConstructor
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 
 import static pub.ihub.plugin.IHubProperty.Type.ENV
+import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
-
-
 
 /**
  * @author henry
  */
 @IHubExtension('iHubDemo')
 @SuppressWarnings('GetterMethodCouldBeProperty')
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubDemoExtension implements IHubProjectExtensionAware, IHubExtProperty {
+class IHubDemoExtension extends IHubProjectExtensionAware implements IHubExtProperty {
 
-    boolean flag = false
+    Property<Boolean> flag
 
     @IHubProperty
-    String str = 'text'
+    Property<String> str
 
     @IHubProperty(type = SYSTEM)
-    String system = 'system'
+    Property<String> system
 
     @IHubProperty(type = ENV)
-    String env = 'env'
+    Property<String> env
 
-    String getGetMethod() {
-        'method'
+    @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'true', genericType = Boolean)
+    Property<Boolean> trueFlag
+
+    @IHubProperty(type = [PROJECT, ENV], defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> falseFlag
+
+    @IHubProperty(defaultValue = 'true')
+    Property<String> trueStrFlag
+
+    @IHubProperty(defaultValue = 'false')
+    Property<String> falseStrFlag
+
+    @IHubProperty('demoProperty')
+    Property<String> customizationProperty
+
+    IHubDemoExtension(ObjectFactory objectFactory) {
+        flag = objectFactory.property(Boolean).convention(false)
+        str = objectFactory.property(String).convention('text')
+        system = objectFactory.property(String).convention('system')
+        env = objectFactory.property(String).convention('env')
+        trueFlag = objectFactory.property(Boolean)
+        falseFlag = objectFactory.property(Boolean)
+        trueStrFlag = objectFactory.property(String)
+        falseStrFlag = objectFactory.property(String)
+        customizationProperty = objectFactory.property(String).convention('str')
     }
 
 }

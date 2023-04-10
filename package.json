@@ -13,7 +13,7 @@
     "@vuepress/plugin-google-analytics": "^2.0.0-beta.61",
     "vue": "^3.2.47",
     "vuepress": "^2.0.0-beta.61",
-    "vuepress-plugin-search-pro": "^2.0.0-beta.199",
-    "vuepress-theme-hope": "^2.0.0-beta.199"
+    "vuepress-plugin-search-pro": "^2.0.0-beta.202",
+    "vuepress-theme-hope": "^2.0.0-beta.202"
   }
 }

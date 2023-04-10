@@ -48,19 +48,19 @@
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-boot'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-boot")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-boot'
 }
 ```
 
@@ -70,6 +70,14 @@ plugins {
 
 ::: code-tabs#build
 
+@tab Kotlin
+
+```kotlin
+iHubBoot {
+    runProperties.set(mapOf("spring.profiles.active" to "dev"))
+}
+```
+
 @tab Groovy
 
 ```groovy
@@ -77,16 +85,6 @@ iHubBoot {
     runProperties = [
         'spring.profiles.active': 'dev'
     ]
-}
-```
-
-@tab Kotlin
-
-```kotlin
-import pub.ihub.plugin.spring.IHubBootExtension
-
-configure<IHubBootExtension> {
-    runProperties = mapOf("spring.profiles.active" to "dev")
 }
 ```
 

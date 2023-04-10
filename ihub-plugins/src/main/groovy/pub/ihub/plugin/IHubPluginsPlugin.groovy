@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,7 +21,7 @@ import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.version.IHubVersionPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
-
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
 /**
@@ -39,7 +39,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
         if (project == project.rootProject) {
             logger.lifecycle 'Build with IHub Plugins ' + IHubPluginsPlugin.package.implementationVersion +
                 ', You can see the documentation to learn more, See https://doc.ihub.pub/plugins.'
-            printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
 
             applyPlugin IHubVersionPlugin
         }
@@ -55,16 +54,16 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
     }
 
     private void configProjectRepositories() {
-        withExtension { ext ->
+        withExtension(AFTER) { ext ->
             project.repositories {
                 String dirs = "$project.rootProject.projectDir/libs"
                 if ((dirs as File).directory) {
                     flatDir dirs: dirs
                 }
-                if (ext.mavenLocalEnabled) {
+                if (ext.mavenLocalEnabled.get()) {
                     mavenLocal()
                 }
-                if (ext.mavenAliYunEnabled) {
+                if (ext.mavenAliYunEnabled.get()) {
                     maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public',
                         'https://repo1.maven.org/maven2')
                     maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
@@ -74,11 +73,15 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 }
                 maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
                 // 添加私有仓库
-                ext.releaseRepoUrl?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
-                ext.snapshotRepoUrl?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
+                ext.releaseRepoUrl.orNull?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
+                ext.snapshotRepoUrl.orNull?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
                 // 添加自定义仓库
-                ext.customizeRepoUrl?.with { url -> maven mavenRepo('CustomizeRepo', url) }
+                ext.customizeRepoUrl.orNull?.with { url -> maven mavenRepo('CustomizeRepo', url) }
                 mavenCentral()
+            }
+
+            if (project == project.rootProject) {
+                printLineConfigContent 'Gradle Project Repos', project.repositories*.displayName
             }
         }
     }
@@ -97,20 +100,20 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
         return {
             name repoName
             url repoUrl
-            allowInsecureProtocol ext.repoAllowInsecureProtocol
+            allowInsecureProtocol ext.repoAllowInsecureProtocol.get()
             mavenContent mavenContentConfig
             content {
-                String repoIncludeGroup = ext.repoIncludeGroup
+                String repoIncludeGroup = ext.repoIncludeGroup.orNull
                 if (repoIncludeGroup) {
                     includeGroup repoIncludeGroup
                 } else {
-                    includeGroupByRegex ext.repoIncludeGroupRegex
+                    includeGroupByRegex ext.repoIncludeGroupRegex.get()
                 }
             }
-            ext.repoUsername?.with { repoUsername ->
+            ext.repoUsername.orNull?.with { repoUsername ->
                 credentials {
                     username repoUsername
-                    password ext.repoPassword
+                    password ext.repoPassword.orNull
                 }
             }
         }

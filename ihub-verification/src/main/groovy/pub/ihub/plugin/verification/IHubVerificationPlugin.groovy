@@ -42,7 +42,6 @@ import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 
-
 /**
  * 代码检查插件
  * @author liheng
@@ -51,6 +50,36 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExtension> {
 
     private static final String[] RULE_TYPE = ['INSTRUCTION', 'BRANCH', 'LINE', 'COMPLEXITY', 'METHOD', 'CLASS']
+
+    static final Closure JACOCO_COVERAGE_CONFIG = { IHubVerificationExtension ext, JacocoCoverageVerification it ->
+        it.violationRules {
+            // rule #1：bundle分支覆盖率
+            rule {
+                enabled = ext.jacocoBranchCoverageRuleEnabled.get()
+                limit {
+                    counter = 'BRANCH'
+                    minimum = ext.jacocoBranchCoveredRatio.get().toBigDecimal()
+                }
+            }
+            // rule #2：bundle指令覆盖率
+            rule {
+                enabled = ext.jacocoInstructionCoverageRuleEnabled.get()
+                excludes = ext.jacocoInstructionExclusion.get().tokenize ','
+                limit {
+                    minimum = ext.jacocoInstructionCoveredRatio.get().toBigDecimal()
+                }
+            }
+            // rule #3：package指令覆盖率
+            rule {
+                enabled = ext.jacocoPackageCoverageRuleEnabled.get()
+                element = 'PACKAGE'
+                excludes = ext.jacocoPackageExclusion.get().tokenize ','
+                limit {
+                    minimum = ext.jacocoPackageCoveredRatio.get().toBigDecimal()
+                }
+            }
+        }
+    }
 
     @Override
     void apply() {
@@ -88,9 +117,9 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
                         'rulesets/vm/ali-other.xml',
                     ]
                 }
-                it.consoleOutput = ext.pmdConsoleOutput
-                it.ignoreFailures = ext.pmdIgnoreFailures
-                it.toolVersion = ext.pmdVersion
+                it.consoleOutput = ext.pmdConsoleOutput.get()
+                it.ignoreFailures = ext.pmdIgnoreFailures.get()
+                it.toolVersion = ext.pmdVersion.get()
             }
         }
     }
@@ -109,8 +138,8 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
                         }
                     }
                 }
-                it.ignoreFailures = ext.codenarcIgnoreFailures
-                it.toolVersion = ext.codenarcVersion
+                it.ignoreFailures = ext.codenarcIgnoreFailures.get()
+                it.toolVersion = ext.codenarcVersion.get()
             }
         }
     }
@@ -121,45 +150,10 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
             configJacocoAggregation project
         }
         withExtension(AFTER) { ext ->
-            withExtension(JacocoPluginExtension) {
-                it.toolVersion = ext.jacocoVersion
-            }
+            withExtension(JacocoPluginExtension).toolVersion = ext.jacocoVersion.get()
 
-            /**
-             * 分支覆盖率达到100%
-             * 由于groovy在编译时会生成无效字节码，所以指令覆盖率无法达到100%，等待官方修复，详见
-             * https://github.com/jacoco/jacoco/issues/884
-             * http://groovy.329449.n5.nabble.com/Groovy-2-5-4-generates-dead-code-td5755188.html
-             */
-            JacocoCoverageVerification jacocoCoverageVerification = withTask('jacocoTestCoverageVerification') {
-                it.violationRules {
-                    // rule #1：bundle分支覆盖率
-                    rule {
-                        enabled = ext.jacocoBranchCoverageRuleEnabled
-                        limit {
-                            counter = 'BRANCH'
-                            minimum = ext.jacocoBranchCoveredRatio.toBigDecimal()
-                        }
-                    }
-                    // rule #2：bundle指令覆盖率
-                    rule {
-                        enabled = ext.jacocoInstructionCoverageRuleEnabled
-                        excludes = ext.jacocoInstructionExclusion.tokenize ','
-                        limit {
-                            minimum = ext.jacocoInstructionCoveredRatio.toBigDecimal()
-                        }
-                    }
-                    // rule #3：package指令覆盖率
-                    rule {
-                        enabled = ext.jacocoPackageCoverageRuleEnabled
-                        element = 'PACKAGE'
-                        excludes = ext.jacocoPackageExclusion.tokenize ','
-                        limit {
-                            minimum = ext.jacocoPackageCoveredRatio.toBigDecimal()
-                        }
-                    }
-                }
-            }
+            JacocoCoverageVerification jacocoCoverageVerification = withTask 'jacocoTestCoverageVerification',
+                JACOCO_COVERAGE_CONFIG.curry(ext)
 
             // 覆盖率报告排除main class
             JacocoReport jacocoTestReport = withTask('jacocoTestReport') { task ->
@@ -169,7 +163,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
                 }
                 project.afterEvaluate {
                     task.classDirectories.from = project.files(task.classDirectories.files.collect { dir ->
-                        project.fileTree dir: dir, exclude: ext.jacocoReportExclusion.tokenize(',')
+                        project.fileTree dir: dir, exclude: ext.jacocoReportExclusion.get().tokenize(',')
                     })
                 }
 

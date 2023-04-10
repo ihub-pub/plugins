@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,12 +24,16 @@ import groovy.transform.TupleConstructor
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.logging.Logger
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.w3c.dom.Document
 import org.w3c.dom.Node
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
 
+import javax.inject.Inject
 import java.nio.file.Path
 
 import static groovy.transform.TypeCheckingMode.SKIP
@@ -38,8 +42,6 @@ import static java.nio.file.Files.write
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
-
-
 /**
  * IHub Git Hooks插件扩展
  * @author henry
@@ -47,8 +49,7 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 @IHubExtension('iHubGitHooks')
 @CompileStatic
 @SuppressWarnings(['ConfusingMethodName', 'JUnitPublicProperty'])
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubGitHooksExtension implements IHubProjectExtensionAware {
+class IHubGitHooksExtension extends IHubProjectExtensionAware {
 
     private static final Map<String, List<String>> DEFAULT_TYPES = [
         refactor: ['代码重构', 'Changes which neither fix a bug nor add a feature'],
@@ -81,12 +82,17 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
      * 自定义hooks路径
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String hooksPath
+    Property<String> hooksPath
 
     /**
      * 自定义hooks
      */
-    Map<String, String> hooks = [:]
+    MapProperty<String, String> hooks
+
+    /**
+     * 提交描述正则表达式
+     */
+    Property<String> descriptionRegex
 
     /**
      * 提交类型
@@ -98,10 +104,12 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
      */
     Set<FooterSpec> footers = []
 
-    /**
-     * 提交描述正则表达式
-     */
-    String descriptionRegex = /.{1,100}/
+    @Inject
+    IHubGitHooksExtension(ObjectFactory objectFactory) {
+        hooksPath = objectFactory.property(String)
+        hooks = objectFactory.mapProperty(String, String).convention([:])
+        descriptionRegex = objectFactory.property(String).convention(/.{1,100}/)
+    }
 
     void types(String... types) {
         this.types.addAll types.collect {
@@ -127,7 +135,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     @CompileStatic(SKIP)
     List<String> checkHeader(String header) {
-        (header =~ /^(${types*.name.join('|')})(\((.+)\))?!?: $descriptionRegex/).with {
+        (header =~ /^(${types*.name.join('|')})(\((.+)\))?!?: ${descriptionRegex.get()}/).with {
             assertRule matches(), 'Commit msg header check fail!'
             it[0][1, 3] as List<String>
         }
@@ -145,7 +153,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     void writeHooks() {
         hooksDir.deleteDir()
-        hooks.forEach this::writeHook
+        hooks.get().forEach this::writeHook
     }
 
     void execute(String hooksPath, Map<String, String> hooks) {
@@ -219,7 +227,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
     @CompileStatic
     @TupleConstructor(includes = 'name')
     @EqualsAndHashCode(includes = 'name')
-    private class ConfigSpec<T> {
+    class ConfigSpec<T> {
 
         String name
         String description = ''
@@ -237,7 +245,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     @CompileStatic
     @EqualsAndHashCode(callSuper = true)
-    private class TypeSpec extends ConfigSpec<TypeSpec> {
+    class TypeSpec extends ConfigSpec<TypeSpec> {
 
         private final Set<ConfigSpec> scopes = []
         private boolean requiredScope = false
@@ -281,7 +289,7 @@ class IHubGitHooksExtension implements IHubProjectExtensionAware {
 
     @CompileStatic
     @EqualsAndHashCode(callSuper = true)
-    private class FooterSpec extends ConfigSpec<FooterSpec> {
+    class FooterSpec extends ConfigSpec<FooterSpec> {
 
         /**
          * 是否必填

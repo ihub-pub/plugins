@@ -19,6 +19,7 @@ import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.attributes.TestSuiteType
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.TestReportAggregationPlugin
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.testing.AggregateTestReport
@@ -30,10 +31,9 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.JUNIT_JUPITER
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.NONE
 import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.SPOCK
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-
-
 
 /**
  * 测试插件
@@ -61,7 +61,9 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
 
     @Override
     void apply() {
-        testDependenciesMapping[extension.testFramework]?.with {
+        BuildInitTestFramework testFramework = extension.testFramework
+            .getOrElse(hasPlugin(GroovyPlugin) ? SPOCK : hasPlugin(JavaPlugin) ? JUNIT_JUPITER : NONE)
+        testDependenciesMapping[testFramework]?.with {
             withExtension IHubBomExtension, it
         }
 
@@ -74,19 +76,19 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
                 ext.systemProperties it, '.test-java-local.properties'
 
                 it.useJUnitPlatform()
-                if (ext.classes) {
-                    ext.classes.tokenize(',').each { testClass ->
+                if (ext.classes.present) {
+                    ext.classes.get().tokenize(',').each { testClass ->
                         it.include testClass
                     }
                 } else {
                     it.include '**/*Test*', '**/*FT*', '**/*UT*'
                 }
 
-                it.forkEvery = ext.forkEvery
-                it.maxParallelForks = ext.maxParallelForks
-                it.enabled = ext.enabled
-                it.debug = ext.debug
-                it.failFast = ext.failFast
+                it.forkEvery = ext.forkEvery.get()
+                it.maxParallelForks = ext.maxParallelForks.get()
+                it.enabled = ext.enabled.get()
+                it.debug = ext.debug.get()
+                it.failFast = ext.failFast.get()
 
                 it.onOutput { descriptor, event ->
                     it.logger.lifecycle event.message

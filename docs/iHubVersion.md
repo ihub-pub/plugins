@@ -28,19 +28,19 @@
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-version'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-version")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-version'
 }
 ```
 
@@ -54,17 +54,17 @@ plugins {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubVersion {
-    autoReplaceLaterVersions = true
-}
-```
-
 @tab Kotlin
 
 ```kotlin
+iHubVersion {
+    autoReplaceLaterVersions.set(true)
+}
+```
+
+@tab Groovy
+
+```groovy
 iHubVersion {
     autoReplaceLaterVersions = true
 }

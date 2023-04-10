@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,6 @@
 package pub.ihub.plugin.bom
 
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
 import org.gradle.api.Action
 import pub.ihub.plugin.IHubExtProperty
 import pub.ihub.plugin.IHubExtension
@@ -48,17 +47,14 @@ import java.util.function.Supplier
 import static groovy.transform.TypeCheckingMode.SKIP
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
-
-
 /**
  * BOM插件DSL扩展
  * @author liheng
  */
-@IHubExtension(value = 'iHubBom', decorated = true)
+@IHubExtension('iHubBom')
 @CompileStatic
 @SuppressWarnings('ConfusingMethodName')
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubBomExtension implements IHubProjectExtensionAware, IHubExtProperty {
+class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtProperty {
 
     final Set<Module> bomVersions = []
     final Set<Modules> dependencyVersions = []

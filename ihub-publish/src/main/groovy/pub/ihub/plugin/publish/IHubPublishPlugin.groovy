@@ -54,21 +54,21 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override
     void apply() {
-        // 引入GithubPom插件
-        if (extension.applyGithubPom && githubActions) {
-            applyPlugin GithubPomPlugin
-            afterEvaluate {
+        afterEvaluate {
+            // 引入GithubPom插件
+            if (extension.applyGithubPom.get() && githubActions) {
+                applyPlugin GithubPomPlugin
                 withExtension(PublishingExtension) {
                     it.publications.withType MavenPublication, this::configurePomDevelopers
                 }
             }
+
+            IHubPluginsExtension iHubExt = withExtension IHubPluginsExtension
+
+            configPublish project, iHubExt
+
+            configSigning project, extension
         }
-
-        IHubPluginsExtension iHubExt = withExtension IHubPluginsExtension
-
-        configPublish project, iHubExt
-
-        configSigning project, extension
 
         // 添加配置元信息
         if (hasPlugin(JavaPlugin)) {
@@ -81,7 +81,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         }
 
         // 配置项目bom组件
-        extension.findProjectProperty('iHubSettings.includeBom')?.with { includeBom ->
+        project.findProperty('iHubSettings.includeBom')?.with { includeBom ->
             Project bom = project.rootProject.findProject(includeBom.toString())
             if (!bom.plugins.hasPlugin(JavaPlatformPlugin)) {
                 bom.with {
@@ -97,7 +97,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     }
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
-        boolean publishDocs = extension.publishDocs
+        boolean publishDocs = extension.publishDocs.get()
         withExtension(PublishingExtension) {
             it.publications {
                 create('mavenJava', MavenPublication) {
@@ -138,12 +138,12 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             }
             it.repositories {
                 maven {
-                    url release ? iHubExt.releaseRepoUrl : iHubExt.snapshotRepoUrl
-                    allowInsecureProtocol iHubExt.repoAllowInsecureProtocol
-                    iHubExt.repoUsername?.with { repoUsername ->
+                    url release ? iHubExt.releaseRepoUrl.orNull : iHubExt.snapshotRepoUrl.orNull
+                    allowInsecureProtocol iHubExt.repoAllowInsecureProtocol.get()
+                    iHubExt.repoUsername.orNull?.with { repoUsername ->
                         credentials {
                             username repoUsername
-                            password iHubExt.repoPassword
+                            password iHubExt.repoPassword.orNull
                         }
                     }
                 }
@@ -184,8 +184,9 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     private void configSigning(Project project, IHubPublishExtension extension) {
         project.plugins.apply SigningPlugin
         withExtension(SigningExtension) { ext ->
-            ext.required = release && extension.publishNeedSign
-            ext.useInMemoryPgpKeys extension.signingKeyId, extension.signingSecretKey, extension.signingPassword
+            ext.required = release && extension.publishNeedSign.get()
+            ext.useInMemoryPgpKeys extension.signingKeyId.orNull, extension.signingSecretKey.orNull,
+                extension.signingPassword.orNull
             withExtension(PublishingExtension, AFTER) {
                 if (ext.required) {
                     ext.sign it.publications.mavenJava

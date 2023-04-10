@@ -61,19 +61,19 @@ ruleSets = [
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-verification'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-verification")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-verification'
 }
 ```
 
@@ -85,17 +85,17 @@ plugins {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubVerification {
-    pmdConsoleOutput = true
-}
-```
-
 @tab Kotlin
 
 ```kotlin
+iHubVerification {
+    pmdConsoleOutput.set(true)
+}
+```
+
+@tab Groovy
+
+```groovy
 iHubVerification {
     pmdConsoleOutput = true
 }
@@ -107,17 +107,17 @@ iHubVerification {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubVerification {
-    codenarcIgnoreFailures = true
-}
-```
-
 @tab Kotlin
 
 ```kotlin
+iHubVerification {
+    codenarcIgnoreFailures.set(true)
+}
+```
+
+@tab Groovy
+
+```groovy
 iHubVerification {
     codenarcIgnoreFailures = true
 }
@@ -129,19 +129,19 @@ iHubVerification {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubVerification {
-    jacocoBranchCoverageRuleEnabled = true
-    jacocoInstructionCoverageRuleEnabled = true
-    jacocoPackageCoverageRuleEnabled = true
-}
-```
-
 @tab Kotlin
 
 ```kotlin
+iHubVerification {
+    jacocoBranchCoverageRuleEnabled.set(true)
+    jacocoInstructionCoverageRuleEnabled.set(true)
+    jacocoPackageCoverageRuleEnabled.set(true)
+}
+```
+
+@tab Groovy
+
+```groovy
 iHubVerification {
     jacocoBranchCoverageRuleEnabled = true
     jacocoInstructionCoverageRuleEnabled = true

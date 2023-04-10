@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,8 +24,6 @@ import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
-
-
 /**
  * BOM（Bill of Materials）组件依赖管理
  * @author henry
@@ -34,7 +35,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
     @Override
     void apply() {
         // 如果项目为bom组件项目时，不执行插件
-        if (project.name == extension.findProjectProperty('iHubSettings.includeBom')) {
+        if (project.name == project.findProperty('iHubSettings.includeBom')) {
             return
         }
 

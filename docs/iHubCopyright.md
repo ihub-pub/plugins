@@ -12,14 +12,6 @@
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-copyright'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
@@ -28,23 +20,19 @@ plugins {
 }
 ```
 
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-copyright'
+}
+```
+
 :::
 
 或
 
 ::: code-tabs#build
-
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin'
-}
-
-apply {
-    plugin 'pub.ihub.plugin.ihub-copyright'
-}
-```
 
 @tab Kotlin
 
@@ -55,6 +43,18 @@ plugins {
 
 apply {
     plugin("pub.ihub.plugin.ihub-copyright")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin'
+}
+
+apply {
+    plugin 'pub.ihub.plugin.ihub-copyright'
 }
 ```
 

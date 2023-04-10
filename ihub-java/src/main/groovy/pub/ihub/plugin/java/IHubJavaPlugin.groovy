@@ -21,6 +21,7 @@ import net.bytebuddy.build.gradle.AbstractByteBuddyTask
 import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
 import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -38,7 +39,6 @@ import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
-
 
 
 /**
@@ -102,7 +102,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             ext.dependencies {
                 implementation 'org.jmolecules:jmolecules-ddd', 'org.jmolecules:jmolecules-events'
                 implementation J_MOLECULES_ARCHITECTURE_DEPENDENCIES[
-                    ext.project.extensions.getByType(IHubJavaExtension).jmoleculesArchitecture
+                    ext.project.extensions.getByType(IHubJavaExtension).jmoleculesArchitecture.get()
                 ]
             }
         },
@@ -117,24 +117,38 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         },
     ]
 
+    static final Closure JAVA_CONFIG = { IHubJavaExtension ext, AbstractCompile compile ->
+        // 兼容性配置
+        ext.compatibility.orNull?.with { version ->
+            compile.sourceCompatibility = version
+            compile.targetCompatibility = version
+        }
+        compile.options.encoding = ext.compileEncoding.get()
+        compile.options.incremental = ext.gradleCompilationIncremental.get()
+        compile.options.compilerArgs += ext.compilerArgs.orNull.with { args ->
+            args ? args.tokenize() : []
+        }
+    }
+
+    static final Closure JAR_CONFIG = { Project project, Jar jar ->
+        jar.manifest {
+            attributes(
+                'Implementation-Title': project.name,
+                'Automatic-Module-Name': project.name.replaceAll('-', '.'),
+                'Implementation-Version': project.version,
+                'Implementation-Vendor-Id': project.group,
+                'Created-By': 'Java ' + JavaVersion.current().majorVersion
+            )
+        }
+    }
+
     @Override
     void apply() {
         withExtension(BEFORE) { ext ->
-            withTask(AbstractCompile) {
-                // 兼容性配置
-                ext.compatibility?.with { version ->
-                    it.sourceCompatibility = version
-                    it.targetCompatibility = version
-                }
-                it.options.encoding = ext.compileEncoding
-                it.options.incremental = ext.gradleCompilationIncremental
-                it.options.compilerArgs += ext.compilerArgs.with { args ->
-                    args ? args.tokenize() : []
-                }
-            }
+            withTask AbstractCompile, JAVA_CONFIG.curry(ext)
 
             withExtension(IHubBomExtension) {
-                ext.defaultDependencies.split(',').each { dependency ->
+                ext.defaultDependencies.get().split(',').each { dependency ->
                     DEFAULT_DEPENDENCIES_CONFIG[dependency]?.call it
                     if ('jmolecules' == dependency) {
                         // 注：启用byteBuddy插件时，org.gradle.parallel设置false
@@ -148,7 +162,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 }
 
                 // Groovy增量编译与Java注释处理器不能同时使用
-                if (hasPlugin(GroovyPlugin) && ext.gradleCompilationIncremental) {
+                if (hasPlugin(GroovyPlugin) && ext.gradleCompilationIncremental.get()) {
                     it.dependencies.removeIf {
                         it.type == 'annotationProcessor'
                     }
@@ -157,7 +171,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
 
         withExtension(AFTER) {
-            if (it.applyOpenapiPlugin) {
+            if (it.applyOpenapiPlugin.get()) {
                 applyPlugin ProcessesPlugin, OpenApiGradlePlugin
             }
             if (!hasPlugin(GroovyPlugin)) {
@@ -166,17 +180,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
 
         // 配置Jar属性
-        withTask(Jar) {
-            it.manifest {
-                attributes(
-                    'Implementation-Title': project.name,
-                    'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-                    'Implementation-Version': project.version,
-                    'Implementation-Vendor-Id': project.group,
-                    'Created-By': 'Java ' + JavaVersion.current().majorVersion
-                )
-            }
-        }
+        withTask Jar, JAR_CONFIG.curry(project)
 
         // 配置lombok.config
         // 由于Lombok插件6.1.0之后不再自动生成lombok.config文件，后续ihub插件维护该功能

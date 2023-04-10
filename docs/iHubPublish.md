@@ -27,19 +27,19 @@
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-publish'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-publish")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-publish'
 }
 ```
 
@@ -49,19 +49,19 @@ plugins {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubTest {
-    publishNeedSign = true
-    publishDocs = true
-}
-```
-
 @tab Kotlin
 
 ```kotlin
-iHubTest {
+iHubPublish {
+    publishNeedSign.set(true)
+    publishDocs.set(true)
+}
+```
+
+@tab Groovy
+
+```groovy
+iHubPublish {
     publishNeedSign = true
     publishDocs = true
 }

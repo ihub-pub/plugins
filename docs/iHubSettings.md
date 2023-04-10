@@ -59,14 +59,6 @@ iHubSettings.includeBom=ihub-bom
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubSettings {
-    includeProjects 'rest', 'sdk', 'service'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
@@ -74,6 +66,14 @@ import pub.ihub.plugin.IHubSettingsExtension
 
 configure<IHubSettingsExtension> {
     includeProjects("rest", "sdk", "service")
+}
+```
+
+@tab Groovy
+
+```groovy
+iHubSettings {
+    includeProjects 'rest', 'sdk', 'service'
 }
 ```
 
@@ -97,17 +97,6 @@ configure<IHubSettingsExtension> {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubSettings {
-    includeProjects 'rest', 'service' suffix '-suffix'
-    includeProjects 'test' noPrefix
-    includeProjects 'other' prefix 'prefix-' skippedDirs 'c' subproject
-    includeProjects 'subproject' prefix 'prefix-' suffix '-suffix' onlySubproject
-}
-```
-
 @tab Kotlin
 
 ```kotlin
@@ -118,6 +107,17 @@ configure<IHubSettingsExtension> {
     includeProjects("test").noPrefix
     includeProjects("other").prefix("prefix-").skippedDirs("c").subproject
     includeProjects("subproject").prefix("prefix-").suffix("-suffix").onlySubproject
+}
+```
+
+@tab Groovy
+
+```groovy
+iHubSettings {
+    includeProjects 'rest', 'service' suffix '-suffix'
+    includeProjects 'test' noPrefix
+    includeProjects 'other' prefix 'prefix-' skippedDirs 'c' subproject
+    includeProjects 'subproject' prefix 'prefix-' suffix '-suffix' onlySubproject
 }
 ```
 
@@ -152,21 +152,21 @@ configure<IHubSettingsExtension> {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin'
-    id 'com.gradle.plugin-publish'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin")
     id("com.gradle.plugin-publish")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin'
+    id 'com.gradle.plugin-publish'
 }
 ```
 

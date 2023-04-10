@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,13 +16,11 @@
 package pub.ihub.plugin
 
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
+import org.gradle.api.provider.Property
 
 import static pub.ihub.plugin.IHubProperty.Type.ENV
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
-
-
 
 /**
  * IHub插件属性扩展
@@ -30,70 +28,69 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
  */
 @IHubExtension('iHub')
 @CompileStatic
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubPluginsExtension implements IHubProjectExtensionAware {
+interface IHubPluginsExtension extends IHubExtensionAware {
 
     //<editor-fold desc="组件仓库相关扩展属性">
 
     /**
      * 是否启用本地仓库
      */
-    @IHubProperty
-    boolean mavenLocalEnabled = false
+    @IHubProperty(defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> getMavenLocalEnabled()
 
     /**
      * 是否启用阿里云代理仓库
      */
-    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    boolean mavenAliYunEnabled = false
+    @IHubProperty(type = [PROJECT, SYSTEM, ENV], defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> getMavenAliYunEnabled()
 
     /**
      * 正式版本仓库
      */
     @IHubProperty
-    String releaseRepoUrl
+    Property<String> getReleaseRepoUrl()
 
     /**
      * 快照版本仓库
      */
     @IHubProperty
-    String snapshotRepoUrl
+    Property<String> getSnapshotRepoUrl()
 
     /**
      * 是否允许不安全协议（是否允许http）
      */
-    @IHubProperty
-    boolean repoAllowInsecureProtocol = false
+    @IHubProperty(defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> getRepoAllowInsecureProtocol()
 
     /**
      * 仓库包含组（用于限制仓库范围）
      */
     @IHubProperty
-    String repoIncludeGroup
+    Property<String> getRepoIncludeGroup()
 
     /**
      * 仓库包含组正则（用于限制仓库范围）
      */
-    @IHubProperty
-    String repoIncludeGroupRegex = '.*'
+    @IHubProperty(defaultValue = '.*')
+    Property<String> getRepoIncludeGroupRegex()
 
     /**
      * 仓库用户名
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String repoUsername
+    Property<String> getRepoUsername()
 
     /**
      * 仓库密码
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String repoPassword
+    Property<String> getRepoPassword()
 
     /**
      * 自定义仓库
      */
     @IHubProperty
-    String customizeRepoUrl
+    Property<String> getCustomizeRepoUrl()
 
     //</editor-fold>
 

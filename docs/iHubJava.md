@@ -21,10 +21,10 @@
 | Extension | Description | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
 | --------- |-------------| ----- |---|---|---|---|
 | `defaultDependencies` | 默认依赖（“,”分割）[详见](#默认依赖)，可以设置`false`关闭默认配置 | `log` | ✔ | ✔ | ❌ | ❌ |
-| `compileEncoding` | Java编译编码 | `UTF-8` | ✔ | ✔ | ✔ | ❌ |
-| `compatibility` | Java兼容性配置   | ❌ | ✔ | ✔ | ✔ | ❌ |
-| `gradleCompilationIncremental` | gradle增量编译  | `true` | ✔ | ✔ | ✔ | ❌ |
-| `compilerArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked  | ❌ | ✔ | ✔ | ✔ | ❌ |
+| `compileEncoding` | Java编译编码 | `UTF-8` | ✔ | ✔ | ❌ | ❌ |
+| `compatibility` | Java兼容性配置   | ❌ | ✔ | ✔ | ❌ | ❌ |
+| `gradleCompilationIncremental` | gradle增量编译  | `true` | ✔ | ✔ | ❌ | ❌ |
+| `compilerArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked  | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `applyOpenapiPlugin` | 启用 [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) 插件  | `false` | ✔ | ✔ | ✔ | ❌ |
 | `jmoleculesArchitecture` | JMolecules架构（可选类型：cqrs、layered、onion）[详见](https://jmolecules.org) | `onion` | ✔ | ✔ | ❌ | ❌ |
 
@@ -36,19 +36,19 @@
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-java'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-java")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-java'
 }
 ```
 
@@ -58,21 +58,21 @@ plugins {
 
 ::: code-tabs#build
 
+@tab Kotlin
+
+```kotlin
+iHubJava {
+    defaultDependencies.set("jaxb,log,doc,mapstruct,jmolecules")
+    compatibility.set("11")
+}
+```
+
 @tab Groovy
 
 ```groovy
 iHubJava {
     defaultDependencies = 'jaxb,log,doc,mapstruct,jmolecules'
     compatibility = '11'
-}
-```
-
-@tab Kotlin
-
-```kotlin
-iHubJava {
-    defaultDependencies = "jaxb,log,doc,mapstruct,jmolecules"
-    compatibility = "11"
 }
 ```
 
@@ -181,6 +181,19 @@ Created-By: Java 11
 
 ::: code-tabs#build
 
+@tab Kotlin
+
+```kotlin
+iHubJava {
+    registerFeature("servlet", "cloud-support", "servlet-support")
+    registerFeature("reactor", "cloud-support", "reactor-support")
+}
+dependencies {
+    "servletApi"("org.springframework.boot:spring-boot-starter-web")
+    "reactorApi"("org.springframework.boot:spring-boot-starter-webflux")
+}
+```
+
 @tab Groovy
 
 ```groovy
@@ -191,19 +204,6 @@ iHubJava {
 dependencies {
     servletApi 'org.springframework.boot:spring-boot-starter-web'
     reactorApi 'org.springframework.boot:spring-boot-starter-webflux'
-}
-```
-
-@tab Kotlin
-
-```kotlin
-iHubJava {
-    registerFeature("servlet", "cloud-support", "servlet-support")
-    registerFeature("reactor", "cloud-support", "reactor-support")
-}
-dependencies {
-    servletApi("org.springframework.boot:spring-boot-starter-web")
-    reactorApi("org.springframework.boot:spring-boot-starter-webflux")
 }
 ```
 
