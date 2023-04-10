@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2022 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2022-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,11 +42,11 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
         withExtension(AFTER) { ext ->
             withTask(BootRun) {
                 ext.systemProperties it, '.boot-java-local.properties'
-                it.optimizedLaunch = ext.runOptimizedLaunch
+                it.optimizedLaunch = ext.runOptimizedLaunch.get()
             }
 
             withTask(BootJar) {
-                it.requiresUnpack ext.bootJarRequiresUnpack
+                it.requiresUnpack ext.bootJarRequiresUnpack.get()
             }
             withTask('jar') {
                 it.enabled = false
@@ -56,26 +56,26 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
             withTask(BootBuildImage) {
                 it.pullPolicy = IF_NOT_PRESENT
                 it.environment = ext.environment
-                it.cleanCache = ext.bpCleanCache
-                it.verboseLogging = ext.bpVerboseLogging
-                it.publish = ext.bpPublish
+                it.cleanCache = ext.bpCleanCache.get()
+                it.verboseLogging = ext.bpVerboseLogging.get()
+                it.publish = ext.bpPublish.get()
                 it.docker {
-                    host = ext.dockerHost
-                    tlsVerify = ext.dockerTlsVerify
-                    certPath = ext.dockerCertPath
+                    host = ext.dockerHost.orNull
+                    tlsVerify = ext.dockerTlsVerify.get()
+                    certPath = ext.dockerCertPath.orNull
                     builderRegistry {
-                        url = ext.dockerUrl
-                        username = ext.dockerUsername
-                        password = ext.dockerPassword
-                        email = ext.dockerEmail
-                        token = ext.dockerToken
+                        url = ext.dockerUrl.orNull
+                        username = ext.dockerUsername.orNull
+                        password = ext.dockerPassword.orNull
+                        email = ext.dockerEmail.orNull
+                        token = ext.dockerToken.orNull
                     }
                     publishRegistry {
-                        url = ext.dockerUrl
-                        username = ext.dockerUsername
-                        password = ext.dockerPassword
-                        email = ext.dockerEmail
-                        token = ext.dockerToken
+                        url = ext.dockerUrl.orNull
+                        username = ext.dockerUsername.orNull
+                        password = ext.dockerPassword.orNull
+                        email = ext.dockerEmail.orNull
+                        token = ext.dockerToken.orNull
                     }
                 }
             }

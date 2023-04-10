@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,17 +16,18 @@
 package pub.ihub.plugin.java
 
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.provider.Property
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
 
+import javax.inject.Inject
+
 import static groovy.transform.TypeCheckingMode.SKIP
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
-
-
 
 /**
  * Java插件扩展
@@ -34,50 +35,60 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
  */
 @IHubExtension('iHubJava')
 @CompileStatic
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubJavaExtension implements IHubProjectExtensionAware {
+class IHubJavaExtension extends IHubProjectExtensionAware {
 
     /**
      * 默认依赖（“,”分割）
      */
     @IHubProperty
-    String defaultDependencies = 'log'
+    Property<String> defaultDependencies
 
     /**
      * Java编译编码
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    String compileEncoding = 'UTF-8'
+    @IHubProperty
+    Property<String> compileEncoding
 
     /**
      * Java兼容性配置
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    String compatibility
+    @IHubProperty
+    Property<String> compatibility
 
     /**
      * gradle增量编译
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean gradleCompilationIncremental = true
+    @IHubProperty(genericType = Boolean)
+    Property<Boolean> gradleCompilationIncremental
 
     /**
      * 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    String compilerArgs
+    @IHubProperty
+    Property<String> compilerArgs
 
     /**
      * JMolecules架构，可选类型：cqrs、layered、onion
      */
     @IHubProperty
-    String jmoleculesArchitecture = 'onion'
+    Property<String> jmoleculesArchitecture
 
     /**
      * 启用org.springdoc.openapi-gradle-plugin插件
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean applyOpenapiPlugin = false
+    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
+    Property<Boolean> applyOpenapiPlugin
+
+    @Inject
+    IHubJavaExtension(ObjectFactory objectFactory) {
+        defaultDependencies = objectFactory.property(String).convention('log')
+        compileEncoding = objectFactory.property(String).convention('UTF-8')
+        compatibility = objectFactory.property(String)
+        gradleCompilationIncremental = objectFactory.property(Boolean).convention(true)
+        compilerArgs = objectFactory.property(String)
+        jmoleculesArchitecture = objectFactory.property(String).convention('onion')
+        applyOpenapiPlugin = objectFactory.property(Boolean).convention(false)
+    }
 
     /**
      * 可选功能配置

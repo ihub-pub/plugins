@@ -12,19 +12,19 @@
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-groovy'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-groovy")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-groovy'
 }
 ```
 

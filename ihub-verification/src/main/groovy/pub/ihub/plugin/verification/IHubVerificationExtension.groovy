@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,16 +16,17 @@
 package pub.ihub.plugin.verification
 
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 import pub.ihub.plugin.IHubExtProperty
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
 
+import javax.inject.Inject
+
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
-
-
 
 /**
  * 代码检查插件扩展
@@ -33,8 +34,7 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
  */
 @IHubExtension('iHubVerification')
 @CompileStatic
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtProperty {
+class IHubVerificationExtension extends IHubProjectExtensionAware implements IHubExtProperty {
 
     private static final String DEFAULT_PMD_VERSION = '6.55.0'
     private static final String DEFAULT_JACOCO_VERSION = '0.8.8'
@@ -45,18 +45,18 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
     /**
      * PMD检查是否打印控制台信息
      */
-    @IHubProperty
-    boolean pmdConsoleOutput = false
+    @IHubProperty(genericType = Boolean)
+    Property<Boolean> pmdConsoleOutput
     /**
      * PMD检查是否忽略失败
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean pmdIgnoreFailures = false
+    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
+    Property<Boolean> pmdIgnoreFailures
     /**
      * PMD版本
      */
     @IHubProperty
-    String pmdVersion = DEFAULT_PMD_VERSION
+    Property<String> pmdVersion
 
     //</editor-fold>
 
@@ -65,13 +65,13 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
     /**
      * Codenarc检查是否忽略失败
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean codenarcIgnoreFailures = false
+    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
+    Property<Boolean> codenarcIgnoreFailures
     /**
      * Codenarc版本
      */
     @IHubProperty
-    String codenarcVersion = DEFAULT_CODENARC_VERSION
+    Property<String> codenarcVersion
 
     //</editor-fold>
 
@@ -81,53 +81,74 @@ class IHubVerificationExtension implements IHubProjectExtensionAware, IHubExtPro
      * Jacoco版本
      */
     @IHubProperty
-    String jacocoVersion = DEFAULT_JACOCO_VERSION
+    Property<String> jacocoVersion
     /**
      * 是否启用bundle分支覆盖检查
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean jacocoBranchCoverageRuleEnabled = true
+    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
+    Property<Boolean> jacocoBranchCoverageRuleEnabled
     /**
      * bundle分支覆盖率
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String jacocoBranchCoveredRatio = '0.9'
+    Property<String> jacocoBranchCoveredRatio
     /**
      * 是否启用bundle指令覆盖检查
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean jacocoInstructionCoverageRuleEnabled = true
+    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
+    Property<Boolean> jacocoInstructionCoverageRuleEnabled
     /**
      * bundle指令覆盖排除目录
      */
     @IHubProperty
-    String jacocoInstructionExclusion = '**/app,**/config'
+    Property<String> jacocoInstructionExclusion
     /**
      * bundle指令覆盖率
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String jacocoInstructionCoveredRatio = '0.9'
+    Property<String> jacocoInstructionCoveredRatio
     /**
      * 是否启用package指令覆盖检查
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean jacocoPackageCoverageRuleEnabled = true
+    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
+    Property<Boolean> jacocoPackageCoverageRuleEnabled
     /**
      * package指令覆盖排除目录
      */
     @IHubProperty
-    String jacocoPackageExclusion = '*.app,*.config'
+    Property<String> jacocoPackageExclusion
     /**
      * package指令覆盖率
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String jacocoPackageCoveredRatio = '0.9'
+    Property<String> jacocoPackageCoveredRatio
     /**
      * 覆盖率报告排除目录
      */
     @IHubProperty
-    String jacocoReportExclusion = '**/Application.class,**/app/*.class,**/config/*.class'
+    Property<String> jacocoReportExclusion
 
     //</editor-fold>
+
+    @Inject
+    IHubVerificationExtension(ObjectFactory objectFactory) {
+        pmdConsoleOutput = objectFactory.property(Boolean).convention(false)
+        pmdIgnoreFailures = objectFactory.property(Boolean).convention(false)
+        pmdVersion = objectFactory.property(String).convention(DEFAULT_PMD_VERSION)
+
+        codenarcIgnoreFailures = objectFactory.property(Boolean).convention(false)
+        codenarcVersion = objectFactory.property(String).convention(DEFAULT_CODENARC_VERSION)
+
+        jacocoVersion = objectFactory.property(String).convention(DEFAULT_JACOCO_VERSION)
+        jacocoBranchCoverageRuleEnabled = objectFactory.property(Boolean).convention(true)
+        jacocoBranchCoveredRatio = objectFactory.property(String).convention('0.9')
+        jacocoInstructionCoverageRuleEnabled = objectFactory.property(Boolean).convention(true)
+        jacocoInstructionExclusion = objectFactory.property(String).convention('**/app,**/config')
+        jacocoInstructionCoveredRatio = objectFactory.property(String).convention('0.9')
+        jacocoPackageCoverageRuleEnabled = objectFactory.property(Boolean).convention(true)
+        jacocoPackageExclusion = objectFactory.property(String).convention('*.app,*.config')
+        jacocoPackageCoveredRatio = objectFactory.property(String).convention('0.9')
+        jacocoReportExclusion = objectFactory.property(String).convention('**/Application.class,**/app/*.class,**/config/*.class')
+    }
 
 }

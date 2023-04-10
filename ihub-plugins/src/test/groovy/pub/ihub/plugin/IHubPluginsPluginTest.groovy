@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -100,7 +100,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         copyProject 'basic.gradle'
         buildFile << '''
         gradle.taskGraph.whenReady {
-            println 'repoUsername:' + iHub.repoUsername
+            println 'repoUsername:' + iHub.repoUsername.orNull
         }
         '''
 
@@ -109,6 +109,13 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         then: '检查结果'
         result.output.contains 'repoUsername:null'
+
+        when: '读取项目属性'
+        propertiesFile << 'iHub.repoUsername=type\\nprj'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'repoUsername:type\nprj'
 
         when: '读取扩展属性'
         buildFile << '''
@@ -120,13 +127,6 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         then: '检查结果'
         result.output.contains 'repoUsername:type\next'
-
-        when: '读取项目属性'
-        propertiesFile << 'iHub.repoUsername=type\\nprj'
-        result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'repoUsername:type\nprj'
 
         when: '读取环境属性'
         result = gradleBuilder.withEnvironment(REPO_USERNAME: 'type\nenv').build()

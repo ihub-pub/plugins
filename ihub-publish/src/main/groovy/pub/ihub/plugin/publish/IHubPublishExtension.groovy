@@ -15,59 +15,56 @@
  */
 package pub.ihub.plugin.publish
 
-import groovy.transform.TupleConstructor
+import org.gradle.api.provider.Property
 import pub.ihub.plugin.IHubExtension
-import pub.ihub.plugin.IHubProjectExtensionAware
+import pub.ihub.plugin.IHubExtensionAware
 import pub.ihub.plugin.IHubProperty
 
 import static pub.ihub.plugin.IHubProperty.Type.ENV
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
-
-
 /**
  * 组件发布属性扩展
  * @author henry
  */
 @IHubExtension('iHubPublish')
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubPublishExtension implements IHubProjectExtensionAware {
-
-    /**
-     * 组件发布是否需要签名
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean publishNeedSign = false
+interface IHubPublishExtension extends IHubExtensionAware {
 
     /**
      * 签名key
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String signingKeyId
+    Property<String> getSigningKeyId()
+
+    /**
+     * 组件发布是否需要签名
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> getPublishNeedSign()
 
     /**
      * 签名密钥
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String signingSecretKey
+    Property<String> getSigningSecretKey()
 
     /**
      * 签名密码
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String signingPassword
+    Property<String> getSigningPassword()
 
     /**
      * 是否发布文档
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean publishDocs = false
+    @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> getPublishDocs()
 
     /**
      * 是否应用GithubPom插件
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean applyGithubPom = false
+    @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> getApplyGithubPom()
 
 }

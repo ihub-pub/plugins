@@ -76,19 +76,19 @@ IDEA环境下支持自动生成[`Conventional Commit`](https://plugins.jetbrains
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-git-hooks'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-git-hooks")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-git-hooks'
 }
 ```
 
@@ -110,6 +110,17 @@ iHubGitHooks.hooksPath=.hooks
 
 ::: code-tabs#build
 
+@tab Kotlin
+
+```kotlin
+iHubGitHooks {
+    hooks.set(mapOf(
+        "pre-commit" to "./gradlew build",
+        "commit-msg" to "./gradlew commitCheck"
+    ))
+}
+```
+
 @tab Groovy
 
 ```groovy
@@ -121,42 +132,11 @@ iHubGitHooks {
 }
 ```
 
-@tab Kotlin
-
-```kotlin
-iHubGitHooks {
-    hooks = mapOf(
-        "pre-commit" to "./gradlew build",
-        "commit-msg" to "./gradlew commitCheck"
-    )
-}
-```
-
 :::
 
 ### 扩展配置提交信息检查
 
 ::: code-tabs#build
-
-@tab Groovy
-
-```groovy
-iHubGitHooks {
-    // 添加提交类型
-    types 'type1', 'type2', 'type3'
-    // 开启范围检查
-    type 'build' scopes 'gradle' requiredScope true
-    // Footer必填
-    footer 'Footer' required true
-    // 提交类型是feat时Footer必填
-    footer 'Footer' requiredWithType 'feat'
-    // 注解值正则校验
-    footer 'Closes' valueRegex '\\d+'
-    // 描述配置1
-    type 'type' scope 'scope' description 'Scope description'
-    footer 'Other' description 'Other description'
-}
-```
 
 @tab Kotlin
 
@@ -175,6 +155,26 @@ iHubGitHooks {
     // 描述配置1
     type("type").scope("scope").description("Scope description")
     footer("Other").description("Other description")
+}
+```
+
+@tab Groovy
+
+```groovy
+iHubGitHooks {
+    // 添加提交类型
+    types 'type1', 'type2', 'type3'
+    // 开启范围检查
+    type 'build' scopes 'gradle' requiredScope true
+    // Footer必填
+    footer 'Footer' required true
+    // 提交类型是feat时Footer必填
+    footer 'Footer' requiredWithType 'feat'
+    // 注解值正则校验
+    footer 'Closes' valueRegex '\\d+'
+    // 描述配置1
+    type 'type' scope 'scope' description 'Scope description'
+    footer 'Other' description 'Other description'
 }
 ```
 

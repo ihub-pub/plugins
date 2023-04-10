@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,7 +28,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 
 
-
 /**
  * IHub属性
  * @author henry
@@ -44,6 +43,18 @@ import static pub.ihub.plugin.IHubProperty.Type.PROJECT
      * @return 名称
      */
     String value() default ''
+
+    /**
+     * 属性默认值
+     * @return 默认值
+     */
+    String defaultValue() default ''
+
+    /**
+     * 泛型类型
+     * @return 泛型类型
+     */
+    Class<?> genericType() default String
 
     /**
      * 属性类型

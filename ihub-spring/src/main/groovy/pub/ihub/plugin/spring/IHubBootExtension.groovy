@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2022 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2022-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,17 +16,19 @@
 package pub.ihub.plugin.spring
 
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.IHubProperty
 import pub.ihub.plugin.verification.IHubSystemProperties
 
+import javax.inject.Inject
+
 import static pub.ihub.plugin.IHubProperty.Type.ENV
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
-
-
 
 /**
  * IHub Spring Boot Plugin Extension
@@ -34,35 +36,34 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
  */
 @IHubExtension('iHubBoot')
 @CompileStatic
-@TupleConstructor(allProperties = true, includes = 'project')
-class IHubBootExtension implements IHubProjectExtensionAware, IHubSystemProperties {
+class IHubBootExtension extends IHubProjectExtensionAware implements IHubSystemProperties {
 
     //<editor-fold desc="BootRun Configuration">
 
     /**
      * bootRun属性
      */
-    Map<String, String> runProperties = [:]
+    MapProperty<String, String> runProperties
     /**
      * 运行时包含系统属性名称（“,”分割,支持通配符“*”）
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String runIncludePropNames
+    Property<String> runIncludePropNames
     /**
      * 运行时排除系统属性名称（“,”分割,支持通配符“*”）
      */
     @IHubProperty(type = [PROJECT, SYSTEM])
-    String runSkippedPropNames
+    Property<String> runSkippedPropNames
     /**
      * 启用本地属性
      */
-    @IHubProperty
-    boolean enabledLocalProperties = true
+    @IHubProperty(genericType = Boolean)
+    Property<Boolean> enabledLocalProperties
     /**
      * 优化启动
      */
-    @IHubProperty(type = [PROJECT, SYSTEM])
-    boolean runOptimizedLaunch = true
+    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
+    Property<Boolean> runOptimizedLaunch
 
     //</editor-fold>
 
@@ -72,7 +73,7 @@ class IHubBootExtension implements IHubProjectExtensionAware, IHubSystemProperti
      * 配置需要解包的库
      */
     @IHubProperty
-    String bootJarRequiresUnpack = ''
+    Property<String> bootJarRequiresUnpack
 
     //</editor-fold>
 
@@ -82,32 +83,32 @@ class IHubBootExtension implements IHubProjectExtensionAware, IHubSystemProperti
      * JVM版本
      */
     @IHubProperty
-    String bpJvmVersion
+    Property<String> bpJvmVersion
     /**
      * 是否在构建前清理缓存
      */
-    @IHubProperty
-    boolean bpCleanCache = false
+    @IHubProperty(genericType = Boolean)
+    Property<Boolean> bpCleanCache
     /**
      * 启用构建器操作的详细日志记录
      */
-    @IHubProperty
-    boolean bpVerboseLogging = false
+    @IHubProperty(genericType = Boolean)
+    Property<Boolean> bpVerboseLogging
     /**
      * 是否将生成的镜像发布到Docker仓库
      */
-    @IHubProperty
-    boolean bpPublish = false
+    @IHubProperty(genericType = Boolean)
+    Property<Boolean> bpPublish
     /**
      * http代理
      */
     @IHubProperty
-    String httpProxy
+    Property<String> httpProxy
     /**
      * https代理
      */
     @IHubProperty
-    String httpsProxy
+    Property<String> httpsProxy
 
     //</editor-fold>
 
@@ -117,27 +118,27 @@ class IHubBootExtension implements IHubProjectExtensionAware, IHubSystemProperti
      * JVM内存
      */
     @IHubProperty
-    String bplJvmHeadRoom = '8G'
+    Property<String> bplJvmHeadRoom
     /**
      * JVM运行时已加载类的数量，默认“35% of classes"
      */
     @IHubProperty
-    String bplJvmLoadedClassCount
+    Property<String> bplJvmLoadedClassCount
     /**
      * JVM运行时用户线程数，默认“250”
      */
     @IHubProperty
-    String bplJvmThreadCount
+    Property<String> bplJvmThreadCount
     /**
      * JVM环境变量
      */
     @IHubProperty
-    String javaToolOptions
+    Property<String> javaToolOptions
     /**
      * JVM运行时变量
      * 参考：https://paketo.io/docs/reference/configuration/
      */
-    Map<String, String> bpeEnvironment = [:]
+    MapProperty<String, String> bpeEnvironment
 
     //</editor-fold>
 
@@ -147,55 +148,87 @@ class IHubBootExtension implements IHubProjectExtensionAware, IHubSystemProperti
      * Docker守护程序的主机和端口的url
      */
     @IHubProperty
-    String dockerHost
+    Property<String> dockerHost
     /**
      * 启用安全https协议
      */
-    @IHubProperty
-    boolean dockerTlsVerify = false
+    @IHubProperty(genericType = Boolean)
+    Property<Boolean> dockerTlsVerify
     /**
      * https证书和密钥文件的路径
      */
     @IHubProperty
-    String dockerCertPath
+    Property<String> dockerCertPath
     /**
      * Docker私有镜像仓库地址
      */
     @IHubProperty
-    String dockerUrl
+    Property<String> dockerUrl
     /**
      * Docker私有镜像仓库用户名
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String dockerUsername
+    Property<String> dockerUsername
     /**
      * Docker私有镜像仓库密码
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String dockerPassword
+    Property<String> dockerPassword
     /**
      * Docker私有镜像仓库邮箱
      */
     @IHubProperty
-    String dockerEmail
+    Property<String> dockerEmail
     /**
      * Docker私有镜像仓库身份令牌
      */
     @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    String dockerToken
+    Property<String> dockerToken
 
     //</editor-fold>
 
+    @Inject
+    IHubBootExtension(ObjectFactory objectFactory) {
+        runProperties = objectFactory.mapProperty(String, String)
+        runIncludePropNames = objectFactory.property(String)
+        runSkippedPropNames = objectFactory.property(String)
+        enabledLocalProperties = objectFactory.property(Boolean).convention(true)
+        runOptimizedLaunch = objectFactory.property(Boolean).convention(true)
+        bootJarRequiresUnpack = objectFactory.property(String).convention('')
+
+        bpJvmVersion = objectFactory.property(String)
+        bpCleanCache = objectFactory.property(Boolean).convention(false)
+        bpVerboseLogging = objectFactory.property(Boolean).convention(false)
+        bpPublish = objectFactory.property(Boolean).convention(false)
+        httpProxy = objectFactory.property(String)
+        httpsProxy = objectFactory.property(String)
+
+        bplJvmHeadRoom = objectFactory.property(String).convention('8G')
+        bplJvmLoadedClassCount = objectFactory.property(String)
+        bplJvmThreadCount = objectFactory.property(String)
+        javaToolOptions = objectFactory.property(String)
+        bpeEnvironment = objectFactory.mapProperty(String, String).convention([:])
+
+        dockerHost = objectFactory.property(String)
+        dockerTlsVerify = objectFactory.property(Boolean).convention(false)
+        dockerCertPath = objectFactory.property(String)
+        dockerUrl = objectFactory.property(String)
+        dockerUsername = objectFactory.property(String)
+        dockerPassword = objectFactory.property(String)
+        dockerEmail = objectFactory.property(String)
+        dockerToken = objectFactory.property(String)
+    }
+
     Map<String, String> getEnvironment() {
         [
-            BP_JVM_VERSION            : bpJvmVersion,
-            HTTP_PROXY                : httpProxy,
-            HTTPS_PROXY               : httpsProxy,
-            BPL_JVM_HEAD_ROOM         : bplJvmHeadRoom,
-            BPL_JVM_LOADED_CLASS_COUNT: bplJvmLoadedClassCount,
-            BPL_JVM_THREAD_COUNT      : bplJvmThreadCount,
-            JAVA_TOOL_OPTIONS         : javaToolOptions,
-        ].findAll { it.value } + bpeEnvironment
+            BP_JVM_VERSION            : bpJvmVersion.orNull,
+            HTTP_PROXY                : httpProxy.orNull,
+            HTTPS_PROXY               : httpsProxy.orNull,
+            BPL_JVM_HEAD_ROOM         : bplJvmHeadRoom.get(),
+            BPL_JVM_LOADED_CLASS_COUNT: bplJvmLoadedClassCount.orNull,
+            BPL_JVM_THREAD_COUNT      : bplJvmThreadCount.orNull,
+            JAVA_TOOL_OPTIONS         : javaToolOptions.orNull,
+        ].findAll { it.value } + bpeEnvironment.get()
     }
 
 }

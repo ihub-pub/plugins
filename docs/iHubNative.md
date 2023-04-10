@@ -23,19 +23,19 @@
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-plugins {
-    id 'pub.ihub.plugin.ihub-native'
-}
-```
-
 @tab Kotlin
 
 ```kotlin
 plugins {
     id("pub.ihub.plugin.ihub-native")
+}
+```
+
+@tab Groovy
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-native'
 }
 ```
 
@@ -45,20 +45,20 @@ plugins {
 
 ::: code-tabs#build
 
-@tab Groovy
-
-```groovy
-iHubBoot {
-    bpJvmVersion = '11'
-}
-iHubNative {
-    bpNativeImage = true
-}
-```
-
 @tab Kotlin
 
 ```kotlin
+iHubBoot {
+    bpJvmVersion.set('11')
+}
+iHubNative {
+    bpNativeImage.set(true)
+}
+```
+
+@tab Groovy
+
+```groovy
 iHubBoot {
     bpJvmVersion = '11'
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,14 +21,16 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.logging.Logger
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.TaskProvider
 
 import static groovy.transform.TypeCheckingMode.SKIP
 import static org.gradle.internal.Actions.doNothing
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
-
-
+import static pub.ihub.plugin.IHubProperty.Type.ENV
+import static pub.ihub.plugin.IHubProperty.Type.PROJECT
+import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
 /**
  * IHub项目插件
@@ -38,36 +40,43 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements Plugin<Project> {
 
     Project project
-    protected T extension
-    protected final List<Closure> beforeEvaluateClosure = []
-    protected final List<Closure> afterEvaluateClosure = []
+    T extension
 
     @Override
     void apply(Project project) {
         this.project = project
         IHubPlugin iHubPlugin = this.class.getAnnotation IHubPlugin
         applyPlugin iHubPlugin.beforeApplyPlugins()
+
         Class<T> extensionClass = iHubPlugin.value() as Class<T>
         IHubExtension annotation = extensionClass.getAnnotation IHubExtension
         if (annotation) {
-            if (annotation.decorated()) {
-                extension = project.extensions.create annotation.value(), extensionClass, project
-            } else {
-                extension = extensionClass.getDeclaredConstructor(Project).newInstance project
-                project.extensions.add annotation.value(), extension
+            extension = project.extensions.create annotation.value(), extensionClass
+            if (extensionClass.interface) {
+                extensionClass.declaredMethods.each { method ->
+                    method.getAnnotation(IHubProperty)?.with {
+                        configExtensionProperty it, method.name.with {
+                            substring(3, 4).toLowerCase() + substring(4)
+                        }, annotation.value(), (Property) method.invoke(extension)
+                    }
+                }
+            }
+            if (extension instanceof IHubProjectExtensionAware) {
+                extension.project = project
+                extensionClass.declaredFields.each { field ->
+                    field.getAnnotation(IHubProperty)?.with {
+                        configExtensionProperty it, field.name, annotation.value(), (Property) extension[field.name]
+                    }
+                }
             }
         }
+
         iHubPlugin.tasks().each {
             IHubTask task = it.getAnnotation IHubTask
             registerTask task.value(), it, { it.group = 'ihub' }
         }
+
         apply()
-        beforeEvaluateClosure.each {
-            project.beforeEvaluate it
-        }
-        afterEvaluateClosure.each {
-            project.afterEvaluate it
-        }
     }
 
     /**
@@ -103,7 +112,7 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
      * @param closure 执行闭包
      */
     protected void beforeEvaluate(Closure closure) {
-        beforeEvaluateClosure << closure
+        project.beforeEvaluate closure
     }
 
     /**
@@ -111,7 +120,7 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
      * @param closure 执行闭包
      */
     protected void afterEvaluate(Closure closure) {
-        afterEvaluateClosure << closure
+        project.afterEvaluate closure
     }
 
     @CompileStatic(SKIP)
@@ -148,6 +157,43 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
             afterEvaluate { action.execute param }
         } else {
             action.execute param
+        }
+    }
+
+    private static void setExtensionProperty(Property property, Class type, value) {
+        if (value) {
+            property.set value.toString().with {
+                type.isAssignableFrom(Boolean) && 'false' == it ? false : asType(type)
+            }
+        }
+    }
+
+    private void configExtensionProperty(IHubProperty iHubProperty, String name, String extName, Property property) {
+        // 优先从系统属性和项目属性获取，环境属性多用于敏感信息配置
+        iHubProperty.with {
+            String fieldName = value() ?: name
+            String propertyName = extName + '.' + fieldName
+            // 设置默认值
+            if (defaultValue()) {
+                setExtensionProperty property, genericType(), defaultValue()
+            }
+            // 获取项目属性
+            if (type().contains(PROJECT)) {
+                setExtensionProperty property, genericType(), project.findProperty(propertyName)
+            }
+            // 环境配置、系统配置要在项目扩展配置后执行，确保优先级高于扩展配置
+            afterEvaluate {
+                // 获取环境属性
+                if (type().contains(ENV)) {
+                    setExtensionProperty property, genericType(),
+                        System.getenv(fieldName.replaceAll(/([A-Z])/, '_$1').toUpperCase())
+                }
+                // 获取系统属性
+                if (type().contains(SYSTEM)) {
+                    setExtensionProperty property, genericType(),
+                        System.getProperty(propertyName)?.replaceAll('\\\\n', '\n')
+                }
+            }
         }
     }
 

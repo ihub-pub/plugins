@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +23,6 @@ import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
-
-
 /**
  * IHub版本插件
  * @author henry
@@ -31,7 +32,9 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
 
     @Override
     protected void apply() {
-        configProjectWithGit()
+        afterEvaluate {
+            configProjectWithGit()
+        }
 
         // 配置组件升级任务
         withTask DependencyUpdatesTask, {
@@ -51,7 +54,7 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
 
     private void configProjectWithGit() {
         // 推断版本号
-        if (extension.useInferringVersion && 'unspecified' == project.version.toString()) {
+        if (extension.useInferringVersion.get() && 'unspecified' == project.version.toString()) {
             try {
                 String gitTag = 'git describe --tags'.execute().text.trim()
                 logger.lifecycle 'Inferring version use git tag: {}', gitTag
@@ -118,7 +121,7 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
                         dependency.available.release ?: dependency.available.milestone
                     ]
                 }, 'Group', 'Module', 'Current version', 'Latest version'
-                if (this.extension.autoReplaceLaterVersions) {
+                if (this.extension.autoReplaceLaterVersions.get()) {
                     replaceLastVersion it
                 }
             }
