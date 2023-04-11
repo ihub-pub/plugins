@@ -58,7 +58,7 @@ subprojects {
                 'io.freefair.gradle:plugin-utils:6.6.3',
                 'io.freefair.gradle:git-plugin:6.6.3',
                 'io.freefair.gradle:lombok-plugin:6.6.3',
-                'io.freefair.gradle:github-plugin:6.6.3',
+                'io.freefair.gradle:github-plugin:8.0.1',
                 'com.github.ben-manes:gradle-versions-plugin:0.45.0',
                 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12',
                 'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0',
