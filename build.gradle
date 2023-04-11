@@ -56,7 +56,7 @@ subprojects {
         constraints {
             api 'io.spring.gradle:dependency-management-plugin:1.1.0',
                 'io.freefair.gradle:plugin-utils:8.0.1',
-                'io.freefair.gradle:git-plugin:6.6.3',
+                'io.freefair.gradle:git-plugin:8.0.1',
                 'io.freefair.gradle:lombok-plugin:6.6.3',
                 'io.freefair.gradle:github-plugin:8.0.1',
                 'com.github.ben-manes:gradle-versions-plugin:0.45.0',
