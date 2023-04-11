@@ -1,0 +1,18 @@
+description = 'IHub Kotlin Gradle Plugins'
+
+dependencies {
+    implementation project(':ihub-java')
+    implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin'
+}
+
+gradlePlugin {
+    plugins {
+        iHubKotlin {
+            id                  = 'pub.ihub.plugin.ihub-kotlin'
+            displayName         = 'IHub Kotlin Gradle Plugin'
+            description         = 'IHub Kotlin Gradle Plugin'
+            implementationClass = 'pub.ihub.plugin.kotlin.IHubKotlinPlugin'
+            tags.set(['ihub', 'kotlin'])
+        }
+    }
+}
