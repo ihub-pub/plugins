@@ -16,6 +16,24 @@ Groovy项目配置，参见[项目模板](https://github.com/ihub-pub/groovy-tem
 
 ::: code-tabs#build
 
+@tab Kotlin
+
+```kotlin
+plugins {
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-git-hooks")
+}
+
+iHubGitHooks {
+    hooks.set(mapOf(
+        "pre-commit" to "./gradlew build",
+        "commit-msg" to "./gradlew commitCheck"
+    ))
+}
+```
+
 @tab Groovy
 
 ```groovy
@@ -31,24 +49,6 @@ iHubGitHooks {
         'pre-commit': './gradlew build',
         'commit-msg': './gradlew commitCheck'
     ]
-}
-```
-
-@tab Kotlin
-
-```kotlin
-plugins {
-    id ("pub.ihub.plugin.ihub-groovy")
-    id ("pub.ihub.plugin.ihub-test")
-    id ("pub.ihub.plugin.ihub-verification")
-    id ("pub.ihub.plugin.ihub-git-hooks")
-}
-
-iHubGitHooks {
-    hooks = mapOf(
-        "pre-commit" to "./gradlew build",
-        "commit-msg" to "./gradlew commitCheck"
-    )
 }
 ```
 

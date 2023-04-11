@@ -43,6 +43,7 @@ export const zhSidebar = sidebar({
                 '/iHubBom',
                 '/iHubJava',
                 '/iHubGroovy',
+                '/iHubKotlin',
                 '/iHubPublish',
                 '/iHubTest',
                 '/iHubVerification',

@@ -45,6 +45,7 @@
 <tr><td>ihub-bom</td><td><a href="https://doc.ihub.pub/plugins/iHubBom">pub.ihub.plugin.ihub-bom</a></td><td>Bom插件</td><td>Project</td><td>配置项目依赖组件版本以及兼容性管理</td></tr>
 <tr><td>ihub-java</td><td><a href="https://doc.ihub.pub/plugins/iHubJava">pub.ihub.plugin.ihub-java</a></td><td>Java插件</td><td>Project</td><td>集成Java相关插件环境、配置一些默认依赖以及兼容性配置</td></tr>
 <tr><td>ihub-groovy</td><td><a href="https://doc.ihub.pub/plugins/iHubGroovy">pub.ihub.plugin.ihub-groovy</a></td><td>Groovy插件</td><td>Project</td><td>集成Groovy相关插件环境以及配置Groovy默认组件依赖</td></tr>
+<tr><td>ihub-kotlin</td><td><a href="https://doc.ihub.pub/plugins/iHubKotlin">pub.ihub.plugin.ihub-kotlin</a></td><td>Kotlin插件</td><td>Project</td><td>集成Kotlin相关插件环境</td></tr>
 <tr><td>ihub-publish</td><td><a href="https://doc.ihub.pub/plugins/iHubPublish">pub.ihub.plugin.ihub-publish</a></td><td>发布插件</td><td>Project</td><td>集成组件发布相关插件环境，配置发布仓库以及其他默认配置</td></tr>
 <tr><td rowspan="2">ihub-verification</td><td><a href="https://doc.ihub.pub/plugins/iHubTest">pub.ihub.plugin.ihub-test</a></td><td>测试插件</td><td>Project</td><td>配置测试任务</td></tr>
 <tr><td><a href="https://doc.ihub.pub/plugins/iHubVerification">pub.ihub.plugin.ihub-verification</a></td><td>验证插件</td><td>Project</td><td>配置代码静态检查以及测试用例覆盖率等</td></tr>

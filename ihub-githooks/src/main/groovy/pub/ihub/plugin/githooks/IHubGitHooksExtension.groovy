@@ -233,7 +233,7 @@ class IHubGitHooksExtension extends IHubProjectExtensionAware {
         String description = ''
 
         T description(String... description) {
-            this.description = description.join '<br/>'
+            this.description = description?.join '<br/>'
             this as T
         }
 
