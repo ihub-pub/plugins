@@ -93,7 +93,7 @@ class IHubVersionPluginTest extends IHubSpecification {
         then: '检查结果'
         project.version.toString() ==~ expected
 
-        where: '3号用例本地执行不通过'
+        where:
         inferring | version       | expected
         true      | 'unspecified' | /^\d+.\d+.\d+-SNAPSHOT$/
         true      | '1.0.0'       | '1.0.0'
