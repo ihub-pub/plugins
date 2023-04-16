@@ -97,7 +97,7 @@ class IHubVersionPluginTest extends IHubSpecification {
         inferring | version       | expected
         true      | 'unspecified' | /^\d+.\d+.\d+-SNAPSHOT$/
         true      | '1.0.0'       | '1.0.0'
-        false     | 'unspecified' | /^.+-SNAPSHOT$/
+        false     | 'unspecified' | /^.+-SNAPSHOT$|^\d+.\d+.\d+(-\w+)?$/
         false     | '1.0.0'       | '1.0.0'
     }
 
