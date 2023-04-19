@@ -25,6 +25,7 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
+        run: chmod +x ./gradlew
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: build -x test
@@ -45,6 +46,7 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
+        run: chmod +x ./gradlew
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: --no-build-cache test -DiHubTest.failFast=true
@@ -105,6 +107,7 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
+        run: chmod +x ./gradlew
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: ${{ matrix.project_name }}:test -DiHubTest.failFast=true
