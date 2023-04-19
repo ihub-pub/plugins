@@ -24,8 +24,10 @@ jobs:
           distribution: 'adopt'
           cache: 'gradle'
 
-      - name: Build with Gradle
+      - name: Chmod
         run: chmod +x ./gradlew
+
+      - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: build -x test
@@ -45,8 +47,10 @@ jobs:
           distribution: 'adopt'
           cache: 'gradle'
 
-      - name: Build with Gradle
+      - name: Chmod
         run: chmod +x ./gradlew
+
+      - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: --no-build-cache test -DiHubTest.failFast=true
@@ -106,8 +110,10 @@ jobs:
           distribution: 'adopt'
           cache: 'gradle'
 
-      - name: Build with Gradle
+      - name: Chmod
         run: chmod +x ./gradlew
+
+      - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.4.2
         with:
           arguments: ${{ matrix.project_name }}:test -DiHubTest.failFast=true
