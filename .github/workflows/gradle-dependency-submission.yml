@@ -13,22 +13,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@03bee3930647ebbf994244c21ddbc0d4933aab4f # v2.3.0
-        with:
-          disable-sudo: true
-          egress-policy: audit
-
       - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        uses: actions/checkout@v3.5.2
       - name: Set up JDK 17
-        uses: actions/setup-java@5ffc13f4174014e2d4d4572b3d74c3fa61aeb2c2 # v3.11.0
+        uses: actions/setup-java@v3.11.0
         with:
           java-version: '17'
           distribution: 'adopt'
           cache: 'gradle'
 
       - name: Gradle Dependency Submission
-        uses: mikepenz/gradle-dependency-submission@aa82af7186ba17eb630a7d47c840ba8a3185ac91 # v0.8.6
+        uses: mikepenz/gradle-dependency-submission@v0.8.6
         with:
           use-gradlew: false
