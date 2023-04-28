@@ -64,7 +64,7 @@ subprojects {
                 'org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0',
                 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0',
                 'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
-                'org.springframework.boot:spring-boot-gradle-plugin:3.0.5',
+                'org.springframework.boot:spring-boot-gradle-plugin:3.0.6',
                 'org.graalvm.buildtools:native-gradle-plugin:0.9.21',
                 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21'
         }
