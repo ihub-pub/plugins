@@ -18,6 +18,8 @@ package pub.ihub.plugin.bom
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Action
+import org.gradle.api.plugins.JavaPlatformPlugin
+import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import pub.ihub.core.IHubLibsVersion
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
@@ -39,9 +41,14 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             return
         }
 
+        // 如果项目为Java平台组件项目或者版本目录组件项目时，不执行插件
+        if (hasPlugin(JavaPlatformPlugin) || hasPlugin(VersionCatalogPlugin)) {
+            return
+        }
+
         // 配置ihub-bom
         extension.importBoms {
-            group 'pub.ihub.lib' module 'ihub-libs' version IHubLibsVersion.version
+            group 'pub.ihub.lib' module 'ihub-dependencies' version IHubLibsVersion.version
         }
 
         // 配置项目依赖
@@ -129,8 +136,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             // 配置组件依赖
             ext.dependencies.each { spec ->
                 maybeCreate(spec.type).dependencies.addAll spec.dependencies.collect {
-                    // 支持导入项目
-                    project.dependencies.create it.startsWith(':') ? project.project(it) : it
+                    project.dependencies.create it
                 }
             }
         }

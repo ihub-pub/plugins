@@ -15,13 +15,8 @@
  */
 package pub.ihub.plugin
 
-
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
-
-import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
-
-
 
 /**
  * @author henry
@@ -47,6 +42,23 @@ class IHubPluginsPluginTest extends IHubSpecification {
         buildFile << '''
 plugins {
     id 'java-platform'
+    id 'pub.ihub.plugin'
+}
+'''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        !result.output.contains('Group Maven Bom Version')
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '版本目录组件构建测试'() {
+        setup: '初始化项目'
+        buildFile << '''
+plugins {
+    id 'version-catalog'
     id 'pub.ihub.plugin'
 }
 '''
@@ -144,7 +156,7 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
     def '多项目构建测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        settingsFile << 'include \'a\', \'b\', \'c\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'

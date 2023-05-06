@@ -107,6 +107,10 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
         project.logger
     }
 
+    protected getLibs() {
+        project.findProperty 'ihubLibs'
+    }
+
     /**
      * 配置前执行闭包
      * @param closure 执行闭包
@@ -186,7 +190,7 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
                 // 获取环境属性
                 if (type().contains(ENV)) {
                     setExtensionProperty property, genericType(),
-                        System.getenv(fieldName.replaceAll(/([A-Z])/, '_$1').toUpperCase())
+                        System.getenv(fieldName.replaceAll(/([A-Z])/, '_$1').toUpperCase())?.replaceAll('\\\\n', '\n')
                 }
                 // 获取系统属性
                 if (type().contains(SYSTEM)) {

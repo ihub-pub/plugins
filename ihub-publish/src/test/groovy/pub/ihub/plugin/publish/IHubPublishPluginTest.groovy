@@ -18,8 +18,6 @@ package pub.ihub.plugin.publish
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
-import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
-
 /**
  * IHubPublishPlugin测试套件
  * @author henry
@@ -81,7 +79,6 @@ iHubPublish.publishDocs=true
         propertiesFile << '''
 version=1.0.0
 iHubPublish.publishNeedSign=true
-iHubPublish.signingKeyId=id
 iHubPublish.signingSecretKey=secret
 iHubPublish.signingPassword=password
 iHubPublish.publishDocs=true
@@ -120,10 +117,29 @@ iHubPublish.publishDocs=true
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '版本目录组件Publish配置测试'() {
+        setup: '初始化项目'
+        buildFile << '''
+            plugins {
+                id 'version-catalog'
+                id 'pub.ihub.plugin'
+            }
+            apply {
+                plugin 'pub.ihub.plugin.ihub-publish'
+            }
+        '''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     def '组件bom配置构建测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\',\'demo-bom\''
+        settingsFile << 'include \'a\', \'b\', \'c\',\'demo-bom\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'

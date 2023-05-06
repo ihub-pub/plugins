@@ -14,7 +14,7 @@
 
 ::: tip 插件功能
 1. 配置组件仓库，仓库明细[见](#组件仓库)
-2. 当主项目不含[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)插件时，会默认导入`ihub-bom`插件
+2. 当主项目不含[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)和[version-catalog](https://docs.gradle.org/current/userguide/platforms.html)插件时，会默认导入`ihub-bom`插件
 3. 如果项目包含子项目，子项目也会引入本插件
 :::
 

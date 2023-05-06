@@ -17,13 +17,12 @@ package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import pub.ihub.core.IHubLibsVersion
 
 import static java.lang.Boolean.valueOf
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
 import static pub.ihub.plugin.IHubSettingsExtension.findProperty
-
-
 
 /**
  * Gradle配置插件
@@ -48,7 +47,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
     ]
 
     private static final Map<String, String> PLUGIN_VERSIONS = [
-        'com.gradle.plugin-publish': '1.1.0',
+        'com.gradle.plugin-publish': '1.2.0',
     ]
 
     @Override
@@ -85,6 +84,22 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 }
             }
             printMapConfigContent 'Include Gradle Projects', 'Path', 'Projects', projectSpecs
+        }
+
+        // 配置catalog
+        settings.dependencyResolutionManagement {
+            repositories {
+                mavenCentral()
+                maven {
+                    name 'Snapshot Repo'
+                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                }
+            }
+            versionCatalogs {
+                ihubLibs {
+                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
+                }
+            }
         }
     }
 

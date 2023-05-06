@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,16 +15,12 @@
  */
 package pub.ihub.plugin.verification
 
-
 import org.gradle.api.Project
 import org.gradle.testfixtures.ProjectBuilder
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
-import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static org.gradle.testkit.runner.TaskOutcome.SUCCESS
-
-
 
 /**
  * @author henry
@@ -43,11 +42,18 @@ class IHubVerificationPluginTest extends IHubSpecification {
                 id 'pub.ihub.plugin.ihub-test'
                 id 'pub.ihub.plugin.ihub-verification'
             }
+            repositories {
+                mavenCentral()
+                maven {
+                    name 'Snapshot Repo'
+                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                }
+            }
             dependencies {
                 implementation 'org.apache.groovy:groovy'
             }
         '''
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'rootProject.name = \'sample-groovy\''
+        settingsFile << 'rootProject.name = \'sample-groovy\''
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
@@ -183,7 +189,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
                 }
             }
         '''
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        settingsFile << 'include \'a\', \'b\', \'c\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'

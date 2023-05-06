@@ -18,7 +18,6 @@ package pub.ihub.plugin.java
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
-import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static pub.ihub.plugin.java.IHubJavaPlugin.DEFAULT_DEPENDENCIES_CONFIG
 
 /**
@@ -30,7 +29,7 @@ class IHubJavaPluginTest extends IHubSpecification {
     def 'Java插件默认配置测试'() {
         setup: '初始化项目（此处借用子项目测试，主项目不触发beforeEvaluate）'
         copyProject 'basic.gradle'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        settingsFile << 'include \'a\', \'b\', \'c\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
@@ -42,6 +41,7 @@ class IHubJavaPluginTest extends IHubSpecification {
             }
         '''
         propertiesFile << "iHubJava.defaultDependencies=${DEFAULT_DEPENDENCIES_CONFIG.keySet().join(',')}\n"
+        propertiesFile << "iHubJava.jmoleculesArchitecture=$architecture\n"
 
         when: '构建项目'
         def result = gradleBuilder.buildAndFail()
@@ -66,30 +66,37 @@ class IHubJavaPluginTest extends IHubSpecification {
         result.output.contains '│ org.apache.logging.log4j                            │ log4j-core                                 │'
         result.output.contains '│ org.slf4j                                           │ slf4j-log4j12                              │'
         result.output.contains '│ org.slf4j                                           │ slf4j-jcl                                  │'
-        result.output.contains '│ compileOnly                      │ io.swagger.core.v3:swagger-annotations                        │'
+        result.output.contains '│ compileOnly                      │ io.swagger.core.v3:swagger-annotations:2.2.9                  │'
         result.output.contains '│ runtimeOnly                      │ org.slf4j:jul-to-slf4j                                        │'
         result.output.contains '│ runtimeOnly                      │ javax.xml.bind:jaxb-api                                       │'
         result.output.contains '│ runtimeOnly                      │ org.slf4j:log4j-over-slf4j                                    │'
         result.output.contains '│ runtimeOnly                      │ org.slf4j:jcl-over-slf4j                                      │'
         result.output.contains '│ runtimeOnly                      │ org.glassfish.jaxb:jaxb-runtime                               │'
         result.output.contains '│ implementation                   │ org.slf4j:slf4j-api                                           │'
-        result.output.contains '│ implementation                   │ org.mapstruct:mapstruct                                       │'
+        result.output.contains '│ implementation                   │ org.mapstruct:mapstruct:1.5.5.Final                           │'
         !result.output.contains('│ annotationProcessor              │ org.mapstruct:mapstruct-processor                             │')
         result.output.contains '│ implementation                   │ org.jmolecules:jmolecules-ddd                                 │'
         result.output.contains '│ implementation                   │ org.jmolecules:jmolecules-events                              │'
-        result.output.contains '│ implementation                   │ org.jmolecules:jmolecules-onion-architecture                  │'
+        result.output.contains '│ implementation                   ' + expected
         result.output.contains '│ implementation                   │ org.jmolecules.integrations:jmolecules-spring                 │'
         result.output.contains '│ implementation                   │ org.jmolecules.integrations:jmolecules-jpa                    │'
         result.output.contains '│ implementation                   │ org.jmolecules.integrations:jmolecules-jackson                │'
         !result.output.contains('│ annotationProcessor              │ pub.ihub.lib:ihub-process-doc                                 │')
         result.output.contains '│ testImplementation               │ org.jmolecules.integrations:jmolecules-archunit               │'
         result.output.contains 'BUILD SUCCESSFUL'
+
+        where:
+        architecture | expected
+        ''           | '│ org.jmolecules:jmolecules-onion-architecture                  │'
+        'cqrs'       | '│ org.jmolecules:jmolecules-cqrs-architecture                   │'
+        'layered'    | '│ org.jmolecules:jmolecules-layered-architecture                │'
+        'onion'      | '│ org.jmolecules:jmolecules-onion-architecture                  │'
     }
 
     def 'Java插件配置测试'() {
         setup: '初始化项目（此处借用子项目测试，主项目不触发beforeEvaluate）'
         copyProject 'basic.gradle'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        settingsFile << 'include \'a\', \'b\', \'c\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
@@ -160,7 +167,7 @@ class IHubJavaPluginTest extends IHubSpecification {
     def '项目包含Groovy插件时移除annotationProcessor依赖测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\''
+        settingsFile << 'include \'a\', \'b\', \'c\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'

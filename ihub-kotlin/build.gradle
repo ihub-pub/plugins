@@ -2,7 +2,7 @@ description = 'IHub Kotlin Gradle Plugins'
 
 dependencies {
     implementation project(':ihub-java')
-    implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin'
+    implementation libs.kotlin
 }
 
 gradlePlugin {
