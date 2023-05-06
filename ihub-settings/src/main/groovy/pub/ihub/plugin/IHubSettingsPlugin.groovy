@@ -17,6 +17,7 @@ package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import pub.ihub.core.IHubLibsVersion
 
 import static java.lang.Boolean.valueOf
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
@@ -92,8 +93,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             }
             versionCatalogs {
                 ihubLibs {
-//                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
-                    from 'pub.ihub.lib:ihub-libs:1.1.4'
+                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
                 }
             }
         }
