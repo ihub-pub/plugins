@@ -174,10 +174,10 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             if (!hasPlugin(GroovyPlugin)) {
                 applyPlugin LombokPlugin
             }
-        }
 
-        // 配置Jar属性
-        withTask Jar, JAR_CONFIG.curry(project)
+            // 配置Jar属性
+            withTask Jar, JAR_CONFIG.curry(project)
+        }
 
         // 配置lombok.config
         // 由于Lombok插件6.1.0之后不再自动生成lombok.config文件，后续ihub插件维护该功能

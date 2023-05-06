@@ -49,12 +49,8 @@ class IHubSpecification extends Specification {
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('libs.versions.toml'), null
         settingsFile = testProjectDir.newFile DEFAULT_SETTINGS_FILE
         settingsFile << 'dependencyResolutionManagement {'
-//        settingsFile << '    repositories {'
-//        settingsFile << '        mavenCentral()'
-//        settingsFile << '    }'
         settingsFile << '    versionCatalogs {'
         settingsFile << '        ihubLibs {'
-//        settingsFile << "            from 'pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}'"
         settingsFile << '            from files(\'libs.versions.toml\')'
         settingsFile << '        }'
         settingsFile << '    }'

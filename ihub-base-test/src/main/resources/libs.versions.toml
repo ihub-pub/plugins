@@ -15,19 +15,19 @@ log4j-over-slf4j = { module = 'org.slf4j:log4j-over-slf4j' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j' }
 
 # mybatis libs
-mybatis-plus = { module = 'com.baomidou:mybatis-plus', version.ref = 'mybatis-plus' }
-mybatis-plus-annotation = { module = 'com.baomidou:mybatis-plus-annotation', version.ref = 'mybatis-plus' }
-mybatis-plus-core = { module = 'com.baomidou:mybatis-plus-core', version.ref = 'mybatis-plus' }
-mybatis-plus-extension = { module = 'com.baomidou:mybatis-plus-extension', version.ref = 'mybatis-plus' }
-mybatis-plus-boot-starter = { module = 'com.baomidou:mybatis-plus-boot-starter', version.ref = 'mybatis-plus' }
-mybatis-plus-generator = { module = 'com.baomidou:mybatis-plus-generator', version.ref = 'mybatis-plus' }
+mybatis-plus = { module = 'com.baomidou:mybatis-plus' }
+mybatis-plus-annotation = { module = 'com.baomidou:mybatis-plus-annotation' }
+mybatis-plus-core = { module = 'com.baomidou:mybatis-plus-core' }
+mybatis-plus-extension = { module = 'com.baomidou:mybatis-plus-extension' }
+mybatis-plus-boot-starter = { module = 'com.baomidou:mybatis-plus-boot-starter' }
+mybatis-plus-generator = { module = 'com.baomidou:mybatis-plus-generator' }
 
 # mapstruct libs
-mapstruct = { module = 'org.mapstruct:mapstruct', version.ref = 'mapstruct' }
-mapstruct-processor = { module = 'org.mapstruct:mapstruct-processor', version.ref = 'mapstruct' }
+mapstruct = { module = 'org.mapstruct:mapstruct' }
+mapstruct-processor = { module = 'org.mapstruct:mapstruct-processor' }
 
 # doc libs
-swagger-annotations = { module = 'io.swagger.core.v3:swagger-annotations', version = '2.2.9' }
+swagger-annotations = { module = 'io.swagger.core.v3:swagger-annotations' }
 
 # groovy libs
 groovy-core = { module = 'org.apache.groovy:groovy' }

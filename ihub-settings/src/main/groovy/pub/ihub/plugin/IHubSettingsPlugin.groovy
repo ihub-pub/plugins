@@ -17,7 +17,6 @@ package pub.ihub.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
-import pub.ihub.core.IHubLibsVersion
 
 import static java.lang.Boolean.valueOf
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
@@ -90,14 +89,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         settings.dependencyResolutionManagement {
             repositories {
                 mavenCentral()
-                maven {
-                    name 'Snapshot Repo'
-                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                }
             }
             versionCatalogs {
                 ihubLibs {
-                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
+//                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
+                    from 'pub.ihub.lib:ihub-libs:1.1.4'
                 }
             }
         }

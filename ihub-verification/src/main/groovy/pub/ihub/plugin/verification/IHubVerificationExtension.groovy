@@ -37,7 +37,7 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 class IHubVerificationExtension extends IHubProjectExtensionAware implements IHubExtProperty {
 
     private static final String DEFAULT_PMD_VERSION = '6.55.0'
-    private static final String DEFAULT_JACOCO_VERSION = '0.8.8'
+    private static final String DEFAULT_JACOCO_VERSION = '0.8.10'
     private static final String DEFAULT_CODENARC_VERSION = '3.2.0'
 
     //<editor-fold desc="PMD Configuration">

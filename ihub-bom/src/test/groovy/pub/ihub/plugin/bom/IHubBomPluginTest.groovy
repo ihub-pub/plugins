@@ -62,10 +62,6 @@ class IHubBomPluginTest extends IHubSpecification {
             }
             repositories {
                 mavenCentral()
-                maven {
-                    name 'Snapshot Repo'
-                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                }
             }
             dependencies {
                 implementation 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter'

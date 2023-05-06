@@ -42,13 +42,6 @@ class IHubVerificationPluginTest extends IHubSpecification {
                 id 'pub.ihub.plugin.ihub-test'
                 id 'pub.ihub.plugin.ihub-verification'
             }
-            repositories {
-                mavenCentral()
-                maven {
-                    name 'Snapshot Repo'
-                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                }
-            }
             dependencies {
                 implementation 'org.apache.groovy:groovy'
             }
