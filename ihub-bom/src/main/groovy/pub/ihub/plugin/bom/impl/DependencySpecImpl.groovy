@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2022 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2022-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,7 +20,6 @@ import org.gradle.api.GradleException
 import pub.ihub.plugin.bom.specs.DependencySpec
 
 
-
 /**
  * Dependency Spec Impl
  * @author henry
@@ -31,10 +30,10 @@ final class DependencySpecImpl implements DependencySpec {
     final List<Dependency> specs = []
 
     @Override
-    void compile(String type, String... dependencies) {
+    void compile(String type, ... dependencies) {
         assertProperty type as boolean, 'dependencies type not null!'
         assertProperty dependencies as boolean, type + ' dependencies not empty!'
-        specs << new Dependency(type, dependencies as Set<String>)
+        specs << new Dependency(type, dependencies as Set)
     }
 
     private static void assertProperty(boolean condition, String message) {

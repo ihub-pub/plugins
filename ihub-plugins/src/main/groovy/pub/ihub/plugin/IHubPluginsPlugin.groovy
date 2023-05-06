@@ -16,13 +16,11 @@
 package pub.ihub.plugin
 
 
-import org.gradle.api.plugins.JavaPlatformPlugin
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.version.IHubVersionPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-
 
 /**
  * Gradle基础插件
@@ -43,10 +41,8 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
             applyPlugin IHubVersionPlugin
         }
 
-        // 非Java平台组件项目默认应用IHubBom插件
-        if (!hasPlugin(JavaPlatformPlugin)) {
-            applyPlugin IHubBomPlugin
-        }
+        // 默认应用IHubBom插件
+        applyPlugin IHubBomPlugin
 
         project.subprojects {
             pluginManager.apply IHubPluginsPlugin

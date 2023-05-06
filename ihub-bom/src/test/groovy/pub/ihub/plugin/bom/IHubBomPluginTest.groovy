@@ -1,9 +1,12 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,14 +15,10 @@
  */
 package pub.ihub.plugin.bom
 
-
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
-import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
-
-
 
 /**
  * @author henry
@@ -36,7 +35,7 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.12                        │'
+        result.output.matches '[\\s\\S]+│ pub.ihub.lib + │ ihub-bom + │ 1.0.12 + │[\\s\\S]+'
         result.output.contains '│ pub.ihub.lib                    │ ihub-process                    │ 1.0.12                       │'
         result.output.contains '│ pub.ihub.lib                    │ ihub-core                       │ 1.0.12                       │'
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
@@ -63,6 +62,10 @@ class IHubBomPluginTest extends IHubSpecification {
             }
             repositories {
                 mavenCentral()
+                maven {
+                    name 'Snapshot Repo'
+                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                }
             }
             dependencies {
                 implementation 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter'
@@ -106,7 +109,7 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ pub.ihub.lib                     │ ihub-bom                      │ 1.0.12                        │'
+        result.output.matches '[\\s\\S]+│ pub.ihub.lib + │ ihub-bom + │ 1.0.12 + │[\\s\\S]+'
         !result.output.contains('│ ihub-process')
         !result.output.contains('│ ihub-core')
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.12                                       │'
@@ -125,7 +128,7 @@ class IHubBomPluginTest extends IHubSpecification {
         '''
 
         when: '添加子项目'
-        testProjectDir.newFile(DEFAULT_SETTINGS_FILE) << 'include \'a\', \'b\', \'c\', \'demo-bom\''
+        settingsFile << 'include \'a\', \'b\', \'c\', \'demo-bom\''
         testProjectDir.newFolder 'a'
         testProjectDir.newFolder 'b'
         testProjectDir.newFolder 'c'
@@ -209,8 +212,8 @@ class IHubBomPluginTest extends IHubSpecification {
 
         then: '检查结果'
         // Group Maven Bom Version (root project)
-        result.output.contains '│ org.apache.groovy                   │ groovy-bom                   │ 4.0.4                       │'
-        result.output.contains '│ pub.ihub.lib                        │ ihub-bom                     │ 1.0.7                       │'
+        result.output.matches '[\\s\\S]+│ org.apache.groovy + │ groovy-bom + │ 4.0.4 + │[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ pub.ihub.lib + │ ihub-bom + │ 1.0.7 + │[\\s\\S]+'
         // B Group Maven Default Version
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.7                                        │'
         // Config Default Dependencies (root project)
@@ -290,6 +293,32 @@ class IHubBomPluginTest extends IHubSpecification {
         def result = gradleBuilder.buildAndFail()
         then: '检查结果'
         result.output.contains 'type dependencies not empty!'
+    }
+
+    def '模拟Java平台组件应用ihub-bom测试'() {
+        when: '配置组件依赖为空'
+        buildFile << '''
+            plugins {
+                id 'java-platform'
+                id 'pub.ihub.plugin.ihub-bom'
+            }
+        '''
+        def result = gradleBuilder.build()
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '模拟版本目录组件应用ihub-bom测试'() {
+        when: '配置组件依赖为空'
+        buildFile << '''
+            plugins {
+                id 'version-catalog'
+                id 'pub.ihub.plugin.ihub-bom'
+            }
+        '''
+        def result = gradleBuilder.build()
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
 }

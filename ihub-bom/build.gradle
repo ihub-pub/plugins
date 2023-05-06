@@ -16,8 +16,8 @@
 description = 'IHub Bom Gradle Plugins'
 
 dependencies {
-    implementation 'pub.ihub.lib:ihub-core'
-    implementation 'io.spring.gradle:dependency-management-plugin'
+    implementation libs.ihub.core
+    implementation libs.dependency.management
 }
 
 gradlePlugin {

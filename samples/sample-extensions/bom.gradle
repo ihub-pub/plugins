@@ -41,8 +41,6 @@ iHubBom {
     // 配置组件依赖
     dependencies {
         api 'pub.ihub.lib:ihub-core'
-        // 支持依赖其他项目模块
-//        api ':a', ':b', ':c'
     }
     // 配置组件能力
     capabilities {

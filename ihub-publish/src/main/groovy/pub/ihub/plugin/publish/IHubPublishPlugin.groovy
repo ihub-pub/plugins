@@ -25,6 +25,7 @@ import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
@@ -42,8 +43,6 @@ import pub.ihub.plugin.bom.IHubBomPlugin
 import static cn.hutool.http.HttpUtil.get
 import static io.freefair.gradle.util.GitUtil.githubActions
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-
-
 
 /**
  * 组件发布插件
@@ -103,6 +102,10 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                 create('mavenJava', MavenPublication) {
                     if (hasPlugin(JavaPlatformPlugin)) {
                         from project.components.getByName('javaPlatform')
+                        return
+                    }
+                    if (hasPlugin(VersionCatalogPlugin)) {
+                        from project.components.getByName('versionCatalog')
                         return
                     }
                     from project.components.getByName('java')
@@ -185,8 +188,14 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         project.plugins.apply SigningPlugin
         withExtension(SigningExtension) { ext ->
             ext.required = release && extension.publishNeedSign.get()
-            ext.useInMemoryPgpKeys extension.signingKeyId.orNull, extension.signingSecretKey.orNull,
-                extension.signingPassword.orNull
+            if (extension.signingKeyId.present) {
+                ext.useInMemoryPgpKeys extension.signingKeyId.get(),
+                    extension.signingSecretKey.orNull, extension.signingPassword.orNull
+            } else if (extension.signingSecretKey.present) {
+                ext.useInMemoryPgpKeys extension.signingSecretKey.get(), extension.signingPassword.orNull
+            } else {
+                ext.useGpgCmd()
+            }
             withExtension(PublishingExtension, AFTER) {
                 if (ext.required) {
                     ext.sign it.publications.mavenJava
@@ -231,7 +240,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         bom.dependencies {
             constraints {
                 bom.rootProject.allprojects.each {
-                    if (it.plugins.hasPlugin(MavenPublishPlugin) && !it.plugins.hasPlugin(JavaPlatformPlugin)) {
+                    if (it.plugins.hasPlugin(MavenPublishPlugin) && it.plugins.hasPlugin(JavaPlugin)) {
                         api "${bom.rootProject.group}:$it.name:${bom.rootProject.version}"
                     }
                 }
