@@ -56,7 +56,7 @@ class IHubDemoExtension extends IHubProjectExtensionAware implements IHubExtProp
     Property<String> customizationProperty
 
     @IHubProperty(type = ENV)
-    Property<String> os
+    Property<String> javaHome
 
     IHubDemoExtension(ObjectFactory objectFactory) {
         flag = objectFactory.property(Boolean).convention(false)
@@ -68,7 +68,7 @@ class IHubDemoExtension extends IHubProjectExtensionAware implements IHubExtProp
         trueStrFlag = objectFactory.property(String)
         falseStrFlag = objectFactory.property(String)
         customizationProperty = objectFactory.property(String).convention('str')
-        os = objectFactory.property(String)
+        javaHome = objectFactory.property(String)
     }
 
 }
