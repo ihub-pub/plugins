@@ -37,7 +37,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629 # v2.4.2
         with:
-          arguments: build -x test --scan
+          arguments: build -x test --scan --configuration-cache
 
   project-matrix:
     if: ${{ github.repository_owner == 'ihub-pub' }}
@@ -104,7 +104,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629 # v2.4.2
         with:
-          arguments: ${{ matrix.project_name }}:test -DiHubTest.failFast=true
+          arguments: ${{ matrix.project_name }}:test -DiHubTest.failFast=true --configuration-cache
 
       - name: Upload Coverage Reports
         if: ${{ github.repository_owner == 'ihub-pub' }}
