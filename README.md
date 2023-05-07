@@ -29,9 +29,6 @@
     <a target="_blank" href='https://gitee.com/ihub-pub/plugins/stargazers'>
         <img src='https://gitee.com/ihub-pub/plugins/badge/star.svg?theme=dark' alt='Gitee Stars'/>
     </a>
-    <a target="_blank" href="https://www.jetbrains.com">
-        <img src="https://img.shields.io/badge/JetBrains-white.svg?style=flat&logo=JetBrains&logoColor=black" alt="Thanks to JetBrains for sponsoring"/>
-    </a>
     <a target="_blank" href="https://plugins.gradle.org/plugin/pub.ihub.plugin">
         <img src="https://img.shields.io/maven-metadata/v?color=white&label=Gradle&labelColor=02303A&logo=Gradle&metadataUrl=https%3A%2F%2Fplugins.gradle.org%2Fm2%2Fpub%2Fihub%2Fplugin%2Fihub-plugins%2Fmaven-metadata.xml" alt="IHub Plugins Gradle Plugin"/>
     </a>
@@ -117,3 +114,9 @@ iHub.mavenAliYunEnabled=true
 请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
 
 [![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
+
+## 💝 鸣谢
+
+非常感谢 [Jetbrains](https://jb.gg/OpenSourceSupport) 对本开源项目的支持。
+
+[![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://jb.gg/OpenSourceSupport "Thanks to JetBrains for sponsoring")
