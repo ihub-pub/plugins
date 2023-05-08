@@ -79,11 +79,19 @@ iHubPublish.publishDocs=true
         propertiesFile << '''
 version=1.0.0
 iHubPublish.publishNeedSign=true
+'''
+        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
+        propertiesFile << '''
 iHubPublish.signingSecretKey=secret
 iHubPublish.signingPassword=password
 iHubPublish.publishDocs=true
 '''
-        def result = gradleBuilder
+        result = gradleBuilder
             .withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password', '-DiHubPublish.applyGithubPom=true')
             .withEnvironment('GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'ihub-pub/plugins').build()
 
