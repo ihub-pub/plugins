@@ -111,6 +111,7 @@ class IHubJavaPluginTest extends IHubSpecification {
         propertiesFile << 'iHubJava.defaultDependencies=false\n'
         propertiesFile << 'iHubJava.applyOpenapiPlugin=true\n'
         propertiesFile << 'iHubJava.compilerArgs=-proc:none -nowarn\n'
+        propertiesFile << 'iHubJava.jvmArgs=-XX:+UseG1GC -Xms128m -Xmx512m\n'
 
         when: '构建项目'
         def result = gradleBuilder.build()
