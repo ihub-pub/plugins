@@ -27,6 +27,7 @@ import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.jmolecules.bytebuddy.JMoleculesPlugin
@@ -177,6 +178,12 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
             // 配置Jar属性
             withTask Jar, JAR_CONFIG.curry(project)
+
+            if (it.jvmArgs.present) {
+                withTask(JavaExec) { exec ->
+                    exec.jvmArgs it.jvmArgs.get().tokenize()
+                }
+            }
         }
 
         // 配置lombok.config

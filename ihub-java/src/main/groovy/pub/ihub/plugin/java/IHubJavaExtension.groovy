@@ -68,6 +68,12 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
     Property<String> compilerArgs
 
     /**
+     * JVM扩展属性，多个参数用空格分隔，如：-XX:+UseG1GC -Xms128m -Xmx512m
+     */
+    @IHubProperty
+    Property<String> jvmArgs
+
+    /**
      * JMolecules架构，可选类型：cqrs、layered、onion
      */
     @IHubProperty
@@ -86,6 +92,7 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
         compatibility = objectFactory.property(String)
         gradleCompilationIncremental = objectFactory.property(Boolean).convention(true)
         compilerArgs = objectFactory.property(String)
+        jvmArgs = objectFactory.property(String)
         jmoleculesArchitecture = objectFactory.property(String).convention('onion')
         applyOpenapiPlugin = objectFactory.property(Boolean).convention(false)
     }
