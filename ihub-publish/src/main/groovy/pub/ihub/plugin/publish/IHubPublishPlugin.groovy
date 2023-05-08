@@ -42,7 +42,6 @@ import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static cn.hutool.http.HttpUtil.get
 import static io.freefair.gradle.util.GitUtil.githubActions
-import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
  * 组件发布插件
@@ -185,9 +184,13 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     }
 
     private void configSigning(Project project, IHubPublishExtension extension) {
+        boolean required = release && extension.publishNeedSign.get()
+        if (!required) {
+            return
+        }
         project.plugins.apply SigningPlugin
         withExtension(SigningExtension) { ext ->
-            ext.required = release && extension.publishNeedSign.get()
+            ext.required = required
             if (extension.signingKeyId.present) {
                 ext.useInMemoryPgpKeys extension.signingKeyId.get(),
                     extension.signingSecretKey.orNull, extension.signingPassword.orNull
@@ -196,10 +199,8 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             } else {
                 ext.useGpgCmd()
             }
-            withExtension(PublishingExtension, AFTER) {
-                if (ext.required) {
-                    ext.sign it.publications.mavenJava
-                }
+            withExtension(PublishingExtension) {
+                ext.sign it.publications.mavenJava
             }
         }
     }
