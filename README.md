@@ -109,18 +109,19 @@ iHub.mavenAliYunEnabled=true
 ## ✅ 项目状态
 
 ![Alt](https://repobeats.axiom.co/api/embed/577279f67858fb89c702e0cf0bc604e42decca5d.svg "Repobeats analytics image")
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins?ref=badge_shield)
 
 ## 👨‍💻 贡献指南
 请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
 
 [![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
 
+## ⚖️ License
+
+<!-- [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins?ref=badge_shield) -->
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins?ref=badge_large)
+
 ## 💝 鸣谢
 
 非常感谢 [Jetbrains](https://jb.gg/OpenSourceSupport) 对本开源项目的支持。
 
 [![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://jb.gg/OpenSourceSupport "Thanks to JetBrains for sponsoring")
-
-## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins?ref=badge_large)
