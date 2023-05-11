@@ -115,11 +115,6 @@ iHub.mavenAliYunEnabled=true
 
 [![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
 
-## ⚖️ License
-
-<!-- [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins?ref=badge_shield) -->
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fihub-pub%2Fplugins?ref=badge_large)
-
 ## 💝 鸣谢
 
 非常感谢 [Jetbrains](https://jb.gg/OpenSourceSupport) 对本开源项目的支持。
