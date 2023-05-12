@@ -1,9 +1,9 @@
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LOs
     id("pub.ihub.plugin.ihub-settings") version "1.3.2"
 }
 ```
