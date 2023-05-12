@@ -72,4 +72,4 @@ iHubVersion {
 
 :::
 
-@include(../snippet/footnote.md)
+@include(../nippet/footnote.md)
