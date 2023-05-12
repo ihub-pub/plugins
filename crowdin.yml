@@ -1,0 +1,7 @@
+project_id_env: CROWDIN_PROJECT_ID
+api_token_env: CROWDIN_PERSONAL_TOKEN
+files:
+  - source: /**/*.md
+    ignore:
+      - /%language%
+    translation: /%language%/%original_path%/%original_file_name%

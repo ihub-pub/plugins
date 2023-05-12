@@ -1,32 +1,8 @@
-.github
-.gitee
-logs
-pom.xml
-pom.xml.asc
-lombok.config
-
-# Gradle #
-.gradle
-build
-gradle-app.setting
-.gradletasknamecache
-
-# Maven #
-target
-
-# windows #
-Thumbs.db
-
-# Mac #
-.DS_Store
-
-# Eclipse
-.project
-.classpath
-.settings
-out
-.log
-*.class
+# Node.js #
+.temp
+.cache
+dist
+node_modules
 
 # IntelliJ IDEA
 *.iml
@@ -34,8 +10,3 @@ out
 *.iws
 .idea
 classes
-
-# Package Files #
-*.jar
-*.war
-*.ear
