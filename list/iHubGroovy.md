@@ -46,4 +46,4 @@ plugins {
 | `groovy-templates` |
 | `groovy-xml` |
 
-@include(../snippet/footnote.md)
+@include(../snippet/explanation.md)
