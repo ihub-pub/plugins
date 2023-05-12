@@ -15,7 +15,7 @@
 ::: tip 插件功能
 - 项目包含`groovy`插件时会自动配置`codenarc`
   插件，默认配置[详见](https://github.com/ihub-pub/plugins/blob/main/ihub-plugins/src/main/resources/META-INF/codenarc.groovy)，可以通过配置`$rootDir/conf/codenarc/codenarc.groovy`覆盖默认配置，[示例](https://github.com/ihub-pub/plugins/tree/main/samples/sample-groovy)
-- 项目包含`java`插件时会自动配置`pmd`插件，组件使用`com.alibaba.p3c:p3c-pmd`，可通过`$rootDir/conf/pmd/ruleset.xml`配置检查检查规则，默认规则如下：
+- 项目包含`java`插件时会自动配置`pmd`插件，组件使用`com.alibaba.p3c:p3c-pmd`，可通过`$rootDir/conf/pmd/ruleset.xml`配置检查规则，默认规则如下：
 ```groovy
 ruleSets = [
     'rulesets/java/ali-comment.xml',
