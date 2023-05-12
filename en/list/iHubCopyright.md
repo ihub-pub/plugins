@@ -76,4 +76,4 @@ limitations under the License.
 
 2. Extracting copyright information from`LICENSE`files, currently recognized`Apache License`,`MIT License`Configuration of general copyright information, other copyrights using IDEA default copyright configuration
 
-@include(../snippet/footnote.md)
+@include(../nippet/footnote.md)
