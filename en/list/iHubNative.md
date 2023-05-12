@@ -69,4 +69,4 @@ iHubNative LO
 
 :::
 
-@include(../snippet/footnote.md)
+@include(../nippet/footnote.md)
