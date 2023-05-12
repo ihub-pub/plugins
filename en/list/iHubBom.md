@@ -237,4 +237,4 @@ Built in the plugin the default BOM [pub.ihub.lib:ihub-dependencies](https://mvn
 
 Default catalog within plugin [pub.ihub.lib:ihub-libs](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-libs) to maintain project component aliases and versions, distinct from platforms[See](https://docs.gradle.org/current/userguide/platforms.html#sub:platforms-vs-catalog)
 
-@include(../snippet/footnote.md)
+@include(../nippet/footnote.md)
