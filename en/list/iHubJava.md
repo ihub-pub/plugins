@@ -210,4 +210,4 @@ dependagencies have {
 
 :::
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
