@@ -124,31 +124,31 @@ iHubSettings {
 :::
 
 ::: warning
-plugins exclude common non-project directories,`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle` :::: `  </p>
+plugins exclude common non-project directories,`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle` :::: `
 
-<h2 spaces-before="0">Default Plugin Repositories</h2>
+## Default Plugin Repositories
 
-<p spaces-before="0">Private repository, custom repository configuration see<a href="iHub#扩展属性">extension attributes</a></p>
+Private repository, custom repository configuration see[extension attributes](iHub#扩展属性)
 
-<table spaces-before="0">
-<thead>
-<tr>
-  <th>Name</th>
-  <th>Description</th>
-  <th>Url</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><code>ProjectDirs`</td> 
+| Name            | Description                 | Url                                       |
+| --------------- | --------------------------- | ----------------------------------------- |
+| `ProjectDirs`   | Project Local Plugin        | `{rootProject.projectDir}/gradle/plugins` |
+| `SpringRelease` | Spring Release Repository   | https://repo.spring.io/release            |
+| `ReleaseRepo`   | Private Release Repository  | https://repo.xxx.com/release              |
+| `SnapshotRepo`  | Private Snapshot repository | https://repo.xxx.com/snapshot             |
+| `CustomizeRepo` | Custom repository           | https://repo.xxx.com/repo                 |
+
+## Default Version
+
+``ProjectDirs`</td> 
 
 </tr> 
 
 </tbody> </table>
 
-## Default Version
+<h2 spaces-before="0">Default Version</h2>
 
-The plugin is configured with `ihub series plugins ` and the following plug-in default versions:
+<p spaces-before="0">The plugin is configured with <code>ihub series plugins`` and the following plug-in default versions:
 
 | Plugins                       | Version                                                              |
 | ----------------------------- | -------------------------------------------------------------------- |
