@@ -82,4 +82,4 @@ limitations under the License.
 
 2. 通过`LICENSE`文件提取版权信息，目前会识别`Apache License`、`MIT License`配置通用版权信息，其他版权会使用IDEA默认版权配置
 
-@include(../snippet/explanation.md)
+@include(../snippet/footnote.md)

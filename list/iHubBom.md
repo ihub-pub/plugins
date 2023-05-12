@@ -233,8 +233,8 @@ iHubBom {
 
 插件内置默认BOM [pub.ihub.lib:ihub-dependencies](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-dependencies) ，用于维护组件版本
 
-@include(../snippet/explanation.md)
-
 ## 默认catalog
 
 插件内置默认catalog [pub.ihub.lib:ihub-libs](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-libs) ，用于维护项目组件别名与版本，与platforms区别[详见](https://docs.gradle.org/current/userguide/platforms.html#sub:platforms-vs-catalog)
+
+@include(../snippet/footnote.md)

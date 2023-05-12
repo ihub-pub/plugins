@@ -189,4 +189,4 @@ dependencyResolutionManagement {
 }
 ```
 
-@include(../snippet/explanation.md)
+@include(../snippet/footnote.md)

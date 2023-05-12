@@ -79,4 +79,4 @@ iHub.mavenAliYunEnabled=true
 | `CustomizeRepo` | 自定义仓库仓库 | https://repo.xxx.com/repo |
 | `MavenRepo` | Maven中央仓库 |     |
 
-@include(../snippet/explanation.md)
+@include(../snippet/footnote.md)
