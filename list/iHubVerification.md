@@ -160,4 +160,4 @@ iHubVerification {
 - 项目汇总测试覆盖率示例
 ![](/img/printFinishedJacocoReportCoverage.png)
 
-@include(../snippet/footnote.md)
+@include(../snippet/explanation.md)
