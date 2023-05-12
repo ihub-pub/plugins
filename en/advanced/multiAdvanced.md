@@ -1,14 +1,14 @@
-# 一主多子项目配置
+# A master multi-subproject configuration
 
-一个主多子项目配置，参见[项目模板](https://github.com/ihub-pub/multi-template)
+A primary multi-subproject configuration, see[project template](https://github.com/ihub-pub/multi-template)
 
-## 配置 wrapper
+## Configure wrapper
 
-@include(../snippet/gradle-wrapper.properties.md)
+@include(../nippet/gradle-wrapper.properties.md)
 
-## 配置 setting.gradle
+## Configure setting.gradle
 
-`rest`、`service`、`client`为子项目目录，更多配置见[ihub-settings](../iHubSettings)插件：
+`rest`,`service`,`client`for subproject directories, more configuration see[ihub-settings](../iHubSettings)plugin：
 
 ```groovy
 plugins {
@@ -20,9 +20,9 @@ iHubSettings {
 }
 ```
 
-## 配置 build.gradle
+## Configure build.gradle
 
-子项目引入Java插件（[ihub-java](../iHubJava)）、测试插件（[ihub-test](../iHubTest)）以及验证插件（[ihub-verification](../iHubVerification)），配置[ihub-git-hooks](../iHubGitHooks)插件钩子命令：
+Subprojects introduce Java plugins ([ihub-java](../iHubJava)), test plugin ([ihub-test](../iHubTest)) and validation plugin ([ihub-certification](../iHubVerification)), config[ihub-git-hooks](../iHubGitHooks)plugin hook command：
 
 ```groovy
 plugins {
@@ -55,9 +55,9 @@ iHubGitHooks {
 }
 ```
 
-## 配置 gradle.properties
+## Configure gradle.properties
 
-配置项目名称以及group，其中`name`为[ihub-settings](../iHubSettings)插件[扩展属性](../iHubSettings#扩展属性)，`group`为原生项目属性
+Configure project names and groups, where`name`is[ihub-settings](../iHubSettings)plugin[extension properties](../iHubSettings#扩展属性),`group`native project properties
 
 ```properties
 name=demo

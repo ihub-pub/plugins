@@ -1,21 +1,21 @@
-# ihub-copyright
+# ihub copyright
 
-::: info 插件说明
-`ihub-copyright`插件是版权插件，用于自动配置`IDEA`版权设置，自动伪代码添加或更新版权信息。
+::: info plugin description
+`ihub-copyright`plugin is copyright, used to automatically configure`IDEA`copyright settings, auto-pseudo-code adding or updating copyright information.
 :::
 
-| 插件ID                             | 插件名称   | 插件类型                | 插件依赖         |
-| -------------------------------- | ------ | ------------------- | ------------ |
-| `pub.ihub.plugin.ihub-copyright` | `版权插件` | `Project`[^Project] | [ihub](iHub) |
+| Plugin ID                        | Plugin Name        | Plugin Type         | Plugin Dependencies |
+| -------------------------------- | ------------------ | ------------------- | ------------------- |
+| `pub.ihub.plugin.ihub-copyright` | `Copyright Plugin` | `Project`[^Project] | [ihub](iHub)        |
 
-## 插件安装
+## Plugin Installation
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LOR
     id("pub.ihub.plugin.ihub-copyright")
 }
 ```
@@ -30,19 +30,19 @@ plugins {
 
 :::
 
-或
+or
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LO
     id("pub.ihub.plugin")
 }
 
-apply {
-    plugin("pub.ihub.plugin.ihub-copyright")
+applet {
+    plugin("pub.ihub.plugin.ihu-copyright")
 }
 ```
 
@@ -60,26 +60,26 @@ apply {
 
 :::
 
-## 配置示例
+## Configuration Example
 
-1. 通过`COPYRIGHT`文件获取版权信息，文件配置项目根目录下
+1. Get copyrighted information from the`COPYRIGHT`file configuration item root directory
 
 ```text
-Copyright (c) 2023 the original author or authors.
+Copyright (c) 2023 the original author authors.
 
-Licensed under the Apache License, Version 2.0 (the "License");
+Licensed under the Apache License, Version 2. (The "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    https://www.apache.org/licenses/LICENSE-2.0
+    https://www.apache.org/licenses/LICENSE-2.
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
+distributed under the License is distressed on an "AS IS" BASIS,
+WITHOUT WARRANES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing missions and
 limitations under the License.
 ```
 
-2. 通过`LICENSE`文件提取版权信息，目前会识别`Apache License`、`MIT License`配置通用版权信息，其他版权会使用IDEA默认版权配置
+2. Extracting copyright information from`LICENSE`files, currently recognized`Apache License`,`MIT License`Configuration of general copyright information, other copyrights using IDEA default copyright configuration
 
-@include(../snippet/explanation.md)
+@include(../snippet/exploation.md)

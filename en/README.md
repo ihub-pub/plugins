@@ -1,26 +1,26 @@
 ---
-title: 快速上手
+title: Quick start
 icon: light
 ---
 
-开始使用本插件之前先要了解`Gradle`相关的基础配置，可移步至[入门篇-Gradle基础入门](basics/gradleBasic)，本插件主要用于简化`setting.gradle`和`build.gradle`配置
+Start using this plugin before learning the base configuration`Gradle`that can be moved to[entry - Gradle basic startup](basics/gradleBasic), this plugin is mainly used to simplify`setting.gradle`and`build.gradle`Configuration
 
-## setting.gradle 配置
+## setting.gradle Configuration
 
-引入`pub.ihub.plugin.ihub-settings`插件，该插件提供了常用的插件仓库配置以及多项目配置，详细使用见[文档](list/iHubSettings)：
+Adds`pub.ihub.plugin.ihub-settings`plugins that provide common plugin repository configuration and multiple project configurations, see[document for details](list/iHubSettings)：
 
 @include(./snippet/setting.gradle.md)
 
-## build.gradle 配置
+## build.gradle configuration
 
-引入`pub.ihub.plugin`基础插件，该插件提供了常用组件仓库配置以及集成了一些其他扩展设置，详细使用见[文档](list/iHub)，此外还有一些其他的插件，见`插件集`各插件说明：
+Adding`pub.ihub.plugin`Basic plugins that provide common component repository configuration and integration of some other extension, see[document](list/iHub), in addition to some other plugins,`Plugins Set`Instructions for each plugin：
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LOR
     id("pub.ihub.plugin")
 }
 ```
@@ -35,14 +35,14 @@ plugins {
 
 :::
 
-另外：`ihub-settings`插件不是必须的，如果你的项目不需要多项目配置，可以直接引入`pub.ihub.plugin`插件，注意需要设置版本号（引入`ihub-settings`插件时会[自动配置版本号](list/iHubSettings#默认版本)），配置如下：
+Additional：`ihub-setup`plugins are not required. If your project does not require multiple project configurations, you can directly introduce`pub.ihub.plugin`plugins and note the need to set version number (`ihub-settings plugins`plugins in[auto configure version size](list/iHubSettings#默认版本)) and configure the following：
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LO
     id("pub.ihub.plugin") version "${ihub.plugin.version}"
 }
 ```
@@ -50,8 +50,8 @@ plugins {
 @tab Groovy
 
 ```groovy
-plugins {
-    id 'pub.ihub.plugin' version '${ihub.plugin.version}'
+plugins LO
+    id 'pub.ihub.plugin' version ' '${ihub.plugin.version}'
 }
 ```
 

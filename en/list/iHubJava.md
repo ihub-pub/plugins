@@ -1,47 +1,47 @@
 # ihub-java
 
-::: info 插件说明
-`ihub-java`插件用于集成Java相关插件环境、配置一些默认依赖以及兼容性配置
+:::info plugin description
+`ihub-java`plugin for integrating Java related plugin environment, configuration some default dependencies, and compatibility configuration
 :::
 
-| 信息   | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 插件ID | `pub.ihub.plugin.ihub-java`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| 插件名称 | `Java插件`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| 插件类型 | `Project`[^Project]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| 扩展名称 | `iHubJava`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| 插件依赖 | [ihub-bom](iHubBom)、[java](https://docs.gradle.org/current/userguide/java_plugin.html)、[java-library](https://docs.gradle.org/current/userguide/java_library_plugin.html)、[lombok](https://plugins.gradle.org/plugin/io.freefair.lombok)、[project-report](https://docs.gradle.org/current/userguide/project_report_plugin.html)、[build-dashboard](https://docs.gradle.org/current/userguide/build_dashboard_plugin.html)、<br>[net.bytebuddy.byte-buddy-gradle-plugin](https://bytebuddy.net)、[org.springdoc.openapi-gradle-plugin](https://github.com/springdoc/springdoc-openapi-gradle-plugin) |
+| Information         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Plugin ID           | `pub.ihub.plugin.ihub-java`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Plugin Name         | `Java Plugin`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Plugin Type         | `Project`[^Project]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Extension Name      | `iHubJava`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Plugin Dependencies | [ihub-bom](iHubBom),[java](https://docs.gradle.org/current/userguide/java_plugin.html),[java-library](https://docs.gradle.org/current/userguide/java_library_plugin.html),[lombok](https://plugins.gradle.org/plugin/io.freefair.lombok),[project-report](https://docs.gradle.org/current/userguide/project_report_plugin.html),[build-dashboard](https://docs.gradle.org/current/userguide/build_dashboard_plugin.html),<br>[net. ytebuddy.byte-buddy-gradle-plugin](https://bytebuddy.net),[org.springdoc.openapi-gradle-plugin](https://github.com/springdoc/springdoc-openapi-gradle-plugin) |
 
 ::: note
 启用`JMoleculesPlugin`插件时，`org.gradle.parallel`设置`false`，可以消除`prepareKotlinBuildScriptModel`任务警告
 :::
 
-## 扩展属性
+## Extended Properties
 
-| Extension                      | Description                                                                     | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
-| ------------------------------ | ------------------------------------------------------------------------------- | ------- | --------- | --------- | --------- | --------- |
-| `defaultDependencies`          | 默认依赖（“,”分割）[详见](#默认依赖)，可以设置`false`关闭默认配置                                        | `log`   | ✔         | ✔         | ❌         | ❌         |
-| `compileEncoding`              | Java编译编码                                                                        | `UTF-8` | ✔         | ✔         | ❌         | ❌         |
-| `compatibility`                | Java兼容性配置                                                                       | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `gradleCompilationIncremental` | gradle增量编译                                                                      | `true`  | ✔         | ✔         | ❌         | ❌         |
-| `compilerArgs`                 | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked                                 | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `jvmArgs`                      | JVM扩展属性，多个参数用空格分隔，如：-XX:+UseG1GC -Xms128m -Xmx512m                              | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `applyOpenapiPlugin`           | 启用 [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) 插件 | `false` | ✔         | ✔         | ✔         | ❌         |
-| `jmoleculesArchitecture`       | JMolecules架构（可选类型：cqrs、layered、onion）[详见](https://jmolecules.org)               | `onion` | ✔         | ✔         | ❌         | ❌         |
+| Extension                 | Description                                                                                                | Default  | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- | -------- | --------- | --------- | --------- | --------- |
+| `Default Dependencies`    | Default dependency (',' separated)[See](#默认依赖)for details, set up`false`to close the default configuration | `log`    | ✔         | ✔         | ❌         | ❌         |
+| `CompileEncoding`         | JavaScript Code                                                                                            | `UTF-8`  | ✔         | ✔         | ❌         | ❌         |
+| `Compatibility`           | Java Compatibility Configuration                                                                           | ❌        | ✔         | ✔         | ❌         | ❌         |
+| `gradleCompile cremental` | gradle increment compilation                                                                               | `true`   | ✔         | ✔         | ❌         | ❌         |
+| `compilerArgs`            | Compiles extended attributes, multiple parameters separated by spaces, e.g.：- parameters -Xlint:unchecked  | ❌        | ✔         | ✔         | ❌         | ❌         |
+| `jvmArgs`                 | JVM extension attributes, multiple arguments separated by spaces, e.g.：- XX:+UseG1GC -Xms128m -Xmx512m     | ❌        | ✔         | ✔         | ❌         | ❌         |
+| `applyOpenapiPlugin`      | Enable [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) plugin                    | `false`  | ✔         | ✔         | ✔         | ❌         |
+| `jmoleculesArchitecture`  | JMolecules Architecture (optional type：cqrs, layered, onion)[See](https://jmolecules.org)                  | `monion` | ✔         | ✔         | ❌         | ❌         |
 
 ::: warning
-由于插件会在`beforeEvaluate`阶段处理一些配置，根项目时不会处理这个阶段，`Ext`[^Ext]配置可能会失效，建议优先使用`Prj`[^Prj]配置
+Since plugins will process some configuration at`beforEvalate`, root items will not handle this stage,`Ext`[^Ext]configuration may lapse, priority is recommended`Prj`[^Prj]configuration
 :::
 
-## 插件安装
+## Plugin Installation
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
-    id("pub.ihub.plugin.ihub-java")
+plugins LOR
+    id("pub.ihub.plugin.ihu-java")
 }
 ```
 
@@ -55,15 +55,15 @@ plugins {
 
 :::
 
-## 配置示例
+## Configuration Example
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-iHubJava {
-    defaultDependencies.set("jaxb,log,doc,mapstruct,jmolecules")
+iHubJava has
+    defaultDependencies.set("jaxb,log,doc,map,jmolecules")
     compatibility.set("11")
 }
 ```
@@ -71,91 +71,91 @@ iHubJava {
 @tab Groovy
 
 ```groovy
-iHubJava {
-    defaultDependencies = 'jaxb,log,doc,mapstruct,jmolecules'
+iHubJava has
+    defaultDependencies = 'jaxb,log,doc,map,jmolecules'
     compatibility = '11'
 }
 ```
 
 :::
 
-## 默认依赖
+## Default Dependencies
 
-### `jaxb`：添加jaxb运行时依赖配置。
+### `jaxb`：Depends on configuration when adding jaxb runs.
 
 | DependencyType | Dependencies                      |
 | -------------- | --------------------------------- |
-| exclude        | `com.sun.xml.bind:jaxb-core`      |
+| Exclude        | `com.sun.xml.bind:jaxb-core`      |
 | runtimeOnly    | `javax.xml.bind:jaxb-api`         |
 | runtimeOnly    | `org.glassfish.jaxb:jaxb-runtime` |
 
-### `log`：添加默认日志依赖配置。
+### `log`：add default log dependency configuration.
 
 | DependencyType | Dependencies                          |
 | -------------- | ------------------------------------- |
-| exclude        | `commons-logging:commons-logging`     |
-| exclude        | `log4j:log4j`                         |
-| exclude        | `org.apache.logging.log4j:log4j-core` |
-| exclude        | `org.slf4j:slf4j-log4j12`             |
-| exclude        | `org.slf4j:slf4j-jcl`                 |
+| Exclude        | `commons-logging: commons-logging`    |
+| Exclude        | `log4j:log4j`                         |
+| Exclude        | `org.apache.logging.log4j:log4j-core` |
+| Exclude        | `org.slf4j:slf4j-log4j12`             |
+| Exclude        | `org.slf4j: slf4j-jcl`                |
 | runtimeOnly    | `org.slf4j:jul-to-slf4j`              |
 | runtimeOnly    | `org.slf4j:log4j-over-slf4j`          |
 | runtimeOnly    | `org.slf4j:jcl-over-slf4j`            |
-| implementation | `org.slf4j:slf4j-api`                 |
+| Implementation | `org.slf4j: slf4j-api`                |
 
-### `mapstruct`：添加添加MapStruct依赖配置。
+### `mapstruct`：add new MapStruct dependency configuration.
 
 | DependencyType      | Dependencies                        |
 | ------------------- | ----------------------------------- |
-| implementation      | `org.mapstruct:mapstruct`           |
+| Implementation      | `org.mapstruct:mapstruct`           |
 | annotationProcessor | `org.mapstruct:mapstruct-processor` |
 
-### `doc`：添加Doc注解依赖。
+### `doc`：add docannotation dependence.
 
-| DependencyType      | Dependencies                             |
-| ------------------- | ---------------------------------------- |
-| compileOnly         | `io.swagger.core.v3:swagger-annotations` |
-| annotationProcessor | `pub.ihub.lib:ihub-process-doc`          |
+| DependencyType      | Dependencies                               |
+| ------------------- | ------------------------------------------ |
+| Compilation Only    | `io.swagger.core.v3:swagger-announcements` |
+| annotationProcessor | `pub.ihub.lib:ihub-process-doc`            |
 
-### `jmolecules`：添加jMolecules依赖。
+### `jmolecules`：add jMolecules dependency.
 
-| DependencyType | Dependencies                                                 |
-| -------------- | ------------------------------------------------------------ |
-| implementation | `org.jmolecules:jmolecules-ddd`                              |
-| implementation | `org.jmolecules:jmolecules-events`                           |
-| implementation | `org.jmolecules:jmolecules-cqrs-architecture`(`optional`)    |
-| implementation | `org.jmolecules:jmolecules-layered-architecture`(`optional`) |
-| implementation | `org.jmolecules:jmolecules-onion-architecture`(`optional`)   |
+| DependencyType | Dependencies                                          |
+| -------------- | ----------------------------------------------------- |
+| Implementation | `org.jmolecules:jmolecules-dd`                        |
+| Implementation | `org.jmolecules:jmolecules-events`                    |
+| Implementation | `org.jmolecules:jmolecules-cqrs-archive`(`optional`)  |
+| Implementation | `org.jmolecules:jmolecules-layered-archive`(`option`) |
+| Implementation | `org.jmolecules:jmolecules-onion-archive`(`optional`) |
 
-### `jmolecules-integrations`：添加jMolecules-integrations依赖。
+### `jmolecules-integrations`：add jMolecules-integration dependence.
 
 | DependencyType     | Dependencies                                      |
 | ------------------ | ------------------------------------------------- |
-| implementation     | `org.jmolecules.integrations:jmolecules-spring`   |
-| implementation     | `org.jmolecules.integrations:jmolecules-jpa`      |
-| implementation     | `org.jmolecules.integrations:jmolecules-jackson`  |
-| testImplementation | `org.jmolecules.integrations:jmolecules-archunit` |
+| Implementation     | `org.jmolecules.integrations: jmolecules-spring`  |
+| Implementation     | `org.jmolecules.integrations: jmolecules-jpa`     |
+| Implementation     | `org.jmolecules.integrations: jmolecules-jackson` |
+| testImplementation | `org.jmolecules.integrations: jmolecules-archive` |
 
-## 默认配置
+## Default configuration
 
-由于Lombok插件6.1.0之后不再自动生成`lombok.config`文件[详见](https://github.com/freefair/gradle-plugins/issues/379)，**当本地没有lombok.config时**，会自动生成如下配置：
+Since the Lombok plugin 6.1.0 does not auto-generate`lobok.config`file[See](https://github.com/freefair/gradle-plugins/issues/379),**when there is no lobok.config**the following configuration will be generated automatically：
 
 ```lombok.config
 config.stopBubbling = true
-lombok.addLombokGeneratedAnnotation = true
+lobok.addLombokGeneratedAnnotation = true
 ```
 
-### 配置Jar属性
+### Configure Jar Properties
 
-| 属性                         | 值                     |
-| -------------------------- | --------------------- |
-| `Implementation-Title`     | `{project.name}`      |
-| `Automatic-Module-Name`    | `{project.name}`      |
-| `Implementation-Version`   | `{project.version}`   |
-| `Implementation-Vendor-Id` | `{project.group}`     |
-| `Created-By`               | `Java` + `当前Java主版本号` |
+| Properties                 | Value                                |
+| -------------------------- | ------------------------------------ |
+| `Implementation - Title`   | `{project.name}`                     |
+| `Automatic-Module-Name`    | `{project.name}`                     |
+| `Implementation-Version`   | `{project.version}`                  |
+| `Implementation-Vendor-Id` | `{project.group}`                    |
+| `Created-By`               | `Java` + `Current Java Main Version` |
 
-生成配置如下：
+Generate configuration below：
 
 ```manifest
 Manifest-Version: 1.0
@@ -169,18 +169,18 @@ Created-By: Java 11
 
 ### 可以通过[compatibility](#扩展属性)配置兼容性。
 
-## 可选功能配置
+## Optional feature configuration
 
-`registerFeature`：支持配置可选功能，[详见](https://docs.gradle.org/current/userguide/feature_variants.html)
+`registerFeature`：supports configuration options,[See](https://docs.gradle.org/current/userguide/feature_variants.html)
 
 | Field          | Dependencies |
 | -------------- | ------------ |
-| `feature`      | 功能           |
-| `capabilities` | 能力           |
+| `Feature`      | Function     |
+| `Capabilities` | Capabilities |
 
-> 配置示例
+> Configuration Example
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
@@ -198,16 +198,16 @@ dependencies {
 @tab Groovy
 
 ```groovy
-iHubJava {
+iHubJava has
     registerFeature 'servlet', 'cloud-support', 'servlet-support'
     registerFeature 'reactor', 'cloud-support', 'reactor-support'
 }
-dependencies {
-    servletApi 'org.springframework.boot:spring-boot-starter-web'
-    reactorApi 'org.springframework.boot:spring-boot-starter-webflux'
+dependagencies have {
+    servletApi 'org.springframe.boot: spring-boot-starter-web'
+    reactorApi 'org.springframe.boot: spring-boot-boot-starter-webinflux'
 }
 ```
 
 :::
 
-@include(../snippet/explanation.md)
+@include(../snippet/exploation.md)

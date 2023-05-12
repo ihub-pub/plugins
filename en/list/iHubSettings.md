@@ -1,71 +1,71 @@
 # ihub-settings
 
-::: info 插件说明
-`ihub-settings`插件用于配置插件仓库、插件版本以及子项目管理，配置与`settings.gradle`。
+::: info plugin description
+`ihub-settings`plugin configuration for plugin repository, plugin version, and subproject management, configuration with`settings.gradle`.
 :::
 
-| 插件ID                            | 插件名称   | 插件类型                  | 扩展名称           |
-| ------------------------------- | ------ | --------------------- | -------------- |
-| `pub.ihub.plugin.ihub-settings` | `设置插件` | `Settings`[^Settings] | `iHubSettings` |
+| Plugin ID                       | Plugin Name         | Plugin Type           | Extension Name |
+| ------------------------------- | ------------------- | --------------------- | -------------- |
+| `pub.ihub.plugin.ihub-settings` | `Configure Plugins` | `Settings`[^Settings] | `iHubSettings` |
 
-## 扩展属性
+## Extended Properties
 
-### DSL扩展配置支持配置
+### DSL extension support configuration
 
-| 扩展方法              | 扩展描述                           |
-| ----------------- | ------------------------------ |
-| `includeProjects` | 添加项目（支持多个项目）                   |
-| `prefix`          | 项目前缀（默认`主项目名称-`）               |
-| `noPrefix`        | 无项目前缀                          |
-| `suffix`          | 项目后缀                           |
-| `subproject`      | 包含三级子项目                        |
-| `onlySubproject`  | 仅含三级子项目（不含当前项目，三级项目为`主项目`的子项目） |
-| `skippedDirs`     | 忽略三级子项目目录                      |
+| Extended Method    | Extended Description                                                                            |
+| ------------------ | ----------------------------------------------------------------------------------------------- |
+| `include Projects` | Add Items (Support for Multiple Projects)                                                       |
+| `Prefix`           | Project Prefix (default`main project name -`)                                                   |
+| `noPrefix`         | No items prefix                                                                                 |
+| `suffix`           | Project Suffix                                                                                  |
+| `Subproject`       | Include 3 Level Subprojects                                                                     |
+| `alone Subproject` | Only three tier subprojects (not including the current one, Level 3 are`the main item`sub-item) |
+| `skippedDirs`      | Ignore Level 3 Subproject Directory                                                             |
 
-### `gradle.properties`配置支持属性
+### `gradle.properties`Configure support properties
 
-| Property                   | Description                                      |
-| -------------------------- | ------------------------------------------------ |
-| `name`                     | 配置主项目名称                                          |
-| `iHubSettings.includeDirs` | 包含项目路径，多目录“,”分割                                  |
-| `iHubSettings.skippedDirs` | 排除项目路径，多目录“,”分割                                  |
-| `iHubSettings.includeBom`  | 用于配置bom组件，包含所有含[ihub-publish](iHubPublish)组件的子项目 |
+| Property                   | Description                                                                                             |
+| -------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `Name`                     | Configure primary project name                                                                          |
+| `iHubSettings.includeDirs` | Include project paths, multiple directories", split                                                     |
+| `iHubSettings.skippedDirs` | Exclude project paths, multiple directories", split                                                     |
+| `iHubSettings.includeBom`  | Used to configure the bom component, including all subprojects with[ihub-public](iHubPublish)components |
 
-> 配置如下：
+> Configure the following：
 
 ```properties
 name=demo
-iHubSettings.includeDirs=rest,service
+iHubSettings.includeDirs=res,service
 iHubSettings.includeBom=ihub-bom
 ```
 
-## 插件安装
+## Plugin Installation
 
 @include(../snippet/setting.gradle.md)
 
-## 配置示例
+## Configuration Example
 
-### 配置子项目
+### Configure Subprojects
 
-- 目录结构：
+- Directory Structure：
 
 ```
-+---rest
-+---sdk
-\---service
++--reset
++--sdk
+\--service
 ```
 
-- 配置：
+- Configure：
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-import pub.ihub.plugin.IHubSettingsExtension
+import pub.ihub.plugin.IHubSettingsextension
 
-configure<IHubSettingsExtension> {
-    includeProjects("rest", "sdk", "service")
+configure<IHubSettingsExtension> LO
+    includeProjects ("rest", "sdk", "service")
 }
 ```
 
@@ -79,23 +79,23 @@ iHubSettings {
 
 :::
 
-### 配置三级子项目
+### Configure Level 3 Subprojects
 
-- 目录结构：
+- Directory Structure：
 
 ```
-+---rest
-+---service
-+---test
-\---other
++--reset
++--service
++--test
+\--other
     +---a
     +---b
-    \---c
+    \--c
 ```
 
-- 配置：
+- Configure：
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
@@ -114,48 +114,55 @@ configure<IHubSettingsExtension> {
 
 ```groovy
 iHubSettings {
-    includeProjects 'rest', 'service' suffix '-suffix'
-    includeProjects 'test' noPrefix
-    includeProjects 'other' prefix 'prefix-' skippedDirs 'c' subproject
-    includeProjects 'subproject' prefix 'prefix-' suffix '-suffix' onlySubproject
+    include Projects 'rest', 'service' suffix '-suffix'
+    include Projects 'test' noPrefix
+    includeProjects 'other' prefix 'prefix-' skippedDirs' 'c' subproject
+    include Projects 'subject' prefix 'prefix-' suffix '-'suffix' onlySubproject
 }
 ```
 
 :::
 
 ::: warning
-插件默认排除了常见非项目目录，`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle`
-:::
+plugins exclude common non-project directories,`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle` :::: `  </p>
 
-## 默认插件仓库
+<h2 spaces-before="0">Default Plugin Repositories</h2>
 
-私有仓库、自定义仓库配置参见[扩展属性](iHub#扩展属性)
+<p spaces-before="0">Private repository, custom repository configuration see<a href="iHub#扩展属性">extension attributes</a></p>
 
-| Name            | Description      | Url                                       |
-| --------------- | ---------------- | ----------------------------------------- |
-| `ProjectDirs`   | 项目本地插件           | `{rootProject.projectDir}/gradle/plugins` |
-| `SpringRelease` | Spring Release仓库 | https://repo.spring.io/release            |
-| `ReleaseRepo`   | 私有Release仓库      | https://repo.xxx.com/release              |
-| `SnapshotRepo`  | 私有Snapshot仓库     | https://repo.xxx.com/snapshot             |
-| `CustomizeRepo` | 自定义仓库仓库          | https://repo.xxx.com/repo                 |
+<table spaces-before="0">
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Description</th>
+  <th>Url</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>ProjectDirs`</td> 
 
-## 默认版本
+</tr> 
 
-插件配置了`ihub系列插件`及以下插件默认版本：
+</tbody> </table>
 
-| Plugin                      | Version                                                              |
-| --------------------------- | -------------------------------------------------------------------- |
-| `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
-| `pub.ihub.plugin.*`         | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
+## Default Version
 
-使用插件时可以不用加版本号，配置如下：
+The plugin is configured with `ihub series plugins ` and the following plug-in default versions:
 
-::: code-tabs#build
+| Plugins                       | Version                                                              |
+| ----------------------------- | -------------------------------------------------------------------- |
+| `com.gradle.plugin-published` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
+| `pub.ihub.plugin.*`           | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
+
+Use plugins without plating numbers to configure below：
+
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LOR
     id("pub.ihub.plugin")
     id("com.gradle.plugin-publish")
 }
@@ -164,7 +171,7 @@ plugins {
 @tab Groovy
 
 ```groovy
-plugins {
+plugins LO
     id 'pub.ihub.plugin'
     id 'com.gradle.plugin-publish'
 }
@@ -172,9 +179,9 @@ plugins {
 
 :::
 
-## 配置catalog
+## Configure catalog
 
-配置默认版本目录组件`ihubLibs`
+Configure the default version directory components`ihubibs`
 
 ```groovy
 dependencyResolutionManagement {
@@ -189,4 +196,4 @@ dependencyResolutionManagement {
 }
 ```
 
-@include(../snippet/explanation.md)
+@include(../snippet/exploation.md)

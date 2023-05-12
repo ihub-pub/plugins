@@ -1,25 +1,25 @@
 # ihub-bom
 
-::: info 插件说明
-`ihub-bom`插件用于配置项目依赖组件版本以及兼容性管理。
+:::info plugin description
+`ihub-bom`plugin configuration project dependencies version and compatibility management.
 :::
 
-| 信息   | 描述                                                                                                                            |
-| ---- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 插件ID | `pub.ihub.plugin.ihub-bom`                                                                                                    |
-| 插件名称 | `Bom插件`                                                                                                                       |
-| 插件类型 | `Project`[^Project]                                                                                                           |
-| 扩展名称 | `iHubBom`                                                                                                                     |
-| 插件依赖 | [ihub](iHub)、[io.spring.dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin)（`按需使用`） |
+| Information         | Description                                                                                                                             |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Plugin ID           | `pub.ihub.plugin.ihub-bom`                                                                                                              |
+| Plugin Name         | `Bom Plugin`                                                                                                                            |
+| Plugin Type         | `Project`[^Project]                                                                                                                     |
+| Extension Name      | `iHubBom`                                                                                                                               |
+| Plugin Dependencies | [ihub](iHub),[io.spring.dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin)(`used on demand`) |
 
-## 插件安装
+## Plugin Installation
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LO
     id("pub.ihub.plugin.ihub-bom")
 }
 ```
@@ -34,15 +34,15 @@ plugins {
 
 :::
 
-::: note
-如果已经安装基础插件`ihub`，则无需单独安装`ihub-bom`插件，`ihub`插件已经集成了`ihub-bom`插件。
+:::note
+If base plugin`ihub`is installed, there is no need to install individually`ihub-bom`plugin,`ihub`plugin is already integrated`ihub-bom`plugin.
 :::
 
-## 配置示例
+## Configuration Example
 
-### 导入mavenBom
+### Import mavenbom
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
@@ -58,7 +58,7 @@ iHubBom {
 
 ```groovy
 iHubBom {
-    importBoms {
+    import Boms {
         group 'pub.ihub.lib' module 'ihub-bom' version 'ihub.lib.version'
     }
 }
@@ -66,16 +66,16 @@ iHubBom {
 
 :::
 
-### 配置依赖默认版本
+### Configure dependencies on default version
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-iHubBom {
+iHubBom has been
     importBoms {
-        dependencyVersions {
+        dependencyVersions $
             group("pub.ihub.lib").modules("ihub-core", "ihub-process").version("ihub.lib.version")
         }
     }
@@ -85,8 +85,8 @@ iHubBom {
 @tab Groovy
 
 ```groovy
-iHubBom {
-    importBoms {
+iHubBom has
+    import Boms but has
         dependencyVersions {
             group 'pub.ihub.lib' modules 'ihub-core', 'ihub-process' version 'ihub.lib.version'
         }
@@ -96,9 +96,9 @@ iHubBom {
 
 :::
 
-### 配置组版本策略
+### Configure Group Version Policy
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
@@ -126,9 +126,9 @@ iHubBom {
 
 :::
 
-### 排除组件依赖
+### Exclude component dependencies
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
@@ -147,11 +147,11 @@ iHubBom {
 @tab Groovy
 
 ```groovy
-iHubBom {
-    importBoms {
-        excludeModules {
+iHubBom has been
+    importBoms $
+        excludeModules $
             group 'org.slf4j' modules 'slf4j-api'
-            // 支持排除整个组
+            // support excluding whole group
             group 'pub.ihub'
         }
     }
@@ -160,16 +160,16 @@ iHubBom {
 
 :::
 
-### 配置组件依赖
+### Configure Component Dependencies
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-iHubBom {
+iHubBom has been
     importBoms {
-        dependencies {
+        dependent agencies {
             implementation("pub.ihub.lib:ihub-core")
         }
     }
@@ -180,7 +180,7 @@ iHubBom {
 
 ```groovy
 iHubBom {
-    importBoms {
+    import Boms {
         dependencies {
             implementation 'pub.ihub.lib:ihub-core'
         }
@@ -190,9 +190,9 @@ iHubBom {
 
 :::
 
-### 配置组件能力 [参见](https://docs.gradle.org/current/userguide/feature_variants.html#sec::consuming_feature_variants)
+### Configure component capacity [see](https://docs.gradle.org/current/userguide/feature_variants.html#sec::consuming_feature_variants)
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
@@ -229,12 +229,12 @@ iHubBom {
 
 :::
 
-## 默认platforms
+## Default platforms
 
-插件内置默认BOM [pub.ihub.lib:ihub-dependencies](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-dependencies) ，用于维护组件版本
+Built in the plugin the default BOM [pub.ihub.lib:ihub-dependencies](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-dependencies) to maintain component versions
 
-@include(../snippet/explanation.md)
+@include(../snippet/exploation.md)
 
-## 默认catalog
+## Default catalog
 
-插件内置默认catalog [pub.ihub.lib:ihub-libs](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-libs) ，用于维护项目组件别名与版本，与platforms区别[详见](https://docs.gradle.org/current/userguide/platforms.html#sub:platforms-vs-catalog)
+Default catalog within plugin [pub.ihub.lib:ihub-libs](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-libs) to maintain project component aliases and versions, distinct from platforms[See](https://docs.gradle.org/current/userguide/platforms.html#sub:platforms-vs-catalog)

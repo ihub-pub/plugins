@@ -1,86 +1,86 @@
 # ihub-git-hooks
 
-::: info 插件信息
-- `ihub-git-hooks`插件用于配置GitHooks，可以为`git`操作配置一些钩子命令，比如：在提交代码的时候可以做一些代码检查。
-- 通过修改git-hooks目录实现自定义hook命令（`git config core.hooksPath xxx`），不破坏原有hooks。
+:::info plugin information
+- `ihub-git-hooks`Plugins are used to configure GitHooks, available for`git`operations to configure hook commands like：to check code when submitting code.
+- Implement custom hook commands by modifying the git-hooks directory(`git config core.hooksPath xxx`) without destroying the original hooks.
 :::
 
-| 插件ID                             | 插件名称         | 插件类型                | 扩展名称           |
-| -------------------------------- | ------------ | ------------------- | -------------- |
-| `pub.ihub.plugin.ihub-git-hooks` | `GitHooks插件` | `Project`[^Project] | `iHubGitHooks` |
+| Plugin ID                        | Plugin Name       | Plugin Type         | Extension Name |
+| -------------------------------- | ----------------- | ------------------- | -------------- |
+| `pub.ihub.plugin.ihub-git-hooks` | `GitHooks Plugin` | `Project`[^Project] | `iHubGitHooks` |
 
-::: tip 提交信息检查
-插件基于[约定式提交](https://www.conventionalcommits.org/)规范提供了`commit-msg`检查提交信息功能，详见[功能](https://github.com/ihub-pub/plugins/issues/247)，提交信息规范如下：
+:::tip Submission information check
+Plugins based on[contractual commit](https://www.conventionalcommits.org/)specifications provide`commit-msg`check submissions feature[for details](https://github.com/ihub-pub/plugins/issues/247), submit information instructions：
 ```text
 <type>[optional scope]: <description>
 
-[optional body]
+[opregular body]
 
 [optional footer(s)]
 ```
 :::
 
-插件提供一个检查任务`commitCheck`，用于检查提交信息是否符合规范，使用如下：
+The plugin provides a check task`commitCheck`to check that submissions meet the specifications, using the following：
 
 ```shell
-#!/bin/bash
+#!/bin/cash
 ./gradlew commitCheck
 ```
 
-也可以通过扩展属性配置，见[示例](#扩展配置git-hooks命令)
+can also be configured by extension attributes, see[Example](#扩展配置git-hooks命令)
 
-::: tip
-IDEA环境下支持自动生成[`Conventional Commit`](https://plugins.jetbrains.com/plugin/13389-conventional-commit)IDEA插件配置文件`conventionalCommit.json`，并且完成自动配置
+::::tip
+Support auto-generation in IDEA environment[`Conventional Commit`](https://plugins.jetbrains.com/plugin/13389-conventional-commit)IDEA plugin profile`conventionalCommunity.json`and complete autoconfiguration :
 :::
 
-## 扩展属性
+## Extended Properties
 
-| Extension          | Description      | Default      | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
-| ------------------ | ---------------- | ------------ | --------- | --------- | --------- | --------- |
-| `hooksPath`        | 自定义hooks路径（优先级高） | ❌            | ✔         | ✔         | ✔         | ❌         |
-| `hooks`            | 自定义hooks         | ❌            | ✔         | ❌         | ❌         | ❌         |
-| `descriptionRegex` | 提交描述正则表达式        | `/.{1,100}/` | ✔         | ❌         | ❌         | ❌         |
+| Extension          | Description                       | Default      | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
+| ------------------ | --------------------------------- | ------------ | --------- | --------- | --------- | --------- |
+| `hooksPath`        | Custom hooks path (high priority) | ❌            | ✔         | ✔         | ✔         | ❌         |
+| `hooks`            | Custom hooks                      | ❌            | ✔         | ❌         | ❌         | ❌         |
+| `descriptionRegex` | Submit description regexp         | `/.{1,100}/` | ✔         | ❌         | ❌         | ❌         |
 
-::: note
-如果两个hooks属性都不配置，会使用默认hooks目录
+:::note
+If both hooks properties are not configured, use the default hooksdirectory :
 :::
 
-### DSL扩展配置支持如下
+### DSL extension is supported below
 
-| 扩展方法      | 扩展描述                       |
-| --------- | -------------------------- |
-| `types`   | 添加提交类型                     |
-| `type`    | 添加单个提交类型，可详细配置`type`扩展属性   |
-| `footers` | 添加注脚类型                     |
-| `footer`  | 添加单个注脚类型，可详细配置`footer`扩展属性 |
+| Extended Method | Extended Description                                                |
+| --------------- | ------------------------------------------------------------------- |
+| `Types`         | Add Submission Type                                                 |
+| `Type`          | Add a single submission type to configure`type`extension properties |
+| `Footers`       | Add FootType                                                        |
+| `Footer`        | Add a single Footer type to configure`Footer`extension properties   |
 
-### `type`扩展属性
+### `type`extension properties
 
-| 扩展方法            | 扩展描述                            |
-| --------------- | ------------------------------- |
-| `scopes`        | 添加作用域                           |
-| `scope`         | 添加单个作用域，可详细配置作用域`description`属性 |
-| `requiredScope` | 配置是否启用作用域检查，默认`false`           |
-| `description`   | 提交类型描述                          |
+| Extended Method  | Extended Description                                             |
+| ---------------- | ---------------------------------------------------------------- |
+| `Scopes`         | Add fields                                                       |
+| `Scope`          | Add a single field to configure the field`description`properties |
+| `Required Scope` | Configuration is enabled for domain checks, default`false`       |
+| `Description`    | Submission Type Description                                      |
 
-### `footer`扩展属性
+### `Footer`Extension properties
 
-| 扩展方法               | 扩展描述               |
-| ------------------ | ------------------ |
-| `required`         | 配置注脚是否必填，默认`false` |
-| `requiredWithType` | 配置注脚是否在特定提交类型时必填   |
-| `valueRegex`       | 注脚值正则校验            |
-| `description`      | 注脚描述               |
+| Extended Method      | Extended Description                                                        |
+| -------------------- | --------------------------------------------------------------------------- |
+| `Required`           | Configure whether the footnote is required and default`false`               |
+| `RequiredWidth Type` | Configure whether the footnote is required for a particular submission type |
+| `valueRegex`         | Footer Value Regular Validation                                             |
+| `Description`        | Footnote description                                                        |
 
-## 插件安装
+## Plugin Installation
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
-    id("pub.ihub.plugin.ihub-git-hooks")
+plugins LOR
+    id("pub.ihub.plugin.ihu-git-hooks")
 }
 ```
 
@@ -94,21 +94,21 @@ plugins {
 
 :::
 
-## 自定义hooks路径使用示例
+## Example custom hooks path usage
 
-配置自定义hooks路径，并在自定义路径下添加相关hooks配置
+Configure custom hooks path and add relevant hooks configuration under custom path
 
 ```properties
 iHubGitHooks.hooksPath=.hooks
 ```
 
-## 插件扩展配置使用示例
+## Example plugin configuration usage
 
-### 扩展配置git-hooks命令
+### Extension configuration git-hooks command
 
-相关hooks命令会配置在`.gradle/pub.ihub.plugin.hooks`目录下
+Related hooks commands are configured under`.gradle/pub.ihub.plugin.hooks`
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
@@ -116,17 +116,17 @@ iHubGitHooks.hooksPath=.hooks
 iHubGitHooks {
     hooks.set(mapOf(
         "pre-commit" to "./gradlew build",
-        "commit-msg" to "./gradlew commitCheck"
-    ))
+        "commit-msg" to "./gradlew committCheck"
+    )
 }
 ```
 
 @tab Groovy
 
 ```groovy
-iHubGitHooks {
+iHubgitHooks {
     hooks = [
-        'pre-commit': './gradlew build',
+        'precommit': './gradlew build',
         'commit-msg': './gradlew commitCheck'
     ]
 }
@@ -134,50 +134,50 @@ iHubGitHooks {
 
 :::
 
-### 扩展配置提交信息检查
+### Extended Configuration Submission Check
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-iHubGitHooks {
-    // 添加提交类型
-    types("type1", "type2", "type3")
-    // 开启范围检查
-    type("build").scopes("gradle").requiredScope(true)
-    // Footer必填
-    footer("Footer").required(true)
-    // 提交类型是feat时Footer必填
-    footer("Footer").requiredWithType("feat")
-    // 注解值正则校验
-    footer("Closes").valueRegex("\\d+")
-    // 描述配置1
-    type("type").scope("scope").description("Scope description")
-    footer("Other").description("Other description")
+iHubgitHohoks LO
+    // Add Submission Type
+    types ("type1", "type2", "type3")
+    // Open range check
+    type ("build"). copes("gradle"). equiredScope(true)
+    // Footer is required
+    Footer("Footer"). equired(true)
+    // Submission type is feature
+    Footer("Footer"). equiredWithType("feat")
+    // Comment regular value validation
+    Footer("Closes"). alueRegex("\\d+")
+    // Describe configuration 1
+    type ("type"). cope("screen").description("Scope description")
+    Footer("Other").description("Other description")
 }
 ```
 
 @tab Groovy
 
 ```groovy
-iHubGitHooks {
-    // 添加提交类型
+iHubGitHooks LO
+    // Add Submission Type
     types 'type1', 'type2', 'type3'
-    // 开启范围检查
-    type 'build' scopes 'gradle' requiredScope true
-    // Footer必填
-    footer 'Footer' required true
-    // 提交类型是feat时Footer必填
-    footer 'Footer' requiredWithType 'feat'
-    // 注解值正则校验
-    footer 'Closes' valueRegex '\\d+'
-    // 描述配置1
-    type 'type' scope 'scope' description 'Scope description'
-    footer 'Other' description 'Other description'
+    // Open range checked
+    Type 'build' scops 'gradle' requiredScope true true
+    // Footer is required
+    Footer' required true
+    // Fetter 'Footer' requires Footer' type 'feat'
+    Footer 'Footer' requiredWithType 'feat'
+    // Annotate value validity
+    Footer 'Closes' valueRegex '\\\d+'
+    // Description configuration 1
+    type 'type' scope 'scope' description 'Scope' description'
+    Footer 'Other' description 'Other description'
 }
 ```
 
 :::
 
-@include(../snippet/explanation.md)
+@include(../snippet/exploation.md)
