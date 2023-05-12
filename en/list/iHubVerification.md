@@ -157,4 +157,4 @@ Test case reports will be generated and the console will print test cover.
 - Sample coverage of individual project tests ![](/img/printJacocoReportCoverage.png)
 - Project Summary Test Coverage Example ![](/img/printFinishedJacocoReportCoverage.png)
 
-@include(../snippet/footnote.md)
+@include(../nippet/footnote.md)
