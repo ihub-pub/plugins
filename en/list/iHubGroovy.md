@@ -46,4 +46,4 @@ Project default will depend on the following components：
 | `groovy-templates`   |
 | `groovy-xml`         |
 
-@include(../snippet/footnote.md)
+@include(../nippet/footnote.md)
