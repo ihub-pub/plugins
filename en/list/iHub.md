@@ -1,46 +1,46 @@
 # ihub
 
-::: info 插件说明
-`ihub`插件是基础插件，用于配置[组件仓库](#组件仓库)以及一些其他[扩展属性](#扩展属性)，配置与`build.gradle`。
+::: info plugin description
+`ihu`plugin is basic plugin to configure[component repository](#组件仓库)and some other[extension attributes](#扩展属性), configuration and`build.gradle`.
 :::
 
-| 信息   | 描述                                                                             |
-| ---- | ------------------------------------------------------------------------------ |
-| 插件ID | `pub.ihub.plugin`                                                              |
-| 插件名称 | `基础插件`                                                                         |
-| 插件类型 | `Project`[^Project]                                                            |
-| 扩展名称 | `iHub`                                                                         |
-| 插件依赖 | [ihub-git-hooks](iHubGitHooks)、[ihub-bom](iHubBom)、[ihub-version](iHubVersion) |
+| Information         | Description                                                                    |
+| ------------------- | ------------------------------------------------------------------------------ |
+| Plugin ID           | `pub.ihub.plugin`                                                              |
+| Plugin Name         | `Base Plugin`                                                                  |
+| Plugin Type         | `Project`[^Project]                                                            |
+| Extension Name      | `iHub`                                                                         |
+| Plugin Dependencies | [ihub-git-hooks](iHubGitHooks),[ihub-bom](iHubBom),[ihub-version](iHubVersion) |
 
-::: tip 插件功能
-1. 配置组件仓库，仓库明细[见](#组件仓库)
-2. 当主项目不含[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)和[version-catalog](https://docs.gradle.org/current/userguide/platforms.html)插件时，会默认导入`ihub-bom`插件
-3. 如果项目包含子项目，子项目也会引入本插件
+:::tip plugin functionality
+1. Configure Component Repository, repository details[See](#组件仓库)
+2. When the main project does not have[java-platform](https://docs.gradle.org/current/userguide/java_platform_plugin.html)and[version-catalog](https://docs.gradle.org/current/userguide/platforms.html)plugins will import`ihub-bom`plugins by default
+3. If the project contains a subproject, the subproject will also introduce this plugin
 :::
 
-## 扩展属性
+## Extended Properties
 
-| Extension                   | Description         | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
-| --------------------------- | ------------------- | ------- | --------- | --------- | --------- | --------- |
-| `mavenLocalEnabled`         | 是否启用本地仓库            | `false` | ✔         | ✔         | ❌         | ❌         |
-| `mavenAliYunEnabled`        | 是否启用阿里云代理仓库         | `false` | ✔         | ✔         | ✔         | ✔         |
-| `releaseRepoUrl`            | 正式版本仓库              | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `snapshotRepoUrl`           | 快照版本仓库              | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `repoAllowInsecureProtocol` | 是否允许不安全协议（是否允许http） | `false` | ✔         | ✔         | ❌         | ❌         |
-| `repoIncludeGroup`          | 仓库包含组（用于限制仓库范围）     | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `repoIncludeGroupRegex`     | 仓库包含组正则（用于限制仓库范围）   | `.*`    | ✔         | ✔         | ❌         | ❌         |
-| `repoUsername`              | 仓库用户名               | ❌       | ✔         | ✔         | ✔         | ✔         |
-| `repoPassword`              | 仓库密码                | ❌       | ✔         | ✔         | ✔         | ✔         |
-| `customizeRepoUrl`          | 自定义仓库               | ❌       | ✔         | ✔         | ❌         | ❌         |
+| Extension                   | Description                                                        | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
+| --------------------------- | ------------------------------------------------------------------ | ------- | --------- | --------- | --------- | --------- |
+| `MavenenLocalEnabled`       | Enable local repository                                            | `false` | ✔         | ✔         | ❌         | ❌         |
+| `Mavenen AliYunEnabled`     | Enable Aliyun Proxy Repository                                     | `false` | ✔         | ✔         | ✔         | ✔         |
+| `releaseRepoUrl`            | Official Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `snapshotRepoUrl`           | Snapshot Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `repoAllowInsecureProtocol` | Whether to allow the insecure protocol (whether http)              | `false` | ✔         | ✔         | ❌         | ❌         |
+| `RepoInclusion Group`       | Repository contains groups (used to limit repository range)        | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `repoInclude GroupRegex`    | Repository contains group regular (used to limit repository range) | `.*`    | ✔         | ✔         | ❌         | ❌         |
+| `repoUsername`              | Repository Username                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
+| `repoPassword`              | Repository Password                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
+| `customizeRepoUrl`          | Custom Repository                                                  | ❌       | ✔         | ✔         | ❌         | ❌         |
 
-## 插件安装
+## Plugin Installation
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
+plugins LOR
     id("pub.ihub.plugin")
 }
 ```
@@ -55,28 +55,28 @@ plugins {
 
 :::
 
-## 配置示例
+## Configuration Example
 
 ```properties
 iHub.mavenLocalEnabled=true
 iHub.mavenAliYunEnabled=true
 ```
 
-## 组件仓库
+## Component Repository
 
-为适应国内网络环境，配置组件仓库如下
+Configure component warehouses for adaptation to the domestic network environment as follows:
 
-| Name            | Description      | Url                                                                                                |
-| --------------- | ---------------- | -------------------------------------------------------------------------------------------------- |
-| `ProjectDirs`   | 项目本地组件           | `{rootProject.projectDir}/libs`                                                                    |
-| `MavenLocal`    | 本地仓库             | `{local}/.m2/repository`                                                                           |
-| `AliYunPublic`  | 阿里云聚合公有仓库        | https://maven.aliyun.com/repository/public <br> artifactUrls: https://repo1.maven.org/maven2 |
-| `AliYunGoogle`  | 阿里云Google代理仓库    | https://maven.aliyun.com/repository/google <br> artifactUrls: https://maven.google.com       |
-| `AliYunSpring`  | 阿里云Spring代理仓库    | https://maven.aliyun.com/repository/spring <br> artifactUrls: https://repo.spring.io/release |
-| `SpringRelease` | Spring Release仓库 | https://repo.spring.io/release                                                                     |
-| `ReleaseRepo`   | 私有Release仓库      | https://repo.xxx.com/release                                                                       |
-| `SnapshotRepo`  | 私有Snapshot仓库     | https://repo.xxx.com/snapshot                                                                      |
-| `CustomizeRepo` | 自定义仓库仓库          | https://repo.xxx.com/repo                                                                          |
-| `MavenRepo`     | Maven中央仓库        |                                                                                                    |
+| Name            | Description                    | Url                                                                                                |
+| --------------- | ------------------------------ | -------------------------------------------------------------------------------------------------- |
+| `ProjectDirs`   | Project Local Component        | `{rootProject.projectDir}/libs`                                                                    |
+| `MavenLocal`    | Local Repository               | `{local}/.m2/repository`                                                                           |
+| `AliYunPublic`  | Aliyun Aggregate Repository    | https://maven.aliyun.com/repository/public <br> artifactUrls: https://repo1.maven.org/maven2 |
+| `AliYunGoogle`  | Aliyun Google Proxy Repository | https://maven.aliun.com/repository/google <br> artifactUrls: https://maven.google.com        |
+| `AliYunSpring`  | Aliyun Spring Proxy Repository | https://maven.aliyun.com/repository/spring <br> artifactUrls: https://repo.spring.io/release |
+| `SpringRelease` | Spring Release Repository      | https://repo.spring.io/release                                                                     |
+| `ReleaseRepo`   | Private Release Repository     | https://repo.xxx.com/release                                                                       |
+| `SnapshotRepo`  | Private Snapshot repository    | https://repo.xxx.com/snapshot                                                                      |
+| `CustomizeRepo` | Custom repository              | https://repo.xxx.com/repo                                                                          |
+| `MavenRepo`     | Maven Central Repository       |                                                                                                    |
 
-@include(../snippet/explanation.md)
+@include(../snippet/exploation.md)
