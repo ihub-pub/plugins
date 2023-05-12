@@ -79,4 +79,4 @@ Configure component warehouses for adaptation to the domestic network environmen
 | `CustomizeRepo` | Custom repository              | https://repo.xxx.com/repo                                                                          |
 | `MavenRepo`     | Maven Central Repository       |                                                                                                    |
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
