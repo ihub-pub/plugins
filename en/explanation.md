@@ -1,19 +1,19 @@
 ---
-title: 配置说明
-icon: note
+title: Configuration Description
+icon: Notes
 ---
 
-## 属性配置说明
+## Attribute profile description
 
 > 插件配置属性获取目前支持4种方式：`扩展属性`（`Ext`）、`项目属性`（`Prj`）、`系统属性`（`Sys`）、`环境属性`（`Env`）， 属性优先级：`Sys` > `Env` > `Ext` > `Prj` - `Ext`（Extension）：插件自定义扩展属性，配置于`build.gradle`文件，配置方式详见[samples](https://github.com/ihub-pub/plugins/tree/main/samples) - `Prj`（Project）：项目属性，配置于`gradle.properties`文件，配置格式`扩展名`.`属性名`，如`iHub.mavenLocalEnabled=true`；如果需要通过命令行传递属性，可以使用`-P`参数，如`-PiHub.mavenLocalEnabled=true` - `Sys`（System）：系统属性，如命令行传递的信息等，配置格式`扩展名`.`属性名`，如`-DiHub.mavenLocalEnabled=true` - `Env`（Environment）：环境变量属性，配置格式全部大写，多个单词，用`_`分隔，如`MAVEN_LOCAL_ENABLED=true`
 
-## 系统属性扩展
+## System Attribute Extension
 
-> 可以给应用程序添加系统属性配置。
+> You can add system properties configuration to the application.
 
 ### runProperties
 
-> 任务运行时属性：用于配置运行时属性，配置如下：
+> Attribute：on task runtime is configured for running properties, following：
 
 ```groovy
 iHubBoot {
@@ -25,7 +25,7 @@ iHubBoot {
 
 ### runIncludePropNames
 
-> 运行时包含系统属性名称（`,`分割，支持通配符`*`）：用于配置指定系统属性，与[runProperties](explanation#runproperties)互斥，配置如下：
+> Running with system property name (``separated, supported wildcard`*`)：used to configure the specified system properties, and[runProperties](explanation#runproperties)mutually exclusive configured, following：
 
 ```groovy
 iHubBoot {
@@ -35,7 +35,7 @@ iHubBoot {
 
 ### runSkippedPropNames
 
-> 运行时排除系统属性名称（`,`分割，支持通配符`*`）：用于排除系统属性，配置如下：
+> Exclude system property name on runtime (`,`separated, supported wildcard`*`)：used to exclude system properties, configuration below：
 
 ```groovy
 iHubBoot {
@@ -43,11 +43,11 @@ iHubBoot {
 }
 ```
 
-### enabledLocalProperties
+### EnabledLocalProperties
 
-> 本地属性：可在项目根目录配置`.java-local.properties`属性文件，启用属性后会将属性文件中的配置添加的系统配置，配置如下：
+> Local properties：can be configured at the root of the project`.java-local.properties`Attribute files, enabling the properties to add the configuration in the property file as follows：
 
-`gradle.properties`配置
+`gradle.properties`configuration
 
 ```groovy
 iHubBoot {
@@ -55,10 +55,10 @@ iHubBoot {
 }
 ```
 
-`.java-local.properties`配置
+`.java-local.properties`Configuration
 
 ```properties
 spring.profiles.active=dev
 ```
 
-另外属性文件支持`.boot-java-local.properties`和`.test-java-local.properties`，分别用于扩展`bootRun`和`test`属性，优先级高于`.java-local.properties`
+Another property file supports`.boot-java-local.properties`and`.test-java-local.properties`, extension`bootRun`and`test`attributes, priority is higher than`.java-local.properties`
