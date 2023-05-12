@@ -1,36 +1,36 @@
-# Groovy项目基础配置
+# Groovy Project Base Configuration
 
-Groovy项目配置，参见[项目模板](https://github.com/ihub-pub/groovy-template)
+Groovy Project configuration, see[Project Template](https://github.com/ihub-pub/groovy-template)
 
-## 配置 wrapper
+## Configure wrapper
 
-@include(../snippet/gradle-wrapper.properties.md)
+@include(../nippet/gradle-wrapper.properties.md)
 
-## 配置 setting.gradle
+## Configure setting.gradle
 
 @include(../snippet/setting.gradle.md)
 
-## 配置 build.gradle
+## Configure build.gradle
 
-引入Groovy插件（[ihub-groovy](../iHubGroovy)）、测试插件（[ihub-test](../iHubTest)）以及验证插件（[ihub-verification](../iHubVerification)），配置[ihub-git-hooks](../iHubGitHooks)插件钩子命令：
+Introducing Groovy plugin ([ihu-groovy](../iHubGroovy)), test plugin ([ihub-test](../iHubTest)) and validation plugin ([ihub-certification](../iHubVerification)), config[ihub-git-hooks](../iHubGitHooks)plugin hook command：
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
-    id("pub.ihub.plugin.ihub-groovy")
-    id("pub.ihub.plugin.ihub-test")
-    id("pub.ihub.plugin.ihub-verification")
-    id("pub.ihub.plugin.ihub-git-hooks")
+plugins LOR
+    id("pub.ihub.plugin.ihu-groovy")
+    id("pub.ihub.plugin. Hub-test")
+    id("pub.ihub.plugin.ihub-version")
+    id("pub.ihub.plugin. Hub-git-hooks")
 }
 
 iHubGitHooks {
     hooks.set(mapOf(
-        "pre-commit" to "./gradlew build",
-        "commit-msg" to "./gradlew commitCheck"
-    ))
+        "precommit" to ". gradlew build",
+        "commit-msg" to "./gradlew committCheck"
+    )
 }
 ```
 
@@ -54,9 +54,9 @@ iHubGitHooks {
 
 :::
 
-## 配置 gradle.properties
+## Configure gradle.properties
 
-配置项目名称以及group，其中`name`为[ihub-settings](../iHubSettings)插件[扩展属性](../iHubSettings#扩展属性)，`group`为原生项目属性
+Configure project names and groups, where`name`is[ihub-settings](../iHubSettings)plugin[extension properties](../iHubSettings#扩展属性),`group`native project properties
 
 ```properties
 name=demo
