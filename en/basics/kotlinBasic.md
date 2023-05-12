@@ -1,62 +1,62 @@
-# Kotlin项目基础配置
+# Kotlin Project Base Configuration
 
-Kotlin项目配置，参见[项目模板](https://github.com/ihub-pub/kotlin-template)
+Kotlin Project configuration, see[Project Template](https://github.com/ihub-pub/kotlin-template)
 
-## 配置 wrapper
+## Configure wrapper
 
-@include(../snippet/gradle-wrapper.properties.md)
+@include(../nippet/gradle-wrapper.properties.md)
 
-## 配置 setting.gradle
+## Configure setting.gradle
 
 @include(../snippet/setting.gradle.md)
 
-## 配置 build.gradle
+## Configure build.gradle
 
-引入Kotlin插件（[ihub-kotlin](../iHubKotlin)）、测试插件（[ihub-test](../iHubTest)）以及验证插件（[ihub-verification](../iHubVerification)），配置[ihub-git-hooks](../iHubGitHooks)插件钩子命令：
+Import Kotlin plugin ([ihub-kotrin](../iHubKotlin)), test plugin ([ihub-test](../iHubTest)) and validation plugin ([ihub-certification](../iHubVerification)), config[ihub-git-hooks](../iHubGitHooks)plugin hook command：
 
-::: code-tabs#build
+:::code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins {
-    id("pub.ihub.plugin.ihub-kotlin")
-    id("pub.ihub.plugin.ihub-test")
-    id("pub.ihub.plugin.ihub-verification")
-    id("pub.ihub.plugin.ihub-git-hooks")
+plugins LOR
+    id("pub.ihub.plugin.ihu-kotlin")
+    id("pub.ihub.plugin. Hub-test")
+    id("pub.ihub.plugin.ihub-version")
+    id("pub.ihub.plugin. Hub-git-hooks")
 }
 
 iHubGitHooks {
     hooks.set(mapOf(
-        "pre-commit" to "./gradlew build",
-        "commit-msg" to "./gradlew commitCheck"
-    ))
+        "precommit" to ". gradlew build",
+        "commit-msg" to "./gradlew committCheck"
+    )
 }
 ```
 
 @tab Groovy
 
 ```groovy
-plugins {
+plugins LOR
     id 'pub.ihub.plugin.ihub-kotlin'
-    id 'pub.ihub.plugin.ihub-test'
-    id 'pub.ihub.plugin.ihub-verification'
-    id 'pub.ihub.plugin.ihub-git-hooks'
+    id 'pub.ihub.plugin. hub-test'
+    id 'pub.ihub.plugin.ihub-version'
+    id 'pub.ihub.plugin. Hub-git-hooks'
 }
 
 iHubGitHooks {
     hooks = [
-        'pre-commit': './gradlew build',
-        'commit-msg': './gradlew commitCheck'
+        'pre-commit': '. gradlew build',
+        'commit-msg': './gradlew committCheck'
     ]
 }
 ```
 
 :::
 
-## 配置 gradle.properties
+## Configure gradle.properties
 
-配置项目名称以及group，其中`name`为[ihub-settings](../iHubSettings)插件[扩展属性](../iHubSettings#扩展属性)，`group`为原生项目属性
+Configure project names and groups, where`name`is[ihub-settings](../iHubSettings)plugin[extension properties](../iHubSettings#扩展属性),`group`native project properties
 
 ```properties
 name=demo
