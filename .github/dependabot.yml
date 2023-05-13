@@ -24,12 +24,3 @@ updates:
       - "henry-hub"
     allow:
       - dependency-type: "production"
-
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: daily
-    assignees:
-      - "henry-hub"
-    allow:
-      - dependency-type: "production"

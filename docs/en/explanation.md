@@ -1,4 +1,0 @@
----
-title: Explanation
-icon: note
----
