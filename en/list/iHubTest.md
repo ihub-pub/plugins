@@ -1,6 +1,6 @@
 # ihub-test
 
-:::info plugin description
+::: info plugin description
 `ihub-test`plugin configuration test task.
 :::
 
