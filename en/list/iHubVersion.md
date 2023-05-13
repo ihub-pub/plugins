@@ -31,8 +31,8 @@
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-version")
+plugins {
+    id("pub.ihub.plugin.ihub-version")
 }
 ```
 
@@ -72,4 +72,4 @@ iHubVersion {
 
 :::
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
