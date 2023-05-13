@@ -15,8 +15,8 @@
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-groovy")
+plugins {
+    id("pub.ihub.plugin.ihub-groovy")
 }
 ```
 
@@ -46,4 +46,4 @@ Project default will depend on the following components：
 | `groovy-templates`   |
 | `groovy-xml`         |
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
