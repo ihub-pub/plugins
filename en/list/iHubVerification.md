@@ -66,8 +66,8 @@ RuleSets = [
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-version")
+plugins {
+    id("pub.ihub.plugin.ihub-verification")
 }
 ```
 
@@ -160,4 +160,4 @@ Test case reports will be generated and the console will print test cover.
 - Sample coverage of individual project tests ![](/img/printJacocoReportCoverage.png)
 - Project Summary Test Coverage Example ![](/img/printFinishedJacocoReportCoverage.png)
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
