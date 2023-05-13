@@ -35,7 +35,7 @@
 
 ```properties
 name=demo
-iHubSettings.includeDirs=res,service
+iHubSettings.includeDirs=rest,service
 iHubSettings.includeBom=ihub-bom
 ```
 
@@ -50,22 +50,22 @@ iHubSettings.includeBom=ihub-bom
 - Directory Structure:
 
 ```
-+--reset
-+--sdk
-\--service
++---rest
++---sdk
+\---service
 ```
 
 - Configure:
 
-:::code-tabs#build
+::: code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-import pub.ihub.plugin.IHubSettingsextension
+import pub.ihub.plugin.IHubSettingsExtension
 
-configure<IHubSettingsExtension> LO
-    includeProjects ("rest", "sdk", "service")
+configure<IHubSettingsExtension> {
+    includeProjects("rest", "sdk", "service")
 }
 ```
 
@@ -84,18 +84,18 @@ iHubSettings {
 - Directory Structure
 
 ```
-+--reset
-+--service
-+--test
-\--other
++---rest
++---service
++---test
+\---other
     +---a
     +---b
-    \--c
+    \---c
 ```
 
 - Configure
 
-:::code-tabs#build
+::: code-tabs#build
 
 @tab Kotlin
 
@@ -114,10 +114,10 @@ configure<IHubSettingsExtension> {
 
 ```groovy
 iHubSettings {
-    include Projects 'rest', 'service' suffix '-suffix'
-    include Projects 'test' noPrefix
-    includeProjects 'other' prefix 'prefix-' skippedDirs' 'c' subproject
-    include Projects 'subject' prefix 'prefix-' suffix '-'suffix' onlySubproject
+    includeProjects 'rest', 'service' suffix '-suffix'
+    includeProjects 'test' noPrefix
+    includeProjects 'other' prefix 'prefix-' skippedDirs 'c' subproject
+    includeProjects 'subproject' prefix 'prefix-' suffix '-suffix' onlySubproject
 }
 ```
 
@@ -143,19 +143,19 @@ Private repository, custom repository configuration see[extension attributes](iH
 
 The plugin is configured with `ihub series plugins` and the following plug-in default versions:
 
-| Plugins                       | Default Version                                                      |
-| ----------------------------- | -------------------------------------------------------------------- |
-| `com.gradle.plugin-published` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
-| `pub.ihub.plugin.*`           | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
+| Plugin                      | Version                                                              |
+| --------------------------- | -------------------------------------------------------------------- |
+| `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
+| `pub.ihub.plugin.*`         | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
 
 Use plugins without plating numbers to configure below:
 
-:::code-tabs#build
+::: code-tabs#build
 
 @tab Kotlin
 
 ```kotlin
-plugins LOR
+plugins {
     id("pub.ihub.plugin")
     id("com.gradle.plugin-publish")
 }
@@ -164,7 +164,7 @@ plugins LOR
 @tab Groovy
 
 ```groovy
-plugins LO
+plugins {
     id 'pub.ihub.plugin'
     id 'com.gradle.plugin-publish'
 }
@@ -189,4 +189,4 @@ dependencyResolutionManagement {
 }
 ```
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
