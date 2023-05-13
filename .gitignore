@@ -1,3 +1,13 @@
+.vscode
+
+.DS_Store
+Thumbs.db
+db.json
+*.log
+public/
+.deploy*/
+.history/
+
 # Node.js #
 .temp
 .cache
