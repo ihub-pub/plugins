@@ -38,7 +38,7 @@ export default defineUserConfig({
         },
     },
 
-    pagePatterns: ["**/*.md", "!snippet/*.md"],
+    pagePatterns: ["**/*.md", "!snippet/*.md", "!node_modules/**"],
     theme,
 
     plugins: [
