@@ -140,26 +140,23 @@ Private repository, custom repository configuration see[extension attributes](iH
 
 ## Default Version
 
-``ProjectDirs`</td> 
+The plugin is configured with <code>ihub series plugins`` and the following plug-in default versions:
 
-</tr> 
+`com.gradle.plugin-published`</p> 
 
-</tbody> </table>
-
-<h2 spaces-before="0">Default Version</h2>
-
-<p spaces-before="0">The plugin is configured with <code>ihub series plugins`` and the following plug-in default versions:
-
-| Plugins                       | Version                                                              |
+| Plugins                       | Default Version                                                      |
 | ----------------------------- | -------------------------------------------------------------------- |
 | `com.gradle.plugin-published` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
 | `pub.ihub.plugin.*`           | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
+
 
 Use plugins without plating numbers to configure below：
 
 :::code-tabs#build
 
 @tab Kotlin
+
+
 
 ```kotlin
 plugins LOR
@@ -168,7 +165,10 @@ plugins LOR
 }
 ```
 
+
 @tab Groovy
+
+
 
 ```groovy
 plugins LO
@@ -177,11 +177,16 @@ plugins LO
 }
 ```
 
-:::
+
+:::  
+
+
 
 ## Configure catalog
 
 Configure the default version directory components`ihubibs`
+
+
 
 ```groovy
 dependencyResolutionManagement {
@@ -195,5 +200,6 @@ dependencyResolutionManagement {
     }
 }
 ```
+
 
 @include(../snippet/exploation.md)
