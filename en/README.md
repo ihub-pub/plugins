@@ -20,7 +20,7 @@ Adding`pub.ihub.plugin`Basic plugins that provide common component repository co
 @tab Kotlin
 
 ```kotlin
-plugins LOR
+plugins {
     id("pub.ihub.plugin")
 }
 ```
@@ -42,7 +42,7 @@ Additional：`ihub-setup`plugins are not required. If your project does not requ
 @tab Kotlin
 
 ```kotlin
-plugins LO
+plugins {
     id("pub.ihub.plugin") version "${ihub.plugin.version}"
 }
 ```
@@ -50,8 +50,8 @@ plugins LO
 @tab Groovy
 
 ```groovy
-plugins LO
-    id 'pub.ihub.plugin' version ' '${ihub.plugin.version}'
+plugins {
+    id 'pub.ihub.plugin' version '${ihub.plugin.version}'
 }
 ```
 
