@@ -4,7 +4,7 @@ A primary multi-subproject configuration, see[project template](https://github.c
 
 ## Configure wrapper
 
-@include(../nippet/gradle-wrapper.properties.md)
+@include(../snippet/gradle-wrapper.properties.md)
 
 ## Configure setting.gradle
 

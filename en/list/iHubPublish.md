@@ -30,7 +30,7 @@
 @tab Kotlin
 
 ```kotlin
-plugins LO
+plugins {
     id("pub.ihub.plugin.ihub-publish")
 }
 ```
@@ -83,4 +83,4 @@ Dependencies {
 }
 ```
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)

@@ -51,8 +51,8 @@
 @tab Kotlin
 
 ```kotlin
-plugins LO
-    id("pub.ihub.plugin.ihu-boot")
+plugins {
+    id("pub.ihub.plugin.ihub-boot")
 }
 ```
 
@@ -90,4 +90,4 @@ iHubBoot {
 
 :::
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)

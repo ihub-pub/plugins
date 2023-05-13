@@ -4,7 +4,7 @@ Kotlin Project configuration, see[Project Template](https://github.com/ihub-pub/
 
 ## Configure wrapper
 
-@include(../nippet/gradle-wrapper.properties.md)
+@include(../snippet/gradle-wrapper.properties.md)
 
 ## Configure setting.gradle
 
@@ -19,35 +19,35 @@ Import Kotlin plugin ([ihub-kotrin](../iHubKotlin)), test plugin ([ihub-test](..
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-kotlin")
-    id("pub.ihub.plugin. Hub-test")
-    id("pub.ihub.plugin.ihub-version")
-    id("pub.ihub.plugin. Hub-git-hooks")
+plugins {
+    id("pub.ihub.plugin.ihub-kotlin")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-git-hooks")
 }
 
 iHubGitHooks {
     hooks.set(mapOf(
-        "precommit" to ". gradlew build",
-        "commit-msg" to "./gradlew committCheck"
-    )
+        "pre-commit" to "./gradlew build",
+        "commit-msg" to "./gradlew commitCheck"
+    ))
 }
 ```
 
 @tab Groovy
 
 ```groovy
-plugins LOR
+plugins {
     id 'pub.ihub.plugin.ihub-kotlin'
-    id 'pub.ihub.plugin. hub-test'
-    id 'pub.ihub.plugin.ihub-version'
-    id 'pub.ihub.plugin. Hub-git-hooks'
+    id 'pub.ihub.plugin.ihub-test'
+    id 'pub.ihub.plugin.ihub-verification'
+    id 'pub.ihub.plugin.ihub-git-hooks'
 }
 
 iHubGitHooks {
     hooks = [
-        'pre-commit': '. gradlew build',
-        'commit-msg': './gradlew committCheck'
+        'pre-commit': './gradlew build',
+        'commit-msg': './gradlew commitCheck'
     ]
 }
 ```

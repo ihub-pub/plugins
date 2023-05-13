@@ -26,8 +26,8 @@
 @tab Kotlin
 
 ```kotlin
-plugins LO
-    id("pub.ihub.plugin.ihu-native")
+plugins {
+    id("pub.ihub.plugin.ihub-native")
 }
 ```
 
@@ -69,4 +69,4 @@ iHubNative LO
 
 :::
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)

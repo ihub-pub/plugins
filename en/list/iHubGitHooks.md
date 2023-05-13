@@ -79,8 +79,8 @@ If both hooks properties are not configured, use the default hooksdirectory :
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-git-hooks")
+plugins {
+    id("pub.ihub.plugin.ihub-git-hooks")
 }
 ```
 
@@ -180,4 +180,4 @@ iHubGitHooks LO
 
 :::
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)

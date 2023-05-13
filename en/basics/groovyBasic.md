@@ -4,7 +4,7 @@ Groovy Project configuration, see[Project Template](https://github.com/ihub-pub/
 
 ## Configure wrapper
 
-@include(../nippet/gradle-wrapper.properties.md)
+@include(../snippet/gradle-wrapper.properties.md)
 
 ## Configure setting.gradle
 
@@ -19,18 +19,18 @@ Introducing Groovy plugin ([ihu-groovy](../iHubGroovy)), test plugin ([ihub-test
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-groovy")
-    id("pub.ihub.plugin. Hub-test")
-    id("pub.ihub.plugin.ihub-version")
-    id("pub.ihub.plugin. Hub-git-hooks")
+plugins {
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-git-hooks")
 }
 
 iHubGitHooks {
     hooks.set(mapOf(
-        "precommit" to ". gradlew build",
-        "commit-msg" to "./gradlew committCheck"
-    )
+        "pre-commit" to "./gradlew build",
+        "commit-msg" to "./gradlew commitCheck"
+    ))
 }
 ```
 
