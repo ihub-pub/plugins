@@ -19,7 +19,7 @@
 @tab Kotlin
 
 ```kotlin
-plugins LO
+plugins {
     id("pub.ihub.plugin.ihub-bom")
 }
 ```
@@ -58,7 +58,7 @@ iHubBom {
 
 ```groovy
 iHubBom {
-    import Boms {
+    importBoms {
         group 'pub.ihub.lib' module 'ihub-bom' version 'ihub.lib.version'
     }
 }
@@ -73,9 +73,9 @@ iHubBom {
 @tab Kotlin
 
 ```kotlin
-iHubBom has been
+iHubBom {
     importBoms {
-        dependencyVersions $
+        dependencyVersions {
             group("pub.ihub.lib").modules("ihub-core", "ihub-process").version("ihub.lib.version")
         }
     }
@@ -85,8 +85,8 @@ iHubBom has been
 @tab Groovy
 
 ```groovy
-iHubBom has
-    import Boms but has
+iHubBom {
+    importBoms {
         dependencyVersions {
             group 'pub.ihub.lib' modules 'ihub-core', 'ihub-process' version 'ihub.lib.version'
         }
@@ -147,11 +147,11 @@ iHubBom {
 @tab Groovy
 
 ```groovy
-iHubBom has been
-    importBoms $
-        excludeModules $
+iHubBom {
+    importBoms {
+        excludeModules {
             group 'org.slf4j' modules 'slf4j-api'
-            // support excluding whole group
+            // 支持排除整个组
             group 'pub.ihub'
         }
     }
@@ -167,9 +167,9 @@ iHubBom has been
 @tab Kotlin
 
 ```kotlin
-iHubBom has been
+iHubBom {
     importBoms {
-        dependent agencies {
+        dependencies {
             implementation("pub.ihub.lib:ihub-core")
         }
     }
@@ -180,7 +180,7 @@ iHubBom has been
 
 ```groovy
 iHubBom {
-    import Boms {
+    importBoms {
         dependencies {
             implementation 'pub.ihub.lib:ihub-core'
         }
@@ -237,4 +237,4 @@ Built in the plugin the default BOM [pub.ihub.lib:ihub-dependencies](https://mvn
 
 Default catalog within plugin [pub.ihub.lib:ihub-libs](https://mvnrepository.com/artifact/pub.ihub.lib/ihub-libs) to maintain project component aliases and versions, distinct from platforms[See](https://docs.gradle.org/current/userguide/platforms.html#sub:platforms-vs-catalog)
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
