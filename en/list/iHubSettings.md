@@ -12,26 +12,26 @@
 
 ### DSL extension support configuration
 
-| Extended Method    | Extended Description                                                                            |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| `include Projects` | Add Items (Support for Multiple Projects)                                                       |
-| `Prefix`           | Project Prefix (default`main project name -`)                                                   |
-| `noPrefix`         | No items prefix                                                                                 |
-| `suffix`           | Project Suffix                                                                                  |
-| `Subproject`       | Include 3 Level Subprojects                                                                     |
-| `alone Subproject` | Only three tier subprojects (not including the current one, Level 3 are`the main item`sub-item) |
-| `skippedDirs`      | Ignore Level 3 Subproject Directory                                                             |
+| Extended Method   | Extended Description                                                                            |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| `includeProjects` | Add Items (Support for Multiple Projects)                                                       |
+| `prefix`          | Project Prefix (default`main project name -`)                                                   |
+| `noPrefix`        | No items prefix                                                                                 |
+| `suffix`          | Project Suffix                                                                                  |
+| `subproject`      | Include 3 Level Subprojects                                                                     |
+| `onlySubproject`  | Only three tier subprojects (not including the current one, Level 3 are`the main item`sub-item) |
+| `skippedDirs`     | Ignore Level 3 Subproject Directory                                                             |
 
 ### `gradle.properties`Configure support properties
 
-| Property                   | Description                                                                                             |
-| -------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `Name`                     | Configure primary project name                                                                          |
-| `iHubSettings.includeDirs` | Include project paths, multiple directories", split                                                     |
-| `iHubSettings.skippedDirs` | Exclude project paths, multiple directories", split                                                     |
-| `iHubSettings.includeBom`  | Used to configure the bom component, including all subprojects with[ihub-public](iHubPublish)components |
+| Property                   | Description                                                                                              |
+| -------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `name`                     | Configure primary project name                                                                           |
+| `iHubSettings.includeDirs` | Include project paths, multiple directories ", " split                                                   |
+| `iHubSettings.skippedDirs` | Exclude project paths, multiple directories ", " split                                                   |
+| `iHubSettings.includeBom`  | Used to configure the bom component, including all subprojects with[ihub-publish](iHubPublish)components |
 
-> Configure the following：
+> Configure the following:
 
 ```properties
 name=demo
@@ -47,7 +47,7 @@ iHubSettings.includeBom=ihub-bom
 
 ### Configure Subprojects
 
-- Directory Structure：
+- Directory Structure:
 
 ```
 +--reset
@@ -55,7 +55,7 @@ iHubSettings.includeBom=ihub-bom
 \--service
 ```
 
-- Configure：
+- Configure:
 
 :::code-tabs#build
 
@@ -81,7 +81,7 @@ iHubSettings {
 
 ### Configure Level 3 Subprojects
 
-- Directory Structure：
+- Directory Structure
 
 ```
 +--reset
@@ -93,7 +93,7 @@ iHubSettings {
     \--c
 ```
 
-- Configure：
+- Configure
 
 :::code-tabs#build
 
@@ -124,7 +124,8 @@ iHubSettings {
 :::
 
 ::: warning
-plugins exclude common non-project directories,`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle` :::: `
+plugins exclude common non-project directories, `build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle`
+:::
 
 ## Default Plugin Repositories
 
@@ -140,16 +141,14 @@ Private repository, custom repository configuration see[extension attributes](iH
 
 ## Default Version
 
-The plugin is configured with <code>ihub series plugins`` and the following plug-in default versions:
-
-`com.gradle.plugin-published`
+The plugin is configured with `ihub series plugins` and the following plug-in default versions:
 
 | Plugins                       | Default Version                                                      |
 | ----------------------------- | -------------------------------------------------------------------- |
 | `com.gradle.plugin-published` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
 | `pub.ihub.plugin.*`           | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
 
-Use plugins without plating numbers to configure below：
+Use plugins without plating numbers to configure below:
 
 :::code-tabs#build
 
@@ -175,7 +174,7 @@ plugins LO
 
 ## Configure catalog
 
-Configure the default version directory components`ihubibs`
+Configure the default version directory components`ihubLibs`
 
 ```groovy
 dependencyResolutionManagement {
