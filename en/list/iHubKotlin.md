@@ -15,8 +15,8 @@
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-kotlin")
+plugins {
+    id("pub.ihub.plugin.ihub-kotlin")
 }
 ```
 
@@ -30,4 +30,4 @@ plugins {
 
 :::
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
