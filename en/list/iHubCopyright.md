@@ -15,7 +15,7 @@
 @tab Kotlin
 
 ```kotlin
-plugins LOR
+plugins {
     id("pub.ihub.plugin.ihub-copyright")
 }
 ```
@@ -37,12 +37,12 @@ or
 @tab Kotlin
 
 ```kotlin
-plugins LO
+plugins {
     id("pub.ihub.plugin")
 }
 
-applet {
-    plugin("pub.ihub.plugin.ihu-copyright")
+apply {
+    plugin("pub.ihub.plugin.ihub-copyright")
 }
 ```
 
@@ -76,4 +76,4 @@ limitations under the License.
 
 2. Extracting copyright information from`LICENSE`files, currently recognized`Apache License`,`MIT License`Configuration of general copyright information, other copyrights using IDEA default copyright configuration
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
