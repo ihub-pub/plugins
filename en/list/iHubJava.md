@@ -40,8 +40,8 @@ Since plugins will process some configuration at`beforEvalate`, root items will 
 @tab Kotlin
 
 ```kotlin
-plugins LOR
-    id("pub.ihub.plugin.ihu-java")
+plugins {
+    id("pub.ihub.plugin.ihub-java")
 }
 ```
 
@@ -210,4 +210,4 @@ dependagencies have {
 
 :::
 
-@include(../snippet/exploation.md)
+@include(../snippet/footnote.md)
