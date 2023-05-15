@@ -168,4 +168,28 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '自动同意Scan插件条款测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+
+        when: '构建项目'
+        if (scan) {
+            gradleBuilder.withArguments('--scan')
+        }
+        if (isActions) {
+            gradleBuilder.withEnvironment('GITHUB_ACTIONS': 'true')
+        }
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        where:
+        scan  | isActions
+        true  | true
+        true  | false
+        false | true
+        false | false
+    }
+
 }
