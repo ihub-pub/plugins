@@ -23,11 +23,8 @@ jobs:
         uses: actions/setup-java@5ffc13f4174014e2d4d4572b3d74c3fa61aeb2c2 # v3.11.0
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: 'gradle'
-
-      - name: Chmod
-        run: chmod +x ./gradlew
 
       - name: Publish to Gradle Plugins
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629 # v2.4.2

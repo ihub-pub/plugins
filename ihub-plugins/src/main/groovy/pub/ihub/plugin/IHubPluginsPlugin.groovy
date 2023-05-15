@@ -39,6 +39,14 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 ', You can see the documentation to learn more, See https://doc.ihub.pub/plugins.'
 
             applyPlugin IHubVersionPlugin
+
+            // Github Actions环境下，自动同意Scan插件条款
+            if (project.hasProperty('buildScan') && System.getenv('GITHUB_ACTIONS')) {
+                project.buildScan {
+                    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+                    termsOfServiceAgree = 'yes'
+                }
+            }
         }
 
         // 默认应用IHubBom插件
