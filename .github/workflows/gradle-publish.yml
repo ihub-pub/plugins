@@ -32,7 +32,7 @@ jobs:
       - name: Publish to Gradle Plugins
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629 # v2.4.2
         with:
-          arguments: publishPlugins -DiHubPublish.applyGithubPom=true
+          arguments: publishPlugins -DiHubPublish.applyGithubPom=true -DiHubPublish.publishSources=false
         env:
           GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
           GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
