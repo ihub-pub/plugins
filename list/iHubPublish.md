@@ -20,6 +20,7 @@
 | `signingKeyId` | 签名key | ❌ | ✔ | ✔  | ✔ | ✔ |
 | `signingSecretKey` | 签名密钥 | ❌ | ✔ | ✔  | ✔ | ✔ |
 | `signingPassword` | 签名密码 | ❌ | ✔ | ✔  | ✔ | ✔ |
+| `publishSources` | 是否发布源码 | `true` | ✔ | ✔  | ✔ | ❌ |
 | `publishDocs` | 是否发布文档 | `false` | ✔ | ✔  | ✔ | ❌ |
 | `applyGithubPom` | 是否应用GithubPom插件 | `false` | ✔ | ✔  | ✔ | ❌ |
 
