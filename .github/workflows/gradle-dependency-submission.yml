@@ -1,7 +1,7 @@
 name: Gradle Dependency Submission
 on:
   schedule:
-    - cron: '0 16 * * *'
+    - cron: '0 */6 * * *'
 
 permissions:
   contents: read
