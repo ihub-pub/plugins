@@ -95,6 +95,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     }
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
+        boolean publishSources = extension.publishSources.get()
         boolean publishDocs = extension.publishDocs.get()
         withExtension(PublishingExtension) {
             it.publications {
@@ -111,9 +112,10 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
                     // release版本时发布sources以及docs包
                     if (release) {
-                        List tasks = [
-                            this.registerSourcesJar()
-                        ]
+                        List tasks = []
+                        if (publishSources) {
+                            tasks << this.registerSourcesJar()
+                        }
                         if (publishDocs) {
                             tasks << this.registerJavadocsJar()
                         }

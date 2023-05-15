@@ -56,6 +56,12 @@ interface IHubPublishExtension extends IHubExtensionAware {
     Property<String> getSigningPassword()
 
     /**
+     * 是否发布源码
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'true', genericType = Boolean)
+    Property<Boolean> getPublishSources()
+
+    /**
      * 是否发布文档
      */
     @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'false', genericType = Boolean)

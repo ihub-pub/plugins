@@ -50,6 +50,7 @@ iHubPublish.publishNeedSign=true
 iHubPublish.signingKeyId=id
 iHubPublish.signingSecretKey=secret
 iHubPublish.signingPassword=password
+iHubPublish.publishSources=false
 iHubPublish.publishDocs=true
 '''
         result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password')
