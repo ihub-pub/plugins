@@ -31,9 +31,6 @@ jobs:
           distribution: 'adopt'
           cache: 'gradle'
 
-      - name: Chmod
-        run: chmod +x ./gradlew
-
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629 # v2.4.2
         with:
@@ -97,9 +94,6 @@ jobs:
         uses: testspace-com/setup-testspace@ee1482f978eb5010ec27b6f6372904f01f2edd68 # v1.0.6
         with:
           domain: ${{ github.repository_owner }}
-
-      - name: Chmod
-        run: chmod +x ./gradlew
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629 # v2.4.2

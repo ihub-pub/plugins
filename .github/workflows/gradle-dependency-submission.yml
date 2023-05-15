@@ -26,7 +26,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-          cache: 'gradle'
 
       - name: Gradle Dependency Submission
         uses: mikepenz/gradle-dependency-submission@aa82af7186ba17eb630a7d47c840ba8a3185ac91 # v0.8.6
