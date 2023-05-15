@@ -96,10 +96,3 @@ subprojects {
         enabled = false
     }
 }
-
-if (hasProperty('buildScan') && System.getenv('GITHUB_ACTIONS')) {
-    buildScan {
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
-    }
-}
