@@ -38,20 +38,20 @@
 
 <table>
 <tr><td>项目目录</td><td>插件ID</td><td>插件名称</td><td>插件类型</td><td>插件描述</td></tr>
-<tr><td>ihub-settings</td><td><a href="https://doc.ihub.pub/plugins/iHubSettings">pub.ihub.plugin.ihub-settings</a></td><td>设置插件</td><td>Settings</td><td>插件仓库、插件版本以及子项目管理</td></tr>
-<tr><td rowspan="3">ihub-plugins</td><td><a href="https://doc.ihub.pub/plugins/iHub">pub.ihub.plugin</a></td><td>基础插件</td><td>Project</td><td>基础插件，用于配置组件仓库以及一些其他扩展属性</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/iHubVersion">pub.ihub.plugin.ihub-version</a></td><td>版本插件</td><td>Project</td><td>集成并加强<a href="https://plugins.gradle.org/plugin/com.github.ben-manes.versions">ben-manes.versions</a>插件</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/iHubCopyright">pub.ihub.plugin.ihub-copyright</a></td><td>版权插件</td><td>Project</td><td>自动配置IDEA版权信息</td></tr>
-<tr><td>ihub-bom</td><td><a href="https://doc.ihub.pub/plugins/iHubBom">pub.ihub.plugin.ihub-bom</a></td><td>Bom插件</td><td>Project</td><td>配置项目依赖组件版本以及兼容性管理</td></tr>
-<tr><td>ihub-java</td><td><a href="https://doc.ihub.pub/plugins/iHubJava">pub.ihub.plugin.ihub-java</a></td><td>Java插件</td><td>Project</td><td>集成Java相关插件环境、配置一些默认依赖以及兼容性配置</td></tr>
-<tr><td>ihub-groovy</td><td><a href="https://doc.ihub.pub/plugins/iHubGroovy">pub.ihub.plugin.ihub-groovy</a></td><td>Groovy插件</td><td>Project</td><td>集成Groovy相关插件环境以及配置Groovy默认组件依赖</td></tr>
-<tr><td>ihub-kotlin</td><td><a href="https://doc.ihub.pub/plugins/iHubKotlin">pub.ihub.plugin.ihub-kotlin</a></td><td>Kotlin插件</td><td>Project</td><td>集成Kotlin相关插件环境</td></tr>
-<tr><td>ihub-publish</td><td><a href="https://doc.ihub.pub/plugins/iHubPublish">pub.ihub.plugin.ihub-publish</a></td><td>发布插件</td><td>Project</td><td>集成组件发布相关插件环境，配置发布仓库以及其他默认配置</td></tr>
-<tr><td rowspan="2">ihub-verification</td><td><a href="https://doc.ihub.pub/plugins/iHubTest">pub.ihub.plugin.ihub-test</a></td><td>测试插件</td><td>Project</td><td>配置测试任务</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/iHubVerification">pub.ihub.plugin.ihub-verification</a></td><td>验证插件</td><td>Project</td><td>配置代码静态检查以及测试用例覆盖率等</td></tr>
-<tr><td rowspan="2">ihub-spring</td><td><a href="https://doc.ihub.pub/plugins/iHubBoot">pub.ihub.plugin.ihub-boot</a></td><td>Boot插件</td><td>Project</td><td>集成spring-boot插件以及镜像默认配置</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/iHubNative">pub.ihub.plugin.ihub-native</a></td><td>Native插件</td><td>Project</td><td>基于ihub-boot扩展引入org.graalvm.buildtools.native插件</td></tr>
-<tr><td>ihub-githooks</td><td><a href="https://doc.ihub.pub/plugins/iHubGitHooks">pub.ihub.plugin.ihub-git-hooks</a></td><td>GitHooks插件</td><td>Project</td><td>配置GitHooks，可以为git操作配置一些钩子命令</td></tr>
+<tr><td>ihub-settings</td><td><a href="https://doc.ihub.pub/plugins/list/iHubSettings">pub.ihub.plugin.ihub-settings</a></td><td>设置插件</td><td>Settings</td><td>插件仓库、插件版本以及子项目管理</td></tr>
+<tr><td rowspan="3">ihub-plugins</td><td><a href="https://doc.ihub.pub/plugins/list/iHub">pub.ihub.plugin</a></td><td>基础插件</td><td>Project</td><td>基础插件，用于配置组件仓库以及一些其他扩展属性</td></tr>
+<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubVersion">pub.ihub.plugin.ihub-version</a></td><td>版本插件</td><td>Project</td><td>集成并加强<a href="https://plugins.gradle.org/plugin/list/com.github.ben-manes.versions">ben-manes.versions</a>插件</td></tr>
+<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubCopyright">pub.ihub.plugin.ihub-copyright</a></td><td>版权插件</td><td>Project</td><td>自动配置IDEA版权信息</td></tr>
+<tr><td>ihub-bom</td><td><a href="https://doc.ihub.pub/plugins/list/iHubBom">pub.ihub.plugin.ihub-bom</a></td><td>Bom插件</td><td>Project</td><td>配置项目依赖组件版本以及兼容性管理</td></tr>
+<tr><td>ihub-java</td><td><a href="https://doc.ihub.pub/plugins/list/iHubJava">pub.ihub.plugin.ihub-java</a></td><td>Java插件</td><td>Project</td><td>集成Java相关插件环境、配置一些默认依赖以及兼容性配置</td></tr>
+<tr><td>ihub-groovy</td><td><a href="https://doc.ihub.pub/plugins/list/iHubGroovy">pub.ihub.plugin.ihub-groovy</a></td><td>Groovy插件</td><td>Project</td><td>集成Groovy相关插件环境以及配置Groovy默认组件依赖</td></tr>
+<tr><td>ihub-kotlin</td><td><a href="https://doc.ihub.pub/plugins/list/iHubKotlin">pub.ihub.plugin.ihub-kotlin</a></td><td>Kotlin插件</td><td>Project</td><td>集成Kotlin相关插件环境</td></tr>
+<tr><td>ihub-publish</td><td><a href="https://doc.ihub.pub/plugins/list/iHubPublish">pub.ihub.plugin.ihub-publish</a></td><td>发布插件</td><td>Project</td><td>集成组件发布相关插件环境，配置发布仓库以及其他默认配置</td></tr>
+<tr><td rowspan="2">ihub-verification</td><td><a href="https://doc.ihub.pub/plugins/list/iHubTest">pub.ihub.plugin.ihub-test</a></td><td>测试插件</td><td>Project</td><td>配置测试任务</td></tr>
+<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubVerification">pub.ihub.plugin.ihub-verification</a></td><td>验证插件</td><td>Project</td><td>配置代码静态检查以及测试用例覆盖率等</td></tr>
+<tr><td rowspan="2">ihub-spring</td><td><a href="https://doc.ihub.pub/plugins/list/iHubBoot">pub.ihub.plugin.ihub-boot</a></td><td>Boot插件</td><td>Project</td><td>集成spring-boot插件以及镜像默认配置</td></tr>
+<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubNative">pub.ihub.plugin.ihub-native</a></td><td>Native插件</td><td>Project</td><td>基于ihub-boot扩展引入org.graalvm.buildtools.native插件</td></tr>
+<tr><td>ihub-githooks</td><td><a href="https://doc.ihub.pub/plugins/list/iHubGitHooks">pub.ihub.plugin.ihub-git-hooks</a></td><td>GitHooks插件</td><td>Project</td><td>配置GitHooks，可以为git操作配置一些钩子命令</td></tr>
 </table>
 
 ## 🧭 使用指南
