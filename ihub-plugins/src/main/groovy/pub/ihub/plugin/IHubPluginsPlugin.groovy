@@ -75,7 +75,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                     maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',
                         'https://repo.spring.io/release')
                 }
-                maven mavenRepo('SpringRelease', 'https://repo.spring.io/release')
                 // 添加私有仓库
                 ext.releaseRepoUrl.orNull?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
                 ext.snapshotRepoUrl.orNull?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
