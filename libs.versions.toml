@@ -8,6 +8,7 @@ freefair-utils = { module = 'io.freefair.gradle:plugin-utils', version.ref = 'fr
 freefair-git = { module = 'io.freefair.gradle:git-plugin', version.ref = 'freefair' }
 freefair-lombok = { module = 'io.freefair.gradle:lombok-plugin', version.ref = 'freefair' }
 freefair-github = { module = 'io.freefair.gradle:github-plugin', version.ref = 'freefair' }
+freefair-settings = { module = 'io.freefair.gradle:settings-plugin', version.ref = 'freefair' }
 ben-manes-versions = { module = 'com.github.ben-manes:gradle-versions-plugin' }
 byte-buddy = { module = 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin' }
 jmolecules-bytebuddy = { module = 'org.jmolecules.integrations:jmolecules-bytebuddy' }

@@ -86,7 +86,6 @@ iHub.mavenAliYunEnabled=true
 │ AliYunPublic(https://maven.aliyun.com/repository/public)                                         │
 │ AliYunGoogle(https://maven.aliyun.com/repository/google)                                         │
 │ AliYunSpring(https://maven.aliyun.com/repository/spring)                                         │
-│ SpringRelease(https://repo.spring.io/release)                                                    │
 │ MavenRepo                                                                                        │
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```

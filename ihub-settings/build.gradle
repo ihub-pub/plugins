@@ -17,6 +17,30 @@ description = 'IHub Gradle Plugins Settings'
 
 dependencies {
     implementation libs.ihub.core
+    implementation libs.freefair.settings
+}
+
+tasks.register('listPluginIds') {
+    group = 'ihub'
+    def ids = []
+    rootProject.allprojects {
+        it.extensions.findByType(GradlePluginDevelopmentExtension)?.plugins?.each {
+            ids << it.id
+        }
+    }
+    file('build/plugin-ids').with {
+        if (!exists()) {
+            parentFile.mkdirs()
+        }
+        text = ids.join '\n'
+    }
+    outputs.file 'build/plugin-ids'
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    into('META-INF/ihub') {
+        from tasks.named('listPluginIds')
+    }
 }
 
 gradlePlugin {

@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -67,7 +67,7 @@ class IHubSettingsPluginTest extends Specification {
 
         then: '检查结果'
         !result.output.contains('MavenLocal')
-        result.output.contains 'SpringRelease'
+        !result.output.contains('AliYunGradle')
         result.output.contains 'Gradle Central Plugin Repository'
         result.output.contains 'MavenRepo'
         !result.output.contains('ReleaseRepo')
@@ -77,6 +77,7 @@ class IHubSettingsPluginTest extends Specification {
         when: '私有仓库配置'
         propertiesFile << '''
 iHub.mavenLocalEnabled=true
+iHub.mavenAliYunEnabled=true
 iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
 iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
 iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
@@ -85,7 +86,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
         then: '检查结果'
         result.output.contains 'MavenLocal'
-        result.output.contains 'SpringRelease'
+        result.output.contains 'AliYunGradle'
         result.output.contains 'Gradle Central Plugin Repository'
         result.output.contains 'ReleaseRepo'
         result.output.contains 'SnapshotRepo'
