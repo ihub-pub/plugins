@@ -131,14 +131,14 @@ plugins exclude common non-project directories, `build`, `src`, `conf`, `libs`, 
 
 Private repository, custom repository configuration see[extension attributes](iHub#扩展属性)
 
-| Name            | Description                 | Url                                               |
-| --------------- | --------------------------- | ------------------------------------------------- |
-| `ProjectDirs`   | Project Local Plugin        | `{rootProject.projectDir}/gradle/plugins`         |
-| `MavenLocal`    | 本地仓库                        | `{local}/.m2/repository`                          |
-| `AliYunGradle`  | 阿里云Gradle代理仓库               | https://maven.aliyun.com/repository/gradle-plugin |
-| `ReleaseRepo`   | Private Release Repository  | https://repo.xxx.com/release                      |
-| `SnapshotRepo`  | Private Snapshot repository | https://repo.xxx.com/snapshot                     |
-| `CustomizeRepo` | Custom repository           | https://repo.xxx.com/repo                         |
+| Name            | Description                    | Url                                               |
+| --------------- | ------------------------------ | ------------------------------------------------- |
+| `ProjectDirs`   | Project Local Plugin           | `{rootProject.projectDir}/gradle/plugins`         |
+| `MavenLocal`    | Local Repository               | `{local}/.m2/repository`                          |
+| `AliYunGradle`  | Aliyun Gradle Agent Repository | https://maven.aliyun.com/repository/gradle-plugin |
+| `ReleaseRepo`   | Private Release Repository     | https://repo.xxx.com/release                      |
+| `SnapshotRepo`  | Private Snapshot repository    | https://repo.xxx.com/snapshot                     |
+| `CustomizeRepo` | Custom repository              | https://repo.xxx.com/repo                         |
 
 ## Default Version
 
