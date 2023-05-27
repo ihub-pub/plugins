@@ -12,7 +12,7 @@ A primary multi-subproject configuration, see[project template](https://github.c
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.3.2'
+    id 'pub.ihub.plugin.ihub-settings' version '1.3.3'
 }
 
 iHubSettings {
