@@ -131,22 +131,24 @@ plugins exclude common non-project directories, `build`, `src`, `conf`, `libs`, 
 
 Private repository, custom repository configuration see[extension attributes](iHub#扩展属性)
 
-| Name            | Description                 | Url                                       |
-| --------------- | --------------------------- | ----------------------------------------- |
-| `ProjectDirs`   | Project Local Plugin        | `{rootProject.projectDir}/gradle/plugins` |
-| `SpringRelease` | Spring Release Repository   | https://repo.spring.io/release            |
-| `ReleaseRepo`   | Private Release Repository  | https://repo.xxx.com/release              |
-| `SnapshotRepo`  | Private Snapshot repository | https://repo.xxx.com/snapshot             |
-| `CustomizeRepo` | Custom repository           | https://repo.xxx.com/repo                 |
+| Name            | Description                    | Url                                               |
+| --------------- | ------------------------------ | ------------------------------------------------- |
+| `ProjectDirs`   | Project Local Plugin           | `{rootProject.projectDir}/gradle/plugins`         |
+| `MavenLocal`    | Local Repository               | `{local}/.m2/repository`                          |
+| `AliYunGradle`  | Aliyun Gradle Agent Repository | https://maven.aliyun.com/repository/gradle-plugin |
+| `ReleaseRepo`   | Private Release Repository     | https://repo.xxx.com/release                      |
+| `SnapshotRepo`  | Private Snapshot repository    | https://repo.xxx.com/snapshot                     |
+| `CustomizeRepo` | Custom repository              | https://repo.xxx.com/repo                         |
 
 ## Default Version
 
 The plugin is configured with `ihub series plugins` and the following plug-in default versions:
 
-| Plugin                      | Version                                                              |
-| --------------------------- | -------------------------------------------------------------------- |
-| `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
-| `pub.ihub.plugin.*`         | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
+| Plugin                      | Version                                                                             |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)                |
+| `pub.ihub.plugin.*`         | [1.3.3](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
+| `io.freefair.*`             | [8.0.1](https://docs.freefair.io/gradle-plugins/8.0.1/reference/#_settings_plugins) |
 
 Use plugins without plating numbers to configure below:
 

@@ -20,6 +20,7 @@
 | `signingKeyId`       | Signing key                                     | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `signingSecretarial` | Signing Key                                     | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `signingPassword`    | Signing password                                | ❌       | ✔         | ✔         | ✔         | ✔         |
+| `publishSources`     | Publish source                                  | `true`  | ✔         | ✔         | ✔         | ❌         |
 | `publishDocs`        | Publish document                                | `false` | ✔         | ✔         | ✔         | ❌         |
 | `applyGithubPom`     | Whether to apply GithubPom plugin               | `false` | ✔         | ✔         | ✔         | ❌         |
 
@@ -47,7 +48,7 @@ plugins {
 
 ## Configuration Example
 
-:::code-tabs#build
+::: code-tabs#build
 
 @tab Kotlin
 
