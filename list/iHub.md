@@ -73,7 +73,6 @@ iHub.mavenAliYunEnabled=true
 | `AliYunPublic` | 阿里云聚合公有仓库 | https://maven.aliyun.com/repository/public <br> artifactUrls: https://repo1.maven.org/maven2 |
 | `AliYunGoogle` | 阿里云Google代理仓库 | https://maven.aliyun.com/repository/google <br> artifactUrls: https://maven.google.com |
 | `AliYunSpring` | 阿里云Spring代理仓库 | https://maven.aliyun.com/repository/spring <br> artifactUrls: https://repo.spring.io/release |
-| `SpringRelease` | Spring Release仓库 | https://repo.spring.io/release |
 | `ReleaseRepo` | 私有Release仓库 | https://repo.xxx.com/release |
 | `SnapshotRepo` | 私有Snapshot仓库 | https://repo.xxx.com/snapshot |
 | `CustomizeRepo` | 自定义仓库仓库 | https://repo.xxx.com/repo |

@@ -134,7 +134,8 @@ iHubSettings {
 | Name | Description | Url |
 | ---- | ----------- | --- |
 | `ProjectDirs` | 项目本地插件 | `{rootProject.projectDir}/gradle/plugins` |
-| `SpringRelease` | Spring Release仓库 | https://repo.spring.io/release |
+| `MavenLocal` | 本地仓库 | `{local}/.m2/repository` |
+| `AliYunGradle` | 阿里云Gradle代理仓库 | https://maven.aliyun.com/repository/gradle-plugin |
 | `ReleaseRepo` | 私有Release仓库 | https://repo.xxx.com/release |
 | `SnapshotRepo` | 私有Snapshot仓库 | https://repo.xxx.com/snapshot |
 | `CustomizeRepo` | 自定义仓库仓库 | https://repo.xxx.com/repo |
@@ -143,10 +144,11 @@ iHubSettings {
 
 插件配置了`ihub系列插件`及以下插件默认版本：
 
-| Plugin                      | Version                                                              |
-|-----------------------------|----------------------------------------------------------------------|
-| `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish) |
-| `pub.ihub.plugin.*`         | [1.3.2](https://plugins.gradle.org/plugin/pub.ihub.plugin)           |
+| Plugin                      | Version                                                                             |
+|-----------------------------|-------------------------------------------------------------------------------------|
+| `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)                |
+| `pub.ihub.plugin.*`         | [1.3.3](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
+| `io.freefair.*`             | [8.0.1](https://docs.freefair.io/gradle-plugins/8.0.1/reference/#_settings_plugins) |
 
 使用插件时可以不用加版本号，配置如下：
 
