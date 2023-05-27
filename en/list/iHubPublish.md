@@ -20,7 +20,7 @@
 | `signingKeyId`       | Signing key                                     | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `signingSecretarial` | Signing Key                                     | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `signingPassword`    | Signing password                                | ❌       | ✔         | ✔         | ✔         | ✔         |
-| `publishSources`     | 是否发布源码                                          | `true`  | ✔         | ✔         | ✔         | ❌         |
+| `publishSources`     | Publish source                                  | `true`  | ✔         | ✔         | ✔         | ❌         |
 | `publishDocs`        | Publish document                                | `false` | ✔         | ✔         | ✔         | ❌         |
 | `applyGithubPom`     | Whether to apply GithubPom plugin               | `false` | ✔         | ✔         | ✔         | ❌         |
 
