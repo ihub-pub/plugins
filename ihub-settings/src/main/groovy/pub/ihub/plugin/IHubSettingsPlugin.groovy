@@ -15,11 +15,13 @@
  */
 package pub.ihub.plugin
 
+import io.freefair.gradle.plugins.settings.PluginVersionsPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import pub.ihub.core.IHubLibsVersion
 
 import static java.lang.Boolean.valueOf
+import static org.codehaus.groovy.runtime.ResourceGroovyMethods.readLines
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
 import static pub.ihub.plugin.IHubSettingsExtension.findProperty
@@ -29,22 +31,6 @@ import static pub.ihub.plugin.IHubSettingsExtension.findProperty
  * @author henry
  */
 class IHubSettingsPlugin implements Plugin<Settings> {
-
-    private static final List<String> IHUB_PLUGINS = [
-        'pub.ihub.plugin',
-        'pub.ihub.plugin.ihub-version',
-        'pub.ihub.plugin.ihub-copyright',
-        'pub.ihub.plugin.ihub-bom',
-        'pub.ihub.plugin.ihub-java',
-        'pub.ihub.plugin.ihub-groovy',
-        'pub.ihub.plugin.ihub-kotlin',
-        'pub.ihub.plugin.ihub-publish',
-        'pub.ihub.plugin.ihub-test',
-        'pub.ihub.plugin.ihub-verification',
-        'pub.ihub.plugin.ihub-boot',
-        'pub.ihub.plugin.ihub-native',
-        'pub.ihub.plugin.ihub-git-hooks',
-    ]
 
     private static final Map<String, String> PLUGIN_VERSIONS = [
         'com.gradle.plugin-publish': '1.2.0',
@@ -61,9 +47,10 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         // 配置自定义扩展
         settings.gradle.settingsEvaluated {
             // 配置插件版本
+            List<String> ids = readLines IHubSettingsPlugin.classLoader.getResource('META-INF/ihub/plugin-ids')
             settings.pluginManagement {
                 plugins {
-                    (IHUB_PLUGINS.collectEntries {
+                    (ids.collectEntries {
                         [(it): IHubSettingsPlugin.package.implementationVersion]
                     } + PLUGIN_VERSIONS).findAll { it.value }.each { key, value ->
                         id key version value
@@ -97,6 +84,8 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 }
             }
         }
+
+        settings.pluginManager.apply PluginVersionsPlugin
     }
 
     private void configPluginRepositories(Settings settings) {
@@ -109,12 +98,14 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 if (valueOf findProperty(settings, 'iHub.mavenLocalEnabled')) {
                     mavenLocal()
                 }
+                if (valueOf findProperty(settings, 'iHub.mavenAliYunEnabled')) {
+                    maven {
+                        name 'AliYunGradle'
+                        url 'https://maven.aliyun.com/repository/gradle-plugin'
+                    }
+                }
                 gradlePluginPortal()
                 mavenCentral()
-                maven {
-                    name 'SpringRelease'
-                    url 'https://repo.spring.io/release'
-                }
                 // 添加私有仓库
                 boolean repoAllowInsecureProtocol = valueOf findProperty(settings, 'iHub.repoAllowInsecureProtocol')
                 findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
