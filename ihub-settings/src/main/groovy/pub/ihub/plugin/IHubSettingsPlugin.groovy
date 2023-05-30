@@ -102,6 +102,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     maven {
                         name 'AliYunGradle'
                         url 'https://maven.aliyun.com/repository/gradle-plugin'
+                        artifactUrls 'https://plugins.gradle.org/m2'
                     }
                 }
                 gradlePluginPortal()
