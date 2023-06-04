@@ -66,16 +66,14 @@ iHub.mavenAliYunEnabled=true
 
 Configure component warehouses for adaptation to the domestic network environment as follows:
 
-| Name            | Description                    | Url                                                                                                |
-| --------------- | ------------------------------ | -------------------------------------------------------------------------------------------------- |
-| `ProjectDirs`   | Project Local Component        | `{rootProject.projectDir}/libs`                                                                    |
-| `MavenLocal`    | Local Repository               | `{local}/.m2/repository`                                                                           |
-| `AliYunPublic`  | Aliyun Aggregate Repository    | https://maven.aliyun.com/repository/public <br> artifactUrls: https://repo1.maven.org/maven2 |
-| `AliYunGoogle`  | Aliyun Google Proxy Repository | https://maven.aliun.com/repository/google <br> artifactUrls: https://maven.google.com        |
-| `AliYunSpring`  | Aliyun Spring Proxy Repository | https://maven.aliyun.com/repository/spring <br> artifactUrls: https://repo.spring.io/release |
-| `ReleaseRepo`   | Private Release Repository     | https://repo.xxx.com/release                                                                       |
-| `SnapshotRepo`  | Private Snapshot repository    | https://repo.xxx.com/snapshot                                                                      |
-| `CustomizeRepo` | Custom repository              | https://repo.xxx.com/repo                                                                          |
-| `MavenRepo`     | Maven Central Repository       |                                                                                                    |
+| Name            | Description                 | Url                                                                                                |
+| --------------- | --------------------------- | -------------------------------------------------------------------------------------------------- |
+| `ProjectDirs`   | Project Local Component     | `{rootProject.projectDir}/libs`                                                                    |
+| `MavenLocal`    | Local Repository            | `{local}/.m2/repository`                                                                           |
+| `AliYunPublic`  | Aliyun Aggregate Repository | https://maven.aliyun.com/repository/public <br> artifactUrls: https://repo1.maven.org/maven2 |
+| `ReleaseRepo`   | Private Release Repository  | https://repo.xxx.com/release                                                                       |
+| `SnapshotRepo`  | Private Snapshot repository | https://repo.xxx.com/snapshot                                                                      |
+| `CustomizeRepo` | Custom repository           | https://repo.xxx.com/repo                                                                          |
+| `MavenRepo`     | Maven Central Repository    |                                                                                                    |
 
 @include(../snippet/footnote.md)
