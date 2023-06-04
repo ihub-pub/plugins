@@ -92,8 +92,6 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         result.output.contains('flatDir')
         result.output.contains('MavenLocal')
         result.output.contains('AliYunPublic')
-        result.output.contains('AliYunGoogle')
-        result.output.contains('AliYunSpring')
         result.output.contains('ReleaseRepo')
         result.output.contains('SnapshotRepo')
         result.output.contains('CustomizeRepo')

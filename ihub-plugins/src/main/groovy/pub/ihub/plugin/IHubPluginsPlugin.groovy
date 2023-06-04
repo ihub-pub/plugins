@@ -70,10 +70,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 if (ext.mavenAliYunEnabled.get()) {
                     maven mavenRepo('AliYunPublic', 'https://maven.aliyun.com/repository/public',
                         'https://repo1.maven.org/maven2')
-                    maven mavenRepo('AliYunGoogle', 'https://maven.aliyun.com/repository/google',
-                        'https://maven.google.com')
-                    maven mavenRepo('AliYunSpring', 'https://maven.aliyun.com/repository/spring',
-                        'https://repo.spring.io/release')
                 }
                 // 添加私有仓库
                 ext.releaseRepoUrl.orNull?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
