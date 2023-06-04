@@ -84,8 +84,6 @@ iHub.mavenAliYunEnabled=true
 ├──────────────────────────────────────────────────────────────────────────────────────────────────┤
 │ MavenLocal(file:/C:/Users/Henry/.m2/repository/)                                                 │
 │ AliYunPublic(https://maven.aliyun.com/repository/public)                                         │
-│ AliYunGoogle(https://maven.aliyun.com/repository/google)                                         │
-│ AliYunSpring(https://maven.aliyun.com/repository/spring)                                         │
 │ MavenRepo                                                                                        │
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
