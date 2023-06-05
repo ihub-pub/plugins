@@ -125,9 +125,9 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'demo-rest'
-        result.output.contains 'demo-service'
-        result.output.contains 'demo-other'
+        result.output.contains 'rest'
+        result.output.contains 'service'
+        result.output.contains 'other'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -141,9 +141,9 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'demo-rest'
-        result.output.contains 'demo-service'
-        !result.output.contains('demo-other')
+        result.output.contains 'rest'
+        result.output.contains 'service'
+        !result.output.contains('other')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -159,9 +159,9 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'demo-rest'
-        result.output.contains 'demo-service'
-        !result.output.contains('demo-other')
+        result.output.contains 'rest'
+        result.output.contains 'service'
+        !result.output.contains('other')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -188,13 +188,13 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ other                                    │ prefix-other                                          │'
-        result.output.contains '│ other                                    │ prefix-other-a                                        │'
-        result.output.contains '│ other                                    │ prefix-other-b                                        │'
-        result.output.contains '│ other                                    │ prefix-other-c                                        │'
-        result.output.contains '│ rest                                     │ demo-rest-suffix                                      │'
-        result.output.contains '│ service                                  │ demo-service-suffix                                   │'
-        !result.output.contains('│ test                                     │ test                                                  │')
+        result.output.contains '│ other                                       │ prefix-other                                       │'
+        result.output.contains '│ other                                       │ prefix-other-a                                     │'
+        result.output.contains '│ other                                       │ prefix-other-b                                     │'
+        result.output.contains '│ other                                       │ prefix-other-c                                     │'
+        result.output.contains '│ rest                                        │ rest-suffix                                        │'
+        result.output.contains '│ service                                     │ service-suffix                                     │'
+        !result.output.contains('│ test')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
