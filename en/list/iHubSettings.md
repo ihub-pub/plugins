@@ -15,7 +15,7 @@
 | Extended Method   | Extended Description                                                                            |
 | ----------------- | ----------------------------------------------------------------------------------------------- |
 | `includeProjects` | Add Items (Support for Multiple Projects)                                                       |
-| `prefix`          | Project Prefix (default`main project name -`)                                                   |
+| `prefix`          | Item Prefix                                                                                     |
 | `noPrefix`        | No items prefix                                                                                 |
 | `suffix`          | Project Suffix                                                                                  |
 | `subproject`      | Include 3 Level Subprojects                                                                     |
