@@ -63,7 +63,7 @@ subprojects {
                 'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
                 'org.springframework.boot:spring-boot-gradle-plugin:3.1.0',
                 'org.graalvm.buildtools:native-gradle-plugin:0.9.22',
-                'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21'
+                'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22'
         }
     }
     // TODO gradle groovy版本没有升级至4.0，强制指定3.0版本
