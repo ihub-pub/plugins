@@ -62,7 +62,7 @@ subprojects {
                 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0',
                 'org.springdoc:springdoc-openapi-gradle-plugin:1.6.0',
                 'org.springframework.boot:spring-boot-gradle-plugin:3.1.1',
-                'org.graalvm.buildtools:native-gradle-plugin:0.9.22',
+                'org.graalvm.buildtools:native-gradle-plugin:0.9.23',
                 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22'
         }
     }
