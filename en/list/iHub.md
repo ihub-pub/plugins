@@ -24,6 +24,7 @@
 | --------------------------- | ------------------------------------------------------------------ | ------- | --------- | --------- | --------- | --------- |
 | `MavenenLocalEnabled`       | Enable local repository                                            | `false` | ✔         | ✔         | ❌         | ❌         |
 | `Mavenen AliYunEnabled`     | Enable Aliyun Proxy Repository                                     | `false` | ✔         | ✔         | ✔         | ✔         |
+| `mavenPrivateEnabled`       | 是否启用私有仓库（组件发布仓库）                                                   | `true`  | ✔         | ✔         | ✔         | ✔         |
 | `releaseRepoUrl`            | Official Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
 | `snapshotRepoUrl`           | Snapshot Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
 | `repoAllowInsecureProtocol` | Whether to allow the insecure protocol (whether http)              | `false` | ✔         | ✔         | ❌         | ❌         |
