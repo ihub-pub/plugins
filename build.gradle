@@ -53,7 +53,7 @@ subprojects {
     iHubBom.bomVersions.clear()
     dependencies {
         api platform('pub.ihub.lib:ihub-dependencies:1.1.6')
-        api platform('com.squareup.okio:okio-bom:3.3.0')
+        api platform('com.squareup.okio:okio-bom:3.4.0')
         constraints {
             api 'io.spring.gradle:dependency-management-plugin:1.1.0',
                 'com.github.ben-manes:gradle-versions-plugin:0.46.0',
