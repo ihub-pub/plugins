@@ -1,5 +1,5 @@
 [versions]
-freefair = '8.0.1'
+freefair = '8.1.0'
 
 [libraries]
 ihub-core = { module = 'pub.ihub.lib:ihub-core' }

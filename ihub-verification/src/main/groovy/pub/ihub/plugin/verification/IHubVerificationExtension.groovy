@@ -25,6 +25,9 @@ import pub.ihub.plugin.IHubProperty
 
 import javax.inject.Inject
 
+import static org.gradle.api.plugins.quality.CodeNarcPlugin.DEFAULT_CODENARC_VERSION
+import static org.gradle.api.plugins.quality.PmdPlugin.DEFAULT_PMD_VERSION
+import static org.gradle.testing.jacoco.plugins.JacocoPlugin.DEFAULT_JACOCO_VERSION
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
@@ -35,10 +38,6 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 @IHubExtension('iHubVerification')
 @CompileStatic
 class IHubVerificationExtension extends IHubProjectExtensionAware implements IHubExtProperty {
-
-    private static final String DEFAULT_PMD_VERSION = '6.55.0'
-    private static final String DEFAULT_JACOCO_VERSION = '0.8.10'
-    private static final String DEFAULT_CODENARC_VERSION = '3.2.0'
 
     //<editor-fold desc="PMD Configuration">
 
