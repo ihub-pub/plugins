@@ -108,24 +108,26 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 gradlePluginPortal()
                 mavenCentral()
                 // 添加私有仓库
-                boolean repoAllowInsecureProtocol = valueOf findProperty(settings, 'iHub.repoAllowInsecureProtocol')
-                findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
-                    maven {
-                        name 'ReleaseRepo'
-                        url repoUrl
-                        allowInsecureProtocol repoAllowInsecureProtocol
-                        mavenContent {
-                            releasesOnly()
+                if (valueOf findProperty(settings, 'iHub.mavenPrivateEnabled', 'true')) {
+                    boolean repoAllowInsecureProtocol = valueOf findProperty(settings, 'iHub.repoAllowInsecureProtocol')
+                    findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
+                        maven {
+                            name 'ReleaseRepo'
+                            url repoUrl
+                            allowInsecureProtocol repoAllowInsecureProtocol
+                            mavenContent {
+                                releasesOnly()
+                            }
                         }
                     }
-                }
-                findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
-                    maven {
-                        name 'SnapshotRepo'
-                        url repoUrl
-                        allowInsecureProtocol repoAllowInsecureProtocol
-                        mavenContent {
-                            snapshotsOnly()
+                    findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
+                        maven {
+                            name 'SnapshotRepo'
+                            url repoUrl
+                            allowInsecureProtocol repoAllowInsecureProtocol
+                            mavenContent {
+                                snapshotsOnly()
+                            }
                         }
                     }
                 }
