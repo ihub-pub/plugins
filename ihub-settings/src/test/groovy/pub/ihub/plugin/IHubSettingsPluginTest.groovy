@@ -94,10 +94,13 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
         when: '本地插件配置'
         testProjectDir.newFolder 'gradle', 'plugins'
+        propertiesFile << 'iHub.mavenPrivateEnabled=false'
         result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains 'flatDir'
+        !result.output.contains('ReleaseRepo')
+        !result.output.contains('SnapshotRepo')
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

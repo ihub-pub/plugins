@@ -72,8 +72,10 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                         'https://repo1.maven.org/maven2')
                 }
                 // 添加私有仓库
-                ext.releaseRepoUrl.orNull?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
-                ext.snapshotRepoUrl.orNull?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
+                if (ext.mavenPrivateEnabled.get()) {
+                    ext.releaseRepoUrl.orNull?.with { url -> maven mavenRepo('ReleaseRepo', url, ext) { releasesOnly() } }
+                    ext.snapshotRepoUrl.orNull?.with { url -> maven mavenRepo('SnapshotRepo', url, ext) { snapshotsOnly() } }
+                }
                 // 添加自定义仓库
                 ext.customizeRepoUrl.orNull?.with { url -> maven mavenRepo('CustomizeRepo', url) }
                 mavenCentral()

@@ -45,6 +45,12 @@ interface IHubPluginsExtension extends IHubExtensionAware {
     Property<Boolean> getMavenAliYunEnabled()
 
     /**
+     * 是否启用私有仓库（组件发布仓库）
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM, ENV], defaultValue = 'true', genericType = Boolean)
+    Property<Boolean> getMavenPrivateEnabled()
+
+    /**
      * 正式版本仓库
      */
     @IHubProperty

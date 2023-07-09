@@ -108,25 +108,12 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 gradlePluginPortal()
                 mavenCentral()
                 // 添加私有仓库
-                boolean repoAllowInsecureProtocol = valueOf findProperty(settings, 'iHub.repoAllowInsecureProtocol')
-                findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
-                    maven {
-                        name 'ReleaseRepo'
-                        url repoUrl
-                        allowInsecureProtocol repoAllowInsecureProtocol
-                        mavenContent {
-                            releasesOnly()
-                        }
+                if (valueOf findProperty(settings, 'iHub.mavenPrivateEnabled', 'true')) {
+                    findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
+                        maven mavenRepo(settings, 'ReleaseRepo', repoUrl, true)
                     }
-                }
-                findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
-                    maven {
-                        name 'SnapshotRepo'
-                        url repoUrl
-                        allowInsecureProtocol repoAllowInsecureProtocol
-                        mavenContent {
-                            snapshotsOnly()
-                        }
+                    findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
+                        maven mavenRepo(settings, 'SnapshotRepo', repoUrl, false)
                     }
                 }
                 // 添加自定义仓库
@@ -138,6 +125,17 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 }
             }
             printLineConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
+        }
+    }
+
+    private Closure mavenRepo(Settings settings, String repoName, String repoUrl, boolean releases) {
+        return {
+            name repoName
+            url repoUrl
+            allowInsecureProtocol valueOf(findProperty(settings, 'iHub.repoAllowInsecureProtocol'))
+            mavenContent {
+                releases ? releasesOnly() : snapshotsOnly()
+            }
         }
     }
 
