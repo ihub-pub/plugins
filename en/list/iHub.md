@@ -22,13 +22,14 @@
 
 | Extension                   | Description                                                        | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
 | --------------------------- | ------------------------------------------------------------------ | ------- | --------- | --------- | --------- | --------- |
-| `MavenenLocalEnabled`       | Enable local repository                                            | `false` | ✔         | ✔         | ❌         | ❌         |
-| `Mavenen AliYunEnabled`     | Enable Aliyun Proxy Repository                                     | `false` | ✔         | ✔         | ✔         | ✔         |
+| `mavenLocalEnabled`         | Enable local repository                                            | `false` | ✔         | ✔         | ❌         | ❌         |
+| `mavenAliYunEnabled`        | Enable Aliyun Proxy Repository                                     | `false` | ✔         | ✔         | ✔         | ✔         |
+| `mavenPrivateEnabled`       | Enable private repository (Component Publish Repository)           | `true`  | ✔         | ✔         | ✔         | ✔         |
 | `releaseRepoUrl`            | Official Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
 | `snapshotRepoUrl`           | Snapshot Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
 | `repoAllowInsecureProtocol` | Whether to allow the insecure protocol (whether http)              | `false` | ✔         | ✔         | ❌         | ❌         |
-| `RepoInclusion Group`       | Repository contains groups (used to limit repository range)        | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `repoInclude GroupRegex`    | Repository contains group regular (used to limit repository range) | `.*`    | ✔         | ✔         | ❌         | ❌         |
+| `repoIncludeGroup`          | Repository contains groups (used to limit repository range)        | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `repoIncludeGroupRegex`     | Repository contains group regular (used to limit repository range) | `.*`    | ✔         | ✔         | ❌         | ❌         |
 | `repoUsername`              | Repository Username                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `repoPassword`              | Repository Password                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `customizeRepoUrl`          | Custom Repository                                                  | ❌       | ✔         | ✔         | ❌         | ❌         |
