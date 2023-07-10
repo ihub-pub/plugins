@@ -88,11 +88,13 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 ihubLibs {
                     from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
                 }
-                // 自动配置根目录.versions.toml文件
-                settings.rootDir.eachFile { File file ->
-                    if (file.name.endsWith('.versions.toml')) {
+                // 自动配置./gradle目录下的.versions.toml文件
+                def baseDirectory = settings.rootDir.listFiles().find { it.name == 'gradle' }
+                baseDirectory.eachFile { File file ->
+                    // libs.versions.toml为标准配置文件，会被自动加载
+                    if (file.name.endsWith('.versions.toml') && file.name != 'libs.versions.toml') {
                         "${file.name - '.versions.toml'}" {
-                            from fileOperationsFor(settings).configurableFiles(file.name)
+                            from fileOperationsFor(settings, baseDirectory).configurableFiles(file.name)
                         }
                     }
                 }
@@ -153,10 +155,10 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
     }
 
-    private static FileOperations fileOperationsFor(Settings settings) {
+    private static FileOperations fileOperationsFor(Settings settings, File baseDirectory) {
         def services = (settings.gradle as GradleInternal).services
         def fileLookup = services.get FileLookup
-        def fileResolver = fileLookup.getFileResolver settings.rootDir
+        def fileResolver = fileLookup.getFileResolver baseDirectory
         def fileCollectionFactory = services.get(FileCollectionFactory).withResolver fileResolver
         DefaultFileOperations.createSimple(
             fileResolver,

@@ -116,15 +116,25 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
     def '测试catalog配置'() {
         when: '默认配置'
-        testProjectDir.newFile('libs.versions.toml') << '''
+        testProjectDir.newFolder 'gradle'
+        testProjectDir.newFile('gradle/libs.versions.toml') << '''
 [versions]
 james-bond = '0.0.7'
 '''
-        testProjectDir.newFile(DEFAULT_BUILD_FILE) << 'println "I\'m " + libs.versions.james.bond.get()'
+        testProjectDir.newFile('gradle/myLibs.versions.toml') << '''
+[versions]
+henry = '0.0.8'
+'''
+        testProjectDir.newFile('gradle/other.toml')
+        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+println "I'm " + libs.versions.james.bond.get()
+println "I'm " + myLibs.versions.henry.get()
+'''
         def result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains 'I\'m 0.0.7'
+        result.output.contains 'I\'m 0.0.8'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

@@ -14,13 +14,5 @@
  * limitations under the License.
  */
 plugins {
-    id("pub.ihub.plugin.ihub-settings") version "1.3.4-rc1"
-}
-
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            from(files("libs.versions.toml"))
-        }
-    }
+    id("pub.ihub.plugin.ihub-settings") version "1.3.4-rc3"
 }
