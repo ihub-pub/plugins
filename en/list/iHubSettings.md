@@ -176,7 +176,7 @@ plugins {
 
 ## Configure catalog
 
-Configure the default version directory components`ihubLibs`
+- Configure the default version directory components`ihubLibs`
 
 ```groovy
 dependencyResolutionManagement {
@@ -190,5 +190,7 @@ dependencyResolutionManagement {
     }
 }
 ```
+
+- Autoconfigure root directory.versions.toml files, e.g.：`libs.versions.toml`
 
 @include(../snippet/footnote.md)
