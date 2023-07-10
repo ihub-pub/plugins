@@ -120,7 +120,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 [versions]
 james-bond = '0.0.7'
 '''
-        testProjectDir.newFile(DEFAULT_BUILD_FILE) << 'println "I\'m ${libs.versions.james.bond.get()}"'
+        testProjectDir.newFile(DEFAULT_BUILD_FILE) << 'println "I\'m " + libs.versions.james.bond.get()'
         def result = gradleBuilder.build()
 
         then: '检查结果'
