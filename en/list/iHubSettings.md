@@ -191,6 +191,6 @@ dependencyResolutionManagement {
 }
 ```
 
-- `gradle/libs.versions.toml`为标准配置，gradle会自动导入，本插件也会自动配置gradle/目录下的其他`.versions.toml`文件，如：`myLibs.versions.toml`，一般使用标准配置即可
+- `gradle/libs.versions.toml`for standard configurations, gradle will be automatically imported, and this plugin will automatically configure other`.versions.toml`files such as：`myLibs.versions.toml`, generally using standard configuration sufficient to configure
 
 @include(../snippet/footnote.md)
