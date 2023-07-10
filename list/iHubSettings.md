@@ -191,6 +191,6 @@ dependencyResolutionManagement {
 }
 ```
 
-- 自动配置根目录.versions.toml文件，如：`libs.versions.toml`
+- `gradle/libs.versions.toml`为标准配置，gradle会自动导入，本插件也会自动配置gradle/目录下的其他`.versions.toml`文件，如：`myLibs.versions.toml`，一般使用标准配置即可
 
 @include(../snippet/footnote.md)
