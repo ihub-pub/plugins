@@ -176,7 +176,7 @@ plugins {
 
 ## 配置catalog
 
-配置默认版本目录组件`ihubLibs`
+- 配置默认版本目录组件`ihubLibs`
 
 ```groovy
 dependencyResolutionManagement {
@@ -190,5 +190,7 @@ dependencyResolutionManagement {
     }
 }
 ```
+
+- 自动配置根目录.versions.toml文件，如：`libs.versions.toml`
 
 @include(../snippet/footnote.md)
