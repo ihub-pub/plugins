@@ -24,11 +24,3 @@ dependencyResolutionManagement {
         }
     }
 }
-
-iHubSettings {
-    rootDir.eachDir { file ->
-        if (file.name.startsWith('ihub-')) {
-            includeProjects file.name noPrefix
-        }
-    }
-}

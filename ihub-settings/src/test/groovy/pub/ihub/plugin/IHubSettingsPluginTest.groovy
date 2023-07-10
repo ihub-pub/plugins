@@ -21,6 +21,7 @@ import org.gradle.testkit.runner.GradleRunner
 import spock.lang.Specification
 import spock.lang.Title
 
+import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
@@ -110,6 +111,20 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
         then: '检查结果'
         result.output.contains 'com.gradle.plugin-publish'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '测试catalog配置'() {
+        when: '默认配置'
+        testProjectDir.newFile('libs.versions.toml') << '''
+[versions]
+james-bond = '0.0.7'
+'''
+        testProjectDir.newFile(DEFAULT_BUILD_FILE) << 'println "I\'m " + libs.versions.james.bond.get()'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'I\'m 0.0.7'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
