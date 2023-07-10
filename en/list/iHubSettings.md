@@ -191,6 +191,6 @@ dependencyResolutionManagement {
 }
 ```
 
-- Autoconfigure root directory.versions.toml files, e.g.：`libs.versions.toml`
+- `gradle/libs.versions.toml`for standard configurations, gradle will be automatically imported, and this plugin will automatically configure other`.versions.toml`files such as：`myLibs.versions.toml`, generally using standard configuration sufficient to configure
 
 @include(../snippet/footnote.md)
