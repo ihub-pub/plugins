@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2022 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = 'IHub Gradle Plugins Test'
+description = "IHub Bom Gradle Plugins"
 
 dependencies {
-    implementation gradleTestKit()
-    implementation 'org.spockframework:spock-core'
+    implementation(libs.ihub.core)
+    implementation(libs.dependency.management)
 }
 
 gradlePlugin {
     plugins {
-        ihubBaseTest {
-            id                  = 'pub.ihub.plugin.ihub-base-test'
-            displayName         = 'IHub Gradle Plugins Base Test'
-            description         = 'IHub Gradle Plugins Base Test'
-            implementationClass = 'pub.ihub.plugin.test.IHubSpecification'
-            tags.set(['ihub', 'base', 'test'])
+        create("iHubBom") {
+            id = "pub.ihub.plugin.ihub-bom"
+            displayName = "IHub Bom"
+            description = "IHub Bom Plugin"
+            implementationClass = "pub.ihub.plugin.bom.IHubBomPlugin"
+            tags.set(listOf("ihub", "java", "bom"))
         }
     }
 }
