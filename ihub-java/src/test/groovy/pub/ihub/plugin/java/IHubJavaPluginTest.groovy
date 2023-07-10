@@ -106,6 +106,10 @@ class IHubJavaPluginTest extends IHubSpecification {
                     plugin 'pub.ihub.plugin.ihub-java'
                 }
             }
+
+            task("bootRun") {
+                println("bootRun")
+            }
         '''
         propertiesFile << 'iHubJava.compatibility=8\n'
         propertiesFile << 'iHubJava.defaultDependencies=false\n'
