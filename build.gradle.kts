@@ -32,6 +32,8 @@ iHubGitHooks {
     ))
 }
 
+val ihubVersion: String = libs.versions.ihub.get()
+
 subprojects {
     apply {
         plugin("groovy")
@@ -52,19 +54,8 @@ subprojects {
 
     iHubBom.bomVersions.clear()
     dependencies {
-        "api"(platform("pub.ihub.lib:ihub-dependencies:1.1.6"))
+        "api"(platform("pub.ihub.lib:ihub-dependencies:$ihubVersion"))
         "api"(platform("com.squareup.okio:okio-bom:3.4.0"))
-        constraints {
-            "api"("io.spring.gradle:dependency-management-plugin:1.1.0")
-            "api"("com.github.ben-manes:gradle-versions-plugin:0.47.0")
-            "api"("gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin:1.12.12")
-            "api"("org.jmolecules.integrations:jmolecules-bytebuddy:1.6.0")
-            "api"("com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin:0.5.0")
-            "api"("org.springdoc:springdoc-openapi-gradle-plugin:1.6.0")
-            "api"("org.springframework.boot:spring-boot-gradle-plugin:3.1.1")
-            "api"("org.graalvm.buildtools:native-gradle-plugin:0.9.23")
-            "api"("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0")
-        }
     }
     // TODO gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
