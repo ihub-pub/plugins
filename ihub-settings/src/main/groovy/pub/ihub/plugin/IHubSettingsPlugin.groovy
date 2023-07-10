@@ -90,7 +90,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 }
                 // 自动配置./gradle目录下的.versions.toml文件
                 def baseDirectory = settings.rootDir.listFiles().find { it.name == 'gradle' }
-                baseDirectory.eachFile { File file ->
+                baseDirectory?.eachFile { File file ->
                     // libs.versions.toml为标准配置文件，会被自动加载
                     if (file.name.endsWith('.versions.toml') && file.name != 'libs.versions.toml') {
                         "${file.name - '.versions.toml'}" {
