@@ -18,6 +18,11 @@ package pub.ihub.plugin
 import io.freefair.gradle.plugins.settings.PluginVersionsPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import org.gradle.api.internal.GradleInternal
+import org.gradle.api.internal.file.DefaultFileOperations
+import org.gradle.api.internal.file.FileCollectionFactory
+import org.gradle.api.internal.file.FileLookup
+import org.gradle.api.internal.file.FileOperations
 import pub.ihub.core.IHubLibsVersion
 
 import static java.lang.Boolean.valueOf
@@ -79,8 +84,17 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 mavenCentral()
             }
             versionCatalogs {
+                // 配置iHubLibs版本
                 ihubLibs {
                     from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
+                }
+                // 自动配置根目录.versions.toml文件
+                settings.rootDir.eachFile { File file ->
+                    if (file.name.endsWith('.versions.toml')) {
+                        "${file.name - '.versions.toml'}" {
+                            from fileOperationsFor(settings).configurableFiles(file.name)
+                        }
+                    }
                 }
             }
         }
@@ -137,6 +151,18 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 releases ? releasesOnly() : snapshotsOnly()
             }
         }
+    }
+
+    private static FileOperations fileOperationsFor(Settings settings) {
+        def services = (settings.gradle as GradleInternal).services
+        def fileLookup = services.get FileLookup
+        def fileResolver = fileLookup.getFileResolver settings.rootDir
+        def fileCollectionFactory = services.get(FileCollectionFactory).withResolver fileResolver
+        DefaultFileOperations.createSimple(
+            fileResolver,
+            fileCollectionFactory,
+            services
+        )
     }
 
 }
