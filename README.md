@@ -27,7 +27,7 @@
         <img src="https://img.shields.io/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717" alt="GitHub Stars"/>
     </a>
     <a target="_blank" href='https://gitee.com/ihub-pub/plugins/stargazers'>
-        <img src='https://img.shields.io/endpoint?url=https%3A%2F%2Fdynamic-badge-formatter-ynrxn78r2oye.runkit.sh%2Fjson%3Furl%3Dhttps%253A%252F%252Fgitee.com%252Fapi%252Fv5%252Frepos%252Fihub-pub%252Fplugins%26query%3Dstargazers_count%26formatter%3Dmetric%26label%3Dstars%26labelColor%3Dc71d23%26color%3Dwhite%26logo%3Dgitee%26style%3Dflat' alt='Gitee Stars'/>
+        <img src='https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgitee.com%2Fapi%2Fv5%2Frepos%2Fihub-pub%2Fplugins&query=%24.stargazers_count&style=flat&logo=gitee&label=stars&labelColor=c71d23&color=white&cacheSeconds=5000' alt='Gitee Stars'/>
     </a>
     <a target="_blank" href="https://plugins.gradle.org/plugin/pub.ihub.plugin">
         <img src="https://img.shields.io/maven-metadata/v?color=white&label=Gradle&labelColor=02303A&logo=Gradle&metadataUrl=https%3A%2F%2Fplugins.gradle.org%2Fm2%2Fpub%2Fihub%2Fplugin%2Fihub-plugins%2Fmaven-metadata.xml" alt="IHub Plugins Gradle Plugin"/>
