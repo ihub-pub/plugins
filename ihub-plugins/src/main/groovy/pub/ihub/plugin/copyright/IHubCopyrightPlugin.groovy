@@ -79,13 +79,15 @@ class IHubCopyrightPlugin extends IHubProjectPluginAware {
             Node elements = XmlUtil.getNodeByXPath 'module2copyright',
                 XmlUtil.getNodeByXPath('settings', component.documentElement)
             if (elements) {
+                if (XmlUtil.getNodeByXPath("element[@copyright=\"$copyrightName\"]", elements)) {
+                    return
+                }
                 modules.each { module ->
                     if (!XmlUtil.getNodeByXPath("element[@module=\"$module\"]", elements)) {
                         appendChild elements, 'element', [module: module, copyright: copyrightName]
                     }
                 }
                 XmlUtil.toFile component, settings.path
-                return
             }
         } else {
             component = XmlUtil.createXml 'component'
