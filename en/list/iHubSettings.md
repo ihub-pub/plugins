@@ -147,7 +147,7 @@ The plugin is configured with `ihub series plugins` and the following plug-in de
 | Plugin                      | Version                                                                             |
 | --------------------------- | ----------------------------------------------------------------------------------- |
 | `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)                |
-| `pub.ihub.plugin.*`         | [1.3.3](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
+| `pub.ihub.plugin.*`         | [1.3.4](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
 | `io.freefair.*`             | [8.0.1](https://docs.freefair.io/gradle-plugins/8.0.1/reference/#_settings_plugins) |
 
 Use plugins without plating numbers to configure below:
