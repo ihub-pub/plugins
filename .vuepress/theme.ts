@@ -56,6 +56,12 @@ export default hopeTheme({
         },
     },
 
+    navbarLayout: {
+        start: ["Brand"],
+        // center: ["Links"],
+        end: ["Language", "Outlook", "Repo", "Gitee", "Changelog", "Search"],
+    },
+
     plugins: {
         comment: {
             provider: "Waline",
