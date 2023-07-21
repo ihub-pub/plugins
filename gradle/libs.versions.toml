@@ -4,7 +4,7 @@ freefair = '8.1.0'
 
 [libraries]
 ihub-core = { module = 'pub.ihub.lib:ihub-core', version.ref = 'ihub' }
-dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.1' }
+dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.2' }
 freefair-utils = { module = 'io.freefair.gradle:plugin-utils', version.ref = 'freefair' }
 freefair-git = { module = 'io.freefair.gradle:git-plugin', version.ref = 'freefair' }
 freefair-lombok = { module = 'io.freefair.gradle:lombok-plugin', version.ref = 'freefair' }
