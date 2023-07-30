@@ -1,5 +1,5 @@
 [versions]
-ihub = '1.1.7'
+ihub = '1.1.8'
 freefair = '8.1.0'
 
 [libraries]
