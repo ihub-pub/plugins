@@ -55,7 +55,7 @@ subprojects {
     iHubBom.bomVersions.clear()
     dependencies {
         "api"(platform("pub.ihub.lib:ihub-dependencies:$ihubVersion"))
-        "api"(platform("com.squareup.okio:okio-bom:3.4.0"))
+        "api"(platform("com.squareup.okio:okio-bom:3.5.0"))
     }
     // TODO gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
