@@ -15,7 +15,7 @@
  */
 plugins {
     id("pub.ihub.plugin")
-    id("pub.ihub.plugin.ihub-copyright")
+//    id("pub.ihub.plugin.ihub-copyright")
     id("pub.ihub.plugin.ihub-git-hooks")
     id("pub.ihub.plugin.ihub-java") apply false
     id("pub.ihub.plugin.ihub-verification") apply false
@@ -25,14 +25,12 @@ plugins {
     alias(libs.plugins.testkit)
 }
 
-iHubGitHooks {
-    hooks.set(mapOf(
-        "pre-commit" to "./gradlew build -x test",
-        "commit-msg" to "./gradlew commitCheck"
-    ))
-}
-
-val ihubVersion: String = libs.versions.ihub.get()
+//iHubGitHooks {
+//    hooks.set(mapOf(
+//        "pre-commit" to "./gradlew build -x test",
+//        "commit-msg" to "./gradlew commitCheck"
+//    ))
+//}
 
 subprojects {
     apply {
@@ -52,17 +50,19 @@ subprojects {
 
 //<editor-fold desc="组件依赖版本管理">
 
-    iHubBom.bomVersions.clear()
+    iHubBom.bomVersions.clear() // TODO
     dependencies {
-        "api"(platform("pub.ihub.lib:ihub-dependencies:$ihubVersion"))
-        "api"(platform("com.squareup.okio:okio-bom:3.5.0"))
+        "api"(platform("cn.hutool:hutool-bom:5.8.21"))
+        // TODO
+        "api"(platform("org.springframework.boot:spring-boot-dependencies:2.7.14"))
     }
-    // TODO gradle groovy版本没有升级至4.0，强制指定3.0版本
+    // gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
         groupVersions {
+            group("cn.hutool").version("5.8.21") // TODO
             group("org.codehaus.groovy").version("3.0.17")
             group("org.spockframework").version("2.3-groovy-3.0")
-            group("com.athaydes").version("2.3.2-groovy-3.0")
+            group("com.athaydes").version("2.5.0-groovy-3.0")
         }
     }
 

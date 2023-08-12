@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = "IHub Bom Gradle Plugins"
 
-dependencies {
-    implementation(libs.dependency.management)
-}
+package pub.ihub.plugin
 
-gradlePlugin {
-    plugins {
-        create("iHubBom") {
-            id = "pub.ihub.plugin.ihub-bom"
-            displayName = "IHub Bom"
-            description = "IHub Bom Plugin"
-            implementationClass = "pub.ihub.plugin.bom.IHubBomPlugin"
-            tags.set(listOf("ihub", "java", "bom"))
-        }
+import spock.lang.Specification
+import spock.lang.Title
+
+/**
+ * @author henry
+ */
+@Title('IHubLibsVersions测试套件')
+class IHubLibsVersionsTest extends Specification {
+
+    def '测试组件版本包含ihub'() {
+        expect:
+        IHubLibsVersions.LIBS_VERSIONS.containsKey 'ihub'
     }
+
 }

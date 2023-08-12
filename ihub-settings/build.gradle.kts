@@ -16,7 +16,6 @@
 description = "IHub Gradle Plugins Settings"
 
 dependencies {
-    implementation(libs.ihub.core)
     implementation(libs.freefair.settings)
 }
 

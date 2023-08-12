@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = "IHub Bom Gradle Plugins"
 
-dependencies {
-    implementation(libs.dependency.management)
-}
+package pub.ihub.plugin
 
-gradlePlugin {
-    plugins {
-        create("iHubBom") {
-            id = "pub.ihub.plugin.ihub-bom"
-            displayName = "IHub Bom"
-            description = "IHub Bom Plugin"
-            implementationClass = "pub.ihub.plugin.bom.IHubBomPlugin"
-            tags.set(listOf("ihub", "java", "bom"))
-        }
-    }
+import static org.codehaus.groovy.runtime.ResourceGroovyMethods.readLines
+
+/**
+ * @author henry
+ */
+class IHubLibsVersions {
+
+    static final Map<String, String> LIBS_VERSIONS =
+        readLines(IHubLibsVersions.classLoader.getResource('META-INF/ihub/libs-versions'))
+            .collectEntries { it.split '=' }
+
 }

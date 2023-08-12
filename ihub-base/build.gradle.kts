@@ -26,3 +26,22 @@ gradlePlugin {
         }
     }
 }
+
+tasks.register("listLibsVersions") {
+    group = "ihub"
+    val ids = mutableListOf<String>()
+    ids.add("ihub=${libs.versions.ihub.get()}")
+    file("build/libs-versions").let {
+        if (!it.exists()) {
+            it.parentFile.mkdirs()
+        }
+        it.writeText(ids.joinToString("\n"))
+    }
+    outputs.file("build/libs-versions")
+}
+
+tasks.named("processResources", ProcessResources::class).configure {
+    into("META-INF/ihub") {
+        from(tasks.named("listLibsVersions"))
+    }
+}
