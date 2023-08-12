@@ -23,7 +23,6 @@ import org.gradle.api.internal.file.DefaultFileOperations
 import org.gradle.api.internal.file.FileCollectionFactory
 import org.gradle.api.internal.file.FileLookup
 import org.gradle.api.internal.file.FileOperations
-import pub.ihub.core.IHubLibsVersion
 
 import static java.lang.Boolean.valueOf
 import static org.codehaus.groovy.runtime.ResourceGroovyMethods.readLines
@@ -86,7 +85,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             versionCatalogs {
                 // 配置iHubLibs版本
                 ihubLibs {
-                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersion.version}"
+                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersions.LIBS_VERSIONS['ihub']}"
                 }
                 // 自动配置./gradle目录下的.versions.toml文件
                 def baseDirectory = settings.rootDir.listFiles().find { it.name == 'gradle' }

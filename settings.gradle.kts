@@ -13,6 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+pluginManagement {
+    repositories {
+        mavenLocal()
+//        maven {
+//            setUrl("https://maven.aliyun.com/repository/gradle-plugin")
+//        }
+        gradlePluginPortal()
+        maven {
+            setUrl ("https://repo.grails.org/grails/core")
+        }
+    }
+}
+
 plugins {
-    id("pub.ihub.plugin.ihub-settings") version "1.3.5"
+    id("pub.ihub.plugin.ihub-settings") version "1.2.12"
+}
+
+rootDir.listFiles()?.forEach { file ->
+    if (file.name.startsWith("ihub-")) {
+        include(file.name)
+    }
 }

@@ -20,7 +20,6 @@ import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import org.gradle.api.Action
 import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.plugins.catalog.VersionCatalogPlugin
-import pub.ihub.core.IHubLibsVersion
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
@@ -47,9 +46,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         }
 
         // 配置ihub-bom
-        extension.importBoms {
-            group 'pub.ihub.lib' module 'ihub-dependencies' version IHubLibsVersion.version
-        }
+        extension.importDefaultBom()
 
         // 配置项目依赖
         withExtension(AFTER) { ext ->

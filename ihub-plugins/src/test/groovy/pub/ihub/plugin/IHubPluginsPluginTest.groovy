@@ -33,7 +33,6 @@ class IHubPluginsPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains 'Group Maven Bom Version'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

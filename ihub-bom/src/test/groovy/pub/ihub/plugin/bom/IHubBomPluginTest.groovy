@@ -15,6 +15,8 @@
  */
 package pub.ihub.plugin.bom
 
+import org.gradle.api.Project
+import org.gradle.testfixtures.ProjectBuilder
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
@@ -47,6 +49,27 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'Java环境测试'() {
+        setup: '初始化项目'
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubBomPlugin
+        IHubBomExtension extension = project.extensions.findByType IHubBomExtension
+        System.setProperty 'java.version', javaVersion
+
+        when: '构建项目'
+        extension.importDefaultBom()
+
+        then: '检查结果'
+        hasBomVersion || extension.bomVersions.empty
+
+        where:
+        javaVersion | hasBomVersion
+        '8'         | false
+        '11'        | false
+        '17'        | true
+        '19'        | true
+    }
+
     def 'bom配置组件需要能力配置测试'() {
         setup: '初始化项目'
         buildFile << '''
@@ -55,6 +78,9 @@ class IHubBomPluginTest extends IHubSpecification {
                 id 'java'
             }
             iHubBom {
+                groupVersions {
+                    group 'pub.ihub.lib' version '1.0.17'
+                }
                 capabilities {
                     requireCapability 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter', 'pub.ihub.lib:reactor-support'
                     requireCapability 'ihub-boot-cloud-spring-boot-starter', 'nacos-support'

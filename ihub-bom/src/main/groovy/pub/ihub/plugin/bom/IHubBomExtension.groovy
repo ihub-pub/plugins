@@ -17,8 +17,10 @@ package pub.ihub.plugin.bom
 
 import groovy.transform.CompileStatic
 import org.gradle.api.Action
+import org.gradle.api.JavaVersion
 import pub.ihub.plugin.IHubExtProperty
 import pub.ihub.plugin.IHubExtension
+import pub.ihub.plugin.IHubLibsVersions
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.bom.impl.Dependency
 import pub.ihub.plugin.bom.impl.DependencySpecImpl
@@ -176,6 +178,15 @@ class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtPrope
     @CompileStatic(SKIP)
     static boolean compareSpec(a, b) {
         a.comparedProperties.every { a."$it" == b."$it" }
+    }
+
+    @CompileStatic(SKIP)
+    void importDefaultBom() {
+        if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
+            importBoms {
+                group 'pub.ihub.lib' module 'ihub-dependencies' version IHubLibsVersions.LIBS_VERSIONS['ihub']
+            }
+        }
     }
 
 }
