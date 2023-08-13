@@ -50,7 +50,7 @@ class IHubSpecification extends Specification {
         settingsFile = testProjectDir.newFile DEFAULT_SETTINGS_FILE
         settingsFile << 'dependencyResolutionManagement {'
         settingsFile << '    versionCatalogs {'
-        settingsFile << '        ihubLibs {'
+        settingsFile << '        ihub {'
         settingsFile << '            from files(\'libs.versions.toml\')'
         settingsFile << '        }'
         settingsFile << '    }'

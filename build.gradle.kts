@@ -1,4 +1,22 @@
 /*
+ * Copyright (c) 2023 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import pub.ihub.plugin.java.IHubJavaExtension
+
+/*
  * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +38,7 @@ plugins {
     id("pub.ihub.plugin.ihub-java") apply false
     id("pub.ihub.plugin.ihub-verification") apply false
     id("pub.ihub.plugin.ihub-publish") apply false
-    id("com.gradle.plugin-publish") apply false
+    alias(libs.plugins.plugin.publish) apply false
     // Jacoco暂不支持TestKit，如下插件用于集成Jacoco报告，详见：https://github.com/gradle/gradle/issues/1465
     alias(libs.plugins.testkit)
 }
@@ -62,6 +80,10 @@ subprojects {
             group("org.spockframework").version("2.3-groovy-3.0")
             group("com.athaydes").version("2.5.0-groovy-3.0")
         }
+    }
+
+    configure<IHubJavaExtension> {
+        compatibility.set("8")
     }
 
 //</editor-fold>

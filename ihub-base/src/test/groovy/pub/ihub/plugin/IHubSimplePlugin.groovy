@@ -36,7 +36,7 @@ class IHubSimplePlugin extends IHubProjectPluginAware {
         withExtension(IHubPrintExtension, AFTER) {
             logger.info 'after print extension'
         }
-        logger.info 'libs: ' + libs
+        logger.info 'libs: ' + ihub
     }
 
 }

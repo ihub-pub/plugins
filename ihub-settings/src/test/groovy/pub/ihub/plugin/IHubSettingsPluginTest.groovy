@@ -18,7 +18,7 @@ package pub.ihub.plugin
 import org.gradle.internal.impldep.org.junit.Rule
 import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
-import spock.lang.Specification
+import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
@@ -31,7 +31,7 @@ import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
  */
 @Title('IHubSettingsPlugin测试套件')
 @SuppressWarnings('PrivateFieldCouldBeFinal')
-class IHubSettingsPluginTest extends Specification {
+class IHubSettingsPluginTest extends IHubSpecification {
 
     @Rule
     private TemporaryFolder testProjectDir = new TemporaryFolder()
@@ -42,7 +42,7 @@ class IHubSettingsPluginTest extends Specification {
     /**
      * 初始化项目配置
      */
-    void setup() {
+    def setup() {
         testProjectDir.create()
         settingsFile = testProjectDir.newFile DEFAULT_SETTINGS_FILE
         propertiesFile = testProjectDir.newFile GRADLE_PROPERTIES
@@ -53,13 +53,6 @@ class IHubSettingsPluginTest extends Specification {
                 id 'pub.ihub.plugin.ihub-settings'
             }
         '''
-    }
-
-    /**
-     * 清理测试项目文件
-     */
-    void cleanup() {
-        testProjectDir.delete()
     }
 
     def '测试插件仓库配置'() {
@@ -141,8 +134,6 @@ println "I'm " + myLibs.versions.henry.get()
     def '测试扩展属性配置子项目'() {
         when: '配置项目'
         propertiesFile << 'name=demo\n'
-        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
-        propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         testProjectDir.newFolder 'rest'
         testProjectDir.newFolder 'service'
         testProjectDir.newFolder 'other'
@@ -246,6 +237,93 @@ println "I'm " + myLibs.versions.henry.get()
         result.output.contains '│ other                                     │ prefix-a-suffix                                      │'
         result.output.contains '│ other                                     │ prefix-b-suffix                                      │'
         !result.output.contains('│ other                                     │ prefix-c-suffix                                      │')
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '测试版本组件配置'() {
+        when: '配置项目'
+        testProjectDir.newFolder 'gradle'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+        propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
+        propertiesFile << 'iHubSettings.includeLibs=true\n'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '测试版本组件兼容模式配置'() {
+        when: '配置项目'
+        testProjectDir.newFolder 'gradle', 'compatibilityLibs'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
+            testProjectDir.newFile('gradle/compatibilityLibs/java11.versions.toml'), null
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+        propertiesFile << 'iHubSettings.includeDependencies=demo-dependehncies\n'
+        propertiesFile << 'iHubSettings.includeLibs=true\n'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '测试Bom组件版本配置'() {
+        when: '配置项目'
+        testProjectDir.newFolder 'gradle'
+        testProjectDir.newFolder 'rest'
+        testProjectDir.newFolder 'service'
+        testProjectDir.newFolder 'other'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+        propertiesFile << 'iHubSettings.skippedDirs=samples=gradle\n'
+        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+        project(':service') {
+            apply {
+                plugin 'java'
+                plugin 'maven-publish'
+            }
+        }
+        project(':other') {
+            apply {
+                plugin 'maven-publish'
+            }
+        }
+        project(':rest') {
+            apply {
+                plugin 'java'
+            }
+        }
+        '''
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '测试Dependencies组件版本配置'() {
+        when: '配置项目'
+        testProjectDir.newFolder 'gradle'
+        testProjectDir.newFolder 'rest'
+        testProjectDir.newFolder 'service'
+        testProjectDir.newFolder 'other'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+        propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
+        propertiesFile << 'iHubSettings.includeLibs=true\n'
+        propertiesFile << 'iHubSettings.skippedDirs=samples=gradle\n'
+        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+        subprojects {
+            if (project.pluginManager.hasPlugin("java-platform")) {
+                return
+            }
+            apply {
+                plugin 'java'
+            }
+        }
+        '''
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 

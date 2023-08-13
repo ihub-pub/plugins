@@ -19,8 +19,8 @@ dependencies {
     api(project(":ihub-plugins"))
     api(project(":ihub-bom"))
     implementation(libs.freefair.lombok)
-    implementation(libs.byte.buddy)
-    implementation(libs.jmolecules.bytebuddy)
+//    implementation(libs.byte.buddy)
+//    implementation(libs.jmolecules.bytebuddy)
 
     implementation(libs.johnrengelman.processes)
     implementation(libs.springdoc.openapi)

@@ -1,7 +1,8 @@
 [versions]
-ihub = '1.1.8'
+ihub = '1.1.9'
 freefair = '8.2.1'
 spring-boot = '2.7.14'
+plugin-publish = '1.2.0'
 
 [libraries]
 dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.3' }
@@ -24,3 +25,4 @@ spring-boot-dependencies = { module = 'org.springframework.boot:spring-boot-depe
 
 [plugins]
 testkit = { id = 'pl.droidsonroids.jacoco.testkit', version = '1.0.12' }
+plugin-publish = { id = 'com.gradle.plugin-publish', version.ref = 'plugin-publish' }
