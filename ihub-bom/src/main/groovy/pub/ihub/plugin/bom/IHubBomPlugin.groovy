@@ -23,6 +23,7 @@ import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
+import static pub.ihub.plugin.IHubLibsVersions.getCompatibleLibsVersion
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
@@ -35,18 +36,26 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
     @Override
     void apply() {
-        // 如果项目为bom组件项目时，不执行插件
-        if (project.name == project.findProperty('iHubSettings.includeBom')) {
+        // 如果项目为Java平台组件项目时，不执行插件
+        if (hasPlugin(JavaPlatformPlugin)) {
+            logger.trace 'Java platform project, skip apply ihub-bom plugin'
             return
         }
 
-        // 如果项目为Java平台组件项目或者版本目录组件项目时，不执行插件
-        if (hasPlugin(JavaPlatformPlugin) || hasPlugin(VersionCatalogPlugin)) {
+        project.gradle.taskGraph.whenReady {
+            extension.printConfigContent()
+        }
+
+        // 如果项目为版本目录组件项目时，不继续执行插件
+        if (hasPlugin(VersionCatalogPlugin)) {
+            logger.trace 'Version catalog project, skip apply ihub-bom plugin'
             return
         }
 
         // 配置ihub-bom
-        extension.importDefaultBom()
+        extension.importBoms {
+            group 'pub.ihub.lib' module 'ihub-dependencies' version getCompatibleLibsVersion('ihub')
+        }
 
         // 配置项目依赖
         withExtension(AFTER) { ext ->
@@ -55,10 +64,6 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             configProject ext
 
             ext.refreshCommonSpecs()
-
-            project.gradle.taskGraph.whenReady {
-                ext.printConfigContent()
-            }
         }
     }
 

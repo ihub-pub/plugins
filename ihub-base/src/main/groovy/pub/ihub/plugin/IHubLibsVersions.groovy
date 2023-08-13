@@ -13,18 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
 
+import groovy.transform.CompileStatic
+import org.gradle.api.JavaVersion
+
 import static org.codehaus.groovy.runtime.ResourceGroovyMethods.readLines
+import static org.gradle.api.JavaVersion.current
 
 /**
  * @author henry
  */
+@CompileStatic
 class IHubLibsVersions {
 
     static final Map<String, String> LIBS_VERSIONS =
         readLines(IHubLibsVersions.classLoader.getResource('META-INF/ihub/libs-versions'))
             .collectEntries { it.split '=' }
+
+    static String getLibsVersion(String name) {
+        LIBS_VERSIONS[name]
+    }
+
+    static String getCompatibleLibsVersion(String name) {
+        current().isCompatibleWith(JavaVersion.VERSION_17) ? getLibsVersion(name) :
+            current().java11Compatible ? getLibsVersion(name) + '-java11' :
+                current().java8Compatible ? getLibsVersion(name) + '-java8' : ''
+    }
 
 }

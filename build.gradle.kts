@@ -15,7 +15,7 @@
  */
 plugins {
     id("pub.ihub.plugin")
-//    id("pub.ihub.plugin.ihub-copyright")
+    id("pub.ihub.plugin.ihub-copyright")
     id("pub.ihub.plugin.ihub-git-hooks")
     id("pub.ihub.plugin.ihub-java") apply false
     id("pub.ihub.plugin.ihub-verification") apply false
@@ -25,12 +25,12 @@ plugins {
     alias(libs.plugins.testkit)
 }
 
-//iHubGitHooks {
-//    hooks.set(mapOf(
-//        "pre-commit" to "./gradlew build -x test",
-//        "commit-msg" to "./gradlew commitCheck"
-//    ))
-//}
+iHubGitHooks {
+    hooks.set(mapOf(
+        "pre-commit" to "./gradlew build -x test",
+        "commit-msg" to "./gradlew commitCheck"
+    ))
+}
 
 subprojects {
     apply {
@@ -50,7 +50,6 @@ subprojects {
 
 //<editor-fold desc="组件依赖版本管理">
 
-    iHubBom.bomVersions.clear() // TODO
     dependencies {
         "api"(platform("cn.hutool:hutool-bom:5.8.21"))
         // TODO
@@ -59,7 +58,6 @@ subprojects {
     // gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
         groupVersions {
-            group("cn.hutool").version("5.8.21") // TODO
             group("org.codehaus.groovy").version("3.0.17")
             group("org.spockframework").version("2.3-groovy-3.0")
             group("com.athaydes").version("2.5.0-groovy-3.0")

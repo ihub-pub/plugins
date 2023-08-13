@@ -142,6 +142,7 @@ println "I'm " + myLibs.versions.henry.get()
         when: '配置项目'
         propertiesFile << 'name=demo\n'
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+        propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         testProjectDir.newFolder 'rest'
         testProjectDir.newFolder 'service'
         testProjectDir.newFolder 'other'

@@ -143,6 +143,20 @@ iHubPublish.publishDocs=true
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '模拟匹配兼容的java版本配置'
+        testProjectDir.newFolder 'gradle'
+        testProjectDir.newFile 'gradle/libsJava11.versions.toml'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '模拟-SNAPSHOT版本'
+        result = gradleBuilder.withArguments('-Pversion=test-SNAPSHOT').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
     def '组件bom配置构建测试'() {
@@ -171,7 +185,6 @@ project(':c') {
     }
 }
 '''
-        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
 
         when: '构建项目'
         def result = gradleBuilder.build()

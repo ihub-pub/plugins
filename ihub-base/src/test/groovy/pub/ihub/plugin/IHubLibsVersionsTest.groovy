@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package pub.ihub.plugin
 
+import org.gradle.api.JavaVersion
 import spock.lang.Specification
 import spock.lang.Title
 
@@ -26,8 +26,22 @@ import spock.lang.Title
 class IHubLibsVersionsTest extends Specification {
 
     def '测试组件版本包含ihub'() {
+        setup:
+        System.setProperty 'java.version', javaVersion
+
         expect:
-        IHubLibsVersions.LIBS_VERSIONS.containsKey 'ihub'
+        IHubLibsVersions.getCompatibleLibsVersion('ihub') ==~ expected
+
+        cleanup:
+        JavaVersion.resetCurrent()
+
+        where:
+        javaVersion | expected
+        '5'         | ''
+        '8'         | /^\d+.\d+.\d+-java8/
+        '11'        | /^\d+.\d+.\d+-java11/
+        '17'        | /^\d+.\d+.\d+$/
+        '19'        | /^\d+.\d+.\d+$/
     }
 
 }

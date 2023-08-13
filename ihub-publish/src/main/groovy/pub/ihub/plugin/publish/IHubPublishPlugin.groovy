@@ -18,13 +18,14 @@ package pub.ihub.plugin.publish
 import groovy.json.JsonSlurper
 import groovy.transform.Memoized
 import io.freefair.gradle.plugins.github.GithubPomPlugin
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaPlatformExtension
 import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.plugins.catalog.CatalogPluginExtension
 import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
@@ -77,21 +78,6 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                 project.compileJava.inputs.files project.processResources
             }
         }
-
-        // 配置项目bom组件
-        project.findProperty('iHubSettings.includeBom')?.with { includeBom ->
-            Project bom = project.rootProject.findProject(includeBom.toString())
-            if (!bom.plugins.hasPlugin(JavaPlatformPlugin)) {
-                bom.with {
-                    pluginManager.apply JavaPlatformPlugin
-                    pluginManager.apply IHubPublishPlugin
-                    extensions.getByType(JavaPlatformExtension).allowDependencies()
-                }
-                afterEvaluate {
-                    configDependencies bom
-                }
-            }
-        }
     }
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
@@ -100,12 +86,19 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         withExtension(PublishingExtension) {
             it.publications {
                 create('mavenJava', MavenPublication) {
+                    it.groupId = project.group
+                    it.version = getCompatibilityVersion project
+
                     if (hasPlugin(JavaPlatformPlugin)) {
                         from project.components.getByName('javaPlatform')
                         return
                     }
                     if (hasPlugin(VersionCatalogPlugin)) {
                         from project.components.getByName('versionCatalog')
+                        withExtension(CatalogPluginExtension).versionCatalog {
+                            // 匹配兼容的java版本配置
+                            from project.files(findCompatibilityCatalogFile(project) ?: 'gradle/libs.versions.toml')
+                        }
                         return
                     }
                     from project.components.getByName('java')
@@ -135,9 +128,6 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                             fromResolutionResult()
                         }
                     }
-
-                    it.groupId = project.group
-                    it.version = project.version
                 }
             }
             it.repositories {
@@ -239,15 +229,20 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         }
     }
 
-    private void configDependencies(Project bom) {
-        bom.dependencies {
-            constraints {
-                bom.rootProject.allprojects.each {
-                    if (it.plugins.hasPlugin(MavenPublishPlugin) && it.plugins.hasPlugin(JavaPlugin)) {
-                        api "${bom.rootProject.group}:$it.name:${bom.rootProject.version}"
-                    }
-                }
-            }
+    private static getCompatibilityVersion(Project project) {
+        // 判断是否需要添加兼容版本号
+        if (!findCompatibilityCatalogFile(project)) {
+            return project.version
+        }
+        String suffix = '-java' + JavaVersion.current()
+        project.version.toString().with {
+            it.endsWith('-SNAPSHOT') ? it.replace('-SNAPSHOT', suffix + '-SNAPSHOT') : it + suffix
+        }
+    }
+
+    private static File findCompatibilityCatalogFile(Project project) {
+        project.rootProject.file('gradle').listFiles().find {
+            it.name == "libsJava${JavaVersion.current()}.versions.toml"
         }
     }
 
