@@ -21,7 +21,6 @@ import org.gradle.api.initialization.Settings
 import static groovy.transform.TypeCheckingMode.SKIP
 
 
-
 /**
  * 子项目配置扩展
  * @author liheng
@@ -39,6 +38,19 @@ class IHubSettingsExtension implements IHubExtensionAware {
 
     private final String[] skippedDirs
 
+    /**
+     * 包括物料清单
+     */
+    String includeBom
+    /**
+     * 包括依赖组件
+     */
+    String includeDependencies
+    /**
+     * 包括兼容性库
+     */
+    String includeLibs
+
     IHubSettingsExtension(Settings settings) {
         this.settings = settings
 
@@ -48,6 +60,9 @@ class IHubSettingsExtension implements IHubExtensionAware {
         // 通过项目属性配置子项目
         includeProjects findProperty('iHubSettings.includeDirs')?.split(',')
         skippedDirs = findProperty('iHubSettings.skippedDirs')?.split ','
+        includeBom = findProperty 'iHubSettings.includeBom'
+        includeDependencies = findProperty 'iHubSettings.includeDependencies'
+        includeLibs = findProperty 'iHubSettings.includeLibs', 'false'
     }
 
     /**

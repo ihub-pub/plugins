@@ -16,22 +16,13 @@
 pluginManagement {
     repositories {
         mavenLocal()
-//        maven {
-//            setUrl("https://maven.aliyun.com/repository/gradle-plugin")
-//        }
-        gradlePluginPortal()
         maven {
-            setUrl ("https://repo.grails.org/grails/core")
+            setUrl("https://maven.aliyun.com/repository/gradle-plugin")
         }
+        gradlePluginPortal()
     }
 }
 
 plugins {
-    id("pub.ihub.plugin.ihub-settings") version "1.2.12"
-}
-
-rootDir.listFiles()?.forEach { file ->
-    if (file.name.startsWith("ihub-")) {
-        include(file.name)
-    }
+    id("pub.ihub.plugin.ihub-settings") version "1.4.0-JAVA11"
 }
