@@ -1,8 +1,27 @@
 [versions]
-mybatis-plus = '3.5.3.1'
+hutool = '5.8.21'
+mybatis-plus = '3.5.3.2'
 mapstruct = '1.5.5.Final'
+incap = '1.0.0'
+fastjson = '2.0.38'
 
 [libraries]
+# bom libs
+hutool-bom = { module = 'cn.hutool:hutool-bom', version.ref = 'hutool' }
+jmolecules-bom = { module = 'org.jmolecules:jmolecules-bom', version = '2023.0.0' }
+#spring-modulith-bom = { module = 'org.springframework.modulith:spring-modulith-bom', version = '1.0.0-M1' }
+spock-bom = { module = 'org.spockframework:spock-bom', version = '2.3-groovy-4.0' }
+sa-token-bom = { module = 'cn.dev33:sa-token-bom', version = '1.35.0.RC' }
+guava-bom = { module = 'com.google.guava:guava-bom', version = '32.1.2-jre' }
+guice-bom = { module = 'com.google.inject:guice-bom', version = '7.0.0' }
+axon-bom = { module = 'org.axonframework:axon-bom', version = '4.8.1' }
+spring-boot-admin-dependencies = { module = 'de.codecentric:spring-boot-admin-dependencies', version = '3.1.4' }
+spring-cloud-dependencies = { module = 'org.springframework.cloud:spring-cloud-dependencies', version = '2022.0.4' }
+spring-cloud-alibaba-dependencies = { module = 'com.alibaba.cloud:spring-cloud-alibaba-dependencies', version = '2022.0.0.0' }
+spring-boot-dependencies = { module = 'org.springframework.boot:spring-boot-dependencies', version = '3.1.2' }
+quarkus-dependencies = { module = 'io.quarkus:quarkus-bom', version = '3.2.4.Final' }
+springdoc-openapi-dependencies = { module = 'org.springdoc:springdoc-openapi', version = '2.2.0' }
+
 # log libs
 commons-logging = { module = 'commons-logging:commons-logging' }
 log4j = { module = 'log4j:log4j' }
@@ -15,16 +34,16 @@ log4j-over-slf4j = { module = 'org.slf4j:log4j-over-slf4j' }
 jcl-over-slf4j = { module = 'org.slf4j:jcl-over-slf4j' }
 
 # mybatis libs
-mybatis-plus = { module = 'com.baomidou:mybatis-plus' }
-mybatis-plus-annotation = { module = 'com.baomidou:mybatis-plus-annotation' }
-mybatis-plus-core = { module = 'com.baomidou:mybatis-plus-core' }
-mybatis-plus-extension = { module = 'com.baomidou:mybatis-plus-extension' }
-mybatis-plus-boot-starter = { module = 'com.baomidou:mybatis-plus-boot-starter' }
-mybatis-plus-generator = { module = 'com.baomidou:mybatis-plus-generator' }
+mybatis-plus = { module = 'com.baomidou:mybatis-plus', version.ref = 'mybatis-plus' }
+mybatis-plus-annotation = { module = 'com.baomidou:mybatis-plus-annotation', version.ref = 'mybatis-plus' }
+mybatis-plus-core = { module = 'com.baomidou:mybatis-plus-core', version.ref = 'mybatis-plus' }
+mybatis-plus-extension = { module = 'com.baomidou:mybatis-plus-extension', version.ref = 'mybatis-plus' }
+mybatis-plus-boot-starter = { module = 'com.baomidou:mybatis-plus-boot-starter', version.ref = 'mybatis-plus' }
+mybatis-plus-generator = { module = 'com.baomidou:mybatis-plus-generator', version.ref = 'mybatis-plus' }
 
 # mapstruct libs
-mapstruct = { module = 'org.mapstruct:mapstruct' }
-mapstruct-processor = { module = 'org.mapstruct:mapstruct-processor' }
+mapstruct = { module = 'org.mapstruct:mapstruct', version.ref = 'mapstruct' }
+mapstruct-processor = { module = 'org.mapstruct:mapstruct-processor', version.ref = 'mapstruct' }
 
 # doc libs
 swagger-annotations = { module = 'io.swagger.core.v3:swagger-annotations' }
@@ -54,12 +73,36 @@ jmolecules-archunit = { module = 'org.jmolecules.integrations:jmolecules-archuni
 # test libs
 junit-jupiter = { module = 'org.junit.jupiter:junit-jupiter' }
 spock-spring = { module = 'org.spockframework:spock-spring' }
-spock-reports = { module = 'com.athaydes:spock-reports' }
+spock-reports = { module = 'com.athaydes:spock-reports', version = '2.5.0-groovy-4.0' }
 spring-boot-starter-test = { module = 'org.springframework.boot:spring-boot-starter-test' }
 # verification libs
-pmd = { module = 'com.alibaba.p3c:p3c-pmd' }
+pmd = { module = 'com.alibaba.p3c:p3c-pmd', version = '2.1.1' }
+
+# other libs
+hutool-all = { module = 'cn.hutool:hutool-all', version.ref = 'hutool' }
+fastjson = { module = 'com.alibaba.fastjson2:fastjson2', version.ref = 'fastjson' }
+fastjson-extension = { module = 'com.alibaba.fastjson2:fastjson2-extension', version.ref = 'fastjson' }
+fastjson-extension-spring = { module = 'com.alibaba.fastjson2:fastjson2-extension-spring6', version.ref = 'fastjson' }
+fastjson-kotlin = { module = 'com.alibaba.fastjson2:fastjson2-kotlin', version.ref = 'fastjson' }
+fastjson1 = { module = 'com.alibaba:fastjson', version.ref = 'fastjson' }
+justauth = { module = 'me.zhyd.oauth:JustAuth', version = '1.16.5' }
+auto-service = { module = 'com.google.auto.service:auto-service', version = '1.1.1' }
+compile-testing = { module = 'com.google.testing.compile:compile-testing', version = '0.21.0' }
+incap = { module = 'net.ltgt.gradle.incap:incap', version.ref = 'incap' }
+incap-processor = { module = 'net.ltgt.gradle.incap:incap-processor', version.ref = 'incap' }
+javapoet = { module = 'com.squareup:javapoet', version = '1.13.0' }
 
 [bundles]
+platform = [
+    'hutool-bom', 'jmolecules-bom', 'spock-bom', 'sa-token-bom', 'guava-bom', 'guice-bom',
+    'axon-bom', 'spring-boot-admin-dependencies', 'spring-cloud-dependencies', 'spring-cloud-alibaba-dependencies',
+    'spring-boot-dependencies', 'quarkus-dependencies', 'springdoc-openapi-dependencies'
+]
+constraints = [
+    'hutool-all', 'fastjson', 'fastjson-extension', 'fastjson-extension-spring', 'fastjson-kotlin', 'fastjson1', 'pmd',
+    'spock-reports', 'mybatis-plus', 'mybatis-plus-annotation', 'mybatis-plus-core', 'mybatis-plus-extension',
+    'mybatis-plus-boot-starter', 'mybatis-plus-generator', 'mapstruct', 'mapstruct-processor', 'justauth'
+]
 groovy = [
     'groovy-core', 'groovy-datetime', 'groovy-dateutil', 'groovy-groovydoc', 'groovy-json',
     'groovy-nio', 'groovy-sql', 'groovy-templates', 'groovy-xml'

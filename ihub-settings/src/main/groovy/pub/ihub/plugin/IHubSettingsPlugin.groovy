@@ -33,6 +33,7 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 
 import static java.lang.Boolean.valueOf
 import static org.codehaus.groovy.runtime.ResourceGroovyMethods.readLines
+import static pub.ihub.plugin.IHubLibsVersions.getLibsVersion
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
 import static pub.ihub.plugin.IHubSettingsExtension.findProperty
@@ -43,9 +44,16 @@ import static pub.ihub.plugin.IHubSettingsExtension.findProperty
  */
 class IHubSettingsPlugin implements Plugin<Settings> {
 
-    private static final Map<String, String> PLUGIN_VERSIONS = [
-        'com.gradle.plugin-publish': '1.2.0',
+    private static final List<String> IHUB_PLUGIN_IDS = readLines IHubSettingsPlugin
+        .classLoader.getResource('META-INF/ihub/plugin-ids')
+    private static final String IHUB_PLUGIN_VERSION = IHubSettingsPlugin.package.implementationVersion
+
+    private static final Map<String, String> PLUGIN_ALIAS_IDS = [
+        'plugin-publish': 'com.gradle.plugin-publish',
     ]
+    private static final Map<String, String> PLUGIN_VERSIONS = PLUGIN_ALIAS_IDS.collectEntries { alias, id ->
+        [(id): getLibsVersion(alias)]
+    }
 
     @Override
     void apply(Settings settings) {
@@ -60,11 +68,10 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         // 配置自定义扩展
         settings.gradle.settingsEvaluated {
             // 配置插件版本
-            List<String> ids = readLines IHubSettingsPlugin.classLoader.getResource('META-INF/ihub/plugin-ids')
             settings.pluginManagement {
                 plugins {
-                    (ids.collectEntries {
-                        [(it): IHubSettingsPlugin.package.implementationVersion]
+                    (IHUB_PLUGIN_IDS.collectEntries {
+                        [(it): IHUB_PLUGIN_VERSION]
                     } + PLUGIN_VERSIONS).findAll { it.value }.each { key, value ->
                         id key version value
                     }
@@ -178,9 +185,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     project.ihubCatalogs.bundles.platform.get().forEach { api platform(it) }
                     // 配置组件版本
                     constraints {
-                        if (project.rootProject.plugins.hasPlugin(VersionCatalogPlugin)) {
-                            api project.rootProject
-                        }
+                        api project.rootProject
                         project.ihubCatalogs.bundles.constraints.get().forEach { api it }
                     }
                 }
@@ -190,7 +195,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     if (it.plugins.hasPlugin(JavaPlugin)) {
                         dependencies {
                             implementation platform(project)
-                            pmd platform(project)
                             annotationProcessor platform(project)
                             testAnnotationProcessor platform(project)
                         }
@@ -208,7 +212,12 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
         settings.gradle.beforeProject { Project project ->
             if (projectName.contains(project.name)) {
-                project.pluginManager.apply 'pub.ihub.plugin.ihub-publish'
+                try {
+                    project.pluginManager.apply 'pub.ihub.plugin.ihub-publish'
+                } catch (e) {
+                    project.logger.warn project.name + ': ' + e.message +
+                        ' Please add plugin: pub.ihub.plugin.ihub-publish in root project \'build.gradle\'.'
+                }
             }
         }
     }
@@ -235,8 +244,15 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     return
                 }
                 // 配置iHubLibs版本
-                ihubLibs {
+                ihub {
                     from "pub.ihub.lib:ihub-libs:${IHubLibsVersions.getCompatibleLibsVersion('ihub')}"
+                    IHubSettingsPlugin.IHUB_PLUGIN_IDS.each { pluginId ->
+                        plugin(pluginId.contains('ihub-') ? pluginId.split('ihub-').last() : 'root', pluginId)
+                            .version IHubSettingsPlugin.IHUB_PLUGIN_VERSION
+                    }
+                    IHubSettingsPlugin.PLUGIN_ALIAS_IDS.each { aliasId, id ->
+                        plugin(aliasId, id).version getLibsVersion(aliasId)
+                    }
                 }
                 // 自动配置./gradle目录下的.versions.toml文件
                 baseDirectory?.eachFile { File file ->
@@ -253,8 +269,9 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     private static File findCompatibilityLibs(Settings settings) {
         // 查找兼容组件版本
-        settings.rootDir.listFiles().find { it.name == 'gradle' }?.listFiles()?.find {
-            it.name == "libsJava${JavaVersion.current()}.versions.toml"
+        def fileOperations = fileOperationsFor settings, settings.rootDir
+        fileOperations.file("gradle/compatibilityLibs/java${JavaVersion.current()}.versions.toml").with {
+            exists() ? it : null
         }
     }
 

@@ -33,7 +33,7 @@ class IHubGroovyPlugin extends IHubProjectPluginAware {
     void apply() {
         withExtension(IHubBomExtension) {
             it.dependencies {
-                implementation libs.bundles.groovy.get() as Object[]
+                implementation ihub.bundles.groovy.get() as Object[]
             }
         }
     }

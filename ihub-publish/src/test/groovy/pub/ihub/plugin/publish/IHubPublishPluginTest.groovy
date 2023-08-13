@@ -145,8 +145,8 @@ iHubPublish.publishDocs=true
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '模拟匹配兼容的java版本配置'
-        testProjectDir.newFolder 'gradle'
-        testProjectDir.newFile 'gradle/libsJava11.versions.toml'
+        testProjectDir.newFolder 'gradle', 'compatibilityLibs'
+        testProjectDir.newFile 'gradle/compatibilityLibs/java11.versions.toml'
         result = gradleBuilder.build()
 
         then: '检查结果'

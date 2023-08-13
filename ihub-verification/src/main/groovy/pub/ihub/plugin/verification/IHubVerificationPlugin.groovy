@@ -95,7 +95,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
     private void configPmd(Project project) {
         applyPlugin PmdPlugin
         withExtension(IHubBomExtension).dependencies {
-            compile 'pmd', libs.pmd.get()
+            compile 'pmd', ihub.pmd.get()
         }
         withExtension(AFTER) { ext ->
             withExtension(PmdExtension) {

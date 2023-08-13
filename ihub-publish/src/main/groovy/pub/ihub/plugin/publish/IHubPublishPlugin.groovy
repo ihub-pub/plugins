@@ -241,8 +241,8 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     }
 
     private static File findCompatibilityCatalogFile(Project project) {
-        project.rootProject.file('gradle').listFiles().find {
-            it.name == "libsJava${JavaVersion.current()}.versions.toml"
+        project.rootProject.file('gradle/compatibilityLibs').listFiles().find {
+            it.name == "java${JavaVersion.current()}.versions.toml"
         }
     }
 

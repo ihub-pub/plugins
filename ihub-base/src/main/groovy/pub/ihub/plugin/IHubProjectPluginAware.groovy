@@ -107,8 +107,8 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
         project.logger
     }
 
-    protected getLibs() {
-        project.findProperty 'ihubLibs'
+    protected getIhub() {
+        project.findProperty 'ihub'
     }
 
     /**
