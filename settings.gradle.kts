@@ -13,16 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pluginManagement {
-    repositories {
-        mavenLocal()
-        maven {
-            setUrl("https://maven.aliyun.com/repository/gradle-plugin")
-        }
-        gradlePluginPortal()
-    }
-}
-
 plugins {
     id("pub.ihub.plugin.ihub-settings") version "1.4.0-JAVA11"
 }
