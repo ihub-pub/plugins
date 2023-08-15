@@ -72,7 +72,7 @@ subprojects {
     dependencies {
         "api"(platform("cn.hutool:hutool-bom:5.8.21"))
         // TODO
-        "api"(platform("org.springframework.boot:spring-boot-dependencies:2.7.14"))
+        "api"(platform("org.springframework.boot:spring-boot-dependencies:3.1.2"))
     }
     // gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
