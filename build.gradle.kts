@@ -68,6 +68,7 @@ subprojects {
 
 //<editor-fold desc="组件依赖版本管理">
 
+    iHubBom.bomVersions.clear()
     dependencies {
         "api"(platform("cn.hutool:hutool-bom:5.8.21"))
         // TODO
