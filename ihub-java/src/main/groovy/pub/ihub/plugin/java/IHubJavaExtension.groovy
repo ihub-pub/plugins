@@ -64,7 +64,7 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
     /**
      * 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked
      */
-    @IHubProperty
+    @IHubProperty(type = [PROJECT, SYSTEM])
     Property<String> compilerArgs
 
     /**

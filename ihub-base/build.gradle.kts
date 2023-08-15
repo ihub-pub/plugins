@@ -30,7 +30,8 @@ gradlePlugin {
 tasks.register("listLibsVersions") {
     group = "ihub"
     val ids = mutableListOf<String>()
-    ids.add("ihub=${libs.versions.ihub.get()}")
+    ids.add("ihub-libs=${libs.versions.ihub.get()}")
+    ids.add("ihub-plugins=${version}")
     ids.add("plugin-publish=${libs.versions.plugin.publish.get()}")
     file("build/libs-versions").let {
         if (!it.exists()) {

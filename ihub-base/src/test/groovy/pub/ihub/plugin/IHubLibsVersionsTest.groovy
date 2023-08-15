@@ -30,7 +30,7 @@ class IHubLibsVersionsTest extends Specification {
         System.setProperty 'java.version', javaVersion
 
         expect:
-        IHubLibsVersions.getCompatibleLibsVersion('ihub') ==~ expected
+        IHubLibsVersions.getCompatibleLibsVersion('ihub-libs') ==~ expected
 
         cleanup:
         JavaVersion.resetCurrent()
