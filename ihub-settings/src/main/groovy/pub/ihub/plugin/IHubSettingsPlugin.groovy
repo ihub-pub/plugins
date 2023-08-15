@@ -46,7 +46,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     private static final List<String> IHUB_PLUGIN_IDS = readLines IHubSettingsPlugin
         .classLoader.getResource('META-INF/ihub/plugin-ids')
-    private static final String IHUB_PLUGIN_VERSION = IHubSettingsPlugin.package.implementationVersion
+    private static final String IHUB_PLUGIN_VERSION = getLibsVersion 'ihub-plugins'
 
     private static final Map<String, String> PLUGIN_ALIAS_IDS = [
         'plugin-publish': 'com.gradle.plugin-publish',
@@ -63,7 +63,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         // 扩展配置
         IHubSettingsExtension ext = settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
 
-        File compatibilityLibs = findCompatibilityLibs settings
+        String compatiblesLibs = findCompatibilityLibs settings
 
         // 配置自定义扩展
         settings.gradle.settingsEvaluated {
@@ -80,7 +80,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             printMapConfigContent 'Gradle Plugin Plugins Version', 'ID', 'Version', PLUGIN_VERSIONS
 
             // 发布兼容版本组件跳过后续配置
-            if (compatibilityLibs) {
+            if (compatiblesLibs) {
                 return
             }
 
@@ -98,7 +98,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
 
         // 配置catalog
-        configVersionCatalogs settings, ext, compatibilityLibs
+        configVersionCatalogs settings, ext, compatiblesLibs
 
         settings.pluginManager.apply PluginVersionsPlugin
     }
@@ -222,7 +222,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
     }
 
-    private static void configVersionCatalogs(Settings settings, IHubSettingsExtension ext, File compatibilityLibs) {
+    private static void configVersionCatalogs(Settings settings, IHubSettingsExtension ext, String compatiblesLibs) {
         settings.dependencyResolutionManagement {
             repositories {
                 mavenCentral()
@@ -236,16 +236,16 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     }
                     ihubCatalogs {
                         from fileOperationsFor(settings, baseDirectory)
-                            .configurableFiles(compatibilityLibs ? compatibilityLibs.name : 'libs.versions.toml')
+                            .configurableFiles(compatiblesLibs ?: 'libs.versions.toml')
                     }
                     ext.includeDependencies?.with { includeDependencies settings, it }
                 }
-                if (compatibilityLibs) {
+                if (compatiblesLibs) {
                     return
                 }
                 // 配置iHubLibs版本
                 ihub {
-                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersions.getCompatibleLibsVersion('ihub')}"
+                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersions.getCompatibleLibsVersion('ihub-libs')}"
                     IHubSettingsPlugin.IHUB_PLUGIN_IDS.each { pluginId ->
                         plugin(pluginId.contains('ihub-') ? pluginId.split('ihub-').last() : 'root', pluginId)
                             .version IHubSettingsPlugin.IHUB_PLUGIN_VERSION
@@ -267,11 +267,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
     }
 
-    private static File findCompatibilityLibs(Settings settings) {
+    private static String findCompatibilityLibs(Settings settings) {
         // 查找兼容组件版本
         def fileOperations = fileOperationsFor settings, settings.rootDir
         fileOperations.file("gradle/compatibilityLibs/java${JavaVersion.current()}.versions.toml").with {
-            exists() ? it : null
+            exists() ? 'compatibilityLibs/' + name : null
         }
     }
 

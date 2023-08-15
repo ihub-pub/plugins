@@ -54,7 +54,7 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
         // 配置ihub-bom
         extension.importBoms {
-            group 'pub.ihub.lib' module 'ihub-dependencies' version getCompatibleLibsVersion('ihub')
+            group 'pub.ihub.lib' module 'ihub-dependencies' version getCompatibleLibsVersion('ihub-libs')
         }
 
         // 配置项目依赖
@@ -91,6 +91,11 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 }
             }
         }
+
+        // 禁用依赖管理覆盖
+//        dependencyManagement {
+//            it.overriddenByDependencies false
+//        }
     }
 
     private void configProject(IHubBomExtension ext) {
