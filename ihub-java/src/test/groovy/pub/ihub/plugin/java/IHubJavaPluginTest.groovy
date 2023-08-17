@@ -108,9 +108,9 @@ class IHubJavaPluginTest extends IHubSpecification {
                 }
             }
 
-            task("bootRun") {
-                println("bootRun")
-            }
+            // task("bootRun") {
+            //    println("bootRun")
+            //}
         '''
         propertiesFile << 'iHubJava.compatibility=8\n'
         propertiesFile << 'iHubJava.defaultDependencies=false\n'
