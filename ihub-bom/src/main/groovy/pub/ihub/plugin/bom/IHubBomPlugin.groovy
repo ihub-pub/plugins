@@ -93,9 +93,9 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
         }
 
         // 禁用依赖管理覆盖
-//        dependencyManagement {
-//            it.overriddenByDependencies false
-//        }
+        dependencyManagement {
+            it.overriddenByDependencies false
+        }
     }
 
     private void configProject(IHubBomExtension ext) {
