@@ -2,7 +2,7 @@
 ihub = '1.2.0'
 freefair = '8.2.2'
 spring-boot = '2.7.14'
-plugin-publish = '1.2.0'
+plugin-publish = '1.2.1'
 
 [libraries]
 dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.3' }
