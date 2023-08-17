@@ -164,7 +164,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
 
         withExtension(AFTER) {
-            if (it.applyOpenapiPlugin.get() && project.tasks.findByName('bootRun')) {
+            if (it.applyOpenapiPlugin.get()) {
                 applyPlugin ProcessesPlugin, OpenApiGradlePlugin
             }
             if (!hasPlugin(GroovyPlugin)) {
