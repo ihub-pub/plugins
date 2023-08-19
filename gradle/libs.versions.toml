@@ -1,5 +1,5 @@
 [versions]
-ihub = '1.2.0'
+ihub = '1.2.1'
 freefair = '8.2.2'
 spring-boot = '2.7.14'
 plugin-publish = '1.2.1'
