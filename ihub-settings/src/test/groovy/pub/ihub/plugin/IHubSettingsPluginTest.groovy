@@ -247,6 +247,7 @@ println "I'm " + myLibs.versions.henry.get()
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         propertiesFile << 'iHubSettings.includeLibs=true\n'
+        new File('build/resources/main/META-INF/ihub/plugin-ids') << '\npub.ihub.plugin'
         def result = gradleBuilder.build()
 
         then: '检查结果'
@@ -256,6 +257,8 @@ println "I'm " + myLibs.versions.henry.get()
     def '测试版本组件兼容模式配置'() {
         when: '配置项目'
         testProjectDir.newFolder 'gradle', 'compatibilityLibs'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
+            testProjectDir.newFile('gradle/libs.versions.toml'), null
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
             testProjectDir.newFile('gradle/compatibilityLibs/java11.versions.toml'), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'

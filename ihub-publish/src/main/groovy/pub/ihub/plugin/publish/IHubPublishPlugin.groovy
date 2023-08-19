@@ -21,6 +21,7 @@ import io.freefair.gradle.plugins.github.GithubPomPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -95,10 +96,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                     }
                     if (hasPlugin(VersionCatalogPlugin)) {
                         from project.components.getByName('versionCatalog')
-                        withExtension(CatalogPluginExtension).versionCatalog {
-                            // 匹配兼容的java版本配置
-                            from project.files(findCompatibilityCatalogFile(project) ?: 'gradle/libs.versions.toml')
-                        }
+                        this.configVersionCatalog()
                         return
                     }
                     from project.components.getByName('java')
@@ -231,7 +229,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     private static getCompatibilityVersion(Project project) {
         // 判断是否需要添加兼容版本号
-        if (!findCompatibilityCatalogFile(project)) {
+        if (!project.rootProject.findProperty('isCompatibilityPublish')) {
             return project.version
         }
         String suffix = '-java' + JavaVersion.current()
@@ -240,9 +238,15 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         }
     }
 
-    private static File findCompatibilityCatalogFile(Project project) {
-        project.rootProject.file('gradle/compatibilityLibs').listFiles().find {
-            it.name == "java${JavaVersion.current()}.versions.toml"
+
+    private void configVersionCatalog() {
+        withExtension(CatalogPluginExtension).versionCatalog {
+            from project.files('gradle/libs.versions.toml')
+            // 匹配兼容的java版本配置
+            def versionAliases = withExtension(VersionCatalogsExtension).named 'ihubCatalogs'
+            versionAliases.versionAliases.each { alias ->
+                version alias, versionAliases.findVersion(alias).get().requiredVersion
+            }
         }
     }
 
