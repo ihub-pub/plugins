@@ -16,10 +16,10 @@
 package pub.ihub.plugin
 
 import io.freefair.gradle.plugins.settings.PluginVersionsPlugin
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
+import org.gradle.api.initialization.resolve.DependencyResolutionManagement
 import org.gradle.api.internal.GradleInternal
 import org.gradle.api.internal.file.DefaultFileOperations
 import org.gradle.api.internal.file.FileCollectionFactory
@@ -30,9 +30,14 @@ import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.tomlj.Toml
+
+import java.nio.file.FileSystems
+import java.nio.file.Path
 
 import static java.lang.Boolean.valueOf
 import static org.codehaus.groovy.runtime.ResourceGroovyMethods.readLines
+import static org.gradle.api.JavaVersion.current
 import static pub.ihub.plugin.IHubLibsVersions.getLibsVersion
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
@@ -63,8 +68,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         // 扩展配置
         IHubSettingsExtension ext = settings.extensions.create 'iHubSettings', IHubSettingsExtension, settings
 
-        String compatiblesLibs = findCompatibilityLibs settings
-
         // 配置自定义扩展
         settings.gradle.settingsEvaluated {
             // 配置插件版本
@@ -80,7 +83,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             printMapConfigContent 'Gradle Plugin Plugins Version', 'ID', 'Version', PLUGIN_VERSIONS
 
             // 发布兼容版本组件跳过后续配置
-            if (compatiblesLibs) {
+            if (findCompatibilityLibsPath(settings).toFile().exists()) {
                 return
             }
 
@@ -98,7 +101,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
 
         // 配置catalog
-        configVersionCatalogs settings, ext, compatiblesLibs
+        configVersionCatalogs settings, ext
 
         settings.pluginManager.apply PluginVersionsPlugin
     }
@@ -222,57 +225,84 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
     }
 
-    private static void configVersionCatalogs(Settings settings, IHubSettingsExtension ext, String compatiblesLibs) {
+    private static void configVersionCatalogs(Settings settings, IHubSettingsExtension ext) {
         settings.dependencyResolutionManagement {
             repositories {
                 mavenCentral()
             }
-            versionCatalogs {
-                def baseDirectory = settings.rootDir.listFiles().find { it.name == 'gradle' }
-                // 配置发布Catalog组件
-                if ('true' == ext.includeLibs) {
-                    settings.gradle.rootProject {
-                        pluginManager.apply VersionCatalogPlugin
-                    }
-                    ihubCatalogs {
-                        from fileOperationsFor(settings, baseDirectory)
-                            .configurableFiles(compatiblesLibs ?: 'libs.versions.toml')
-                    }
-                    ext.includeDependencies?.with { includeDependencies settings, it }
+
+            // 配置发布Catalog组件
+            if ('true' == ext.includeLibs) {
+                configIHubPublishCatalogs it, settings, ext
+            }
+
+            // 发布兼容版本组件跳过后续配置
+            if (findCompatibilityLibsPath(settings).toFile().exists()) {
+                return
+            }
+
+            // 配置iHubLibs版本
+            configIHubCatalogs it
+
+            // 自动配置./gradle目录下的.versions.toml文件
+            autoConfigCatalogsFile it, settings
+        }
+    }
+
+    private static void configIHubPublishCatalogs(DependencyResolutionManagement management, Settings settings,
+                                                  IHubSettingsExtension ext) {
+        def baseDirectory = settings.rootDir.listFiles().find { it.name == 'gradle' }
+        def path = findCompatibilityLibsPath settings
+        boolean pathExists = path.toFile().exists()
+        management.versionCatalogs {
+            settings.gradle.rootProject {
+                pluginManager.apply VersionCatalogPlugin
+                it.ext.setProperty 'isCompatibilityPublish', pathExists
+            }
+            ihubCatalogs {
+                from fileOperationsFor(settings, baseDirectory).configurableFiles('libs.versions.toml')
+                if (pathExists) {
+                    def versionsTable = Toml.parse(path).getTable 'versions'
+                    versionsTable.keySet().each { key -> version key, versionsTable.get(key) }
                 }
-                if (compatiblesLibs) {
-                    return
+            }
+            ext.includeDependencies?.with { includeDependencies settings, it }
+        }
+    }
+
+    private static void configIHubCatalogs(DependencyResolutionManagement management) {
+        management.versionCatalogs {
+            ihub {
+                from "pub.ihub.lib:ihub-libs:${IHubLibsVersions.getCompatibleLibsVersion('ihub-libs')}"
+                IHubSettingsPlugin.IHUB_PLUGIN_IDS.each { pluginId ->
+                    plugin(pluginId.contains('ihub-') ? pluginId.split('ihub-').last() : 'root', pluginId)
+                        .version IHubSettingsPlugin.IHUB_PLUGIN_VERSION
                 }
-                // 配置iHubLibs版本
-                ihub {
-                    from "pub.ihub.lib:ihub-libs:${IHubLibsVersions.getCompatibleLibsVersion('ihub-libs')}"
-                    IHubSettingsPlugin.IHUB_PLUGIN_IDS.each { pluginId ->
-                        plugin(pluginId.contains('ihub-') ? pluginId.split('ihub-').last() : 'root', pluginId)
-                            .version IHubSettingsPlugin.IHUB_PLUGIN_VERSION
-                    }
-                    IHubSettingsPlugin.PLUGIN_ALIAS_IDS.each { aliasId, id ->
-                        plugin(aliasId, id).version getLibsVersion(aliasId)
-                    }
+                IHubSettingsPlugin.PLUGIN_ALIAS_IDS.each { aliasId, id ->
+                    plugin(aliasId, id).version getLibsVersion(aliasId)
                 }
-                // 自动配置./gradle目录下的.versions.toml文件
-                baseDirectory?.eachFile { File file ->
-                    // libs.versions.toml为标准配置文件，会被自动加载
-                    if (file.name.endsWith('.versions.toml') && file.name != 'libs.versions.toml') {
-                        "${file.name - '.versions.toml'}" {
-                            from fileOperationsFor(settings, baseDirectory).configurableFiles(file.name)
-                        }
+            }
+        }
+    }
+
+    private static void autoConfigCatalogsFile(DependencyResolutionManagement management, Settings settings) {
+        def baseDirectory = settings.rootDir.listFiles().find { it.name == 'gradle' }
+        management.versionCatalogs {
+            baseDirectory?.eachFile { File file ->
+                // libs.versions.toml为标准配置文件，会被自动加载
+                if (file.name.endsWith('.versions.toml') && file.name != 'libs.versions.toml') {
+                    "${file.name - '.versions.toml'}" {
+                        from fileOperationsFor(settings, baseDirectory).configurableFiles(file.name)
                     }
                 }
             }
         }
     }
 
-    private static String findCompatibilityLibs(Settings settings) {
+    private static Path findCompatibilityLibsPath(Settings settings) {
         // 查找兼容组件版本
-        def fileOperations = fileOperationsFor settings, settings.rootDir
-        fileOperations.file("gradle/compatibilityLibs/java${JavaVersion.current()}.versions.toml").with {
-            exists() ? 'compatibilityLibs/' + name : null
-        }
+        FileSystems.default.getPath settings.rootDir.absolutePath,
+            'gradle', 'compatibilityLibs', "java${current()}.versions.toml"
     }
 
     private static FileOperations fileOperationsFor(Settings settings, File baseDirectory) {

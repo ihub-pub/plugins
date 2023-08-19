@@ -38,7 +38,7 @@ class IHubLibsVersionsTest extends Specification {
         where:
         javaVersion | expected
         '5'         | ''
-        '8'         | /^\d+.\d+.\d+-java8/
+        '8'         | /^\d+.\d+.\d+-java1.8/
         '11'        | /^\d+.\d+.\d+-java11/
         '17'        | /^\d+.\d+.\d+$/
         '19'        | /^\d+.\d+.\d+$/

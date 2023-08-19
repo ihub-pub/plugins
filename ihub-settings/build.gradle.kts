@@ -17,6 +17,7 @@ description = "IHub Gradle Plugins Settings"
 
 dependencies {
     implementation(libs.freefair.settings)
+    implementation(libs.toml)
 }
 
 tasks.register("listPluginIds") {

@@ -137,6 +137,15 @@ iHubPublish.publishDocs=true
                 plugin 'pub.ihub.plugin.ihub-publish'
             }
         '''
+        settingsFile << '''
+            dependencyResolutionManagement {
+                versionCatalogs {
+                    ihubCatalogs {
+                        from files('libs.versions.toml')
+                    }
+                }
+            }
+        '''
 
         when: '构建项目'
         def result = gradleBuilder.build()
@@ -145,8 +154,7 @@ iHubPublish.publishDocs=true
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '模拟匹配兼容的java版本配置'
-        testProjectDir.newFolder 'gradle', 'compatibilityLibs'
-        testProjectDir.newFile 'gradle/compatibilityLibs/java11.versions.toml'
+        propertiesFile << '\nisCompatibilityPublish=true'
         result = gradleBuilder.build()
 
         then: '检查结果'

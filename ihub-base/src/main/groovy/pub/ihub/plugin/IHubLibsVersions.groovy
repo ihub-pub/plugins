@@ -38,7 +38,7 @@ class IHubLibsVersions {
     static String getCompatibleLibsVersion(String name) {
         current().isCompatibleWith(JavaVersion.VERSION_17) ? getLibsVersion(name) :
             current().java11Compatible ? getLibsVersion(name) + '-java11' :
-                current().java8Compatible ? getLibsVersion(name) + '-java8' : ''
+                current().java8Compatible ? getLibsVersion(name) + '-java1.8' : ''
     }
 
 }
