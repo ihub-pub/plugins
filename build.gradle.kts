@@ -32,12 +32,12 @@ import pub.ihub.plugin.java.IHubJavaExtension
  * limitations under the License.
  */
 plugins {
-    id("pub.ihub.plugin")
-    id("pub.ihub.plugin.ihub-copyright")
-    id("pub.ihub.plugin.ihub-git-hooks")
-    id("pub.ihub.plugin.ihub-java") apply false
-    id("pub.ihub.plugin.ihub-verification") apply false
-    id("pub.ihub.plugin.ihub-publish") apply false
+    alias(ihub.plugins.root)
+    alias(ihub.plugins.copyright)
+    alias(ihub.plugins.git.hooks)
+    alias(ihub.plugins.java) apply false
+    alias(ihub.plugins.verification) apply false
+    alias(ihub.plugins.publish) apply false
     alias(libs.plugins.plugin.publish) apply false
     // Jacoco暂不支持TestKit，如下插件用于集成Jacoco报告，详见：https://github.com/gradle/gradle/issues/1465
     alias(libs.plugins.testkit)
