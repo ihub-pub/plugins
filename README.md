@@ -14,8 +14,8 @@
     <a target="_blank" href="https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml">
         <img src="https://img.shields.io/github/actions/workflow/status/ihub-pub/plugins/gradle-build.yml?branch=main&label=Build&logo=GitHub+Actions&logoColor=white" alt="Gradle Build"/>
     </a>
-    <a target="_blank" href="https://ihub-pub.testspace.com/spaces/219260/current">
-        <img alt="Testspace tests (compact)" src="https://img.shields.io/testspace/tests/ihub-pub/ihub-pub:plugins/main?compact_message&label=Tests&logo=GitHub+Actions&logoColor=white">
+    <a title="Test Cases" href="https://ihub-pub.testspace.com/spaces/219260?utm_campaign=metric&utm_medium=referral&utm_source=badge">
+        <img alt="Space Metric" src="https://ihub-pub.testspace.com/spaces/219260/badge?token=3d9f679828ccf96d6f815bd0402227f79b067c8a" />
     </a>
     <a target="_blank" href="https://www.codefactor.io/repository/github/ihub-pub/plugins">
         <img src="https://img.shields.io/codefactor/grade/github/ihub-pub/plugins/main?color=white&label=Codefactor&labelColor=F44A6A&logo=CodeFactor&logoColor=white" alt="CodeFactor"/>

@@ -22,7 +22,6 @@ kotlin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version = '1.9.
 toml = { module = 'org.tomlj:tomlj', version = '1.1.0' }
 
 ihub-dependencies = { module = 'pub.ihub.lib:ihub-dependencies', version.ref = 'ihub' }
-spring-boot-dependencies = { module = 'org.springframework.boot:spring-boot-dependencies', version.ref = 'spring-boot' }
 
 [plugins]
 testkit = { id = 'pl.droidsonroids.jacoco.testkit', version = '1.0.12' }

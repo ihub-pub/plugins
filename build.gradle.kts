@@ -1,22 +1,4 @@
 /*
- * Copyright (c) 2023 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import pub.ihub.plugin.java.IHubJavaExtension
-
-/*
  * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,6 +13,8 @@ import pub.ihub.plugin.java.IHubJavaExtension
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import pub.ihub.plugin.java.IHubJavaExtension
+
 plugins {
     alias(ihub.plugins.root)
     alias(ihub.plugins.copyright)
@@ -49,6 +33,8 @@ iHubGitHooks {
         "commit-msg" to "./gradlew commitCheck"
     ))
 }
+
+val springBootVersion: String = libs.versions.spring.boot.get()
 
 subprojects {
     apply {
@@ -71,8 +57,7 @@ subprojects {
     iHubBom.bomVersions.clear()
     dependencies {
         "api"(platform("cn.hutool:hutool-bom:5.8.21"))
-        // TODO
-        "api"(platform("org.springframework.boot:spring-boot-dependencies:2.7.14"))
+        "api"(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     }
     // gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
