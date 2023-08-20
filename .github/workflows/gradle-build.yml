@@ -79,10 +79,10 @@ jobs:
           egress-policy: audit
 
       - name: Checkout
-        if: ${{ matrix.project_name != 'ihub-publish' }}
+        if: ${{ matrix.project_name != 'ihub-plugins' }}
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
       - name: Checkout ref main
-        if: ${{ matrix.project_name == 'ihub-publish' }}
+        if: ${{ matrix.project_name == 'ihub-plugins' }}
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
         with:
           ref: main
