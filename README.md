@@ -9,28 +9,28 @@
 
 <p align="center">
     <a target="_blank" href="https://bestpractices.coreinfrastructure.org/projects/6921">
-        <img alt="CII Best Practices Level" src="https://img.shields.io/cii/level/6921">
+        <img alt="CII Best Practices Level" src="https://badge.ihub.pub/cii/level/6921">
     </a>
     <a target="_blank" href="https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml">
-        <img src="https://img.shields.io/github/actions/workflow/status/ihub-pub/plugins/gradle-build.yml?branch=main&label=Build&logo=GitHub+Actions&logoColor=white" alt="Gradle Build"/>
+        <img src="https://badge.ihub.pub/github/actions/workflow/status/ihub-pub/plugins/gradle-build.yml?branch=main&label=Build&logo=GitHub+Actions&logoColor=white" alt="Gradle Build"/>
     </a>
     <a title="Test Cases" href="https://ihub-pub.testspace.com/spaces/219260?utm_campaign=metric&utm_medium=referral&utm_source=badge">
-        <img alt="Space Metric" src="https://ihub-pub.testspace.com/spaces/219260/badge?token=3d9f679828ccf96d6f815bd0402227f79b067c8a" />
+        <img alt="Space Metric" src="https://badge.ihub.pub/testspace/tests/ihub-pub/ihub-pub:plugins/main?compact_message&label=Tests&logo=GitHub+Actions&logoColor=white" />
     </a>
     <a target="_blank" href="https://www.codefactor.io/repository/github/ihub-pub/plugins">
-        <img src="https://img.shields.io/codefactor/grade/github/ihub-pub/plugins/main?color=white&label=Codefactor&labelColor=F44A6A&logo=CodeFactor&logoColor=white" alt="CodeFactor"/>
+        <img src="https://badge.ihub.pub/codefactor/grade/github/ihub-pub/plugins/main?color=white&label=Codefactor&labelColor=F44A6A&logo=CodeFactor&logoColor=white" alt="CodeFactor"/>
     </a>
     <a target="_blank" href="https://codecov.io/gh/ihub-pub/plugins">
-        <img src="https://img.shields.io/codecov/c/github/ihub-pub/plugins?token=ZQ0WR3ZSWG&color=white&label=Codecov&labelColor=F01F7A&logo=Codecov&logoColor=white" alt="Codecov"/>
+        <img src="https://badge.ihub.pub/codecov/c/github/ihub-pub/plugins?token=ZQ0WR3ZSWG&color=white&label=Codecov&labelColor=F01F7A&logo=Codecov&logoColor=white" alt="Codecov"/>
     </a>
     <a target="_blank" href="https://github.com/ihub-pub/plugins/stargazers">
-        <img src="https://img.shields.io/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717" alt="GitHub Stars"/>
+        <img src="https://badge.ihub.pub/github/stars/ihub-pub/plugins?color=white&logo=GitHub&labelColor=181717" alt="GitHub Stars"/>
     </a>
     <a target="_blank" href='https://gitee.com/ihub-pub/plugins/stargazers'>
-        <img src='https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgitee.com%2Fapi%2Fv5%2Frepos%2Fihub-pub%2Fplugins&query=%24.stargazers_count&style=flat&logo=gitee&label=stars&labelColor=c71d23&color=white&cacheSeconds=5000' alt='Gitee Stars'/>
+        <img src='https://badge.ihub.pub/badge/dynamic/json?url=https%3A%2F%2Fgitee.com%2Fapi%2Fv5%2Frepos%2Fihub-pub%2Fplugins&query=%24.stargazers_count&style=flat&logo=gitee&label=stars&labelColor=c71d23&color=white&cacheSeconds=5000' alt='Gitee Stars'/>
     </a>
     <a target="_blank" href="https://plugins.gradle.org/plugin/pub.ihub.plugin">
-        <img src="https://img.shields.io/maven-metadata/v?color=white&label=Gradle&labelColor=02303A&logo=Gradle&metadataUrl=https%3A%2F%2Fplugins.gradle.org%2Fm2%2Fpub%2Fihub%2Fplugin%2Fihub-plugins%2Fmaven-metadata.xml" alt="IHub Plugins Gradle Plugin"/>
+        <img src="https://badge.ihub.pub/maven-metadata/v?color=white&label=Gradle&labelColor=02303A&logo=Gradle&metadataUrl=https%3A%2F%2Fplugins.gradle.org%2Fm2%2Fpub%2Fihub%2Fplugin%2Fihub-plugins%2Fmaven-metadata.xml" alt="IHub Plugins Gradle Plugin"/>
     </a>
 </p>
 
