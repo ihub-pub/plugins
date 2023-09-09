@@ -109,16 +109,16 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
     def '测试catalog配置'() {
         when: '默认配置'
-        testProjectDir.newFolder 'gradle'
+        testProjectDir.newFolder 'gradle', 'libs'
         testProjectDir.newFile('gradle/libs.versions.toml') << '''
 [versions]
 james-bond = '0.0.7'
 '''
-        testProjectDir.newFile('gradle/myLibs.versions.toml') << '''
+        testProjectDir.newFile('gradle/libs/myLibs.versions.toml') << '''
 [versions]
 henry = '0.0.8'
 '''
-        testProjectDir.newFile('gradle/other.toml')
+        testProjectDir.newFile('gradle/libs/other.toml')
         testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
 println "I'm " + libs.versions.james.bond.get()
 println "I'm " + myLibs.versions.henry.get()
@@ -127,6 +127,35 @@ println "I'm " + myLibs.versions.henry.get()
 
         then: '检查结果'
         result.output.contains 'I\'m 0.0.7'
+        result.output.contains 'I\'m 0.0.8'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '测试profile-catalog配置'() {
+        when: '默认配置'
+        testProjectDir.newFolder 'gradle', 'libs', 'profiles'
+        testProjectDir.newFile('gradle/libs.versions.toml') << '''
+[versions]
+henry = '0.0.7'
+'''
+        testProjectDir.newFile('gradle/libs/profiles/dev.versions.toml') << '''
+[versions]
+henry = '0.0.8'
+'''
+        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+println "I'm " + libs.versions.henry.get()
+'''
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'I\'m 0.0.7'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '设置profile'
+        propertiesFile << 'iHub.profile=dev,other\n'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
         result.output.contains 'I\'m 0.0.8'
         result.output.contains 'BUILD SUCCESSFUL'
     }
@@ -256,11 +285,11 @@ println "I'm " + myLibs.versions.henry.get()
 
     def '测试版本组件兼容模式配置'() {
         when: '配置项目'
-        testProjectDir.newFolder 'gradle', 'compatibilityLibs'
+        testProjectDir.newFolder 'gradle', 'libs', 'compatibility'
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
             testProjectDir.newFile('gradle/libs.versions.toml'), null
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
-            testProjectDir.newFile('gradle/compatibilityLibs/java11.versions.toml'), null
+            testProjectDir.newFile('gradle/libs/compatibility/java11.versions.toml'), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         propertiesFile << 'iHubSettings.includeDependencies=demo-dependehncies\n'
         propertiesFile << 'iHubSettings.includeLibs=true\n'
