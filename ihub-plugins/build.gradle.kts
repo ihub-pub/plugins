@@ -45,5 +45,12 @@ gradlePlugin {
             implementationClass = "pub.ihub.plugin.copyright.IHubCopyrightPlugin"
             tags.set(listOf("ihub", "git", "copyright", "idea"))
         }
+        create("ihubProfiles") {
+            id = "pub.ihub.plugin.ihub-profiles"
+            displayName = "IHub Profiles"
+            description = "IHub Profiles Gradle Plugin"
+            implementationClass = "pub.ihub.plugin.profiles.IHubProfilesPlugin"
+            tags.set(listOf("ihub", "java", "profiles"))
+        }
     }
 }
