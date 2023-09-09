@@ -15,17 +15,18 @@
  */
 package pub.ihub.plugin.spring
 
+import org.gradle.api.provider.Property
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 import pub.ihub.plugin.IHubPlugin
+import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.java.IHubJavaPlugin
 
 import static org.springframework.boot.buildpack.platform.build.PullPolicy.IF_NOT_PRESENT
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-
 
 
 /**
@@ -42,6 +43,10 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
         withExtension(AFTER) { ext ->
             withTask(BootRun) {
                 ext.systemProperties it, '.boot-java-local.properties'
+                Property<String> profile = withExtension(IHubPluginsExtension).profile
+                if (profile.present) {
+                    it.systemProperties.put 'spring.profiles.active', profile.get()
+                }
                 it.optimizedLaunch = ext.runOptimizedLaunch.get()
             }
 
@@ -53,30 +58,34 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
             }
 
             // 注：使用bootBuildImage时须禁用启动脚本
-            withTask(BootBuildImage) {
-                it.pullPolicy = IF_NOT_PRESENT
-                it.environment = ext.environment
-                it.cleanCache = ext.bpCleanCache.get()
-                it.verboseLogging = ext.bpVerboseLogging.get()
-                it.publish = ext.bpPublish.get()
-                it.docker {
-                    host = ext.dockerHost.orNull
-                    tlsVerify = ext.dockerTlsVerify.get()
-                    certPath = ext.dockerCertPath.orNull
-                    builderRegistry {
-                        url = ext.dockerUrl.orNull
-                        username = ext.dockerUsername.orNull
-                        password = ext.dockerPassword.orNull
-                        email = ext.dockerEmail.orNull
-                        token = ext.dockerToken.orNull
-                    }
-                    publishRegistry {
-                        url = ext.dockerUrl.orNull
-                        username = ext.dockerUsername.orNull
-                        password = ext.dockerPassword.orNull
-                        email = ext.dockerEmail.orNull
-                        token = ext.dockerToken.orNull
-                    }
+            configBootBuildImage ext
+        }
+    }
+
+    private configBootBuildImage(ext) {
+        withTask(BootBuildImage) {
+            it.pullPolicy = IF_NOT_PRESENT
+            it.environment = ext.environment
+            it.cleanCache = ext.bpCleanCache.get()
+            it.verboseLogging = ext.bpVerboseLogging.get()
+            it.publish = ext.bpPublish.get()
+            it.docker {
+                host = ext.dockerHost.orNull
+                tlsVerify = ext.dockerTlsVerify.get()
+                certPath = ext.dockerCertPath.orNull
+                builderRegistry {
+                    url = ext.dockerUrl.orNull
+                    username = ext.dockerUsername.orNull
+                    password = ext.dockerPassword.orNull
+                    email = ext.dockerEmail.orNull
+                    token = ext.dockerToken.orNull
+                }
+                publishRegistry {
+                    url = ext.dockerUrl.orNull
+                    username = ext.dockerUsername.orNull
+                    password = ext.dockerPassword.orNull
+                    email = ext.dockerEmail.orNull
+                    token = ext.dockerToken.orNull
                 }
             }
         }

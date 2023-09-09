@@ -100,4 +100,14 @@ interface IHubPluginsExtension extends IHubExtensionAware {
 
     //</editor-fold>
 
+    //<editor-fold desc="配置文件相关扩展属性">
+
+    /**
+     * 配置文件，多个配置用逗号分隔，优先级从右到左
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM])
+    Property<String> getProfile()
+
+    //</editor-fold>
+
 }
