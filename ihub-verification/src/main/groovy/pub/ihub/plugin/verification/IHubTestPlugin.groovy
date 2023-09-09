@@ -47,13 +47,13 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
         (SPOCK)        : { IHubBomExtension iHubBom ->
             applyPlugin GroovyPlugin
             iHubBom.dependencies {
-                testImplementation ihub.spock.spring.get()
-                testRuntimeOnly ihub.spock.reports.get(), ihub.spring.boot.starter.test.get()
+                testImplementation 'org.spockframework:spock-spring'
+                testRuntimeOnly 'com.athaydes:spock-reports', 'org.springframework.boot:spring-boot-starter-test'
             }
         },
         (JUNIT_JUPITER): { IHubBomExtension iHubBom ->
             iHubBom.dependencies {
-                testImplementation ihub.junit.jupiter.get()
+                testImplementation 'org.junit.jupiter:junit-jupiter'
             }
         }
     ]
