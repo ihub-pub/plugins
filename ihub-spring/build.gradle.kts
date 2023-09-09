@@ -26,7 +26,7 @@ dependencies {
 }
 
 configure<IHubJavaExtension> {
-    compatibility.set("8")
+    compatibility.set("11")
 }
 
 gradlePlugin {
