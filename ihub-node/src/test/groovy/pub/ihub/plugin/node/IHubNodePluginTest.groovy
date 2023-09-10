@@ -62,7 +62,7 @@ class IHubNodePluginTest extends IHubSpecification {
 
         when: '自定义任务'
         buildFile << '''
-            task cnpm_run_dev(type: pub.ihub.plugin.node.cnpm.task.CNpmTask) {
+            task cnpm_run_dev(type: pub.ihub.plugin.node.cnpm.task.CnpmTask) {
                 args = ['run','dev']
             }
         '''
