@@ -98,6 +98,18 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 
         when: '构建项目'
         propertiesFile << 'iHub.repoIncludeGroup=pub.ihub.demo\n'
+        result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains('flatDir')
+        result.output.contains('MavenLocal')
+        result.output.contains('AliYunPublic')
+        result.output.contains('ReleaseRepo')
+        result.output.contains('SnapshotRepo')
+        result.output.contains('CustomizeRepo')
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '构建项目'
         propertiesFile << 'iHub.mavenPrivateEnabled=false'
         result = gradleBuilder.build()
 
