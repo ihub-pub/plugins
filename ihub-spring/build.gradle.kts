@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import pub.ihub.plugin.java.IHubJavaExtension
-
 description = "IHub Spring Gradle Plugins"
 
 dependencies {
@@ -23,10 +21,6 @@ dependencies {
     implementation(libs.spring.boot)
     compileOnly("org.springframework.boot:spring-boot-buildpack-platform")
     implementation(libs.native)
-}
-
-configure<IHubJavaExtension> {
-    compatibility.set("11")
 }
 
 gradlePlugin {
