@@ -52,7 +52,8 @@
 <tr><td><a href="https://doc.ihub.pub/plugins/list/iHubVerification">pub.ihub.plugin.ihub-verification</a></td><td>验证插件</td><td>Project</td><td>配置代码静态检查以及测试用例覆盖率等</td></tr>
 <tr><td rowspan="2">ihub-spring</td><td><a href="https://doc.ihub.pub/plugins/list/iHubBoot">pub.ihub.plugin.ihub-boot</a></td><td>Boot插件</td><td>Project</td><td>集成spring-boot插件以及镜像默认配置</td></tr>
 <tr><td><a href="https://doc.ihub.pub/plugins/list/iHubNative">pub.ihub.plugin.ihub-native</a></td><td>Native插件</td><td>Project</td><td>基于ihub-boot扩展引入org.graalvm.buildtools.native插件</td></tr>
-<tr><td>ihub-githooks</td><td><a href="https://doc.ihub.pub/plugins/list/iHubGitHooks">pub.ihub.plugin.ihub-git-hooks</a></td><td>GitHooks插件</td><td>Project</td><td>配置GitHooks，可以为git操作配置一些钩子命令</td></tr>
+<tr><td>ihub-git-hooks</td><td><a href="https://doc.ihub.pub/plugins/list/iHubGitHooks">pub.ihub.plugin.ihub-git-hooks</a></td><td>GitHooks插件</td><td>Project</td><td>配置GitHooks，可以为git操作配置一些钩子命令</td></tr>
+<tr><td>ihub-node</td><td><a href="https://doc.ihub.pub/plugins/list/iHubNode">pub.ihub.plugin.ihub-node</a></td><td>Node.js插件</td><td>Project</td><td>集成 <a href="https://plugins.gradle.org/plugin/com.github.node-gradle.node">node-gradle</a> 插件，扩展支持 cnmp</td></tr>
 </table>
 
 ## 🧭 使用指南

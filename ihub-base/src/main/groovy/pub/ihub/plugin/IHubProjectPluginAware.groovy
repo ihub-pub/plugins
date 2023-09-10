@@ -37,6 +37,7 @@ import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
  * @author henry
  */
 @CompileStatic
+@SuppressWarnings('UnnecessaryObjectReferences')
 abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements Plugin<Project> {
 
     Project project
@@ -73,7 +74,14 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
 
         iHubPlugin.tasks().each {
             IHubTask task = it.getAnnotation IHubTask
-            registerTask task.value(), it, { it.group = 'ihub' }
+            registerTask task.value(), it, {
+                it.group = task.group()
+                it.description = task.description()
+                it.dependsOn task.dependsOn()
+                it.mustRunAfter task.mustRunAfter()
+                it.shouldRunAfter task.shouldRunAfter()
+                it.finalizedBy task.finalizedBy()
+            }
         }
 
         apply()
@@ -190,12 +198,12 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
                 // 获取环境属性
                 if (type().contains(ENV)) {
                     setExtensionProperty property, genericType(),
-                        System.getenv(fieldName.replaceAll(/([A-Z])/, '_$1').toUpperCase())?.replaceAll('\\\\n', '\n')
+                            System.getenv(fieldName.replaceAll(/([A-Z])/, '_$1').toUpperCase())?.replaceAll('\\\\n', '\n')
                 }
                 // 获取系统属性
                 if (type().contains(SYSTEM)) {
                     setExtensionProperty property, genericType(),
-                        System.getProperty(propertyName)?.replaceAll('\\\\n', '\n')
+                            System.getProperty(propertyName)?.replaceAll('\\\\n', '\n')
                 }
             }
         }
