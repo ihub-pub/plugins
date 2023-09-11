@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,8 +16,6 @@
 package pub.ihub.plugin
 
 import groovy.transform.CompileStatic
-
-
 
 /**
  * 插件通用方法
@@ -86,48 +84,84 @@ final class IHubPluginMethods {
             int remainder = (width % widths.size()).with { it > 0 ? it : 0 }
             widths << widths.removeLast() + remainder
         }
-        printBorderline widths, '┌─', '───', '─┐'
-        printCenter title, CONTENT_WIDTH - (width < 0 ? width : 0)
-        printBorderline widths, '├─', '─┬─', '─┤'
+        TableFrame frame = 'UTF-8' == System.getProperty('file.encoding') ? TableFrame.UNICODE : TableFrame.ASCII
+        printBorderline widths, frame.top, frame.line
+        printCenter title, CONTENT_WIDTH - (width < 0 ? width : 0), frame.frame
+        printBorderline widths, frame.taps, frame.line
         if (taps) {
-            printTaps widths, taps.toList(), '│ ', ' │ ', ' │'
-            printBorderline widths, '├─', '─┼─', '─┤'
+            printTaps widths, taps.toList(), frame.data
+            printBorderline widths, frame.middle, frame.line
         }
-        data.each { printTaps widths, it, '│ ', ' │ ', ' │' }
-        printBorderline widths, '└─', '─┴─', '─┘'
+        data.each { printTaps widths, it, frame.data }
+        printBorderline widths, frame.bottom, frame.line
     }
 
     /**
      * 居中打印
      * @param str 字符串
      */
-    private static void printCenter(String str, int contentWidth) {
+    private static void printCenter(String str, int contentWidth, String frame) {
         int strRightBoundary = ((contentWidth + str.length()) / 2).intValue()
-        printf "│ %${strRightBoundary}s${' ' * (contentWidth - strRightBoundary)} │\n", str
+        printf "$frame %${strRightBoundary}s${' ' * (contentWidth - strRightBoundary)} $frame\n", str
     }
 
     /**
      * 打印行数据
      * @param widths 栏目宽度
      * @param data 打印数据
-     * @param leftFrame 左边框字符
-     * @param separator 分隔符
-     * @param rightFrame 右边框字符
+     * @param frame 边框字符
      */
-    private static void printTaps(List<Integer> widths, List data,
-                                  String leftFrame, String separator, String rightFrame) {
-        printf "$leftFrame${widths.collect { "%-${it}s" }.join(separator)}$rightFrame\n", data
+    private static void printTaps(List<Integer> widths, List data, Tuple3<String, String, String> frame) {
+        printf "${frame.v1}${widths.collect { "%-${it}s" }.join(frame.v2)}${frame.v3}\n", data
     }
 
     /**
      * 打印分割线
      * @param widths 栏目宽度
-     * @param leftFrame 左边框字符
-     * @param separator 分隔符
-     * @param rightFrame 右边框字符
+     * @param frame 边框字符
+     * @param line 分割线
      */
-    private static void printBorderline(List<Integer> widths, String leftFrame, String separator, String rightFrame) {
-        println "$leftFrame${widths.collect { '─' * it }.join(separator)}$rightFrame"
+    private static void printBorderline(List<Integer> widths, Tuple3<String, String, String> frame, String line) {
+        println "${frame.v1}${widths.collect { line * it }.join(frame.v2)}${frame.v3}"
+    }
+
+    private enum TableFrame {
+
+        UNICODE(
+            '┌─', '─┬─', '─┐',
+            '├─', '─┼─', '─┤',
+            '└─', '─┴─', '─┘',
+            '───', '│', '─'
+        ),
+        ASCII(
+            '+-', '-+-', '-+',
+            '+-', '-+-', '-+',
+            '+-', '-+-', '-+',
+            '---', '|', '-'
+        )
+
+        @SuppressWarnings('ParameterCount')
+        TableFrame(String topLeft, String topMiddle, String topRight,
+                   String middleLeft, String center, String middleRight,
+                   String bottomLeft, String bottomMiddle, String bottomRight,
+                   String topLine, String frame, String line) {
+            this.top = Tuple.tuple(topLeft, topLine, topRight)
+            this.taps = Tuple.tuple(middleLeft, topMiddle, middleRight)
+            this.data = Tuple.tuple(frame + ' ', ' ' + frame + ' ', ' ' + frame)
+            this.middle = Tuple.tuple(middleLeft, center, middleRight)
+            this.bottom = Tuple.tuple(bottomLeft, bottomMiddle, bottomRight)
+            this.frame = frame
+            this.line = line
+        }
+
+        final Tuple3<String, String, String> top
+        final Tuple3<String, String, String> taps
+        final Tuple3<String, String, String> data
+        final Tuple3<String, String, String> middle
+        final Tuple3<String, String, String> bottom
+        final String frame
+        final String line
+
     }
 
 }
