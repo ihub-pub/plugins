@@ -66,8 +66,14 @@ class IHubPluginBaseTest extends Specification {
     }
 
     def '测试插件打印方法'() {
+        setup:
+        System.setProperty 'file.encoding', encoding
+
         expect:
         project.extensions.findByName('iHubPrint') instanceof IHubPrintExtension
+
+        where:
+        encoding << ['GBK', 'UTF-8']
     }
 
 }
