@@ -113,7 +113,7 @@ class IHubNodePluginTest extends IHubSpecification {
         Project project = ProjectBuilder.builder().build()
         project.pluginManager.apply IHubNodePlugin
         project.extensions.getByType(NodeExtension)
-            .resolvedPlatform.set(PlatformHelperKt.parsePlatform('win', '') { 'name' })
+            .resolvedPlatform.set(PlatformHelperKt.parsePlatform('windows', '') { 'name' })
         project.tasks.withType(CnpmTask) {
             it.exec()
         }
