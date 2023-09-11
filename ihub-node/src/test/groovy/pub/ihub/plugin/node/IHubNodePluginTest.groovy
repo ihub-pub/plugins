@@ -108,4 +108,19 @@ class IHubNodePluginTest extends IHubSpecification {
         exception.message
     }
 
+    def '静态模拟window环境测试'() {
+        when:
+        Project project = ProjectBuilder.builder().build()
+        project.pluginManager.apply IHubNodePlugin
+        project.extensions.getByType(NodeExtension)
+            .resolvedPlatform.set(PlatformHelperKt.parsePlatform('windows', '') { 'name' })
+        project.tasks.withType(CnpmTask) {
+            it.exec()
+        }
+
+        then:
+        def exception = thrown(ExecException)
+        exception.message
+    }
+
 }
