@@ -319,4 +319,14 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'ihub-dependencies配置测试'() {
+        when: '配置组件依赖为空'
+        copyProject 'bom.gradle'
+        propertiesFile << 'iHubSettings.includeDependencies=ihub-dependencies'
+        def result = gradleBuilder.build()
+        then: '检查结果'
+        !result.output.contains('ihub-dependencies')
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
 }

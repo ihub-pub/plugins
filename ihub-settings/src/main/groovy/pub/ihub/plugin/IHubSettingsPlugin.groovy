@@ -92,6 +92,10 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
             // 配置子项目
             Map<String, List<String>> projectSpecs = [:]
+            // 没有配置指定子项目时，自动添加所有子项目
+            if (!ext.projectSpecs) {
+                ext.includeProjects settings.rootDir.listFiles()*.name as String[]
+            }
             settings.rootDir.eachDir { dir ->
                 ext.getProjectSpec(dir.name)?.with { spec ->
                     projectSpecs.putAll spec.includeSubProject(dir)
@@ -174,32 +178,35 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
     }
 
+    @SuppressWarnings('NestedBlockDepth')
     private static void includeDependencies(Settings settings, String dependName) {
         includeJavaPlatform settings, dependName
         settings.gradle.afterProject { Project project ->
-            if (dependName.contains(project.name)) {
-                project.dependencies {
+            if (project.name == settings.rootProject.name) {
+                Project dependProject = project.project ':' + dependName
+                dependProject.dependencies {
                     // 配置平台依赖
-                    project.rootProject.allprojects.findAll {
-                        it.plugins.hasPlugin(JavaPlatformPlugin) && it.name != project.name
+                    dependProject.rootProject.allprojects.findAll {
+                        it.plugins.hasPlugin(JavaPlatformPlugin) && it.name != dependProject.name
                     }.each {
                         api platform(it)
                     }
-                    project.ihubCatalogs.bundles.platform.get().forEach { api platform(it) }
+                    dependProject.ihubCatalogs.bundles.platform.get().forEach { api platform(it) }
                     // 配置组件版本
                     constraints {
-                        api project.rootProject
-                        project.ihubCatalogs.bundles.constraints.get().forEach { api it }
+                        api dependProject.rootProject
+                        dependProject.ihubCatalogs.bundles.constraints.get().forEach { api it }
                     }
                 }
 
                 // 子项目添加平台依赖
-                project.rootProject.subprojects {
+                dependProject.rootProject.subprojects {
                     if (it.plugins.hasPlugin(JavaPlugin)) {
-                        dependencies {
-                            implementation platform(project)
-                            annotationProcessor platform(project)
-                            testAnnotationProcessor platform(project)
+                        configurations {
+                            ['pmd', 'implementation', 'annotationProcessor', 'testAnnotationProcessor'].each { name ->
+                                maybeCreate(name).dependencies.add dependencies
+                                    .create(dependencies.platform(dependProject))
+                            }
                         }
                     }
                 }

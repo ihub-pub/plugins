@@ -54,7 +54,7 @@ subprojects {
 
     iHubBom.bomVersions.clear()
     dependencies {
-        "api"(platform("cn.hutool:hutool-bom:5.8.21"))
+        "api"(platform("cn.hutool:hutool-bom:5.8.22"))
         "api"(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
     }
     // gradle groovy版本没有升级至4.0，强制指定3.0版本

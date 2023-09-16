@@ -13,6 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pub.ihub.plugin.ihub-settings") version "1.4.1-rc1"
+description = "IHub Node Gradle Plugins"
+
+dependencies {
+    implementation(libs.gradle.node)
+}
+
+gradlePlugin {
+    plugins {
+        create("ihubNode") {
+            id = "pub.ihub.plugin.ihub-node"
+            displayName = "IHub Node"
+            description = "IHub Gradle Node Gradle Plugin"
+            implementationClass = "pub.ihub.plugin.node.IHubNodePlugin"
+            tags.set(listOf("ihub", "node", "js", "npm"))
+        }
+    }
 }
