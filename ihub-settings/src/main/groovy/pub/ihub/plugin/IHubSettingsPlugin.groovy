@@ -178,6 +178,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
     }
 
+    @SuppressWarnings('NestedBlockDepth')
     private static void includeDependencies(Settings settings, String dependName) {
         includeJavaPlatform settings, dependName
         settings.gradle.afterProject { Project project ->
@@ -201,11 +202,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                 // 子项目添加平台依赖
                 dependProject.rootProject.subprojects {
                     if (it.plugins.hasPlugin(JavaPlugin)) {
-                        dependencies {
-                            implementation platform(dependProject)
-                            pmd platform(dependProject)
-                            annotationProcessor platform(dependProject)
-                            testAnnotationProcessor platform(dependProject)
+                        configurations {
+                            ['pmd', 'implementation', 'annotationProcessor', 'testAnnotationProcessor'].each { name ->
+                                maybeCreate(name).dependencies.add dependencies
+                                    .create(dependencies.platform(dependProject))
+                            }
                         }
                     }
                 }
