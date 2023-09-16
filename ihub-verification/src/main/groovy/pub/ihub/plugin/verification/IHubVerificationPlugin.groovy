@@ -95,7 +95,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
     private void configPmd(Project project) {
         applyPlugin PmdPlugin
         withExtension(IHubBomExtension).dependencies {
-            compile 'implementation', 'com.alibaba.p3c:p3c-pmd'
+            compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
         }
         withExtension(AFTER) { ext ->
             withExtension(PmdExtension) {

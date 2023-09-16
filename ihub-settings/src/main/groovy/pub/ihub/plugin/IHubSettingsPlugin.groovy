@@ -203,6 +203,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
                     if (it.plugins.hasPlugin(JavaPlugin)) {
                         dependencies {
                             implementation platform(dependProject)
+                            pmd platform(dependProject)
                             annotationProcessor platform(dependProject)
                             testAnnotationProcessor platform(dependProject)
                         }
