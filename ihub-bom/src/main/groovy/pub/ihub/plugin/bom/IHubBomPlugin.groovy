@@ -52,9 +52,11 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             return
         }
 
-        // 配置ihub-bom
-        extension.importBoms {
-            group 'pub.ihub.lib' module 'ihub-dependencies' version getCompatibleLibsVersion('ihub-libs')
+        // 项目不包含dependencies组件时，自动配置ihub-bom
+        if (!project.hasProperty('iHubSettings.includeDependencies')) {
+            extension.importBoms {
+                group 'pub.ihub.lib' module 'ihub-dependencies' version getCompatibleLibsVersion('ihub-libs')
+            }
         }
 
         // 配置项目依赖
