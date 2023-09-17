@@ -24,12 +24,14 @@
 
 ### `gradle.properties`Configure support properties
 
-| Property                   | Description                                                                                              |
-| -------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `name`                     | Configure primary project name                                                                           |
-| `iHubSettings.includeDirs` | Include project paths, multiple directories ", " split                                                   |
-| `iHubSettings.skippedDirs` | Exclude project paths, multiple directories ", " split                                                   |
-| `iHubSettings.includeBom`  | Used to configure the bom component, including all subprojects with[ihub-publish](iHubPublish)components |
+| Property                           | Description                                                                                              |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `name`                             | Configure primary project name                                                                           |
+| `iHubSettings.includeDirs`         | Include project paths, multiple directories ", " split                                                   |
+| `iHubSettings.skippedDirs`         | Exclude project paths, multiple directories ", " split                                                   |
+| `iHubSettings.includeBom`          | Used to configure the bom component, including all subprojects with[ihub-publish](iHubPublish)components |
+| `iHubSettings.includeLibs`         | 发布catalog组件开关，                                                                                           |
+| `iHubSettings.includeDependencies` | 用于配置dependencies组件，基于catalog组件配置                                                                         |
 
 > Configure the following:
 
@@ -147,7 +149,7 @@ The plugin is configured with `ihub series plugins` and the following plug-in de
 | Plugin                      | Version                                                                             |
 | --------------------------- | ----------------------------------------------------------------------------------- |
 | `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)                |
-| `pub.ihub.plugin.*`         | [1.3.4](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
+| `pub.ihub.plugin.*`         | [1.4.1](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
 | `io.freefair.*`             | [8.0.1](https://docs.freefair.io/gradle-plugins/8.0.1/reference/#_settings_plugins) |
 
 Use plugins without plating numbers to configure below:
@@ -191,6 +193,8 @@ dependencyResolutionManagement {
 }
 ```
 
+- Private Snapshot repository
 - `gradle/libs.versions.toml`for standard configurations, gradle will be automatically imported, and this plugin will automatically configure other`.versions.toml`files such as：`myLibs.versions.toml`, generally using standard configuration sufficient to configure
+- Private Release Repository
 
 @include(../snippet/footnote.md)
