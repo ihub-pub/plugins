@@ -33,6 +33,7 @@
 | `repoUsername`              | Repository Username                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `repoPassword`              | Repository Password                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
 | `customizeRepoUrl`          | Custom Repository                                                  | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `profile`                   | 配置文件，多个配置用逗号分隔，优先级从右到左                                             | ❌       | ❌         | ✔         | ✔         | ❌         |
 
 ## Plugin Installation
 
