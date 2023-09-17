@@ -12,7 +12,7 @@
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.3.4'
+    id 'pub.ihub.plugin.ihub-settings' version '1.4.1'
 }
 
 iHubSettings {

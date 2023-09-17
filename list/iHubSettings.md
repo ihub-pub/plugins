@@ -24,12 +24,14 @@
 
 ### `gradle.properties`配置支持属性
 
-| Property  | Description |
-| --------- | ----------- |
-| `name` | 配置主项目名称 |
-| `iHubSettings.includeDirs` | 包含项目路径，多目录“,”分割 |
-| `iHubSettings.skippedDirs` | 排除项目路径，多目录“,”分割 |
+| Property  | Description                                    |
+| --------- |------------------------------------------------|
+| `name` | 配置主项目名称                                        |
+| `iHubSettings.includeDirs` | 包含项目路径，多目录“,”分割                                |
+| `iHubSettings.skippedDirs` | 排除项目路径，多目录“,”分割                                |
 | `iHubSettings.includeBom` | 用于配置bom组件，包含所有含[ihub-publish](iHubPublish)组件的子项目 |
+| `iHubSettings.includeLibs` | 发布catalog组件开关，                                 |
+| `iHubSettings.includeDependencies` | 用于配置dependencies组件，基于catalog组件配置               |
 
 > 配置如下：
 
@@ -125,6 +127,7 @@ iHubSettings {
 
 ::: warning
 插件默认排除了常见非项目目录，`build`, `src`, `conf`, `libs`, `logs`, `docs`, `classes`, `target`, `out`, `node_modules`, `db`, `gradle`
+没有配置指定子项目时，自动添加所有子项目
 :::
 
 ## 默认插件仓库
@@ -147,7 +150,7 @@ iHubSettings {
 | Plugin                      | Version                                                                             |
 |-----------------------------|-------------------------------------------------------------------------------------|
 | `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)                |
-| `pub.ihub.plugin.*`         | [1.3.4](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
+| `pub.ihub.plugin.*`         | [1.4.1](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
 | `io.freefair.*`             | [8.0.1](https://docs.freefair.io/gradle-plugins/8.0.1/reference/#_settings_plugins) |
 
 使用插件时可以不用加版本号，配置如下：
@@ -191,6 +194,8 @@ dependencyResolutionManagement {
 }
 ```
 
-- `gradle/libs.versions.toml`为标准配置，gradle会自动导入，本插件也会自动配置gradle/目录下的其他`.versions.toml`文件，如：`myLibs.versions.toml`，一般使用标准配置即可
+- `gradle/libs.versions.toml`为标准配置，gradle会自动导入
+- 本插件也会自动配置`gradle/libs/`目录下的其他`.versions.toml`文件，如：`myLibs.versions.toml`，一般使用标准配置即可
+- 支持基于`iHub.profile`属性配置，根据profile替换`libs.versions.toml`里的`versions`配置，配置文件路径`gradle/libs/profiles`，如：`gradle/libs/profiles/dev.versions.toml`
 
 @include(../snippet/footnote.md)
