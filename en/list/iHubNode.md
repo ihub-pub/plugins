@@ -1,32 +1,32 @@
 # ihub-node
 
-::: info 插件信息
-`ihub-node`插件为独立插件，基于 [com.github.node-gradle.node](https://plugins.gradle.org/plugin/com.github.node-gradle.node) 插件支持构建node.js项目，并扩展支持`cnpm`
+::: info plugin information
+`ihub-node`plugin is a stand-alone plugin based on [com.github.node-gradle.node](https://plugins.gradle.org/plugin/com.github.node-gradle.node) plugin supports building node.js projects, and extension support`cnpm`
 :::
 
-| 插件ID                        | 插件名称         | 插件类型                | 扩展名称       | 插件依赖                                                                                         |
-| --------------------------- | ------------ | ------------------- | ---------- | -------------------------------------------------------------------------------------------- |
-| `pub.ihub.plugin.ihub-node` | `GitHooks插件` | `Project`[^Project] | `iHubNode` | [com.github.node-gradle.node](https://plugins.gradle.org/plugin/com.github.node-gradle.node) |
+| Plugin Id                   | Plugin Name       | Plugin Type         | Extension Name | Plugin dependencies                                                                          |
+| --------------------------- | ----------------- | ------------------- | -------------- | -------------------------------------------------------------------------------------------- |
+| `pub.ihub.plugin.ihub-node` | `GitHooks Plugin` | `Project`[^Project] | `iHubNode`     | [com.github.node-gradle.node](https://plugins.gradle.org/plugin/com.github.node-gradle.node) |
 
-## 扩展属性
+## Extended Properties
 
-| Extension               | Description               | Default  | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
-| ----------------------- | ------------------------- | -------- | --------- | --------- | --------- | --------- |
-| `version`               | Node.js版本                 | `latest` | ✔         | ✔         | ✔         | ❌         |
-| `npmVersion`            | npm版本，如果不指定则使用Node.js绑定版本 | `latest` | ✔         | ✔         | ✔         | ❌         |
-| `pnpmVersion`           | pnpm版本，如果不指定则使用最新版本       | `latest` | ✔         | ✔         | ✔         | ❌         |
-| `yarnVersion`           | yarn版本，如果不指定则使用最新版本       | `latest` | ✔         | ✔         | ✔         | ❌         |
-| `cnpmVersion`           | cnpm版本，如果不指定则使用最新版本       | `latest` | ✔         | ✔         | ✔         | ❌         |
-| `distBaseUrl`           | Node.js下载地址               | ❌        | ✔         | ✔         | ✔         | ❌         |
-| `allowInsecureProtocol` | 是否允许不安全的协议                | `false`  | ✔         | ✔         | ✔         | ❌         |
-| `download`              | 是否下载并安装特定的 Node.js 版本     | `false`  | ✔         | ✔         | ✔         | ❌         |
-| `workDir`               | Node.js安装目录               | ❌        | ✔         | ✔         | ✔         | ✔         |
-| `npmWorkDir`            | NPM安装目录                   | ❌        | ✔         | ✔         | ✔         | ✔         |
-| `pnpmWorkDir`           | PNPM安装目录                  | ❌        | ✔         | ✔         | ✔         | ✔         |
-| `yarnWorkDir`           | Yarn安装目录                  | ❌        | ✔         | ✔         | ✔         | ✔         |
-| `cnpmWorkDir`           | cNpm安装目录                  | ❌        | ✔         | ✔         | ✔         | ✔         |
+| Extension               | Description                                               | Default  | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
+| ----------------------- | --------------------------------------------------------- | -------- | --------- | --------- | --------- | --------- |
+| `version`               | Node.js Version                                           | `latest` | ✔         | ✔         | ✔         | ❌         |
+| `npmVersion`            | npm version. If not specified, use Node.js bound version  | `latest` | ✔         | ✔         | ✔         | ❌         |
+| `pnpmVersion`           | pnpm version, latest version if not specified             | `latest` | ✔         | ✔         | ✔         | ❌         |
+| `yarnVersion`           | pnpm version, latest version if not specified             | `latest` | ✔         | ✔         | ✔         | ❌         |
+| `cnpmVersion`           | pnpm version, latest version if not specified             | `latest` | ✔         | ✔         | ✔         | ❌         |
+| `distBaseUrl`           | Node.js Download Address                                  | ❌        | ✔         | ✔         | ✔         | ❌         |
+| `allowInsecureProtocol` | Whether unsafe protocols are allowed                      | `false`  | ✔         | ✔         | ✔         | ❌         |
+| `download`              | Whether to download and install specific Node.js versions | `false`  | ✔         | ✔         | ✔         | ❌         |
+| `workDir`               | Node.js Installation Directory                            | ❌        | ✔         | ✔         | ✔         | ✔         |
+| `npmWorkDir`            | NPM installation directory                                | ❌        | ✔         | ✔         | ✔         | ✔         |
+| `pnpmWorkDir`           | NPM installation directory                                | ❌        | ✔         | ✔         | ✔         | ✔         |
+| `yarnWorkDir`           | Yarn Installation Directory                               | ❌        | ✔         | ✔         | ✔         | ✔         |
+| `cnpmWorkDir`           | cNpm installation directory                               | ❌        | ✔         | ✔         | ✔         | ✔         |
 
-## 插件安装
+## Plugin Installation
 
 ::: code-tabs#build
 
@@ -48,7 +48,7 @@ plugins {
 
 :::
 
-## 插件扩展配置使用示例
+## Example plugin configuration usage
 
 ::: code-tabs#build
 
@@ -70,11 +70,11 @@ iHubNode {
 
 :::
 
-## 插件扩展任务
+## Plugin Extension Task
 
 ### cnpm
 
-> 任务扩展配置
+> Task Extension Configuration
 
 ::: code-tabs#build
 
@@ -98,7 +98,7 @@ task cnpm_run_dev(type: pub.ihub.plugin.node.cnpm.task.CnpmTask) {
 
 :::
 
-> 任务命令
+> Task command
 
 ```cmd
 cnpm run dev
@@ -106,7 +106,7 @@ cnpm run dev
 
 ### cnpmSetup
 
-> 任务命令
+> Task command
 
 ```cmd
 npm install --global --no-save --prefix cnpm --registry=https://registry.npm.taobao.org
@@ -114,7 +114,7 @@ npm install --global --no-save --prefix cnpm --registry=https://registry.npm.tao
 
 ### cnpmInstall
 
-> 任务命令
+> Task command
 
 ```cmd
 cnpm install
@@ -122,7 +122,7 @@ cnpm install
 
 ### cnpmSync
 
-> 任务命令
+> Task command
 
 ```cmd
 cnpm sync cnpmcore
