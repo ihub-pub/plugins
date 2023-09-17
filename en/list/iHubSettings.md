@@ -30,8 +30,8 @@
 | `iHubSettings.includeDirs`         | Include project paths, multiple directories ", " split                                                   |
 | `iHubSettings.skippedDirs`         | Exclude project paths, multiple directories ", " split                                                   |
 | `iHubSettings.includeBom`          | Used to configure the bom component, including all subprojects with[ihub-publish](iHubPublish)components |
-| `iHubSettings.includeLibs`         | 发布catalog组件开关，                                                                                           |
-| `iHubSettings.includeDependencies` | 用于配置dependencies组件，基于catalog组件配置                                                                         |
+| `iHubSettings.includeLibs`         | Publish catalog component switching,                                                                     |
+| `iHubSettings.includeDependencies` | Used to configure dependencies' components, based on catalog component configuration                     |
 
 > Configure the following:
 
