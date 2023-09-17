@@ -1,22 +1,22 @@
 # ihub-profiles
 
-::: info 插件说明
-`ihub-profiles`Gradle版本 Maven POM Profiles
+::: info plugin description
+`ihub-profiles`Gradle version Maven POM Profiles
 :::
 
-| 信息   | 描述                              |
-| ---- | ------------------------------- |
-| 插件ID | `pub.ihub.plugin.ihub-profiles` |
-| 插件名称 | `配置文件插件`                        |
-| 插件类型 | `Project`[^Project]             |
-| 扩展名称 | `ihubProfiles`                  |
-| 插件依赖 | [ihub](iHub)                    |
+| Info                | Description                     |
+| ------------------- | ------------------------------- |
+| Plugin Id           | `pub.ihub.plugin.ihub-profiles` |
+| Plugin Name         | `Profile Plugin`                |
+| Plugin Type         | `Project`[^Project]             |
+| Extension Name      | `ihubProfiles`                  |
+| Plugin dependencies | [ihub](iHub)                    |
 
-::: tip 插件功能
-基于`iHub.profile`属性，支持不同`profile`下的扩展配置
+::: tip plugin feature
+based on`iHub.profile`attributes, different`profile`extension configuration
 :::
 
-## 插件安装
+## Plugin Installation
 
 ::: code-tabs#build
 
@@ -39,10 +39,10 @@ plugins {
 :::
 
 ::: note
-如果已经安装基础插件`ihub`，则无需单独安装`ihub-profiles`插件，`ihub`插件已经集成了`ihub-profiles`插件。
+If the base plugin`ihub`is installed, there is no need to install`ihub-profiles`plugin,`ihub`plugin is already integrated with`ihu-profiles`plugin.
 :::
 
-## 配置示例
+## Configuration Example
 
 ::: code-tabs#build
 
