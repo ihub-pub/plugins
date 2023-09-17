@@ -24,12 +24,14 @@
 
 ### `gradle.properties`Configure support properties
 
-| Property                   | Description                                                                                              |
-| -------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `name`                     | Configure primary project name                                                                           |
-| `iHubSettings.includeDirs` | Include project paths, multiple directories ", " split                                                   |
-| `iHubSettings.skippedDirs` | Exclude project paths, multiple directories ", " split                                                   |
-| `iHubSettings.includeBom`  | Used to configure the bom component, including all subprojects with[ihub-publish](iHubPublish)components |
+| Property                           | Description                                                                                              |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `name`                             | Configure primary project name                                                                           |
+| `iHubSettings.includeDirs`         | Include project paths, multiple directories ", " split                                                   |
+| `iHubSettings.skippedDirs`         | Exclude project paths, multiple directories ", " split                                                   |
+| `iHubSettings.includeBom`          | Used to configure the bom component, including all subprojects with[ihub-publish](iHubPublish)components |
+| `iHubSettings.includeLibs`         | Publish catalog component switching,                                                                     |
+| `iHubSettings.includeDependencies` | Used to configure dependencies' components, based on catalog component configuration                     |
 
 > Configure the following:
 
@@ -191,6 +193,8 @@ dependencyResolutionManagement {
 }
 ```
 
+- Private Snapshot repository
 - `gradle/libs.versions.toml`for standard configurations, gradle will be automatically imported, and this plugin will automatically configure other`.versions.toml`files such as：`myLibs.versions.toml`, generally using standard configuration sufficient to configure
+- Private Release Repository
 
 @include(../snippet/footnote.md)

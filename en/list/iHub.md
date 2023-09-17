@@ -20,19 +20,20 @@
 
 ## Extended Properties
 
-| Extension                   | Description                                                        | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
-| --------------------------- | ------------------------------------------------------------------ | ------- | --------- | --------- | --------- | --------- |
-| `mavenLocalEnabled`         | Enable local repository                                            | `false` | ✔         | ✔         | ❌         | ❌         |
-| `mavenAliYunEnabled`        | Enable Aliyun Proxy Repository                                     | `false` | ✔         | ✔         | ✔         | ✔         |
-| `mavenPrivateEnabled`       | Enable private repository (Component Publish Repository)           | `true`  | ✔         | ✔         | ✔         | ✔         |
-| `releaseRepoUrl`            | Official Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `snapshotRepoUrl`           | Snapshot Repository                                                | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `repoAllowInsecureProtocol` | Whether to allow the insecure protocol (whether http)              | `false` | ✔         | ✔         | ❌         | ❌         |
-| `repoIncludeGroup`          | Repository contains groups (used to limit repository range)        | ❌       | ✔         | ✔         | ❌         | ❌         |
-| `repoIncludeGroupRegex`     | Repository contains group regular (used to limit repository range) | `.*`    | ✔         | ✔         | ❌         | ❌         |
-| `repoUsername`              | Repository Username                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
-| `repoPassword`              | Repository Password                                                | ❌       | ✔         | ✔         | ✔         | ✔         |
-| `customizeRepoUrl`          | Custom Repository                                                  | ❌       | ✔         | ✔         | ❌         | ❌         |
+| Extension                   | Description                                                                                       | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
+| --------------------------- | ------------------------------------------------------------------------------------------------- | ------- | --------- | --------- | --------- | --------- |
+| `mavenLocalEnabled`         | Enable local repository                                                                           | `false` | ✔         | ✔         | ❌         | ❌         |
+| `mavenAliYunEnabled`        | Enable Aliyun Proxy Repository                                                                    | `false` | ✔         | ✔         | ✔         | ✔         |
+| `mavenPrivateEnabled`       | Enable private repository (Component Publish Repository)                                          | `true`  | ✔         | ✔         | ✔         | ✔         |
+| `releaseRepoUrl`            | Official Repository                                                                               | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `snapshotRepoUrl`           | Snapshot Repository                                                                               | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `repoAllowInsecureProtocol` | Whether to allow the insecure protocol (whether http)                                             | `false` | ✔         | ✔         | ❌         | ❌         |
+| `repoIncludeGroup`          | Repository contains groups (used to limit repository range)                                       | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `repoIncludeGroupRegex`     | Repository contains group regular (used to limit repository range)                                | `.*`    | ✔         | ✔         | ❌         | ❌         |
+| `repoUsername`              | Repository Username                                                                               | ❌       | ✔         | ✔         | ✔         | ✔         |
+| `repoPassword`              | Repository Password                                                                               | ❌       | ✔         | ✔         | ✔         | ✔         |
+| `customizeRepoUrl`          | Custom Repository                                                                                 | ❌       | ✔         | ✔         | ❌         | ❌         |
+| `profile`                   | Configuration files, multiple configurations are separated by commas, priority from right to left | ❌       | ❌         | ✔         | ✔         | ❌         |
 
 ## Plugin Installation
 
