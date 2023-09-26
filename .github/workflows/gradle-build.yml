@@ -32,7 +32,7 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@ef76a971e2fa3f867b617efd72f2fbd72cf6f8bc # v2.8.0
+        uses: gradle/gradle-build-action@b5126f31dbc19dd434c3269bf8c28c315e121da2 # v2.8.1
         with:
           arguments: build -x test --scan
 
@@ -103,7 +103,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@ef76a971e2fa3f867b617efd72f2fbd72cf6f8bc # v2.8.0
+        uses: gradle/gradle-build-action@b5126f31dbc19dd434c3269bf8c28c315e121da2 # v2.8.1
         with:
           arguments: ${{ matrix.project_name }}:test -DiHubTest.failFast=true
 
