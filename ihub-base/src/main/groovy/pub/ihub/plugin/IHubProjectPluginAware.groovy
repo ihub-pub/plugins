@@ -22,6 +22,8 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.TaskProvider
 
 import static groovy.transform.TypeCheckingMode.SKIP
@@ -172,6 +174,12 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
         }
     }
 
+    private static void setExtensionProperty(Property property, Class type, Provider<String> value) {
+        if (value.present) {
+            setExtensionProperty property, type, value.get().replaceAll('\\\\n', '\n')
+        }
+    }
+
     private static void setExtensionProperty(Property property, Class type, value) {
         if (value) {
             property.set value.toString().with {
@@ -195,15 +203,15 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
             }
             // 环境配置、系统配置要在项目扩展配置后执行，确保优先级高于扩展配置
             afterEvaluate {
+                ProviderFactory providers = project.providers
                 // 获取环境属性
                 if (type().contains(ENV)) {
-                    setExtensionProperty property, genericType(),
-                            System.getenv(fieldName.replaceAll(/([A-Z])/, '_$1').toUpperCase())?.replaceAll('\\\\n', '\n')
+                    setExtensionProperty property, genericType(), providers
+                        .environmentVariable(fieldName.replaceAll(/([A-Z])/, '_$1').toUpperCase())
                 }
                 // 获取系统属性
                 if (type().contains(SYSTEM)) {
-                    setExtensionProperty property, genericType(),
-                            System.getProperty(propertyName)?.replaceAll('\\\\n', '\n')
+                    setExtensionProperty property, genericType(), providers.systemProperty(propertyName)
                 }
             }
         }

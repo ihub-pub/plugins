@@ -15,9 +15,7 @@
  */
 package pub.ihub.plugin
 
-
 import pub.ihub.plugin.bom.IHubBomPlugin
-import pub.ihub.plugin.profiles.IHubProfilesPlugin
 import pub.ihub.plugin.version.IHubVersionPlugin
 
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
@@ -52,9 +50,6 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
         // 默认应用IHubBom插件
         applyPlugin IHubBomPlugin
-
-        // 默认应用IHubProfiles插件
-        applyPlugin IHubProfilesPlugin
 
         project.subprojects {
             pluginManager.apply IHubPluginsPlugin
