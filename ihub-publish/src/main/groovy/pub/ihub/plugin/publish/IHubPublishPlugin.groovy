@@ -43,7 +43,7 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static cn.hutool.http.HttpUtil.get
-import static io.freefair.gradle.util.GitUtil.githubActions
+import static io.freefair.gradle.util.GitUtil.isGithubActions
 
 /**
  * 组件发布插件
@@ -56,7 +56,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     void apply() {
         afterEvaluate {
             // 引入GithubPom插件
-            if (extension.applyGithubPom.get() && githubActions) {
+            if (extension.applyGithubPom.get() && isGithubActions(project.providers)) {
                 applyPlugin GithubPomPlugin
                 withExtension(PublishingExtension) {
                     it.publications.withType MavenPublication, this::configurePomDevelopers
