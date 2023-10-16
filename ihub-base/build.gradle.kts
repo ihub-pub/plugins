@@ -33,6 +33,9 @@ tasks.register("listLibsVersions") {
     ids.add("ihub-libs=${libs.versions.ihub.get()}")
     ids.add("ihub-plugins=${version}")
     ids.add("plugin-publish=${libs.versions.plugin.publish.get()}")
+    ids.add("pmd=${libs.versions.pmd.get()}")
+    ids.add("codenarc=${libs.versions.codenarc.get()}")
+    ids.add("jacoco=${libs.versions.jacoco.get()}")
     file("build/libs-versions").let {
         if (!it.exists()) {
             it.parentFile.mkdirs()
