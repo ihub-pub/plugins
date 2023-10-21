@@ -67,7 +67,7 @@ subprojects {
         }
     }
     configure<IHubVerificationExtension> {
-        jacocoVersion.set("3.3.0")
+        codenarcVersion.set("3.3.0")
     }
 
 //</editor-fold>
