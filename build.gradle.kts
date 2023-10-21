@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import pub.ihub.plugin.verification.IHubVerificationExtension
 plugins {
     alias(ihub.plugins.root)
     alias(ihub.plugins.copyright)
@@ -65,7 +66,7 @@ subprojects {
             group("com.athaydes").version("2.5.0-groovy-3.0")
         }
     }
-    iHubVerification {
+    configure<IHubVerificationExtension> {
         jacocoVersion.set("3.3.0")
     }
 
