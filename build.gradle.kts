@@ -65,6 +65,9 @@ subprojects {
             group("com.athaydes").version("2.5.0-groovy-3.0")
         }
     }
+    iHubVerification {
+        jacocoVersion.set("3.3.0")
+    }
 
 //</editor-fold>
 
