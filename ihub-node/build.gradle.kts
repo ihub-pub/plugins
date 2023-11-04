@@ -21,7 +21,7 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("ihubNode") {
+        create("iHubNode") {
             id = "pub.ihub.plugin.ihub-node"
             displayName = "IHub Node"
             description = "IHub Gradle Node Gradle Plugin"

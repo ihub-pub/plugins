@@ -36,7 +36,7 @@ class IHubProfilesPluginTest extends IHubSpecification {
     def '配置文件基础测试'() {
         when: '配置文件测试'
         buildFile << '''
-            ihubProfiles {
+            iHubProfiles {
                 profile('dev') {
                     println 'dev'
                 }
@@ -70,7 +70,7 @@ class IHubProfilesPluginTest extends IHubSpecification {
     def '配置文件多环境配置测试'() {
         when: '配置文件测试'
         buildFile << '''
-            ihubProfiles {
+            iHubProfiles {
                 profile(['dev', 'test']) {
                     println 'collection'
                 }
@@ -102,7 +102,7 @@ class IHubProfilesPluginTest extends IHubSpecification {
     def '配置文件取反测试'() {
         when: '配置文件测试'
         buildFile << '''
-            ihubProfiles {
+            iHubProfiles {
                 profile('!dev') {
                     println 'dev'
                 }
@@ -148,7 +148,7 @@ class IHubProfilesPluginTest extends IHubSpecification {
 
         when: '配置文件测试'
         buildFile << '''
-            ihubProfiles {
+            iHubProfiles {
                 tokens = [
                     profile: 'test'
                 ]

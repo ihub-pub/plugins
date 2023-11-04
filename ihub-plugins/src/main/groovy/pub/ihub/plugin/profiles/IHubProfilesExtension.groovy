@@ -30,7 +30,7 @@ import javax.inject.Inject
  * IHub配置文件插件属性扩展
  * @author henry
  */
-@IHubExtension('ihubProfiles')
+@IHubExtension('iHubProfiles')
 @CompileStatic
 class IHubProfilesExtension extends IHubProjectExtensionAware {
 
