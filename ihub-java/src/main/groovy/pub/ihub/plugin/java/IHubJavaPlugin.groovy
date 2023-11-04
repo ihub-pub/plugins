@@ -17,6 +17,9 @@ package pub.ihub.plugin.java
 
 import com.github.jengelman.gradle.plugins.processes.ProcessesPlugin
 import io.freefair.gradle.plugins.lombok.LombokPlugin
+import net.bytebuddy.build.gradle.AbstractByteBuddyTask
+import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
+import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.GroovyPlugin
@@ -27,6 +30,7 @@ import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
+import org.jmolecules.bytebuddy.JMoleculesPlugin
 import org.springdoc.openapi.gradle.plugin.OpenApiGradlePlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
@@ -43,18 +47,18 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
  */
 @IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [
     IHubPluginsPlugin, IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin,
-    BuildDashboardPlugin/*, ByteBuddyPlugin*/
+    BuildDashboardPlugin, ByteBuddyPlugin
 ])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
-//    private static final Map<String, Closure> J_MOLECULES_ARCHITECTURE_DEPENDENCIES = [
-//        // CQRS architecture
-//        cqrs   : { libs -> libs.bundles.jmolecules.cqrs.get() },
-//        // Layered architecture
-//        layered: { libs -> libs.bundles.jmolecules.layered.get() },
-//        // Onion architecture
-//        onion  : { libs -> libs.bundles.jmolecules.onion.get() },
-//    ]
+    private static final Map<String, Closure> J_MOLECULES_ARCHITECTURE_DEPENDENCIES = [
+        // CQRS architecture
+        cqrs   : { libs -> libs.bundles.jmolecules.cqrs.get() },
+        // Layered architecture
+        layered: { libs -> libs.bundles.jmolecules.layered.get() },
+        // Onion architecture
+        onion  : { libs -> libs.bundles.jmolecules.onion.get() },
+    ]
 
     static final Map<String, Closure> DEFAULT_DEPENDENCIES_CONFIG = [
         // 添加jaxb运行时依赖
@@ -82,8 +86,8 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         // 添加MapStruct依赖
         mapstruct: { libs, IHubBomExtension ext ->
             ext.dependencies {
-                implementation libs.mapstruct.asProvider().get()
-                annotationProcessor libs.mapstruct.processor.get()
+                implementation 'org.mapstruct:mapstruct'
+                annotationProcessor 'org.mapstruct:mapstruct-processor'
             }
         },
         // 添加Doc注解依赖
@@ -94,20 +98,20 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             }
         },
         // 添加jMolecules依赖
-//        jmolecules               : { libs, IHubBomExtension ext ->
-//            ext.dependencies {
-//                implementation J_MOLECULES_ARCHITECTURE_DEPENDENCIES[
-//                    ext.project.extensions.getByType(IHubJavaExtension).jmoleculesArchitecture.get()
-//                ].call(libs) as Object[]
-//            }
-//        },
-        // 添加jMolecules-integrations依赖
-//        'jmolecules-integrations': { libs, IHubBomExtension ext ->
-//            ext.dependencies {
-//                implementation libs.bundles.jmolecules.integrations.get() as Object[]
-//                testImplementation libs.jmolecules.archunit.get()
-//            }
-//        },
+        jmolecules               : { libs, IHubBomExtension ext ->
+            ext.dependencies {
+                implementation J_MOLECULES_ARCHITECTURE_DEPENDENCIES[
+                    ext.project.extensions.getByType(IHubJavaExtension).jmoleculesArchitecture.get()
+                ].call(libs) as Object[]
+            }
+        },
+         // 添加jMolecules-integrations依赖
+        'jmolecules-integrations': { libs, IHubBomExtension ext ->
+            ext.dependencies {
+                implementation libs.bundles.jmolecules.integrations.get() as Object[]
+                testImplementation libs.jmolecules.archunit.get()
+            }
+        },
     ]
 
     static final Closure JAVA_CONFIG = { IHubJavaExtension ext, AbstractCompile compile ->
@@ -143,15 +147,15 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             withExtension(IHubBomExtension) {
                 ext.defaultDependencies.get().split(',').each { dependency ->
                     DEFAULT_DEPENDENCIES_CONFIG[dependency]?.call ext.project.ihub, it
-//                    if ('jmolecules' == dependency) {
-//                        // 注：启用byteBuddy插件时，org.gradle.parallel设置false
-//                        withExtension(AbstractByteBuddyTaskExtension).transformation {
-//                            it.plugin = JMoleculesPlugin
-//                        }
-//                        withTask(AbstractByteBuddyTask) {
-//                            withTask('classes').dependsOn it
-//                        }
-//                    }
+                    if ('jmolecules' == dependency) {
+                        // 注：启用byteBuddy插件时，org.gradle.parallel设置false
+                        withExtension(AbstractByteBuddyTaskExtension).transformation {
+                            it.plugin = JMoleculesPlugin
+                        }
+                        withTask(AbstractByteBuddyTask) {
+                            withTask('classes').dependsOn it
+                        }
+                    }
                 }
 
                 // Groovy增量编译与Java注释处理器不能同时使用

@@ -31,21 +31,21 @@ gradlePlugin {
             implementationClass = "pub.ihub.plugin.IHubPluginsPlugin"
             tags.set(listOf("ihub", "groovy", "java"))
         }
-        create("ihubVersion") {
+        create("iHubVersion") {
             id = "pub.ihub.plugin.ihub-version"
             displayName = "IHub Version"
             description = "IHub Gradle Version Gradle Plugin"
             implementationClass = "pub.ihub.plugin.version.IHubVersionPlugin"
             tags.set(listOf("ihub", "git", "version"))
         }
-        create("ihubCopyright") {
+        create("iHubCopyright") {
             id = "pub.ihub.plugin.ihub-copyright"
             displayName = "IHub Copyright"
             description = "IHub Gradle Copyright Gradle Plugin"
             implementationClass = "pub.ihub.plugin.copyright.IHubCopyrightPlugin"
             tags.set(listOf("ihub", "git", "copyright", "idea"))
         }
-        create("ihubProfiles") {
+        create("iHubProfiles") {
             id = "pub.ihub.plugin.ihub-profiles"
             displayName = "IHub Profiles"
             description = "IHub Profiles Gradle Plugin"

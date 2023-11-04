@@ -17,7 +17,7 @@ description = "IHub Gradle Plugins Base"
 
 gradlePlugin {
     plugins {
-        create("ihubBase") {
+        create("iHubBase") {
             id = "pub.ihub.plugin.ihub-base"
             displayName = "IHub Base"
             description = "IHub Gradle Plugins Base"
