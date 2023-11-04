@@ -21,7 +21,7 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("ihubGitHooks") {
+        create("iHubGitHooks") {
             id = "pub.ihub.plugin.ihub-git-hooks"
             displayName = "IHub GitHooks"
             description = "IHub Gradle GitHooks Gradle Plugin"

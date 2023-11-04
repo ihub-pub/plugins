@@ -22,7 +22,7 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("ihubBaseTest") {
+        create("iHubBaseTest") {
             id = "pub.ihub.plugin.ihub-base-test"
             displayName = "IHub Base Test"
             description = "IHub Gradle Plugins Base Test"
