@@ -9,7 +9,7 @@
 | 插件ID | `pub.ihub.plugin.ihub-profiles` |
 | 插件名称 | `配置文件插件` |
 | 插件类型 | `Project`[^Project] |
-| 扩展名称 | `ihubProfiles` |
+| 扩展名称 | `iHubProfiles` |
 | 插件依赖 | [ihub](iHub) |
 
 ::: tip 插件功能
@@ -49,7 +49,7 @@ plugins {
 @tab Kotlin
 
 ```kotlin
-ihubProfiles {
+iHubProfiles {
     profile("dev") {
         println("dev")
     }
@@ -65,7 +65,7 @@ ihubProfiles {
 @tab Groovy
 
 ```groovy
-ihubProfiles {
+iHubProfiles {
     profile('dev') {
         println 'dev'
     }

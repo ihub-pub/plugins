@@ -9,7 +9,7 @@
 | Plugin Id           | `pub.ihub.plugin.ihub-profiles` |
 | Plugin Name         | `Profile Plugin`                |
 | Plugin Type         | `Project`[^Project]             |
-| Extension Name      | `ihubProfiles`                  |
+| Extension Name      | `iHubProfiles`                  |
 | Plugin dependencies | [ihub](iHub)                    |
 
 ::: tip plugin feature
@@ -49,7 +49,7 @@ If the base plugin`ihub`is installed, there is no need to install`ihub-profiles`
 @tab Kotlin
 
 ```kotlin
-ihubProfiles {
+iHubProfiles {
     profile("dev") {
         println("dev")
     }
@@ -65,7 +65,7 @@ ihubProfiles {
 @tab Groovy
 
 ```groovy
-ihubProfiles {
+iHubProfiles {
     profile('dev') {
         println 'dev'
     }
