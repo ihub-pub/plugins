@@ -1,27 +1,27 @@
 [versions]
-ihub = '1.2.3'
+ihub = '1.3.0'
 freefair = '8.4'
-spring-boot = '2.7.17'
+spring-boot = '2.7.18'
 plugin-publish = '1.2.1'
 jacoco = '0.8.11'
 codenarc = '3.3.0-groovy-4.0'
 pmd = '6.55.0'
 
 [libraries]
-dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.3' }
+dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.4' }
 freefair-utils = { module = 'io.freefair.gradle:plugin-utils', version.ref = 'freefair' }
 freefair-git = { module = 'io.freefair.gradle:git-plugin', version.ref = 'freefair' }
 freefair-lombok = { module = 'io.freefair.gradle:lombok-plugin', version.ref = 'freefair' }
 freefair-github = { module = 'io.freefair.gradle:github-plugin', version.ref = 'freefair' }
 freefair-settings = { module = 'io.freefair.gradle:settings-plugin', version.ref = 'freefair' }
-ben-manes-versions = { module = 'com.github.ben-manes:gradle-versions-plugin', version = '0.49.0' }
+ben-manes-versions = { module = 'com.github.ben-manes:gradle-versions-plugin', version = '0.50.0' }
 byte-buddy = { module = 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin', version = '1.12.12' }
 jmolecules-bytebuddy = { module = 'org.jmolecules.integrations:jmolecules-bytebuddy', version = '1.6.0' }
 johnrengelman-processes = { module = 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin', version = '0.5.0' }
 springdoc-openapi = { module = 'org.springdoc:springdoc-openapi-gradle-plugin', version = '1.8.0' }
 spring-boot = { module = 'org.springframework.boot:spring-boot-gradle-plugin', version.ref = 'spring-boot' }
 native = { module = 'org.graalvm.buildtools:native-gradle-plugin', version = '0.9.28' }
-kotlin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version = '1.9.20' }
+kotlin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version = '1.9.21' }
 toml = { module = 'org.tomlj:tomlj', version = '1.1.0' }
 
 jacoco = { module = 'org.jacoco:jacoco', version.ref = 'jacoco' }
