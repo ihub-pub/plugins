@@ -216,4 +216,50 @@ class IHubJavaPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '自动寻找主函数测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+            apply {
+                plugin 'application'
+                plugin 'pub.ihub.plugin.ihub-java'
+            }
+        '''
+        testProjectDir.newFolder 'src', 'main', 'java', 'pub', 'ihub', 'demo'
+        testProjectDir.newFile 'src/main/java/pub/ihub/demo/Demo.java'
+        def mainClass = testProjectDir.newFile 'src/main/java/pub/ihub/demo/Application.java'
+        mainClass << 'package pub.ihub.demo;\n'
+        mainClass << 'public class Application {\n'
+        mainClass << '    public static void main(String[] args) {\n'
+        mainClass << '        System.out.println("main");\n'
+        mainClass << '    }\n'
+        mainClass << '}'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
+    def '自动寻找主函数测试-模拟主类已设置'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+            apply {
+                plugin 'application'
+                plugin 'pub.ihub.plugin.ihub-java'
+            }
+            application {
+                mainClass = 'pub.ihub.demo.Application'
+            }
+        '''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
 }

@@ -16,15 +16,19 @@
 package pub.ihub.plugin.java
 
 import com.github.jengelman.gradle.plugins.processes.ProcessesPlugin
+import groovy.transform.CompileStatic
 import io.freefair.gradle.plugins.lombok.LombokPlugin
 import net.bytebuddy.build.gradle.AbstractByteBuddyTask
 import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
 import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.plugins.GroovyPlugin
+import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.ProjectReportsPlugin
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.JavaExec
@@ -62,7 +66,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
     static final Map<String, Closure> DEFAULT_DEPENDENCIES_CONFIG = [
         // 添加jaxb运行时依赖
-        jaxb     : { libs, IHubBomExtension ext ->
+        jaxb                     : { libs, IHubBomExtension ext ->
             ext.excludeModules {
                 group 'com.sun.xml.bind' modules 'jaxb-core'
             }
@@ -71,7 +75,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             }
         },
         // 添加日志依赖配置
-        log      : { libs, IHubBomExtension ext ->
+        log                      : { libs, IHubBomExtension ext ->
             ext.excludeModules {
                 group 'commons-logging' modules 'commons-logging'
                 group 'log4j' modules 'log4j'
@@ -84,14 +88,14 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             }
         },
         // 添加MapStruct依赖
-        mapstruct: { libs, IHubBomExtension ext ->
+        mapstruct                : { libs, IHubBomExtension ext ->
             ext.dependencies {
                 implementation 'org.mapstruct:mapstruct'
                 annotationProcessor 'org.mapstruct:mapstruct-processor'
             }
         },
         // 添加Doc注解依赖
-        doc      : { libs, IHubBomExtension ext ->
+        doc                      : { libs, IHubBomExtension ext ->
             ext.dependencies {
                 compileOnly libs.swagger.annotations.get()
                 annotationProcessor 'pub.ihub.lib:ihub-process-doc'
@@ -105,7 +109,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 ].call(libs) as Object[]
             }
         },
-         // 添加jMolecules-integrations依赖
+        // 添加jMolecules-integrations依赖
         'jmolecules-integrations': { libs, IHubBomExtension ext ->
             ext.dependencies {
                 implementation libs.bundles.jmolecules.integrations.get() as Object[]
@@ -134,7 +138,9 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 'Automatic-Module-Name': project.name.replaceAll('-', '.'),
                 'Implementation-Version': project.version,
                 'Implementation-Vendor-Id': project.group,
-                'Created-By': 'Java ' + JavaVersion.current().majorVersion
+                'Built-By': 'ihub-pub',
+                'Created-By': 'Gradle ' + project.gradle.gradleVersion,
+                'Build-Jdk': JavaVersion.current().toString()
             )
         }
     }
@@ -183,6 +189,18 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                     exec.jvmArgs it.jvmArgs.get().tokenize()
                 }
             }
+
+            if (hasPlugin(ApplicationPlugin)) {
+                withExtension(JavaApplication) { exec ->
+                    if (exec.mainClass.present) {
+                        return
+                    }
+                    findMainClass()?.with {
+                        exec.mainClass.set it
+                        logger.lifecycle "Application set main class: $it"
+                    }
+                }
+            }
         }
 
         // 配置lombok.config
@@ -203,6 +221,25 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 'config.stopBubbling'                : true,
                 'lombok.addLombokGeneratedAnnotation': true,
             ].collect { k, v -> "$k = $v" }.join('\n')
+        }
+    }
+
+    @CompileStatic
+    private String findMainClass() {
+        withExtension(JavaPluginExtension).sourceSets.findByName('main').java.files.findResult { file ->
+            String mainClass = null
+            String packageName = ''
+            file.readLines().each { line ->
+                if (line.startsWith('package ')) {
+                    packageName = line.substring(8, line.lastIndexOf(';'))
+                }
+                if (line ==~ /.*static\s+void\s+main\s*\(\s*String\[]\s+args\s*\)\s*\{.*/) {
+                    String filePath = file.path
+                    mainClass = packageName + '.' + filePath
+                        .substring(filePath.lastIndexOf(File.separator) + 1, filePath.lastIndexOf('.'))
+                }
+            }
+            mainClass
         }
     }
 
