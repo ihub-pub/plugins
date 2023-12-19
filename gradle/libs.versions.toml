@@ -15,6 +15,7 @@ freefair-lombok = { module = 'io.freefair.gradle:lombok-plugin', version.ref = '
 freefair-github = { module = 'io.freefair.gradle:github-plugin', version.ref = 'freefair' }
 freefair-settings = { module = 'io.freefair.gradle:settings-plugin', version.ref = 'freefair' }
 ben-manes-versions = { module = 'com.github.ben-manes:gradle-versions-plugin', version = '0.50.0' }
+shadow = { module = 'com.github.johnrengelman:shadow', version = '8.1.1' }
 byte-buddy = { module = 'gradle.plugin.net.bytebuddy:byte-buddy-gradle-plugin', version = '1.12.12' }
 jmolecules-bytebuddy = { module = 'org.jmolecules.integrations:jmolecules-bytebuddy', version = '1.6.0' }
 johnrengelman-processes = { module = 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin', version = '0.5.0' }
