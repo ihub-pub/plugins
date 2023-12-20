@@ -33,21 +33,21 @@ import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoReportAggregationPlugin
 import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
 import org.gradle.testing.jacoco.tasks.JacocoReport
+import pub.ihub.plugin.IHubDependencyAware
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
-import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
+import static org.gradle.testing.jacoco.plugins.JacocoReportAggregationPlugin.JACOCO_AGGREGATION_CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-
 
 /**
  * 代码检查插件
  * @author liheng
  */
 @IHubPlugin(value = IHubVerificationExtension, beforeApplyPlugins = [IHubBomPlugin])
-class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExtension> {
+class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExtension> implements IHubDependencyAware {
 
     private static final String[] RULE_TYPE = ['INSTRUCTION', 'BRANCH', 'LINE', 'COMPLEXITY', 'METHOD', 'CLASS']
 
@@ -94,9 +94,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
 
     private void configPmd(Project project) {
         applyPlugin PmdPlugin
-        withExtension(IHubBomExtension).dependencies {
-            compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
-        }
+        compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
         withExtension(AFTER) { ext ->
             withExtension(PmdExtension) {
                 String ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
@@ -182,9 +180,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
     private void configJacocoAggregation(Project project) {
         extension.rootProject.with {
             pluginManager.apply JacocoReportAggregationPlugin
-            configurations {
-                maybeCreate('jacocoAggregation').dependencies.add dependencies.create(project)
-            }
+            compile it, JACOCO_AGGREGATION_CONFIGURATION_NAME, project
             extensions.getByType(ReportingExtension).reports {
                 testCodeCoverageReport(JacocoCoverageReport) {
                     testType = TestSuiteType.UNIT_TEST

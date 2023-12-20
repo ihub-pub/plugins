@@ -23,25 +23,25 @@ import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
 import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.plugins.ApplicationPlugin
-import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaApplication
-import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.plugins.ProjectReportsPlugin
+import org.gradle.api.plugins.*
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.jmolecules.bytebuddy.JMoleculesPlugin
 import org.springdoc.openapi.gradle.plugin.OpenApiGradlePlugin
+import pub.ihub.plugin.IHubDependencyAware
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
+import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.RUNTIME_ONLY_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
 
@@ -53,7 +53,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
     IHubPluginsPlugin, IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin,
     BuildDashboardPlugin, ByteBuddyPlugin
 ])
-class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
+class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> implements IHubDependencyAware {
 
     private static final Map<String, Closure> J_MOLECULES_ARCHITECTURE_DEPENDENCIES = [
         // CQRS architecture
@@ -70,9 +70,7 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
             ext.excludeModules {
                 group 'com.sun.xml.bind' modules 'jaxb-core'
             }
-            ext.dependencies {
-                runtimeOnly 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
-            }
+            compile RUNTIME_ONLY_CONFIGURATION_NAME, 'javax.xml.bind:jaxb-api', 'org.glassfish.jaxb:jaxb-runtime'
         },
         // 添加日志依赖配置
         log                      : { libs, IHubBomExtension ext ->
@@ -82,39 +80,29 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 group 'org.apache.logging.log4j' modules 'log4j-core'
                 group 'org.slf4j' modules 'slf4j-jcl', 'slf4j-log4j12'
             }
-            ext.dependencies {
-                implementation libs.slf4j.api.get()
-                runtimeOnly libs.bundles.slf4j.runtime.get() as Object[]
-            }
+            compile IMPLEMENTATION_CONFIGURATION_NAME, libs.slf4j.api.get()
+            compile RUNTIME_ONLY_CONFIGURATION_NAME, libs.bundles.slf4j.runtime.get() as Object[]
         },
         // 添加MapStruct依赖
         mapstruct                : { libs, IHubBomExtension ext ->
-            ext.dependencies {
-                implementation 'org.mapstruct:mapstruct'
-                annotationProcessor 'org.mapstruct:mapstruct-processor'
-            }
+            compile IMPLEMENTATION_CONFIGURATION_NAME, 'org.mapstruct:mapstruct'
+            compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, 'org.mapstruct:mapstruct-processor'
         },
         // 添加Doc注解依赖
         doc                      : { libs, IHubBomExtension ext ->
-            ext.dependencies {
-                compileOnly libs.swagger.annotations.get()
-                annotationProcessor 'pub.ihub.lib:ihub-process-doc'
-            }
+            compile COMPILE_ONLY_CONFIGURATION_NAME, libs.swagger.annotations.get()
+            compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, 'pub.ihub.lib:ihub-process-doc'
         },
         // 添加jMolecules依赖
         jmolecules               : { libs, IHubBomExtension ext ->
-            ext.dependencies {
-                implementation J_MOLECULES_ARCHITECTURE_DEPENDENCIES[
-                    ext.project.extensions.getByType(IHubJavaExtension).jmoleculesArchitecture.get()
-                ].call(libs) as Object[]
-            }
+            compile IMPLEMENTATION_CONFIGURATION_NAME, J_MOLECULES_ARCHITECTURE_DEPENDENCIES[
+                ext.project.extensions.getByType(IHubJavaExtension).jmoleculesArchitecture.get()
+            ].call(libs) as Object[]
         },
         // 添加jMolecules-integrations依赖
         'jmolecules-integrations': { libs, IHubBomExtension ext ->
-            ext.dependencies {
-                implementation libs.bundles.jmolecules.integrations.get() as Object[]
-                testImplementation libs.jmolecules.archunit.get()
-            }
+            compile IMPLEMENTATION_CONFIGURATION_NAME, libs.bundles.jmolecules.integrations.get() as Object[]
+            compile TEST_IMPLEMENTATION_CONFIGURATION_NAME, libs.jmolecules.archunit.get()
         },
     ]
 

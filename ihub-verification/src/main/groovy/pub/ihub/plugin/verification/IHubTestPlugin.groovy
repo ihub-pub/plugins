@@ -25,14 +25,16 @@ import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.testing.AggregateTestReport
 import org.gradle.api.tasks.testing.Test
 import org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework
+import pub.ihub.plugin.IHubDependencyAware
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
-import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.JUNIT_JUPITER
-import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.NONE
-import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.SPOCK
+import static org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
+import static org.gradle.api.plugins.JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME
+import static org.gradle.api.plugins.TestReportAggregationPlugin.TEST_REPORT_AGGREGATION_CONFIGURATION_NAME
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.*
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
@@ -41,20 +43,16 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  */
 @IHubPlugin(value = IHubTestExtension, beforeApplyPlugins = [IHubBomPlugin])
 @SuppressWarnings('UnnecessaryObjectReferences')
-class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
+class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> implements IHubDependencyAware {
 
     private final Map<BuildInitTestFramework, Action<IHubBomExtension>> testDependenciesMapping = [
         (SPOCK)        : { IHubBomExtension iHubBom ->
             applyPlugin GroovyPlugin
-            iHubBom.dependencies {
-                testImplementation 'org.spockframework:spock-spring'
-                testRuntimeOnly 'com.athaydes:spock-reports', 'org.springframework.boot:spring-boot-starter-test'
-            }
+            compile TEST_IMPLEMENTATION_CONFIGURATION_NAME, 'org.spockframework:spock-spring'
+            compile TEST_RUNTIME_ONLY_CONFIGURATION_NAME, 'com.athaydes:spock-reports', 'org.springframework.boot:spring-boot-starter-test'
         },
         (JUNIT_JUPITER): { IHubBomExtension iHubBom ->
-            iHubBom.dependencies {
-                testImplementation 'org.junit.jupiter:junit-jupiter'
-            }
+            compile TEST_IMPLEMENTATION_CONFIGURATION_NAME, 'org.junit.jupiter:junit-jupiter'
         }
     ]
 
@@ -104,9 +102,7 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
     private void configTestAggregation(Project project) {
         project.rootProject.with {
             pluginManager.apply TestReportAggregationPlugin
-            configurations {
-                maybeCreate('testReportAggregation').dependencies.add dependencies.create(project)
-            }
+            compile it, TEST_REPORT_AGGREGATION_CONFIGURATION_NAME, project
             extensions.getByType(ReportingExtension).reports {
                 testAggregateTestReport(AggregateTestReport) {
                     testType = TestSuiteType.UNIT_TEST

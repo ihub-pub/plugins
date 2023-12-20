@@ -16,26 +16,23 @@
 package pub.ihub.plugin.groovy
 
 import org.gradle.api.plugins.GroovyPlugin
+import pub.ihub.plugin.IHubDependencyAware
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
-import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaPlugin
 
+import static org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
 
 /**
  * Groovy插件
  * @author liheng
  */
 @IHubPlugin(beforeApplyPlugins = [IHubJavaPlugin, GroovyPlugin])
-class IHubGroovyPlugin extends IHubProjectPluginAware {
+class IHubGroovyPlugin extends IHubProjectPluginAware implements IHubDependencyAware {
 
     @Override
     void apply() {
-        withExtension(IHubBomExtension) {
-            it.dependencies {
-                implementation ihub.bundles.groovy.get() as Object[]
-            }
-        }
+        compile IMPLEMENTATION_CONFIGURATION_NAME, ihub.bundles.groovy.get() as Object[]
     }
 
 }
