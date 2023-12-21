@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pub.ihub.plugin.groovy
-
-import pub.ihub.plugin.test.IHubSpecification
-import spock.lang.Title
+package pub.ihub.plugin
 
 /**
  * @author henry
  */
-@Title('IHubGroovyPlugin测试套件')
-class IHubGroovyPluginTest extends IHubSpecification {
+@IHubPlugin
+class IHubDependencyPlugin extends IHubProjectPluginAware implements IHubDependencyAware {
 
     @Override
-    def setup() {
-        buildFile << '''
-            plugins {
-                id 'pub.ihub.plugin.ihub-groovy'
-            }
-        '''
-    }
-
-    def 'Groovy插件配置测试'() {
-        when: '构建项目'
-        def result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
+    void apply() {
+        compile 'testRuntimeOnly', 'org.springframework.boot:spring-boot-starter-test'
     }
 
 }

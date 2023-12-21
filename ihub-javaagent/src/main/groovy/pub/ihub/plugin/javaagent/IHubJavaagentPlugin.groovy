@@ -36,6 +36,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 @IHubPlugin(IHubJavaagentExtension)
 @CompileStatic
 class IHubJavaagentPlugin extends IHubProjectPluginAware<IHubJavaagentExtension> implements IHubDependencyAware {
+
     @Override
     protected void apply() {
         if (hasPlugin(ApplicationPlugin)) {
@@ -56,7 +57,7 @@ class IHubJavaagentPlugin extends IHubProjectPluginAware<IHubJavaagentExtension>
         project.tasks.named(taskName, JavaExec).configure CONFIGURE_JAVA_EXEC
     }
 
-    private Closure CONFIGURE_JAVA_EXEC = { JavaExec exec ->
+    private static final Closure CONFIGURE_JAVA_EXEC = { JavaExec exec ->
         configureJavaForkOptions exec, project.configurations.named(CONFIGURATION_NAME).map { it.files }
     }
 

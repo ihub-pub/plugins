@@ -62,7 +62,7 @@ class IHubPluginBaseTest extends Specification {
         'true' == project.iHubDemo.trueStrFlag.get()
         'false' == project.iHubDemo.falseStrFlag.get()
         'str' == project.iHubDemo.customizationProperty.get()
-        project.iHubDemo.javaHome.get()
+        project.iHubDemo.os.get()
     }
 
     def '测试插件打印方法'() {
@@ -74,6 +74,14 @@ class IHubPluginBaseTest extends Specification {
 
         where:
         encoding << ['GBK', 'UTF-8']
+    }
+
+    def '测试插件依赖方法'() {
+        setup:
+        project.pluginManager.apply IHubDependencyPlugin
+
+        expect:
+        project.dependencies
     }
 
 }

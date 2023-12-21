@@ -34,7 +34,9 @@ import pub.ihub.plugin.bom.IHubBomPlugin
 import static org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
 import static org.gradle.api.plugins.JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_NAME
 import static org.gradle.api.plugins.TestReportAggregationPlugin.TEST_REPORT_AGGREGATION_CONFIGURATION_NAME
-import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.*
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.JUNIT_JUPITER
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.NONE
+import static org.gradle.buildinit.plugins.internal.modifiers.BuildInitTestFramework.SPOCK
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
