@@ -35,6 +35,7 @@ import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
 import org.gradle.plugins.signing.SigningPlugin
+import pub.ihub.plugin.IHubDependencyAware
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubPluginsPlugin
@@ -44,13 +45,14 @@ import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static cn.hutool.http.HttpUtil.get
 import static io.freefair.gradle.util.GitUtil.isGithubActions
+import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
 
 /**
  * 组件发布插件
  * @author liheng
  */
 @IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [IHubBomPlugin, IHubPluginsPlugin, MavenPublishPlugin])
-class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
+class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> implements IHubDependencyAware {
 
     @Override
     void apply() {
@@ -73,9 +75,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         // 添加配置元信息
         if (hasPlugin(JavaPlugin)) {
             withExtension(IHubBomExtension) {
-                it.dependencies {
-                    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-                }
+                compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, 'org.springframework.boot:spring-boot-configuration-processor'
                 project.compileJava.inputs.files project.processResources
             }
         }

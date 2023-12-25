@@ -76,4 +76,12 @@ class IHubPluginBaseTest extends Specification {
         encoding << ['GBK', 'UTF-8']
     }
 
+    def '测试插件依赖方法'() {
+        setup:
+        project.pluginManager.apply IHubDependencyPlugin
+
+        expect:
+        project.dependencies
+    }
+
 }

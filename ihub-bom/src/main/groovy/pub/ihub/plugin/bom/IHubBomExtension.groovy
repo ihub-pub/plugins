@@ -104,6 +104,7 @@ class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtPrope
      * @param action 配置
      */
     @CompileStatic(SKIP)
+    @Deprecated(since = '1.6.0', forRemoval = true)
     void dependencies(Action<DependencySpec> action) {
         actionExecute action, dependencies, DependencySpecImpl::new
     }
