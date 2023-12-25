@@ -54,10 +54,10 @@ class IHubJavaagentPlugin extends IHubProjectPluginAware<IHubJavaagentExtension>
 
     private void configureJavaExec(String taskName) {
         applyPlugin JavaagentBasePlugin as Class<Plugin<Project>>
-        project.tasks.named(taskName, JavaExec).configure CONFIGURE_JAVA_EXEC
+        project.tasks.named(taskName, JavaExec).configure javaExecClosure
     }
 
-    private static final Closure CONFIGURE_JAVA_EXEC = { JavaExec exec ->
+    private final Closure javaExecClosure = { JavaExec exec ->
         configureJavaForkOptions exec, project.configurations.named(CONFIGURATION_NAME).map { it.files }
     }
 
