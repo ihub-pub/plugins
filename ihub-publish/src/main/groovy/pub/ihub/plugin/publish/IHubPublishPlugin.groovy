@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
-import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static cn.hutool.http.HttpUtil.get
@@ -74,10 +73,8 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> imp
 
         // 添加配置元信息
         if (hasPlugin(JavaPlugin)) {
-            withExtension(IHubBomExtension) {
-                compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, 'org.springframework.boot:spring-boot-configuration-processor'
-                project.compileJava.inputs.files project.processResources
-            }
+            compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, 'org.springframework.boot:spring-boot-configuration-processor'
+            project.compileJava.inputs.files project.processResources
         }
     }
 
