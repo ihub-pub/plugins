@@ -38,6 +38,7 @@ final class DependencySpecImpl implements DependencySpec {
         assertProperty type as boolean, 'dependencies type not null!'
         assertProperty dependencies as boolean, type + ' dependencies not empty!'
         specs << new Dependency(type, dependencies as Set)
+        // 配置组件依赖
         project.configurations.maybeCreate(type).dependencies.addAll dependencies.collect {
             project.dependencies.create it
         }

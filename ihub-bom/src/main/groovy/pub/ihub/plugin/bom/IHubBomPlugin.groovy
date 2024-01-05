@@ -137,12 +137,6 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                     }
                 }
             }
-            // 配置组件依赖
-            ext.dependencies.each { spec ->
-                maybeCreate(spec.type).dependencies.addAll spec.dependencies.collect {
-                    project.dependencies.create it
-                }
-            }
         }
     }
 
