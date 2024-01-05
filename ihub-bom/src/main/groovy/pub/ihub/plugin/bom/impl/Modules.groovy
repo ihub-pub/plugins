@@ -18,21 +18,17 @@ package pub.ihub.plugin.bom.impl
 import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.TupleConstructor
-import groovy.transform.TypeCheckingMode
-import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
-import org.gradle.api.Project
 import pub.ihub.plugin.bom.specs.ModulesSpec
+
 
 /**
  * @author henry
  */
 @CompileStatic
-@TupleConstructor(callSuper = true, includeSuperProperties = true, includeSuperFields = true, includes = 'id,project')
-@EqualsAndHashCode(callSuper = true, allProperties = true, excludes = 'modules,project')
+@TupleConstructor(callSuper = true, includeSuperProperties = true, includes = 'id')
+@EqualsAndHashCode(callSuper = true, allProperties = true, excludes = 'modules')
 @SuppressWarnings('ConfusingMethodName')
 final class Modules extends Group<Modules> implements ModulesSpec {
-
-    final Project project
 
     Set<String> modules
 
@@ -53,18 +49,6 @@ final class Modules extends Group<Modules> implements ModulesSpec {
     @Override
     void appendToPrintData(List<List<?>> data) {
         data.addAll modules.collect { [id, it, version] }
-    }
-
-    @Override
-    @CompileStatic(TypeCheckingMode.SKIP)
-    Modules version(String version) {
-        // 配置组件版本
-        project.extensions.getByType(DependencyManagementExtension).dependencies {
-            dependencySet(group: id, version: version) {
-                modules.each { entry it }
-            }
-        }
-        super.version(version)
     }
 
 }

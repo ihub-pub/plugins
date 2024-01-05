@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -215,14 +215,14 @@ class IHubBomPluginTest extends IHubSpecification {
         // B Group Maven Default Version
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.7                                        │'
         // Config Default Dependencies (root project)
-        result.output.contains '│ runtimeOnly                                 │ pub.ihub.lib:ihub-core                             │'
-        result.output.contains '│ implementation                              │ pub.ihub.lib:ihub-process                          │'
-        result.output.contains '│ annotationProcessor                         │ pub.ihub.lib:ihub-process                          │'
-        result.output.contains '│ api                                         │ :a                                                 │'
-        result.output.contains '│ api                                         │ :b                                                 │'
-        result.output.contains '│ api                                         │ :c                                                 │'
-        result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-core                             │'
-        result.output.contains '│ testCompileOnly                             │ pub.ihub.lib:ihub-process                          │'
+        result.output.contains '│ runtimeOnly                               │ pub.ihub.lib:ihub-core                               │'
+        result.output.contains '│ implementation                            │ pub.ihub.lib:ihub-process                            │'
+        !result.output.contains('annotationProcessor')
+        result.output.contains '│ api                                       │ :a                                                   │'
+        result.output.contains '│ api                                       │ :b                                                   │'
+        result.output.contains '│ api                                       │ :c                                                   │'
+        result.output.contains '│ compileOnlyApi                            │ pub.ihub.lib:ihub-core                               │'
+        result.output.contains '│ testCompileOnly                           │ pub.ihub.lib:ihub-process                            │'
         // Config Default Dependencies (subprojects)
         result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-process                          │'
         result.output.contains '│ testRuntimeOnly                             │ pub.ihub.lib:ihub-core                             │'

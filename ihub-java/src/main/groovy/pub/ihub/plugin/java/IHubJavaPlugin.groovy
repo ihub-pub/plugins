@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,8 +120,10 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
     static final Closure JAVA_CONFIG = { IHubJavaExtension ext, AbstractCompile compile ->
         // 兼容性配置
-        ext.compatibility.orNull?.with { version ->
+        ext.sourceCompatibility.orNull?.with { version ->
             compile.sourceCompatibility = version
+        }
+        ext.targetCompatibility.orNull?.with { version ->
             compile.targetCompatibility = version
         }
         compile.options.encoding = ext.compileEncoding.get()
@@ -161,13 +163,6 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                         withTask(AbstractByteBuddyTask) {
                             withTask('classes').dependsOn it
                         }
-                    }
-                }
-
-                // Groovy增量编译与Java注释处理器不能同时使用
-                if (hasPlugin(GroovyPlugin) && ext.gradleCompilationIncremental.get()) {
-                    it.dependencies.removeIf {
-                        it.type == 'annotationProcessor'
                     }
                 }
             }

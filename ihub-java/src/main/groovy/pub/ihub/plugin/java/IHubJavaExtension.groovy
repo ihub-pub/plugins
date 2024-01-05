@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,10 +50,16 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
     Property<String> compileEncoding
 
     /**
-     * Java兼容性配置
+     * Java Source 兼容性配置
      */
     @IHubProperty
-    Property<String> compatibility
+    Property<String> sourceCompatibility
+
+    /**
+     * Java Target 兼容性配置
+     */
+    @IHubProperty
+    Property<String> targetCompatibility
 
     /**
      * gradle增量编译
@@ -89,7 +95,8 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
     IHubJavaExtension(ObjectFactory objectFactory) {
         defaultDependencies = objectFactory.property(String).convention('log')
         compileEncoding = objectFactory.property(String).convention('UTF-8')
-        compatibility = objectFactory.property(String)
+        sourceCompatibility = objectFactory.property(String)
+        targetCompatibility = objectFactory.property(String)
         gradleCompilationIncremental = objectFactory.property(Boolean).convention(true)
         compilerArgs = objectFactory.property(String)
         jvmArgs = objectFactory.property(String)

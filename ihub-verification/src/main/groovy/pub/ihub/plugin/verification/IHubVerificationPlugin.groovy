@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,9 +33,9 @@ import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoReportAggregationPlugin
 import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
 import org.gradle.testing.jacoco.tasks.JacocoReport
-import pub.ihub.plugin.IHubDependencyAware
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
+import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static org.gradle.testing.jacoco.plugins.JacocoReportAggregationPlugin.JACOCO_AGGREGATION_CONFIGURATION_NAME
@@ -47,7 +47,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * @author liheng
  */
 @IHubPlugin(value = IHubVerificationExtension, beforeApplyPlugins = [IHubBomPlugin])
-class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExtension> implements IHubDependencyAware {
+class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExtension> {
 
     private static final String[] RULE_TYPE = ['INSTRUCTION', 'BRANCH', 'LINE', 'COMPLEXITY', 'METHOD', 'CLASS']
 
@@ -94,7 +94,9 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
 
     private void configPmd(Project project) {
         applyPlugin PmdPlugin
-        compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
+        withExtension(IHubBomExtension).dependencies {
+            compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
+        }
         withExtension(AFTER) { ext ->
             withExtension(PmdExtension) {
                 String ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
@@ -180,7 +182,9 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
     private void configJacocoAggregation(Project project) {
         extension.rootProject.with {
             pluginManager.apply JacocoReportAggregationPlugin
-            compile it, JACOCO_AGGREGATION_CONFIGURATION_NAME, project
+            configurations {
+                maybeCreate(JACOCO_AGGREGATION_CONFIGURATION_NAME).dependencies.add dependencies.create(project)
+            }
             extensions.getByType(ReportingExtension).reports {
                 testCodeCoverageReport(JacocoCoverageReport) {
                     testType = TestSuiteType.UNIT_TEST

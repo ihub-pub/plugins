@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,15 @@ class IHubGroovyPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-xml                              │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-dateutil                         │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-templates                        │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-nio                              │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy                                  │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-json                             │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-groovydoc                        │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-sql                              │'
+        result.output.contains '│ implementation                       │ org.apache.groovy:groovy-datetime                         │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
