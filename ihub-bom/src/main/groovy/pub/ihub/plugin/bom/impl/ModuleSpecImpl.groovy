@@ -16,22 +16,17 @@
 package pub.ihub.plugin.bom.impl
 
 import groovy.transform.CompileStatic
-import groovy.transform.TupleConstructor
-import org.gradle.api.Project
 
 
 /**
  * @author henry
  */
 @CompileStatic
-@TupleConstructor
 final class ModuleSpecImpl extends GroupSpecImpl<Module> {
-
-    final Project project
 
     @Override
     protected Module newInstance(String group) {
-        new Module(group, project)
+        new Module(group)
     }
 
 }

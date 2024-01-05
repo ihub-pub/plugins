@@ -69,9 +69,7 @@ class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtPrope
      */
     @CompileStatic(SKIP)
     void importBoms(Action<GroupSpec<ModuleSpec>> action) {
-        actionExecute(action, bomVersions) {
-            new ModuleSpecImpl(project)
-        }
+        actionExecute action, bomVersions, ModuleSpecImpl::new
     }
 
     /**
@@ -80,9 +78,7 @@ class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtPrope
      */
     @CompileStatic(SKIP)
     void dependencyVersions(Action<GroupSpec<ModulesSpec>> action) {
-        actionExecute(action, dependencyVersions) {
-            new ModulesSpecImpl(project)
-        }
+        actionExecute action, dependencyVersions, ModulesSpecImpl::new
     }
 
     /**
@@ -108,9 +104,10 @@ class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtPrope
      * @param action 配置
      */
     @CompileStatic(SKIP)
-    @Deprecated(since = '1.6.0', forRemoval = true)
     void dependencies(Action<DependencySpec> action) {
-        actionExecute action, dependencies, DependencySpecImpl::new
+        actionExecute(action, dependencies) {
+            new DependencySpecImpl(project)
+        }
     }
 
     /**

@@ -16,6 +16,8 @@
 package pub.ihub.plugin.bom
 
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
+import org.gradle.api.Action
 import org.gradle.api.plugins.JavaPlatformPlugin
 import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import pub.ihub.plugin.IHubPlugin
@@ -28,7 +30,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
  * BOM（Bill of Materials）组件依赖管理
  * @author henry
  */
-@IHubPlugin(value = IHubBomExtension, beforeApplyPlugins = DependencyManagementPlugin)
+@IHubPlugin(IHubBomExtension)
 @SuppressWarnings('NestedBlockDepth')
 class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
@@ -59,9 +61,37 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
         // 配置项目依赖
         withExtension(AFTER) { ext ->
+            configVersions ext
+
             configProject ext
 
             ext.refreshCommonSpecs()
+        }
+    }
+
+    private void configVersions(IHubBomExtension ext) {
+        // 导入bom配置
+        if (ext.bomVersions) {
+            dependencyManagement {
+                it.imports {
+                    ext.bomVersions.each {
+                        mavenBom "$it.id:$it.module:$it.version"
+                    }
+                }
+            }
+        }
+
+        // 配置组件版本
+        if (ext.dependencyVersions) {
+            dependencyManagement {
+                it.dependencies {
+                    ext.dependencyVersions.each { config ->
+                        dependencySet(group: config.id, version: config.version) {
+                            config.modules.each { entry it }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -114,6 +144,11 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                 }
             }
         }
+    }
+
+    private void dependencyManagement(Action<DependencyManagementExtension> action) {
+        applyPlugin DependencyManagementPlugin
+        withExtension DependencyManagementExtension, action
     }
 
 }

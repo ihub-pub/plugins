@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package pub.ihub.plugin.bom.specs
 
+import org.gradle.api.Project
+import org.gradle.api.plugins.GroovyPlugin
 import pub.ihub.plugin.bom.impl.Dependency
 
 import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
@@ -32,6 +34,8 @@ import static org.gradle.api.plugins.JavaPlugin.TEST_RUNTIME_ONLY_CONFIGURATION_
  * @author henry
  */
 trait DependencySpec implements ActionSpec<Dependency> {
+
+    abstract Project getProject()
 
     abstract void compile(String type, ... dependencies)
 
@@ -68,6 +72,11 @@ trait DependencySpec implements ActionSpec<Dependency> {
     }
 
     void annotationProcessor(... dependencies) {
+        // Groovy增量编译与Java注释处理器不能同时使用
+        if (project.plugins.hasPlugin(GroovyPlugin) && 'false' != project
+            .findProperty('iHubJava.gradleCompilationIncremental')?.toString()) {
+            return
+        }
         compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, dependencies
     }
 
