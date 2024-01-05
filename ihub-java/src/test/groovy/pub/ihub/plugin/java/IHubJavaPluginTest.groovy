@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -107,7 +107,8 @@ class IHubJavaPluginTest extends IHubSpecification {
                 }
             }
         '''
-        propertiesFile << 'iHubJava.compatibility=8\n'
+        propertiesFile << 'iHubJava.sourceCompatibility=8\n'
+        propertiesFile << 'iHubJava.targetCompatibility=8\n'
         propertiesFile << 'iHubJava.defaultDependencies=false\n'
         propertiesFile << 'iHubJava.applyOpenapiPlugin=true\n'
         propertiesFile << 'iHubJava.compilerArgs=-proc:none -nowarn\n'
