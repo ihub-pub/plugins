@@ -22,7 +22,8 @@
 | --------- |-------------| ----- |---|---|---|---|
 | `defaultDependencies` | 默认依赖（“,”分割）[详见](#默认依赖)，可以设置`false`关闭默认配置 | `log` | ✔ | ✔ | ❌ | ❌ |
 | `compileEncoding` | Java编译编码 | `UTF-8` | ✔ | ✔ | ❌ | ❌ |
-| `compatibility` | Java兼容性配置   | ❌ | ✔ | ✔ | ❌ | ❌ |
+| `sourceCompatibility` | Java Source 兼容性配置   | ❌ | ✔ | ✔ | ❌ | ❌ |
+| `targetCompatibility` | Java Target 兼容性配置   | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译  | `true` | ✔ | ✔ | ❌ | ❌ |
 | `compilerArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked  | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `jvmArgs` | JVM扩展属性，多个参数用空格分隔，如：-XX:+UseG1GC -Xms128m -Xmx512m  | ❌ | ✔ | ✔ | ❌ | ❌ |
