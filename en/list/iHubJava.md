@@ -22,7 +22,8 @@
 | ------------------------- | ---------------------------------------------------------------------------------------------------------- | -------- | --------- | --------- | --------- | --------- |
 | `Default Dependencies`    | Default dependency (',' separated)[See](#默认依赖)for details, set up`false`to close the default configuration | `log`    | ✔         | ✔         | ❌         | ❌         |
 | `CompileEncoding`         | JavaScript Code                                                                                            | `UTF-8`  | ✔         | ✔         | ❌         | ❌         |
-| `Compatibility`           | Java Compatibility Configuration                                                                           | ❌        | ✔         | ✔         | ❌         | ❌         |
+| `sourceCompatibility`     | Java Source 兼容性配置                                                                                          | ❌        | ✔         | ✔         | ❌         | ❌         |
+| `targetCompatibility`     | Java Target 兼容性配置                                                                                          | ❌        | ✔         | ✔         | ❌         | ❌         |
 | `gradleCompile cremental` | gradle increment compilation                                                                               | `true`   | ✔         | ✔         | ❌         | ❌         |
 | `compilerArgs`            | Compiles extended attributes, multiple parameters separated by spaces, e.g.：- parameters -Xlint:unchecked  | ❌        | ✔         | ✔         | ❌         | ❌         |
 | `jvmArgs`                 | JVM extension attributes, multiple arguments separated by spaces, e.g.：- XX:+UseG1GC -Xms128m -Xmx512m     | ❌        | ✔         | ✔         | ❌         | ❌         |
@@ -57,7 +58,7 @@ plugins {
 
 ## Configuration Example
 
-:::code-tabs#build
+::: code-tabs#build
 
 @tab Kotlin
 
@@ -131,8 +132,8 @@ iHubJava has
 
 | DependencyType     | Dependencies                                      |
 | ------------------ | ------------------------------------------------- |
-| Implementation     | `org.jmolecules.integrations: jmolecules-spring`  |
-| Implementation     | `org.jmolecules.integrations: jmolecules-jpa`     |
+| implementation     | `org.jmolecules.integrations: jmolecules-spring`  |
+| implementation     | `org.jmolecules.integrations: jmolecules-jpa`     |
 | Implementation     | `org.jmolecules.integrations: jmolecules-jackson` |
 | testImplementation | `org.jmolecules.integrations: jmolecules-archive` |
 
