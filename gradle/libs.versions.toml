@@ -4,7 +4,7 @@ freefair = '8.4'
 spring-boot = '2.7.18'
 plugin-publish = '1.2.1'
 jacoco = '0.8.11'
-codenarc = '3.3.0-groovy-4.0'
+codenarc = '3.4.0-groovy-4.0'
 pmd = '6.55.0'
 
 [libraries]
