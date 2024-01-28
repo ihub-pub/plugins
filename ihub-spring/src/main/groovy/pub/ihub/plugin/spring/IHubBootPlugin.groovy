@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubProjectPluginAware
+import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.java.IHubJavaPlugin
 
 import static org.springframework.boot.buildpack.platform.build.PullPolicy.IF_NOT_PRESENT
@@ -40,6 +41,10 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
 
     @Override
     void apply() {
+        withExtension(IHubBomExtension).dependencies {
+            testImplementation 'org.spockframework:spock-spring'
+            testRuntimeOnly 'org.springframework.boot:spring-boot-starter-test'
+        }
         withExtension(AFTER) { ext ->
             withTask(BootRun) {
                 ext.systemProperties it, '.boot-java-local.properties'
