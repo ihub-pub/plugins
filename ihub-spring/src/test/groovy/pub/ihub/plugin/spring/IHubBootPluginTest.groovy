@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,8 @@ class IHubBootPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
+        result.output.contains '│ testImplementation              │ org.spockframework:spock-spring                                │'
+        result.output.contains '│ testRuntimeOnly                 │ org.springframework.boot:spring-boot-starter-test              │'
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
