@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 the original author or authors.
+ * Copyright (c) 2023-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import pub.ihub.plugin.node.IHubNodeExtension
 abstract class CnpmSetupTask extends NpmSetupTask {
 
     static final String NAME = 'cnpmSetup'
-    static final String REGISTRY = 'https://registry.npm.taobao.org'
+    static final String REGISTRY = 'https://registry.npmmirror.com'
 
     @Input
     @Optional
