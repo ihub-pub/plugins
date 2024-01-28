@@ -78,7 +78,7 @@ class IHubCopyrightPlugin extends IHubProjectPluginAware {
             }
         Node settings = appendChild component.documentElement, 'settings'
         Node module2copyright = appendChild settings, 'module2copyright'
-        if (XmlUtil.getNodeByXPath("element[@copyright=\"$copyrightName\"]", module2copyright)) {
+        if (getNodeByXPath("element[@copyright=\"$copyrightName\"]", module2copyright)) {
             return
         }
         modules.each { module ->
@@ -89,11 +89,11 @@ class IHubCopyrightPlugin extends IHubProjectPluginAware {
     }
 
     private static Node appendChild(Node node, String name) {
-        XmlUtil.getNodeByXPath(name, node) ?: XmlUtil.appendChild(node, name)
+        getNodeByXPath(name, node) ?: XmlUtil.appendChild(node, name)
     }
 
     private static Node appendChild(Node node, String name, String module, Map<String, String> attributes) {
-        XmlUtil.getNodeByXPath("$name[@module=\"$module\"]", node) ?: appendChild(node, name, attributes)
+        getNodeByXPath("$name[@module=\"$module\"]", node) ?: appendChild(node, name, attributes)
     }
 
     private static Node appendChild(Node node, String name, Map<String, String> attributes) {
@@ -105,9 +105,13 @@ class IHubCopyrightPlugin extends IHubProjectPluginAware {
     }
 
     private static void appendOption(Node node, String name, String value) {
-        if (!XmlUtil.getNodeByXPath("option[@name=\"$name\"]", node)) {
+        if (!getNodeByXPath("option[@name=\"$name\"]", node)) {
             appendChild node, 'option', [name: name, value: value]
         }
+    }
+
+    private static Node getNodeByXPath(String expression, Node node) {
+        node.firstChild ? XmlUtil.getNodeByXPath(expression, node) : null
     }
 
 }
