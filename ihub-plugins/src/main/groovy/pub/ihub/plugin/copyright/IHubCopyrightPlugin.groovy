@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import org.w3c.dom.Node
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
-
 
 
 /**
@@ -71,37 +70,33 @@ class IHubCopyrightPlugin extends IHubProjectPluginAware {
     }
 
     private static void configCopyrightManager(Project rootProject, String copyrightName) {
-        File settings = rootProject.file '.idea/copyright/profiles_settings.xml'
+        File settingsFile = rootProject.file '.idea/copyright/profiles_settings.xml'
         List modules = ['Project Files', 'All Changed Files']
-        Document component
-        if (settings.exists()) {
-            component = XmlUtil.readXML settings.path
-            Node elements = XmlUtil.getNodeByXPath 'module2copyright',
-                XmlUtil.getNodeByXPath('settings', component.documentElement)
-            if (elements) {
-                if (XmlUtil.getNodeByXPath("element[@copyright=\"$copyrightName\"]", elements)) {
-                    return
-                }
-                modules.each { module ->
-                    if (!XmlUtil.getNodeByXPath("element[@module=\"$module\"]", elements)) {
-                        appendChild elements, 'element', [module: module, copyright: copyrightName]
-                    }
-                }
-                XmlUtil.toFile component, settings.path
+        Document component = settingsFile.exists() ? XmlUtil.readXML(settingsFile.path) :
+            XmlUtil.createXml('component').tap {
+                documentElement.setAttribute 'name', 'CopyrightManager'
             }
-        } else {
-            component = XmlUtil.createXml 'component'
+        Node settings = appendChild component.documentElement, 'settings'
+        Node module2copyright = appendChild settings, 'module2copyright'
+        if (XmlUtil.getNodeByXPath("element[@copyright=\"$copyrightName\"]", module2copyright)) {
+            return
         }
-        Node elements = appendChild appendChild(component.documentElement.tap {
-            setAttribute 'name', 'CopyrightManager'
-        }, 'settings'), 'module2copyright'
         modules.each { module ->
-            appendChild elements, 'element', [module: module, copyright: copyrightName]
+            appendChild module2copyright, 'element', module, [module: module, copyright: copyrightName]
         }
-        XmlUtil.toFile component, settings.path
+        appendOption appendChild(settings, 'LanguageOptions', [name: '__TEMPLATE__']), 'addBlankAfter', 'false'
+        XmlUtil.toFile component, settingsFile.path
     }
 
-    private static Node appendChild(Node node, String name, Map<String, String> attributes = [:]) {
+    private static Node appendChild(Node node, String name) {
+        XmlUtil.getNodeByXPath(name, node) ?: XmlUtil.appendChild(node, name)
+    }
+
+    private static Node appendChild(Node node, String name, String module, Map<String, String> attributes) {
+        XmlUtil.getNodeByXPath("$name[@module=\"$module\"]", node) ?: appendChild(node, name, attributes)
+    }
+
+    private static Node appendChild(Node node, String name, Map<String, String> attributes) {
         XmlUtil.appendChild(node, name).tap {
             attributes.each { k, v ->
                 setAttribute k, v
@@ -109,8 +104,10 @@ class IHubCopyrightPlugin extends IHubProjectPluginAware {
         }
     }
 
-    private static Node appendOption(Node node, String name, String value) {
-        appendChild node, 'option', [name: name, value: value]
+    private static void appendOption(Node node, String name, String value) {
+        if (!XmlUtil.getNodeByXPath("option[@name=\"$name\"]", node)) {
+            appendChild node, 'option', [name: name, value: value]
+        }
     }
 
 }
