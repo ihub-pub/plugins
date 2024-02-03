@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
           disable-sudo: true
           egress-policy: audit
@@ -32,7 +32,7 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa # v2.12.0
+        uses: gradle/gradle-build-action@3b1b3b9a2104c2b47fbae53f3938079c00c9bb87 # v3.0.0
         with:
           arguments: build -x test --scan
 
@@ -43,7 +43,7 @@ jobs:
       matrix: ${{ steps.name.outputs.test }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
           disable-sudo: true
           egress-policy: audit
@@ -73,7 +73,7 @@ jobs:
         project_name: ${{ fromJson(needs.project-matrix.outputs.matrix) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
           disable-sudo: true
           egress-policy: audit
@@ -103,13 +103,13 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa # v2.12.0
+        uses: gradle/gradle-build-action@3b1b3b9a2104c2b47fbae53f3938079c00c9bb87 # v3.0.0
         with:
           arguments: ${{ matrix.project_name }}:test -DiHubTest.failFast=true
 
       - name: Upload Coverage Reports
         if: ${{ github.repository_owner == 'ihub-pub' }}
-        uses: codecov/codecov-action@4fe8c5f003fae66aa5ebb77cfd3e7bfbbda0b6b0 # v3.1.5
+        uses: codecov/codecov-action@e0b68c6749509c5f83f984dd99a76a1c1a231044 # v4.0.1
 
       - name: Publish Results to Testspace
         run: testspace */build/test-results/test/*.xml */build/reports/*/test/*.xml
@@ -128,7 +128,7 @@ jobs:
     needs: [ build, matrix-test ]
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@eb238b55efaa70779f274895e782ed17c84f2895 # v2.6.1
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
         with:
           disable-sudo: true
           egress-policy: audit
