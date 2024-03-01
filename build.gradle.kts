@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,6 @@ iHubGitHooks {
     ))
 }
 
-val springBootVersion: String = libs.versions.spring.boot.get()
-
 subprojects {
     apply {
         plugin("groovy")
@@ -53,11 +51,6 @@ subprojects {
 
 //<editor-fold desc="组件依赖版本管理">
 
-    iHubBom.bomVersions.clear()
-    dependencies {
-        "api"(platform("cn.hutool:hutool-bom:5.8.25"))
-        "api"(platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion"))
-    }
     // gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
         groupVersions {
