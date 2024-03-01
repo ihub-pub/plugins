@@ -1,7 +1,7 @@
 [versions]
 ihub = '1.3.2'
 freefair = '8.6'
-spring-boot = '2.7.18'
+spring-boot = '3.2.3'
 plugin-publish = '1.2.1'
 jacoco = '0.8.11'
 codenarc = '3.4.0-groovy-4.0'
