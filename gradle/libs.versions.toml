@@ -5,7 +5,7 @@ spring-boot = '3.2.4'
 plugin-publish = '1.2.1'
 jacoco = '0.8.11'
 codenarc = '3.4.0-groovy-4.0'
-pmd = '6.55.0'
+pmd = '7.0.0'
 
 [libraries]
 dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.4' }
