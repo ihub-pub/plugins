@@ -1,7 +1,2 @@
-name: "Java/Data flow only"
-
-baseProfile: empty
-
-inspections:
-  - group: "category:Java/Data flow"
-    enabled: true # Enable the 'Java/Data flow' category
+version: "1.0"
+linter: jetbrains/qodana-jvm:2023.3
