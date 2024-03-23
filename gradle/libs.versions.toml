@@ -32,7 +32,7 @@ pmd = { module = 'net.sourceforge.pmd:pmd', version.ref = 'pmd' }
 
 ihub-dependencies = { module = 'pub.ihub.lib:ihub-dependencies', version.ref = 'ihub' }
 
-gradle-node = { module = 'com.github.node-gradle:gradle-node-plugin', version = '7.0.2' }
+gradle-node = { module = 'com.github.node-gradle:gradle-node-plugin', version = '7.0.1' }
 
 [plugins]
 testkit = { id = 'pl.droidsonroids.jacoco.testkit', version = '1.0.12' }
