@@ -1,0 +1,7 @@
+name: "Java/Data flow only"
+
+baseProfile: empty
+
+inspections:
+  - group: "category:Java/Data flow"
+    enabled: true # Enable the 'Java/Data flow' category
