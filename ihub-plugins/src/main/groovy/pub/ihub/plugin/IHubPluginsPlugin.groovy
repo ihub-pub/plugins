@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package pub.ihub.plugin
+
 
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.version.IHubVersionPlugin
@@ -46,6 +47,9 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                     termsOfServiceAgree = 'yes'
                 }
             }
+
+            // 清理根项目
+            cleanRootProject()
         }
 
         // 默认应用IHubBom插件
@@ -114,6 +118,19 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 credentials {
                     username repoUsername
                     password ext.repoPassword.orNull
+                }
+            }
+        }
+    }
+
+    private void cleanRootProject() {
+        afterEvaluate {
+            if (!hasTask('clean')) {
+                registerTask 'clean', {
+                    it.group = 'build'
+                    it.doLast {
+                        project.file('build').deleteDir()
+                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 the original author or authors.
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,6 +91,15 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
 
     /**
      * 包含插件
+     * @param id 插件ID
+     * @return 是否包含
+     */
+    protected boolean hasPlugin(String id) {
+        project.plugins.hasPlugin id
+    }
+
+    /**
+     * 包含插件
      * @param type 插件类型
      * @return 是否包含
      */
@@ -135,6 +144,15 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
      */
     protected void afterEvaluate(Closure closure) {
         project.afterEvaluate closure
+    }
+
+    protected boolean hasTask(String name) {
+        project.tasks.findByName name
+    }
+
+    @CompileStatic(SKIP)
+    protected TaskProvider<Task> registerTask(String name, Action<Task> action) {
+        project.tasks.register name, action
     }
 
     @CompileStatic(SKIP)
