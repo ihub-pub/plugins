@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2021 Henry 李恒 (henry.box@outlook.com).
+ * Copyright (c) 2021-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,6 @@ package pub.ihub.plugin
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
-
 
 
 /**
@@ -40,6 +39,9 @@ class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
             '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
         ], 't'
         printMapConfigContent 'test', 'ID', 'Version', [a: '1', b: '2', c: ['3', '4']]
+        registerTask 'printConfig', {
+            printConfigContent 'task', []
+        }
     }
 
 }

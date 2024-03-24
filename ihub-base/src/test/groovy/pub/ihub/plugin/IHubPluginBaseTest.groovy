@@ -51,6 +51,8 @@ class IHubPluginBaseTest extends Specification {
         expect:
         project.extensions.findByName('iHubDemo') instanceof IHubDemoExtension
         project.plugins.withType(IHubDemoPlugin).any { it.hasPlugin IHubSimplePlugin }
+        project.plugins.withType(IHubDemoPlugin).every { !it.hasPlugin('IHubSimplePlugin') }
+        project.plugins.withType(IHubDemoPlugin).any { it.hasTask 'demo' }
         false == project.iHubDemo.flag.get()
         'text' == project.iHubDemo.str.get()
         'systemValue' == project.iHubDemo.system.get()
