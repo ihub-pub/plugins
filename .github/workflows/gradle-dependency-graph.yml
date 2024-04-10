@@ -31,7 +31,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Setup Gradle to generate and submit dependency graphs
-        uses: gradle/gradle-build-action@v3.2.0
+        uses: gradle/gradle-build-action@v3.2.1
         with:
           dependency-graph: generate-and-submit
           arguments: dependencies
