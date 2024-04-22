@@ -15,7 +15,7 @@
  */
 package pub.ihub.plugin.java
 
-import com.github.jengelman.gradle.plugins.processes.ProcessesPlugin
+
 import groovy.transform.CompileStatic
 import io.freefair.gradle.plugins.lombok.LombokPlugin
 import net.bytebuddy.build.gradle.AbstractByteBuddyTask
@@ -35,7 +35,6 @@ import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.jmolecules.bytebuddy.JMoleculesPlugin
-import org.springdoc.openapi.gradle.plugin.OpenApiGradlePlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
@@ -169,9 +168,6 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
 
         withExtension(AFTER) {
-            if (it.applyOpenapiPlugin.get()) {
-                applyPlugin ProcessesPlugin, OpenApiGradlePlugin
-            }
             if (!hasPlugin(GroovyPlugin)) {
                 applyPlugin LombokPlugin
             }
