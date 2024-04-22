@@ -85,12 +85,6 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
     @IHubProperty
     Property<String> jmoleculesArchitecture
 
-    /**
-     * 启用org.springdoc.openapi-gradle-plugin插件
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM], genericType = Boolean)
-    Property<Boolean> applyOpenapiPlugin
-
     @Inject
     IHubJavaExtension(ObjectFactory objectFactory) {
         defaultDependencies = objectFactory.property(String).convention('log')
@@ -101,7 +95,6 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
         compilerArgs = objectFactory.property(String)
         jvmArgs = objectFactory.property(String)
         jmoleculesArchitecture = objectFactory.property(String).convention('onion')
-        applyOpenapiPlugin = objectFactory.property(Boolean).convention(false)
     }
 
     /**

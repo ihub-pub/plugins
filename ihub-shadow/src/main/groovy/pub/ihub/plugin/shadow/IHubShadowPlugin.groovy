@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 the original author or authors.
+ * Copyright (c) 2023-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,16 @@
 package pub.ihub.plugin.shadow
 
 import com.github.jengelman.gradle.plugins.shadow.ShadowApplicationPlugin
-import com.github.jengelman.gradle.plugins.shadow.ShadowExtension
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import com.github.jengelman.gradle.plugins.shadow.internal.JavaJarExec
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import groovy.transform.CompileStatic
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.java.IHubJavaPlugin
 
 import static com.github.jengelman.gradle.plugins.shadow.ShadowApplicationPlugin.SHADOW_RUN_TASK_NAME
-import static com.github.jengelman.gradle.plugins.shadow.ShadowBasePlugin.CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
@@ -46,9 +41,6 @@ class IHubShadowPlugin extends IHubProjectPluginAware<IHubShadowExtension> {
                 withTask(SHADOW_RUN_TASK_NAME) { JavaJarExec it ->
                     ext.systemProperties it, '.shadow-java-local.properties'
                 }
-                withTask('jar') {
-                    it.enabled = false
-                }
             }
 
             withTask(ShadowJar) {
@@ -61,11 +53,6 @@ class IHubShadowPlugin extends IHubProjectPluginAware<IHubShadowExtension> {
                     }
                     it.manifest.attributes 'Can-Redefine-Classes': true, 'Can-Retransform-Classes': true
                 }
-            }
-
-            if (hasPlugin(MavenPublishPlugin)) {
-                withExtension(ShadowExtension).component withExtension(PublishingExtension)
-                    .publications.maybeCreate(CONFIGURATION_NAME, MavenPublication)
             }
         }
     }
