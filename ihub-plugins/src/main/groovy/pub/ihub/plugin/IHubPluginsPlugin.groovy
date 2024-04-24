@@ -15,7 +15,8 @@
  */
 package pub.ihub.plugin
 
-
+import org.gradle.api.Project
+import org.gradle.api.tasks.Delete
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.version.IHubVersionPlugin
 
@@ -126,10 +127,14 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
     private void cleanRootProject() {
         afterEvaluate {
             if (!hasTask('clean')) {
-                registerTask 'clean', {
-                    it.group = 'build'
-                    it.doLast {
-                        project.file('build').deleteDir()
+                registerTask 'cleanRootProject', Delete, {
+                    it.group = 'ihub'
+                    it.description = 'Clean the root project build directory'
+                    it.delete project.layout.buildDirectory
+                    project.subprojects { Project sub ->
+                        sub.tasks.findByName('clean')?.with { clean ->
+                            it.finalizedBy clean
+                        }
                     }
                 }
             }

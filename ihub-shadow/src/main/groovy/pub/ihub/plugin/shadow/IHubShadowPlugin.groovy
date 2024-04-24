@@ -64,9 +64,6 @@ class IHubShadowPlugin extends IHubProjectPluginAware<IHubShadowExtension> {
         if (hasPlugin(MavenPublishPlugin)) {
             withExtension(ShadowExtension).component withExtension(PublishingExtension)
                 .publications.maybeCreate(CONFIGURATION_NAME, MavenPublication)
-            withTask(ShadowJar) {
-                it.enabled = false
-            }
         }
     }
 
