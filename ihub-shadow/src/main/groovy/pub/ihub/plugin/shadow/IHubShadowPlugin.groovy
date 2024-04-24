@@ -25,6 +25,8 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.gradle.plugins.signing.SigningExtension
+import org.gradle.plugins.signing.SigningPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.java.IHubJavaPlugin
@@ -64,6 +66,11 @@ class IHubShadowPlugin extends IHubProjectPluginAware<IHubShadowExtension> {
         if (hasPlugin(MavenPublishPlugin)) {
             withExtension(ShadowExtension).component withExtension(PublishingExtension)
                 .publications.maybeCreate(CONFIGURATION_NAME, MavenPublication)
+        }
+        if (hasPlugin(SigningPlugin)) {
+            withExtension(PublishingExtension).publications.named(CONFIGURATION_NAME).configure {
+                withExtension(SigningExtension).sign it
+            }
         }
     }
 
