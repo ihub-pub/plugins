@@ -34,4 +34,10 @@ interface IHubJavaagentExtension extends IHubExtensionAware {
     @IHubProperty
     Property<String> getJavaagent()
 
+    /**
+     * 分类
+     */
+    @IHubProperty(defaultValue = 'all')
+    Property<String> getClassifier()
+
 }
