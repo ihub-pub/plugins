@@ -19,11 +19,11 @@ import com.ryandens.javaagent.JavaagentApplicationPlugin
 import com.ryandens.javaagent.JavaagentBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Dependency
 import org.gradle.api.plugins.ApplicationPlugin
 import org.gradle.api.tasks.JavaExec
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
-import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static com.ryandens.javaagent.JavaForkOptionsConfigurer.configureJavaForkOptions
@@ -44,10 +44,12 @@ class IHubJavaagentPlugin extends IHubProjectPluginAware<IHubJavaagentExtension>
         if (project.plugins.hasPlugin('org.springframework.boot')) {
             configureJavaExec 'bootRun'
         }
-        withExtension(IHubBomExtension, AFTER) { ext ->
-            if (extension.javaagent.present) {
-                ext.dependencies {
-                    compile CONFIGURATION_NAME, extension.javaagent.get()
+        withExtension(AFTER) { ext ->
+            if (ext.javaagent.present) {
+                Dependency dependency = project.dependencies.create ext.javaagent.get()
+                project.dependencies {
+                    javaagent group: dependency.group, name: dependency.name, version: dependency.version,
+                        classifier: ext.classifier.get()
                 }
             }
         }

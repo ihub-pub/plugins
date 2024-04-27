@@ -70,7 +70,6 @@ class IHubShadowPluginTest extends IHubSpecification {
         buildFile << '''
             apply {
                 plugin 'maven-publish'
-                plugin 'signing'
                 plugin 'pub.ihub.plugin.ihub-shadow'
             }
         '''

@@ -16,23 +16,16 @@
 package pub.ihub.plugin.shadow
 
 import com.github.jengelman.gradle.plugins.shadow.ShadowApplicationPlugin
-import com.github.jengelman.gradle.plugins.shadow.ShadowExtension
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import com.github.jengelman.gradle.plugins.shadow.internal.JavaJarExec
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import groovy.transform.CompileStatic
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
-import org.gradle.plugins.signing.SigningExtension
-import org.gradle.plugins.signing.SigningPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.java.IHubJavaPlugin
 
 import static com.github.jengelman.gradle.plugins.shadow.ShadowApplicationPlugin.SHADOW_RUN_TASK_NAME
-import static com.github.jengelman.gradle.plugins.shadow.ShadowBasePlugin.CONFIGURATION_NAME
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
@@ -60,16 +53,6 @@ class IHubShadowPlugin extends IHubProjectPluginAware<IHubShadowExtension> {
                     it.manifest.attributes 'Agent-Class': agentmainClass
                 }
                 it.manifest.attributes 'Can-Redefine-Classes': true, 'Can-Retransform-Classes': true
-            }
-        }
-
-        if (hasPlugin(MavenPublishPlugin)) {
-            withExtension(ShadowExtension).component withExtension(PublishingExtension)
-                .publications.maybeCreate(CONFIGURATION_NAME, MavenPublication)
-        }
-        if (hasPlugin(SigningPlugin)) {
-            withExtension(PublishingExtension).publications.named(CONFIGURATION_NAME).configure {
-                withExtension(SigningExtension).sign it
             }
         }
     }
