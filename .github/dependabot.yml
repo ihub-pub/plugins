@@ -37,5 +37,5 @@ updates:
     target-branch: "docs"
     assignees:
       - "henry-hub"
-    allow:
-      - dependency-type: "production"
+    # allow:
+    #   - dependency-type: "production"
