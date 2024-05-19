@@ -27,7 +27,6 @@
 | `gradleCompile cremental` | gradle increment compilation                                                                               | `true`   | ✔         | ✔         | ❌         | ❌         |
 | `compilerArgs`            | Compiles extended attributes, multiple parameters separated by spaces, e.g.：- parameters -Xlint:unchecked  | ❌        | ✔         | ✔         | ❌         | ❌         |
 | `jvmArgs`                 | JVM extension attributes, multiple arguments separated by spaces, e.g.：- XX:+UseG1GC -Xms128m -Xmx512m     | ❌        | ✔         | ✔         | ❌         | ❌         |
-| `applyOpenapiPlugin`      | Enable [SpringDoc](https://github.com/springdoc/springdoc-openapi-gradle-plugin) plugin                    | `false`  | ✔         | ✔         | ✔         | ❌         |
 | `jmoleculesArchitecture`  | JMolecules Architecture (optional type：cqrs, layered, onion)[See](https://jmolecules.org)                  | `monion` | ✔         | ✔         | ❌         | ❌         |
 
 ::: warning
