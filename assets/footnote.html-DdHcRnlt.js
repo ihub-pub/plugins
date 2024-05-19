@@ -1,0 +1,1 @@
+import{_ as o}from"./plugin-vue_export-helper-DlAUqK2U.js";import{o as e,c as t}from"./app-DR86wGH8.js";const c={};function r(n,_){return e(),t("div")}const a=o(c,[["render",r],["__file","footnote.html.vue"]]);export{a as default};
