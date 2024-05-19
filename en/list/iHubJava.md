@@ -35,7 +35,7 @@ Since plugins will process some configuration at`beforEvalate`, root items will 
 
 ## Plugin Installation
 
-:::code-tabs#build
+::: code-tabs#build
 
 @tab Kotlin
 
@@ -124,8 +124,8 @@ iHubJava has
 | Implementation | `org.jmolecules:jmolecules-dd`                        |
 | Implementation | `org.jmolecules:jmolecules-events`                    |
 | Implementation | `org.jmolecules:jmolecules-cqrs-archive`(`optional`)  |
-| Implementation | `org.jmolecules:jmolecules-layered-archive`(`option`) |
-| Implementation | `org.jmolecules:jmolecules-onion-archive`(`optional`) |
+| implementation | `org.jmolecules:jmolecules-layered-archive`(`option`) |
+| implementation | `org.jmolecules:jmolecules-onion-archive`(`optional`) |
 
 ### `jmolecules-integrations`：add jMolecules-integration dependence.
 
