@@ -21,6 +21,8 @@ dependencies {
     compileOnly(libs.freefair.utils)
     implementation(libs.freefair.github)
     implementation("cn.hutool:hutool-http")
+    // GithubPom插件运行时依赖
+    runtimeOnly("com.google.code.gson:gson")
 }
 
 gradlePlugin {
