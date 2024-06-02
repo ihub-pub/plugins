@@ -71,14 +71,14 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
         }
 
         // 添加配置元信息
-         if (hasPlugin(JavaPlugin)) {
-             withExtension(IHubBomExtension) {
-                 it.dependencies {
-                     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-                 }
-                 project.compileJava.inputs.files project.processResources
-             }
-         }
+        if (hasPlugin(JavaPlugin)) {
+            withExtension(IHubBomExtension) {
+                it.dependencies {
+                    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+                }
+                project.compileJava.inputs.files project.processResources
+            }
+        }
     }
 
     private void configPublish(Project project, IHubPluginsExtension iHubExt) {
