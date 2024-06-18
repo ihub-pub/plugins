@@ -27,7 +27,7 @@ jobs:
           cache: 'gradle'
 
       - name: Publish to Gradle Plugins
-        uses: gradle/gradle-build-action@db35f2304698ac6ff98958322dfd3db0a5da9fdf # v3.4.0
+        uses: gradle/gradle-build-action@66535aaf56f831b35e3a8481c9c99b665b84dd45 # v3.4.2
         with:
           arguments: publishPlugins -DiHubPublish.applyGithubPom=true -DiHubPublish.publishSources=false
         env:
