@@ -95,7 +95,7 @@ jobs:
           cache: 'gradle'
 
       - name: Testspace Setup CLI
-        uses: testspace-com/setup-testspace@ee1482f978eb5010ec27b6f6372904f01f2edd68 # v1.0.6
+        uses: testspace-com/setup-testspace@8472399a8030486c043937b8451b5e743f961ae0 # v1.0.7
         with:
           domain: ${{ github.repository_owner }}
 
