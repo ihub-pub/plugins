@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@3ad04f4ce2ebda15114704d442b57ef1def660fc # v4.4.4
+        uses: codacy/codacy-analysis-cli-action@97bf5df3c09e75f5bcd72695998f96ebd701846e # v4.4.5
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           verbose: true
