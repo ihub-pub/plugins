@@ -15,7 +15,6 @@
  */
 package pub.ihub.plugin.java
 
-
 import groovy.transform.CompileStatic
 import io.freefair.gradle.plugins.lombok.LombokPlugin
 import net.bytebuddy.build.gradle.AbstractByteBuddyTask
@@ -24,7 +23,6 @@ import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.ApplicationPlugin
-import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.plugins.JavaLibraryPlugin
 import org.gradle.api.plugins.JavaPlugin
@@ -50,7 +48,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
  */
 @IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [
     IHubPluginsPlugin, IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin,
-    BuildDashboardPlugin, ByteBuddyPlugin
+    BuildDashboardPlugin, ByteBuddyPlugin, LombokPlugin
 ])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
@@ -168,10 +166,6 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
 
         withExtension(AFTER) {
-            if (!hasPlugin(GroovyPlugin)) {
-                applyPlugin LombokPlugin
-            }
-
             // 配置Jar属性
             withTask Jar, JAR_CONFIG.curry(project)
 
