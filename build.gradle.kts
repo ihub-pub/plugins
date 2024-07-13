@@ -28,7 +28,7 @@ plugins {
 
 iHubGitHooks {
     hooks.set(mapOf(
-        "pre-commit" to "./gradlew build -x test",
+        "pre-commit" to "./gradlew check -x test",
         "commit-msg" to "./gradlew commitCheck"
     ))
 }
