@@ -126,6 +126,31 @@ iHubPublish.publishDocs=true
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '中央仓库Publish配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+            apply {
+                plugin 'java'
+                plugin 'pub.ihub.plugin.ihub-publish'
+            }
+        '''
+
+        when: '构建项目'
+        propertiesFile << '''
+iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
+iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
+'''
+        def result = gradleBuilder.withArguments("-DiHubPublish.publishMavenCentral=$publishMavenCentral",
+            '-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        where:
+        publishMavenCentral << [true, false]
+    }
+
     def '版本目录组件Publish配置测试'() {
         setup: '初始化项目'
         buildFile << '''
