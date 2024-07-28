@@ -31,6 +31,7 @@ import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
+import org.gradle.api.publish.plugins.PublishingPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
@@ -41,6 +42,9 @@ import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
+import tech.yanand.gradle.mavenpublish.MavenCentralExtension
+import tech.yanand.gradle.mavenpublish.MavenCentralPublishPlugin
+import tech.yanand.gradle.mavenpublish.PublishToCentralPortalTask
 
 import static cn.hutool.http.HttpUtil.get
 import static io.freefair.gradle.util.GitUtil.isGithubActions
@@ -51,6 +55,8 @@ import static io.freefair.gradle.util.GitUtil.isGithubActions
  */
 @IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [IHubBomPlugin, IHubPluginsPlugin, MavenPublishPlugin])
 class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
+
+    public static final String REPOS_BUNDLES = 'repos/bundles'
 
     @Override
     void apply() {
@@ -68,6 +74,19 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             configPublish project, iHubExt
 
             configSigning project, extension
+
+            if (extension.publishMavenCentral.get()) {
+                applyPlugin MavenCentralPublishPlugin
+                withExtension(MavenCentralExtension) {
+                    it.repoDir.set project.layout.buildDirectory.dir(REPOS_BUNDLES)
+                    it.authToken.set Base64.encoder.encodeToString((iHubExt.repoUsername.get() + ':' + iHubExt.repoPassword.get()).bytes)
+                    // TODO 测试发布手动，后续改为自动发布
+                    it.publishingType.set 'USER_MANAGED'
+                }
+                withTask(PublishToCentralPortalTask) {
+                    project.tasks.getByName(PublishingPlugin.PUBLISH_LIFECYCLE_TASK_NAME).finalizedBy it
+                }
+            }
         }
 
         // 添加配置元信息
@@ -128,18 +147,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                     }
                 }
             }
-            it.repositories {
-                maven {
-                    url release ? iHubExt.releaseRepoUrl.orNull : iHubExt.snapshotRepoUrl.orNull
-                    allowInsecureProtocol iHubExt.repoAllowInsecureProtocol.get()
-                    iHubExt.repoUsername.orNull?.with { repoUsername ->
-                        credentials {
-                            username repoUsername
-                            password iHubExt.repoPassword.orNull
-                        }
-                    }
-                }
-            }
+            configMavenRepo it, iHubExt
         }
     }
 
@@ -246,6 +254,27 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             def versionAliases = withExtension(VersionCatalogsExtension).named 'ihubCatalogs'
             versionAliases.versionAliases.each { alias ->
                 version alias, versionAliases.findVersion(alias).get().requiredVersion
+            }
+        }
+    }
+
+    private void configMavenRepo(PublishingExtension ext, IHubPluginsExtension iHubExt) {
+        String mavenUrl = release ? iHubExt.releaseRepoUrl.orNull : iHubExt.snapshotRepoUrl.orNull
+        if (extension.publishMavenCentral.get()) {
+            ext.repositories.maven {
+                name = 'Local'
+                url = project.layout.buildDirectory.dir(REPOS_BUNDLES)
+            }
+        } else if (mavenUrl) {
+            ext.repositories.maven {
+                url mavenUrl
+                allowInsecureProtocol iHubExt.repoAllowInsecureProtocol.get()
+                iHubExt.repoUsername.orNull?.with { repoUsername ->
+                    credentials {
+                        username repoUsername
+                        password iHubExt.repoPassword.orNull
+                    }
+                }
             }
         }
     }

@@ -73,4 +73,10 @@ interface IHubPublishExtension extends IHubExtensionAware {
     @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'false', genericType = Boolean)
     Property<Boolean> getApplyGithubPom()
 
+    /**
+     * 是否发布到Maven中央仓库
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'false', genericType = Boolean)
+    Property<Boolean> getPublishMavenCentral()
+
 }
