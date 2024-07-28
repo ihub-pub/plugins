@@ -23,6 +23,7 @@ dependencies {
     implementation("cn.hutool:hutool-http")
     // GithubPom插件运行时依赖
     runtimeOnly("com.google.code.gson:gson")
+    implementation(libs.maven.central)
 }
 
 gradlePlugin {
