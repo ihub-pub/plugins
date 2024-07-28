@@ -2,7 +2,7 @@ name: Gradle Dependency Graph
 on:
   schedule:
     - cron: '0 */6 * * *'
-  push: 
+  push:
     branches: main
 
 permissions:
@@ -12,8 +12,6 @@ jobs:
   gradle-action-detection:
     if: ${{ github.repository_owner == 'ihub-pub' }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@0d381219ddf674d61a7572ddd19d7941e271515c # v2.9.0

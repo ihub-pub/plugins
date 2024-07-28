@@ -79,7 +79,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                 applyPlugin MavenCentralPublishPlugin
                 withExtension(MavenCentralExtension) {
                     it.repoDir.set project.layout.buildDirectory.dir(REPOS_BUNDLES)
-                    it.authToken.set Base64.encoder.encodeToString((iHubExt.repoUsername.get() + ':' + iHubExt.repoPassword.get()).bytes)
+                    it.authToken.set Base64.encoder.encodeToString((iHubExt.repoUsername.orNull + ':' + iHubExt.repoPassword.orNull).bytes)
                     // TODO 测试发布手动，后续改为自动发布
                     it.publishingType.set 'USER_MANAGED'
                 }
