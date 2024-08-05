@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Set up JDK 17
-        uses: actions/setup-java@fd08b9c8dc6f530393a204a04e1f05101a5d00fd # main
+        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # main
         with:
           java-version: 17
           distribution: 'adopt'
