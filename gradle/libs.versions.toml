@@ -2,7 +2,7 @@
 ihub = '1.4.8'
 freefair = '8.10'
 spring-boot = '3.3.3'
-plugin-publish = '1.2.2'
+plugin-publish = '1.3.0'
 jacoco = '0.8.12'
 codenarc = '3.5.0-groovy-4.0'
 pmd = '7.5.0'
