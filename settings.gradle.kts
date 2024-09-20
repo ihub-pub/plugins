@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 plugins {
-    id("pub.ihub.plugin.ihub-settings") version "1.6.7"
+    id("pub.ihub.plugin.ihub-settings") version "1.7.0"
 }
