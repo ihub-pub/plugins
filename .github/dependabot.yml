@@ -15,7 +15,7 @@ updates:
     schedule:
       interval: "daily"
     assignees:
-      - "henry-hub"
+      - "ihub-bot"
     allow:
       - dependency-type: "production"
     commit-message:
@@ -26,7 +26,7 @@ updates:
     schedule:
       interval: daily
     assignees:
-      - "henry-hub"
+      - "ihub-bot"
     allow:
       - dependency-type: "production"
 
@@ -36,6 +36,6 @@ updates:
       interval: daily
     target-branch: "docs"
     assignees:
-      - "henry-hub"
+      - "ihub-bot"
     allow:
       - dependency-type: "production"
