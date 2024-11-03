@@ -25,12 +25,17 @@ import spock.lang.Title
 @Title('IHubLibsVersions测试套件')
 class IHubLibsVersionsTest extends Specification {
 
+    def '测试插件版本号'() {
+        expect:
+        IHubLibsVersions.IHubPluginsVersion
+    }
+
     def '测试组件版本包含ihub'() {
         setup:
         System.setProperty 'java.version', javaVersion
 
         expect:
-        IHubLibsVersions.getCompatibleLibsVersion('ihub-libs') ==~ expected
+        IHubLibsVersions.IHubLibsVersion ==~ expected
 
         cleanup:
         JavaVersion.resetCurrent()

@@ -17,6 +17,7 @@ package pub.ihub.plugin.javaagent
 
 import com.ryandens.javaagent.JavaagentApplicationPlugin
 import com.ryandens.javaagent.JavaagentBasePlugin
+import groovy.transform.CompileStatic
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
@@ -36,6 +37,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 @IHubPlugin(value = IHubJavaagentExtension, beforeApplyPlugins = IHubBomPlugin)
 class IHubJavaagentPlugin extends IHubProjectPluginAware<IHubJavaagentExtension> {
 
+    @CompileStatic
     @Override
     protected void apply() {
         if (hasPlugin(ApplicationPlugin)) {
@@ -44,23 +46,27 @@ class IHubJavaagentPlugin extends IHubProjectPluginAware<IHubJavaagentExtension>
         if (project.plugins.hasPlugin('org.springframework.boot')) {
             configureJavaExec 'bootRun'
         }
-        withExtension(AFTER) { ext ->
-            if (ext.javaagent.present) {
-                Dependency dependency = project.dependencies.create ext.javaagent.get()
-                project.dependencies {
-                    javaagent group: dependency.group, name: dependency.name, version: dependency.version,
-                        classifier: ext.classifier.get()
-                }
+        withExtension AFTER, this::configureJavaagent
+    }
+
+    private void configureJavaagent(IHubJavaagentExtension ext) {
+        if (ext.javaagent.present) {
+            Dependency dependency = project.dependencies.create ext.javaagent.get()
+            project.dependencies {
+                javaagent group: dependency.group, name: dependency.name, version: dependency.version,
+                    classifier: ext.classifier.get()
             }
         }
     }
 
+    @CompileStatic
     private void configureJavaExec(String taskName) {
         applyPlugin JavaagentBasePlugin as Class<Plugin<Project>>
-        project.tasks.named(taskName, JavaExec).configure javaExecClosure
+        project.tasks.named(taskName, JavaExec).configure this::configJavaExec
     }
 
-    private final Closure javaExecClosure = { JavaExec exec ->
+    @CompileStatic
+    private void configJavaExec(JavaExec exec) {
         configureJavaForkOptions exec, project.configurations.named(CONFIGURATION_NAME).map { it.files }
     }
 
