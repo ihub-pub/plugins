@@ -329,4 +329,14 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'iHubLibsLocalVersion配置测试'() {
+        when: '配置组件依赖为空'
+        copyProject 'bom.gradle'
+        propertiesFile << 'iHub.iHubLibsLocalVersion=test-SNAPSHOT'
+        def result = gradleBuilder.build()
+        then: '检查结果'
+        result.output.contains('test-SNAPSHOT')
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
 }

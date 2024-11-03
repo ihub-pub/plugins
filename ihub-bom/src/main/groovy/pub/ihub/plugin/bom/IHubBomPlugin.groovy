@@ -23,7 +23,8 @@ import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
-import static pub.ihub.plugin.IHubLibsVersions.getCompatibleLibsVersion
+import static pub.ihub.plugin.IHubLibsVersions.IHUB_LIBS_LOCAL_VERSION
+import static pub.ihub.plugin.IHubLibsVersions.IHubLibsVersion
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
@@ -54,8 +55,9 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
         // 项目不包含dependencies组件时，自动配置ihub-bom
         if (!project.hasProperty('iHubSettings.includeDependencies')) {
+            def iHubLibsVersion = project.findProperty(IHUB_LIBS_LOCAL_VERSION) ?: IHubLibsVersion
             extension.importBoms {
-                group 'pub.ihub.lib' module 'ihub-dependencies' version getCompatibleLibsVersion('ihub-libs')
+                group 'pub.ihub.lib' module 'ihub-dependencies' version iHubLibsVersion
             }
         }
 

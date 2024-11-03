@@ -38,6 +38,10 @@ import java.nio.file.Path
 import static java.lang.Boolean.valueOf
 import static org.codehaus.groovy.runtime.ResourceGroovyMethods.readLines
 import static org.gradle.api.JavaVersion.current
+import static pub.ihub.plugin.IHubLibsVersions.IHUB_LIBS_LOCAL_VERSION
+import static pub.ihub.plugin.IHubLibsVersions.IHUB_PLUGINS_LOCAL_VERSION
+import static pub.ihub.plugin.IHubLibsVersions.IHubLibsVersion
+import static pub.ihub.plugin.IHubLibsVersions.IHubPluginsVersion
 import static pub.ihub.plugin.IHubLibsVersions.getLibsVersion
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
@@ -51,7 +55,6 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     private static final List<String> IHUB_PLUGIN_IDS = readLines IHubSettingsPlugin
         .classLoader.getResource('META-INF/ihub/plugin-ids')
-    private static final String IHUB_PLUGIN_VERSION = getLibsVersion 'ihub-plugins'
 
     private static final Map<String, String> PLUGIN_ALIAS_IDS = [
         'plugin-publish': 'com.gradle.plugin-publish',
@@ -74,7 +77,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             settings.pluginManagement {
                 plugins {
                     (IHUB_PLUGIN_IDS.collectEntries {
-                        [(it): IHUB_PLUGIN_VERSION]
+                        [(it): getIHubPluginVersion(settings)]
                     } + PLUGIN_VERSIONS).findAll { it.value }.each { key, value ->
                         id key version value
                     }
@@ -110,47 +113,49 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         settings.pluginManager.apply PluginVersionsPlugin
     }
 
-    private void configPluginRepositories(Settings settings) {
-        settings.pluginManagement {
-            repositories {
-                String dirs = "$settings.rootProject.projectDir/gradle/plugins"
-                if ((dirs as File).directory) {
-                    flatDir dirs: dirs
-                }
-                if (valueOf findProperty(settings, 'iHub.mavenLocalEnabled')) {
-                    mavenLocal()
-                }
-                if (valueOf findProperty(settings, 'iHub.mavenAliYunEnabled')) {
-                    maven {
-                        name 'AliYunGradle'
-                        url 'https://maven.aliyun.com/repository/gradle-plugin'
-                        artifactUrls 'https://plugins.gradle.org/m2'
-                    }
-                }
-                gradlePluginPortal()
-                mavenCentral()
-                // 添加私有仓库
-                if (valueOf findProperty(settings, 'iHub.mavenPrivateEnabled', 'true')) {
-                    findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
-                        maven mavenRepo(settings, 'ReleaseRepo', repoUrl, true)
-                    }
-                    findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
-                        maven mavenRepo(settings, 'SnapshotRepo', repoUrl, false)
-                    }
-                }
-                // 添加自定义仓库
-                findProperty(settings, 'iHub.customizeRepoUrl')?.with { repoUrl ->
-                    maven {
-                        name 'CustomizeRepo'
-                        url repoUrl
-                    }
+    private static void configPluginRepositories(Settings settings) {
+        configRepositories settings.pluginManagement, settings
+        printLineConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
+    }
+
+    private static void configRepositories(management, Settings settings) {
+        management.repositories {
+            String dirs = "$settings.rootProject.projectDir/gradle/plugins"
+            if ((dirs as File).directory) {
+                flatDir dirs: dirs
+            }
+            if (valueOf findProperty(settings, 'iHub.mavenLocalEnabled')) {
+                mavenLocal()
+            }
+            if (valueOf findProperty(settings, 'iHub.mavenAliYunEnabled')) {
+                maven {
+                    name 'AliYunGradle'
+                    url 'https://maven.aliyun.com/repository/gradle-plugin'
+                    artifactUrls 'https://plugins.gradle.org/m2'
                 }
             }
-            printLineConfigContent 'Gradle Plugin Repos', settings.pluginManagement.repositories*.displayName
+            gradlePluginPortal()
+            mavenCentral()
+            // 添加私有仓库
+            if (valueOf findProperty(settings, 'iHub.mavenPrivateEnabled', 'true')) {
+                findProperty(settings, 'iHub.releaseRepoUrl')?.with { repoUrl ->
+                    maven mavenRepo(settings, 'ReleaseRepo', repoUrl, true)
+                }
+                findProperty(settings, 'iHub.snapshotRepoUrl')?.with { repoUrl ->
+                    maven mavenRepo(settings, 'SnapshotRepo', repoUrl, false)
+                }
+            }
+            // 添加自定义仓库
+            findProperty(settings, 'iHub.customizeRepoUrl')?.with { repoUrl ->
+                maven {
+                    name 'CustomizeRepo'
+                    url repoUrl
+                }
+            }
         }
     }
 
-    private Closure mavenRepo(Settings settings, String repoName, String repoUrl, boolean releases) {
+    private static Closure mavenRepo(Settings settings, String repoName, String repoUrl, boolean releases) {
         return {
             name repoName
             url repoUrl
@@ -234,9 +239,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     private static void configVersionCatalogs(Settings settings, IHubSettingsExtension ext) {
         settings.dependencyResolutionManagement {
-            repositories {
-                mavenCentral()
-            }
+            configRepositories it, settings
 
             // 配置发布Catalog组件
             if ('true' == ext.includeLibs) {
@@ -249,7 +252,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             }
 
             // 配置iHubLibs版本
-            configIHubCatalogs it
+            configIHubCatalogs it, settings
 
             // 自动配置./gradle/libs目录下的.versions.toml文件
             autoConfigCatalogsFile it, settings
@@ -280,13 +283,15 @@ class IHubSettingsPlugin implements Plugin<Settings> {
         }
     }
 
-    private static void configIHubCatalogs(DependencyResolutionManagement management) {
+    private static void configIHubCatalogs(DependencyResolutionManagement management, Settings settings) {
+        def iHubPluginVersion = getIHubPluginVersion settings
+        def iHubLibsVersion = findProperty(settings, IHUB_LIBS_LOCAL_VERSION) ?: IHubLibsVersion
         management.versionCatalogs {
             ihub {
-                from "pub.ihub.lib:ihub-libs:${IHubLibsVersions.getCompatibleLibsVersion('ihub-libs')}"
+                from "pub.ihub.lib:ihub-libs:${iHubLibsVersion}"
                 IHubSettingsPlugin.IHUB_PLUGIN_IDS.each { pluginId ->
                     plugin(pluginId.contains('ihub-') ? pluginId.split('ihub-').last() : 'root', pluginId)
-                        .version IHubSettingsPlugin.IHUB_PLUGIN_VERSION
+                        .version iHubPluginVersion
                 }
                 IHubSettingsPlugin.PLUGIN_ALIAS_IDS.each { aliasId, id ->
                     plugin(aliasId, id).version getLibsVersion(aliasId)
@@ -350,6 +355,11 @@ class IHubSettingsPlugin implements Plugin<Settings> {
             fileCollectionFactory,
             services
         )
+    }
+
+    private static String getIHubPluginVersion(Settings settings) {
+        def localVersion = findProperty settings, IHUB_PLUGINS_LOCAL_VERSION
+        localVersion && localVersion != 'disabled' ? localVersion : IHubPluginsVersion
     }
 
 }

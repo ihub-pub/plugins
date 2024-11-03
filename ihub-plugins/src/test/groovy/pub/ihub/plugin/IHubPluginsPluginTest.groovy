@@ -78,6 +78,7 @@ plugins {
         propertiesFile << '''
 iHub.mavenLocalEnabled=true
 iHub.mavenAliYunEnabled=true
+iHub.mavenSpringMilestoneEnabled=true
 iHub.releaseRepoUrl=https://ihub.pub/nexus/content/repositories/releases
 iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
 iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
@@ -202,6 +203,22 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         true  | false
         false | true
         false | false
+    }
+
+    def 'cleanRootProject'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        settingsFile << 'include \'a\', \'b\', \'c\''
+        testProjectDir.newFolder 'a'
+        testProjectDir.newFolder 'b'
+        testProjectDir.newFolder 'c'
+        testProjectDir.newFile('a/build.gradle') << 'task(\'clean\') {}'
+
+        when: '构建项目'
+        def result = gradleBuilder.withArguments('cleanRootProject').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
     }
 
 }

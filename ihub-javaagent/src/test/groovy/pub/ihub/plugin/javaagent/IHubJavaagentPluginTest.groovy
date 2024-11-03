@@ -68,9 +68,7 @@ class IHubJavaagentPluginTest extends IHubSpecification {
         project.pluginManager.apply 'org.springframework.boot'
         def bootRun = project.tasks.register 'bootRun', JavaExec
         project.pluginManager.apply IHubJavaagentPlugin
-        project.plugins.getPlugin(IHubJavaagentPlugin).javaExecClosure bootRun.get()
-
-        then: '检查结果'
+        project.plugins.getPlugin(IHubJavaagentPlugin).configJavaExec bootRun.get()
 
         then: '检查结果'
         project.plugins.hasPlugin JavaagentBasePlugin

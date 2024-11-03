@@ -27,6 +27,9 @@ import static org.gradle.api.JavaVersion.current
 @CompileStatic
 class IHubLibsVersions {
 
+    static final String IHUB_PLUGINS_LOCAL_VERSION = 'iHub.iHubPluginsLocalVersion'
+    static final String IHUB_LIBS_LOCAL_VERSION = 'iHub.iHubLibsLocalVersion'
+
     static final Map<String, String> LIBS_VERSIONS =
         readLines(IHubLibsVersions.classLoader.getResource('META-INF/ihub/libs-versions'))
             .collectEntries { it.split '=' }
@@ -37,6 +40,14 @@ class IHubLibsVersions {
 
     static String getCompatibleLibsVersion(String name) {
         current().isCompatibleWith(JavaVersion.VERSION_17) ? getLibsVersion(name) : getLibsVersion(name) + '-java11'
+    }
+
+    static String getIHubPluginsVersion() {
+        getLibsVersion 'ihub-plugins'
+    }
+
+    static String getIHubLibsVersion() {
+        getCompatibleLibsVersion 'ihub-libs'
     }
 
 }
