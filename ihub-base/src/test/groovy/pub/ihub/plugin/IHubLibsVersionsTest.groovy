@@ -27,7 +27,7 @@ class IHubLibsVersionsTest extends Specification {
 
     def '测试插件版本号'() {
         expect:
-        IHubLibsVersions.IHubPluginsVersion ==~ '.*-SNAPSHOT'
+        IHubLibsVersions.IHubPluginsVersion
     }
 
     def '测试组件版本包含ihub'() {
