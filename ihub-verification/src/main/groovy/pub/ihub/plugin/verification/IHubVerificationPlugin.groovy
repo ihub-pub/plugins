@@ -94,10 +94,15 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
 
     private void configPmd(Project project) {
         applyPlugin PmdPlugin
-        withExtension(IHubBomExtension).dependencies {
-            compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
-        }
         withExtension(AFTER) { ext ->
+            withExtension(IHubBomExtension).dependencies { spec ->
+                spec.compile 'pmd', 'net.sourceforge.pmd:pmd-ant'
+                spec.compile 'pmd', 'net.sourceforge.pmd:pmd-java'
+//            spec.compile 'pmd', 'com.alibaba.p3c:p3c-pmd'
+                if (hasPlugin(GroovyPlugin)) {
+                    spec.compile 'pmd', 'net.sourceforge.pmd:pmd-groovy'
+                }
+            }
             withExtension(PmdExtension) {
                 String ruleset = "$project.rootProject.projectDir/conf/pmd/ruleset.xml"
                 if (project.file(ruleset).exists()) {
