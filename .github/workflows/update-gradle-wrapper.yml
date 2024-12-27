@@ -33,7 +33,7 @@ jobs:
         uses: EdwarDDay/upgrade-gradle-action@3b3788a65fe8c6d24ee63acbf09a3d59e39b4f0b # v1.5.0
 
       - name: create pull request
-        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f # v7.0.5
+        uses: peter-evans/create-pull-request@67ccf781d68cd99b580ae25a5c18a1cc84ffff1f # v7.0.6
         with:
           commit-message: "build(deps): Update gradle to ${{ steps.gradleUpdate.outputs.gradle-version }}"
           branch: "gradle_update/version_${{ steps.gradleUpdate.outputs.gradle-version }}"
