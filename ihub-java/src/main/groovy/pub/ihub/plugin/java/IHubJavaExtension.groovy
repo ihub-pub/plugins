@@ -87,7 +87,7 @@ class IHubJavaExtension extends IHubProjectExtensionAware {
 
     @Inject
     IHubJavaExtension(ObjectFactory objectFactory) {
-        defaultDependencies = objectFactory.property(String).convention('log')
+        defaultDependencies = objectFactory.property(String).convention('false')
         compileEncoding = objectFactory.property(String).convention('UTF-8')
         sourceCompatibility = objectFactory.property(String)
         targetCompatibility = objectFactory.property(String)
