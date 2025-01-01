@@ -88,15 +88,17 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         // 添加MapStruct依赖
         mapstruct                : { libs, IHubBomExtension ext ->
             ext.dependencies {
-                implementation 'org.mapstruct:mapstruct'
-                annotationProcessor 'org.mapstruct:mapstruct-processor'
+                implementation 'io.github.linpeilie:mapstruct-plus-spring-boot-starter'
+                annotationProcessor 'io.github.linpeilie:mapstruct-plus-processor'
+                annotationProcessor 'org.projectlombok:lombok-mapstruct-binding'
             }
         },
         // 添加Doc注解依赖
         doc                      : { libs, IHubBomExtension ext ->
             ext.dependencies {
-                compileOnly libs.swagger.annotations.get()
-                annotationProcessor 'pub.ihub.lib:ihub-process-doc'
+                compileOnly 'io.swagger.core.v3:swagger-core-jakarta'
+                annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe'
+                annotationProcessor 'pub.ihub.integration:ihub-bytebuddy-plugin'
             }
         },
         // 添加jMolecules依赖
