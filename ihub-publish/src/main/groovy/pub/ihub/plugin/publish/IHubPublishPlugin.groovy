@@ -56,8 +56,6 @@ import static io.freefair.gradle.util.GitUtil.isGithubActions
 @IHubPlugin(value = IHubPublishExtension, beforeApplyPlugins = [IHubBomPlugin, IHubPluginsPlugin, MavenPublishPlugin])
 class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
-    public static final String REPOS_BUNDLES = 'repos/bundles'
-
     @Override
     void apply() {
         afterEvaluate {
@@ -78,7 +76,6 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             if (extension.publishMavenCentral.get()) {
                 applyPlugin MavenCentralPublishPlugin
                 withExtension(MavenCentralExtension) {
-                    it.repoDir.set project.layout.buildDirectory.dir(REPOS_BUNDLES)
                     it.authToken.set Base64.encoder.encodeToString((iHubExt.repoUsername.orNull + ':' + iHubExt.repoPassword.orNull).bytes)
                 }
                 withTask(PublishToCentralPortalTask) {
@@ -258,12 +255,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     private void configMavenRepo(PublishingExtension ext, IHubPluginsExtension iHubExt) {
         String mavenUrl = release ? iHubExt.releaseRepoUrl.orNull : iHubExt.snapshotRepoUrl.orNull
-        if (extension.publishMavenCentral.get()) {
-            ext.repositories.maven {
-                name = 'Local'
-                url = project.layout.buildDirectory.dir(REPOS_BUNDLES)
-            }
-        } else if (mavenUrl) {
+        if (!extension.publishMavenCentral.get() && mavenUrl) {
             ext.repositories.maven {
                 url mavenUrl
                 allowInsecureProtocol iHubExt.repoAllowInsecureProtocol.get()
