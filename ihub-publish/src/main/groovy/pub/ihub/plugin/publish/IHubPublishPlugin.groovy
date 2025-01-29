@@ -31,7 +31,6 @@ import org.gradle.api.plugins.catalog.VersionCatalogPlugin
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
-import org.gradle.api.publish.plugins.PublishingPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.jvm.tasks.Jar
 import org.gradle.plugins.signing.SigningExtension
@@ -44,7 +43,6 @@ import pub.ihub.plugin.bom.IHubBomExtension
 import pub.ihub.plugin.bom.IHubBomPlugin
 import tech.yanand.gradle.mavenpublish.MavenCentralExtension
 import tech.yanand.gradle.mavenpublish.MavenCentralPublishPlugin
-import tech.yanand.gradle.mavenpublish.PublishToCentralPortalTask
 
 import static cn.hutool.http.HttpUtil.get
 import static io.freefair.gradle.util.GitUtil.isGithubActions
@@ -77,9 +75,6 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                 applyPlugin MavenCentralPublishPlugin
                 withExtension(MavenCentralExtension) {
                     it.authToken.set Base64.encoder.encodeToString((iHubExt.repoUsername.orNull + ':' + iHubExt.repoPassword.orNull).bytes)
-                }
-                withTask(PublishToCentralPortalTask) {
-                    project.tasks.getByName(PublishingPlugin.PUBLISH_LIFECYCLE_TASK_NAME).finalizedBy it
                 }
             }
         }
