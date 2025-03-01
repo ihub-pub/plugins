@@ -19,7 +19,6 @@ import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import groovy.xml.XmlParser
 import org.gradle.api.Project
-import org.gradle.api.attributes.TestSuiteType
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
@@ -192,7 +191,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
             }
             extensions.getByType(ReportingExtension).reports {
                 testCodeCoverageReport(JacocoCoverageReport) {
-                    testType = TestSuiteType.UNIT_TEST
+                    testSuiteName = "test"
                 }
             }
         }
