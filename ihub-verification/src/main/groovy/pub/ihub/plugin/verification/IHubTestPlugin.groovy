@@ -109,7 +109,7 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
             }
             extensions.getByType(ReportingExtension).reports {
                 testAggregateTestReport(AggregateTestReport) {
-                    testSuiteName = "test"
+                    testSuiteName = 'test'
                 }
             }
         }
