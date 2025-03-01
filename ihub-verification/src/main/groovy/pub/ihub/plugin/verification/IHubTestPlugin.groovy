@@ -17,7 +17,6 @@ package pub.ihub.plugin.verification
 
 import org.gradle.api.Action
 import org.gradle.api.Project
-import org.gradle.api.attributes.TestSuiteType
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.TestReportAggregationPlugin
@@ -110,7 +109,7 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
             }
             extensions.getByType(ReportingExtension).reports {
                 testAggregateTestReport(AggregateTestReport) {
-                    testType = TestSuiteType.UNIT_TEST
+                    testSuiteName = "test"
                 }
             }
         }
