@@ -191,7 +191,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
             }
             extensions.getByType(ReportingExtension).reports {
                 testCodeCoverageReport(JacocoCoverageReport) {
-                    testSuiteName = "test"
+                    testSuiteName = 'test'
                 }
             }
         }
