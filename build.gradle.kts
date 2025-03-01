@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import pub.ihub.plugin.verification.IHubVerificationExtension
+//import pub.ihub.plugin.verification.IHubVerificationExtension
 plugins {
     alias(ihub.plugins.root)
     alias(ihub.plugins.copyright)
@@ -37,8 +37,8 @@ subprojects {
     apply {
         plugin("groovy")
         plugin("pub.ihub.plugin.ihub-java")
-        plugin("pub.ihub.plugin.ihub-test")
-        plugin("pub.ihub.plugin.ihub-verification")
+//        plugin("pub.ihub.plugin.ihub-test")
+//        plugin("pub.ihub.plugin.ihub-verification")
         plugin("pub.ihub.plugin.ihub-publish")
         plugin("java-gradle-plugin")
         plugin("com.gradle.plugin-publish")
@@ -59,9 +59,9 @@ subprojects {
             group("com.athaydes").version("2.5.1-groovy-3.0")
         }
     }
-    configure<IHubVerificationExtension> {
-        codenarcVersion.set("3.3.0")
-    }
+//    configure<IHubVerificationExtension> {
+//        codenarcVersion.set("3.3.0")
+//    }
 
 //</editor-fold>
 
