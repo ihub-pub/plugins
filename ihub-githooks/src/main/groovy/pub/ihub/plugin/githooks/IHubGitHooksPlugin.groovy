@@ -36,7 +36,7 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
             it.execute it.hooksPath.orNull, it.hooks.get()
         }
 
-        project.task('commitCheck') {
+        project.tasks.register('commitCheck') {
             it.group = 'ihub'
             String header
             Map footers
