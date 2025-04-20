@@ -79,7 +79,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             }
 
             // 添加配置元信息
-            if (hasPlugin(JavaPlugin) && extension.addConfigurationMetaInformation) {
+            if (hasPlugin(JavaPlugin) && extension.addConfigurationMetaInformation.get()) {
                 withExtension(IHubBomExtension) {
                     it.dependencies {
                         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

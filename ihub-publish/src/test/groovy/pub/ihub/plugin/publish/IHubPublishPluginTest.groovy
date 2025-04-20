@@ -39,7 +39,9 @@ class IHubPublishPluginTest extends IHubSpecification {
         propertiesFile << '''
 version=1.0.0
 '''
-        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+        def result = gradleBuilder
+            .withArguments("-DiHubPublish.addConfigurationMetaInformation=$addConfigurationMetaInformation",
+                '-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
@@ -64,6 +66,9 @@ iHubPublish.publishDocs=true
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
+
+        where:
+        addConfigurationMetaInformation << [true, false]
     }
 
     def 'Groovy Publish配置测试'() {
@@ -123,14 +128,10 @@ iHubPublish.publishDocs=true
         '''
 
         when: '构建项目'
-        def result = gradleBuilder
-            .withArguments("-DiHubPublish.addConfigurationMetaInformation=$addConfigurationMetaInformation").build()
+        def result = gradleBuilder.build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
-
-        where:
-        addConfigurationMetaInformation << [true, false]
     }
 
     def '中央仓库Publish配置测试'() {
