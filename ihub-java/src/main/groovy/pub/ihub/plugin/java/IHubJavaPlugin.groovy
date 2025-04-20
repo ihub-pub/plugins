@@ -15,30 +15,16 @@
  */
 package pub.ihub.plugin.java
 
-import groovy.transform.CompileStatic
 import io.freefair.gradle.plugins.lombok.LombokPlugin
 import net.bytebuddy.build.gradle.AbstractByteBuddyTask
 import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
 import net.bytebuddy.build.gradle.ByteBuddyPlugin
-import org.gradle.api.JavaVersion
-import org.gradle.api.Project
-import org.gradle.api.plugins.ApplicationPlugin
-import org.gradle.api.plugins.GroovyPlugin
-import org.gradle.api.plugins.JavaApplication
-import org.gradle.api.plugins.JavaLibraryPlugin
-import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.plugins.ProjectReportsPlugin
-import org.gradle.api.reporting.plugins.BuildDashboardPlugin
 import org.gradle.api.tasks.JavaExec
-import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.jmolecules.bytebuddy.JMoleculesPlugin
 import pub.ihub.plugin.IHubPlugin
-import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
-import pub.ihub.plugin.bom.IHubBomPlugin
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
@@ -47,10 +33,7 @@ import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.BEFORE
  * Java插件
  * @author henry
  */
-@IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [
-    IHubPluginsPlugin, IHubBomPlugin, JavaPlugin, JavaLibraryPlugin, ProjectReportsPlugin,
-    BuildDashboardPlugin, ByteBuddyPlugin
-])
+@IHubPlugin(value = IHubJavaExtension, beforeApplyPlugins = [IHubJavaBasePlugin, LombokPlugin, ByteBuddyPlugin])
 class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
 
     private static final Map<String, Closure> J_MOLECULES_ARCHITECTURE_DEPENDENCIES = [
@@ -133,20 +116,6 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
     }
 
-    static final Closure JAR_CONFIG = { Project project, Jar jar ->
-        jar.manifest {
-            attributes(
-                'Implementation-Title': project.name,
-                'Automatic-Module-Name': project.name.replaceAll('-', '.'),
-                'Implementation-Version': project.version,
-                'Implementation-Vendor-Id': project.group,
-                'Built-By': 'ihub-pub',
-                'Created-By': 'Gradle ' + project.gradle.gradleVersion,
-                'Build-Jdk': JavaVersion.current().toString()
-            )
-        }
-    }
-
     @Override
     void apply() {
         withExtension(BEFORE) { ext ->
@@ -169,28 +138,9 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
 
         withExtension(AFTER) {
-            if (!hasPlugin(GroovyPlugin)) {
-                applyPlugin LombokPlugin
-            }
-
-            // 配置Jar属性
-            withTask Jar, JAR_CONFIG.curry(project)
-
             if (it.jvmArgs.present) {
                 withTask(JavaExec) { exec ->
                     exec.jvmArgs it.jvmArgs.get().tokenize()
-                }
-            }
-
-            if (hasPlugin(ApplicationPlugin)) {
-                withExtension(JavaApplication) { exec ->
-                    if (exec.mainClass.present) {
-                        return
-                    }
-                    findMainClass()?.with {
-                        exec.mainClass.set it
-                        logger.lifecycle "Application set main class: $it"
-                    }
                 }
             }
         }
@@ -199,9 +149,6 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         // 由于Lombok插件6.1.0之后不再自动生成lombok.config文件，后续ihub插件维护该功能
         // 详见：https://github.com/freefair/gradle-plugins/issues/379
         afterEvaluate {
-            if (!hasPlugin(LombokPlugin)) {
-                return
-            }
             def lombokConfig = project.file 'lombok.config'
             // 不覆盖本地lombok.config配置
             if (lombokConfig.exists()) {
@@ -213,25 +160,6 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
                 'config.stopBubbling'                : true,
                 'lombok.addLombokGeneratedAnnotation': true,
             ].collect { k, v -> "$k = $v" }.join('\n')
-        }
-    }
-
-    @CompileStatic
-    private String findMainClass() {
-        withExtension(JavaPluginExtension).sourceSets.findByName('main').java.files.findResult { file ->
-            String mainClass = null
-            String packageName = ''
-            file.readLines().each { line ->
-                if (line.startsWith('package ')) {
-                    packageName = line.substring(8, line.lastIndexOf(';'))
-                }
-                if (line ==~ /.*static\s+void\s+main\s*\(\s*String\[]\s+args\s*\)\s*\{.*/) {
-                    String filePath = file.path
-                    mainClass = packageName + '.' + filePath
-                        .substring(filePath.lastIndexOf(File.separator) + 1, filePath.lastIndexOf('.'))
-                }
-            }
-            mainClass
         }
     }
 

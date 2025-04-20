@@ -215,14 +215,14 @@ class IHubBomPluginTest extends IHubSpecification {
         // B Group Maven Default Version
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.7                                        │'
         // Config Default Dependencies (root project)
-        result.output.contains '│ runtimeOnly                               │ pub.ihub.lib:ihub-core                               │'
-        result.output.contains '│ implementation                            │ pub.ihub.lib:ihub-process                            │'
-        !result.output.contains('annotationProcessor')
-        result.output.contains '│ api                                       │ :a                                                   │'
-        result.output.contains '│ api                                       │ :b                                                   │'
-        result.output.contains '│ api                                       │ :c                                                   │'
-        result.output.contains '│ compileOnlyApi                            │ pub.ihub.lib:ihub-core                               │'
-        result.output.contains '│ testCompileOnly                           │ pub.ihub.lib:ihub-process                            │'
+        result.output.contains '│ runtimeOnly                                 │ pub.ihub.lib:ihub-core                             │'
+        result.output.contains '│ implementation                              │ pub.ihub.lib:ihub-process                          │'
+        result.output.contains '│ annotationProcessor                         │ pub.ihub.lib:ihub-process                          │'
+        result.output.contains '│ api                                         │ :a                                                 │'
+        result.output.contains '│ api                                         │ :b                                                 │'
+        result.output.contains '│ api                                         │ :c                                                 │'
+        result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-core                             │'
+        result.output.contains '│ testCompileOnly                             │ pub.ihub.lib:ihub-process                          │'
         // Config Default Dependencies (subprojects)
         result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-process                          │'
         result.output.contains '│ testRuntimeOnly                             │ pub.ihub.lib:ihub-core                             │'

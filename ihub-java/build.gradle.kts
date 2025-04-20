@@ -27,6 +27,13 @@ dependencies {
 
 gradlePlugin {
     plugins {
+        create("iHubJavaBase") {
+            id = "pub.ihub.plugin.ihub-java-base"
+            displayName = "IHub Java Base"
+            description = "IHub Java Base Gradle Plugin"
+            implementationClass = "pub.ihub.plugin.java.IHubJavaBasePlugin"
+            tags.set(listOf("ihub", "java"))
+        }
         create("iHubJava") {
             id = "pub.ihub.plugin.ihub-java"
             displayName = "IHub Java"

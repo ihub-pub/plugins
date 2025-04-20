@@ -17,13 +17,13 @@ package pub.ihub.plugin.kotlin
 
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
-import pub.ihub.plugin.java.IHubJavaPlugin
+import pub.ihub.plugin.java.IHubJavaBasePlugin
 
 /**
  * Kotlin插件
  * @author henry
  */
-@IHubPlugin(beforeApplyPlugins = IHubJavaPlugin)
+@IHubPlugin(beforeApplyPlugins = IHubJavaBasePlugin)
 class IHubKotlinPlugin extends IHubProjectPluginAware {
 
     @Override

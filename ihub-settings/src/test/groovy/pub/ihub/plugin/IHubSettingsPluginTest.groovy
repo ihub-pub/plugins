@@ -21,6 +21,7 @@ import org.gradle.testkit.runner.GradleRunner
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
 
+import static org.gradle.api.JavaVersion.current
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
@@ -283,15 +284,43 @@ println "I'm " + libs.versions.henry.get()
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '测试组件本地版本配置'() {
+        when: '配置项目'
+        testProjectDir.newFolder 'gradle'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
+        propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
+        propertiesFile << 'iHubSettings.includeLibs=true\n'
+        if (localPluginsVersion) {
+            propertiesFile << 'iHub.iHubPluginsLocalVersion=' + localPluginsVersion + '\n'
+        }
+        if (localLibsVersion) {
+            propertiesFile << 'iHub.iHubLibsLocalVersion=' + localLibsVersion + '\n'
+        }
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        where:
+        localPluginsVersion | localLibsVersion
+        '1.7.7'             | '1.5.10'
+        '1.7.7'             | null
+        'disabled'          | '1.5.10'
+        'disabled'          | null
+        null                | '1.5.10'
+        null                | null
+    }
+
     def '测试版本组件兼容模式配置'() {
         when: '配置项目'
         testProjectDir.newFolder 'gradle', 'libs', 'compatibility'
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
             testProjectDir.newFile('gradle/libs.versions.toml'), null
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
-            testProjectDir.newFile('gradle/libs/compatibility/java11.versions.toml'), null
+            testProjectDir.newFile("gradle/libs/compatibility/java${current()}.versions.toml"), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
-        propertiesFile << 'iHubSettings.includeDependencies=demo-dependehncies\n'
+        propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         propertiesFile << 'iHubSettings.includeLibs=true\n'
         def result = gradleBuilder.build()
 

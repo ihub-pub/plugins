@@ -39,7 +39,9 @@ class IHubPublishPluginTest extends IHubSpecification {
         propertiesFile << '''
 version=1.0.0
 '''
-        def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
+        def result = gradleBuilder
+            .withArguments("-DiHubPublish.addConfigurationMetaInformation=$addConfigurationMetaInformation",
+                '-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
@@ -64,6 +66,9 @@ iHubPublish.publishDocs=true
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
+
+        where:
+        addConfigurationMetaInformation << [true, false]
     }
 
     def 'Groovy Publish配置测试'() {
@@ -93,18 +98,21 @@ iHubPublish.signingPassword=password
 iHubPublish.publishDocs=true
 '''
         result = gradleBuilder
-            .withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password', '-DiHubPublish.applyGithubPom=true')
-            .withEnvironment('GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'ihub-pub/plugins').build()
+            .withArguments("-DiHubPublish.addConfigurationMetaInformation=$addConfigurationMetaInformation",
+                '-DiHub.repoUsername=username', '-DiHub.repoPassword=password', "-DiHubPublish.applyGithubPom=$applyGithubPom")
+            .withEnvironment('GITHUB_ACTIONS': githubActions, 'GITHUB_REPOSITORY': 'ihub-pub/plugins').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
 
-        when: '模拟GitHub环境applyGithubPom为false'
-        result = gradleBuilder
-            .withArguments('-DiHubPublish.applyGithubPom=true').withEnvironment('GITHUB_ACTIONS': 'false').build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
+        where:
+        addConfigurationMetaInformation | applyGithubPom | githubActions
+        true                            | false          | 'true'
+        true                            | false          | 'false'
+        false                           | false          | 'true'
+        false                           | false          | 'false'
+        true                            | true           | 'true'
+        true                            | true           | 'false'
     }
 
     def 'Java平台Publish配置测试'() {
