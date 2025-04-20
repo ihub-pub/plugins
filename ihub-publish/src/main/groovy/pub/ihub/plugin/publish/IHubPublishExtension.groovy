@@ -79,4 +79,10 @@ interface IHubPublishExtension extends IHubExtensionAware {
     @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'false', genericType = Boolean)
     Property<Boolean> getPublishMavenCentral()
 
+    /**
+     * 是否添加配置元信息
+     */
+    @IHubProperty(type = [PROJECT, SYSTEM], defaultValue = 'true', genericType = Boolean)
+    Property<Boolean> getAddConfigurationMetaInformation()
+
 }

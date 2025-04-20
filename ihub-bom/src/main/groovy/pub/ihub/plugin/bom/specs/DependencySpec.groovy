@@ -16,7 +16,6 @@
 package pub.ihub.plugin.bom.specs
 
 import org.gradle.api.Project
-import org.gradle.api.plugins.GroovyPlugin
 import pub.ihub.plugin.bom.impl.Dependency
 
 import static org.gradle.api.plugins.JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME
@@ -72,11 +71,6 @@ trait DependencySpec implements ActionSpec<Dependency> {
     }
 
     void annotationProcessor(... dependencies) {
-        // Groovy增量编译与Java注释处理器不能同时使用
-        if (project.plugins.hasPlugin(GroovyPlugin) && 'false' != project
-            .findProperty('iHubJava.gradleCompilationIncremental')?.toString()) {
-            return
-        }
         compile ANNOTATION_PROCESSOR_CONFIGURATION_NAME, dependencies
     }
 

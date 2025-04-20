@@ -93,18 +93,21 @@ iHubPublish.signingPassword=password
 iHubPublish.publishDocs=true
 '''
         result = gradleBuilder
-            .withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password', '-DiHubPublish.applyGithubPom=true')
-            .withEnvironment('GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': 'ihub-pub/plugins').build()
+            .withArguments("-DiHubPublish.addConfigurationMetaInformation=$addConfigurationMetaInformation",
+                '-DiHub.repoUsername=username', '-DiHub.repoPassword=password', "-DiHubPublish.applyGithubPom=$applyGithubPom")
+            .withEnvironment('GITHUB_ACTIONS': githubActions, 'GITHUB_REPOSITORY': 'ihub-pub/plugins').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
 
-        when: '模拟GitHub环境applyGithubPom为false'
-        result = gradleBuilder
-            .withArguments('-DiHubPublish.applyGithubPom=true').withEnvironment('GITHUB_ACTIONS': 'false').build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
+        where:
+        addConfigurationMetaInformation | applyGithubPom | githubActions
+        true                            | false          | 'true'
+        true                            | false          | 'false'
+        false                           | false          | 'true'
+        false                           | false          | 'false'
+        true                            | true           | 'true'
+        true                            | true           | 'false'
     }
 
     def 'Java平台Publish配置测试'() {
@@ -120,10 +123,14 @@ iHubPublish.publishDocs=true
         '''
 
         when: '构建项目'
-        def result = gradleBuilder.build()
+        def result = gradleBuilder
+            .withArguments("-DiHubPublish.addConfigurationMetaInformation=$addConfigurationMetaInformation").build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
+
+        where:
+        addConfigurationMetaInformation << [true, false]
     }
 
     def '中央仓库Publish配置测试'() {

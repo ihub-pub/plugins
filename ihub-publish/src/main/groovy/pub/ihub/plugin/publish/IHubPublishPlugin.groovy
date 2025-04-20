@@ -77,15 +77,15 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
                     it.authToken.set Base64.encoder.encodeToString((iHubExt.repoUsername.orNull + ':' + iHubExt.repoPassword.orNull).bytes)
                 }
             }
-        }
 
-        // 添加配置元信息
-        if (hasPlugin(JavaPlugin)) {
-            withExtension(IHubBomExtension) {
-                it.dependencies {
-                    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+            // 添加配置元信息
+            if (hasPlugin(JavaPlugin) && extension.addConfigurationMetaInformation) {
+                withExtension(IHubBomExtension) {
+                    it.dependencies {
+                        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+                    }
+                    project.compileJava.inputs.files project.processResources
                 }
-                project.compileJava.inputs.files project.processResources
             }
         }
     }

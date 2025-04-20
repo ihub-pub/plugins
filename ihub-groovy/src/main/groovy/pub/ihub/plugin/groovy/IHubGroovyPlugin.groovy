@@ -19,13 +19,13 @@ import org.gradle.api.plugins.GroovyPlugin
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 import pub.ihub.plugin.bom.IHubBomExtension
-import pub.ihub.plugin.java.IHubJavaPlugin
+import pub.ihub.plugin.java.IHubJavaBasePlugin
 
 /**
  * Groovy插件
  * @author liheng
  */
-@IHubPlugin(beforeApplyPlugins = [IHubJavaPlugin, GroovyPlugin])
+@IHubPlugin(beforeApplyPlugins = [IHubJavaBasePlugin, GroovyPlugin])
 class IHubGroovyPlugin extends IHubProjectPluginAware {
 
     @Override
