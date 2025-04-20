@@ -79,7 +79,7 @@ subprojects {
     }
 
     // 跳过Gradle元数据生成，详见：https://github.com/gradle/gradle/issues/11862
-//    tasks.withType(GenerateModuleMetadata::class) {
-//        enabled = false
-//    }
+    tasks.withType(GenerateModuleMetadata::class) {
+        enabled = false
+    }
 }
