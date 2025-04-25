@@ -54,7 +54,7 @@ subprojects {
     // gradle groovy版本没有升级至4.0，强制指定3.0版本
     iHubBom {
         groupVersions {
-            group("org.codehaus.groovy").version("3.0.22")
+            group("org.codehaus.groovy").version("3.0.24")
             group("org.spockframework").version("2.3-groovy-3.0")
             group("com.athaydes").version("2.5.1-groovy-3.0")
         }
