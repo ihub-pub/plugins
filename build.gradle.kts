@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2024 the original author or authors.
+ * Copyright (c) 2021-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ plugins {
     alias(ihub.plugins.root)
     alias(ihub.plugins.copyright)
     alias(ihub.plugins.git.hooks)
-    alias(ihub.plugins.java) apply false
+    alias(ihub.plugins.java.base) apply false
     alias(ihub.plugins.verification) apply false
     alias(ihub.plugins.publish) apply false
     alias(libs.plugins.plugin.publish) apply false
@@ -36,7 +36,7 @@ iHubGitHooks {
 subprojects {
     apply {
         plugin("groovy")
-        plugin("pub.ihub.plugin.ihub-java")
+        plugin("pub.ihub.plugin.ihub-java-base")
         plugin("pub.ihub.plugin.ihub-test")
         plugin("pub.ihub.plugin.ihub-verification")
         plugin("pub.ihub.plugin.ihub-publish")
