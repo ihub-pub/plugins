@@ -117,9 +117,3 @@ iHub.mavenAliYunEnabled=true
 请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
 
 [![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
-
-## 💝 鸣谢
-
-非常感谢 [Jetbrains](https://jb.gg/OpenSourceSupport) 对本开源项目的支持。
-
-[![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://jb.gg/OpenSourceSupport "Thanks to JetBrains for sponsoring")
