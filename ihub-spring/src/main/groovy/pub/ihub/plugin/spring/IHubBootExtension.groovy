@@ -144,46 +144,46 @@ class IHubBootExtension extends IHubProjectExtensionAware implements IHubSystemP
 
     //<editor-fold desc="Docker Registry Configuration">
 
-    /**
-     * Docker守护程序的主机和端口的url
-     */
-    @IHubProperty
-    Property<String> dockerHost
-    /**
-     * 启用安全https协议
-     */
-    @IHubProperty(genericType = Boolean)
-    Property<Boolean> dockerTlsVerify
-    /**
-     * https证书和密钥文件的路径
-     */
-    @IHubProperty
-    Property<String> dockerCertPath
-    /**
-     * Docker私有镜像仓库地址
-     */
-    @IHubProperty
-    Property<String> dockerUrl
-    /**
-     * Docker私有镜像仓库用户名
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    Property<String> dockerUsername
-    /**
-     * Docker私有镜像仓库密码
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    Property<String> dockerPassword
-    /**
-     * Docker私有镜像仓库邮箱
-     */
-    @IHubProperty
-    Property<String> dockerEmail
-    /**
-     * Docker私有镜像仓库身份令牌
-     */
-    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-    Property<String> dockerToken
+//    /**
+//     * Docker守护程序的主机和端口的url
+//     */
+//    @IHubProperty
+//    Property<String> dockerHost
+//    /**
+//     * 启用安全https协议
+//     */
+//    @IHubProperty(genericType = Boolean)
+//    Property<Boolean> dockerTlsVerify
+//    /**
+//     * https证书和密钥文件的路径
+//     */
+//    @IHubProperty
+//    Property<String> dockerCertPath
+//    /**
+//     * Docker私有镜像仓库地址
+//     */
+//    @IHubProperty
+//    Property<String> dockerUrl
+//    /**
+//     * Docker私有镜像仓库用户名
+//     */
+//    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
+//    Property<String> dockerUsername
+//    /**
+//     * Docker私有镜像仓库密码
+//     */
+//    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
+//    Property<String> dockerPassword
+//    /**
+//     * Docker私有镜像仓库邮箱
+//     */
+//    @IHubProperty
+//    Property<String> dockerEmail
+//    /**
+//     * Docker私有镜像仓库身份令牌
+//     */
+//    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
+//    Property<String> dockerToken
 
     //</editor-fold>
 
@@ -208,15 +208,6 @@ class IHubBootExtension extends IHubProjectExtensionAware implements IHubSystemP
         bplJvmThreadCount = objectFactory.property(String)
         javaToolOptions = objectFactory.property(String)
         bpeEnvironment = objectFactory.mapProperty(String, String).convention([:])
-
-        dockerHost = objectFactory.property(String)
-        dockerTlsVerify = objectFactory.property(Boolean).convention(false)
-        dockerCertPath = objectFactory.property(String)
-        dockerUrl = objectFactory.property(String)
-        dockerUsername = objectFactory.property(String)
-        dockerPassword = objectFactory.property(String)
-        dockerEmail = objectFactory.property(String)
-        dockerToken = objectFactory.property(String)
     }
 
     Map<String, String> getEnvironment() {

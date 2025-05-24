@@ -19,7 +19,7 @@ dependencies {
     implementation(project(":ihub-java"))
     implementation(project(":ihub-verification"))
     implementation(libs.spring.boot)
-    compileOnly("org.springframework.boot:spring-boot-buildpack-platform")
+    compileOnly(libs.spring.boot.bp)
     implementation(libs.native)
 }
 
