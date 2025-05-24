@@ -26,7 +26,6 @@ import pub.ihub.plugin.verification.IHubSystemProperties
 
 import javax.inject.Inject
 
-import static pub.ihub.plugin.IHubProperty.Type.ENV
 import static pub.ihub.plugin.IHubProperty.Type.PROJECT
 import static pub.ihub.plugin.IHubProperty.Type.SYSTEM
 
@@ -77,116 +76,6 @@ class IHubBootExtension extends IHubProjectExtensionAware implements IHubSystemP
 
     //</editor-fold>
 
-    //<editor-fold desc="Build Configuration">
-
-    /**
-     * JVM版本
-     */
-    @IHubProperty
-    Property<String> bpJvmVersion
-    /**
-     * 是否在构建前清理缓存
-     */
-    @IHubProperty(genericType = Boolean)
-    Property<Boolean> bpCleanCache
-    /**
-     * 启用构建器操作的详细日志记录
-     */
-    @IHubProperty(genericType = Boolean)
-    Property<Boolean> bpVerboseLogging
-    /**
-     * 是否将生成的镜像发布到Docker仓库
-     */
-    @IHubProperty(genericType = Boolean)
-    Property<Boolean> bpPublish
-    /**
-     * http代理
-     */
-    @IHubProperty
-    Property<String> httpProxy
-    /**
-     * https代理
-     */
-    @IHubProperty
-    Property<String> httpsProxy
-
-    //</editor-fold>
-
-    //<editor-fold desc="Launch Configuration">
-
-    /**
-     * JVM内存
-     */
-    @IHubProperty
-    Property<String> bplJvmHeadRoom
-    /**
-     * JVM运行时已加载类的数量，默认“35% of classes"
-     */
-    @IHubProperty
-    Property<String> bplJvmLoadedClassCount
-    /**
-     * JVM运行时用户线程数，默认“250”
-     */
-    @IHubProperty
-    Property<String> bplJvmThreadCount
-    /**
-     * JVM环境变量
-     */
-    @IHubProperty
-    Property<String> javaToolOptions
-    /**
-     * JVM运行时变量
-     * 参考：https://paketo.io/docs/reference/configuration/
-     */
-    MapProperty<String, String> bpeEnvironment
-
-    //</editor-fold>
-
-    //<editor-fold desc="Docker Registry Configuration">
-
-//    /**
-//     * Docker守护程序的主机和端口的url
-//     */
-//    @IHubProperty
-//    Property<String> dockerHost
-//    /**
-//     * 启用安全https协议
-//     */
-//    @IHubProperty(genericType = Boolean)
-//    Property<Boolean> dockerTlsVerify
-//    /**
-//     * https证书和密钥文件的路径
-//     */
-//    @IHubProperty
-//    Property<String> dockerCertPath
-//    /**
-//     * Docker私有镜像仓库地址
-//     */
-//    @IHubProperty
-//    Property<String> dockerUrl
-//    /**
-//     * Docker私有镜像仓库用户名
-//     */
-//    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-//    Property<String> dockerUsername
-//    /**
-//     * Docker私有镜像仓库密码
-//     */
-//    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-//    Property<String> dockerPassword
-//    /**
-//     * Docker私有镜像仓库邮箱
-//     */
-//    @IHubProperty
-//    Property<String> dockerEmail
-//    /**
-//     * Docker私有镜像仓库身份令牌
-//     */
-//    @IHubProperty(type = [PROJECT, SYSTEM, ENV])
-//    Property<String> dockerToken
-
-    //</editor-fold>
-
     @Inject
     IHubBootExtension(ObjectFactory objectFactory) {
         runProperties = objectFactory.mapProperty(String, String)
@@ -195,31 +84,6 @@ class IHubBootExtension extends IHubProjectExtensionAware implements IHubSystemP
         enabledLocalProperties = objectFactory.property(Boolean).convention(true)
         runOptimizedLaunch = objectFactory.property(Boolean).convention(true)
         bootJarRequiresUnpack = objectFactory.property(String).convention('')
-
-        bpJvmVersion = objectFactory.property(String)
-        bpCleanCache = objectFactory.property(Boolean).convention(false)
-        bpVerboseLogging = objectFactory.property(Boolean).convention(false)
-        bpPublish = objectFactory.property(Boolean).convention(false)
-        httpProxy = objectFactory.property(String)
-        httpsProxy = objectFactory.property(String)
-
-        bplJvmHeadRoom = objectFactory.property(String).convention('8G')
-        bplJvmLoadedClassCount = objectFactory.property(String)
-        bplJvmThreadCount = objectFactory.property(String)
-        javaToolOptions = objectFactory.property(String)
-        bpeEnvironment = objectFactory.mapProperty(String, String).convention([:])
-    }
-
-    Map<String, String> getEnvironment() {
-        [
-            BP_JVM_VERSION            : bpJvmVersion.orNull,
-            HTTP_PROXY                : httpProxy.orNull,
-            HTTPS_PROXY               : httpsProxy.orNull,
-            BPL_JVM_HEAD_ROOM         : bplJvmHeadRoom.get(),
-            BPL_JVM_LOADED_CLASS_COUNT: bplJvmLoadedClassCount.orNull,
-            BPL_JVM_THREAD_COUNT      : bplJvmThreadCount.orNull,
-            JAVA_TOOL_OPTIONS         : javaToolOptions.orNull,
-        ].findAll { it.value } + bpeEnvironment.get()
     }
 
 }
