@@ -105,8 +105,8 @@ class IHubVerificationPluginTest extends IHubSpecification {
         then: '检查结果'
         !result.output.contains('org.spockframework:spock-core')
         !result.output.contains('com.athaydes:spock-reports')
-        result.output.contains '│ testImplementation                 │ org.junit.jupiter:junit-jupiter-api                         │'
         result.output.contains '│ testImplementation                 │ org.junit.platform:junit-platform-launcher                  │'
+        result.output.contains '│ testImplementation                 │ org.junit.jupiter:junit-jupiter                             │'
         result.output.contains '│ testRuntimeOnly                    │ org.junit.jupiter:junit-jupiter-engine                      │'
         result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-ant                                 │'
         result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-java                                │'
