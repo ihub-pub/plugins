@@ -16,30 +16,19 @@
 package pub.ihub.plugin.spring
 
 import org.graalvm.buildtools.gradle.NativeImagePlugin
-import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
-
-import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
-
-
 
 /**
  * 原生镜像插件
  * 参考官方入门文档：https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/
  * @author henry
  */
-@IHubPlugin(value = IHubNativeExtension, beforeApplyPlugins = [IHubBootPlugin, NativeImagePlugin])
-class IHubNativePlugin extends IHubProjectPluginAware<IHubNativeExtension> {
+@IHubPlugin(beforeApplyPlugins = [IHubBootPlugin, NativeImagePlugin])
+class IHubNativePlugin extends IHubProjectPluginAware {
 
     @Override
     void apply() {
-        withExtension(AFTER) { ext ->
-            withTask(BootBuildImage) {
-                it.builder = 'paketobuildpacks/builder:tiny'
-                it.environment = withExtension(IHubBootExtension).environment + ext.environment
-            }
-        }
     }
 
 }

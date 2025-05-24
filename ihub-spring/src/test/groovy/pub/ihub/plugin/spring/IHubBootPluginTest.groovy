@@ -66,14 +66,6 @@ class IHubBootPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
-        buildFile << '''
-            iHubBoot {
-                bpJvmVersion = '11'
-            }
-            iHubNative {
-                bpNativeImage = true
-            }
-        '''
         testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
         result = gradleBuilder.build()
 
