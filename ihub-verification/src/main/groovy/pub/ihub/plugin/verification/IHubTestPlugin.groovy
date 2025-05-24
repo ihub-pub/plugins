@@ -53,7 +53,7 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
         },
         (JUNIT_JUPITER): { IHubBomExtension iHubBom ->
             iHubBom.dependencies {
-                testImplementation 'org.junit.jupiter:junit-jupiter-api'
+                testImplementation 'org.junit.jupiter:junit-jupiter'
                 testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
                 testImplementation 'org.junit.platform:junit-platform-launcher'
             }
