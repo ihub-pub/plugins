@@ -13,16 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+plugins {
+    kotlin("jvm")
+}
+
 description = "IHub Java Gradle Plugins"
 
 dependencies {
+    implementation(kotlin("stdlib"))
     api(project(":ihub-plugins"))
     api(project(":ihub-bom"))
     implementation(libs.freefair.lombok)
     implementation(libs.byte.buddy)
     implementation(libs.jmolecules.bytebuddy)
-
     implementation(libs.johnrengelman.processes)
+
+    // Test dependencies
+    testImplementation(project(":ihub-base-test"))
+    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("io.kotest:kotest-runner-junit5:5.5.4")
+    testImplementation("io.kotest:kotest-assertions-core:5.5.4")
+    testImplementation("io.kotest:kotest-property:5.5.4")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 gradlePlugin {

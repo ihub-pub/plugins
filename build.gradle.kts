@@ -24,6 +24,7 @@ plugins {
     alias(libs.plugins.plugin.publish) apply false
     // Jacoco暂不支持TestKit，如下插件用于集成Jacoco报告，详见：https://github.com/gradle/gradle/issues/1465
     alias(libs.plugins.testkit)
+    kotlin("jvm") version "1.9.22"
 }
 
 iHubGitHooks {
