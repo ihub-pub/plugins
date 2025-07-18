@@ -23,7 +23,7 @@ jmolecules-bytebuddy = { module = 'org.jmolecules.integrations:jmolecules-bytebu
 johnrengelman-processes = { module = 'com.github.johnrengelman.processes:com.github.johnrengelman.processes.gradle.plugin', version = '0.5.0' }
 spring-boot = { module = 'org.springframework.boot:spring-boot-gradle-plugin', version.ref = 'spring-boot' }
 spring-boot-bp = { module = 'org.springframework.boot:spring-boot-buildpack-platform', version.ref = 'spring-boot' }
-native = { module = 'org.graalvm.buildtools:native-gradle-plugin', version = '0.10.6' }
+native = { module = 'org.graalvm.buildtools:native-gradle-plugin', version = '0.11.0' }
 kotlin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version = '2.2.0' }
 toml = { module = 'org.tomlj:tomlj', version = '1.1.1' }
 
