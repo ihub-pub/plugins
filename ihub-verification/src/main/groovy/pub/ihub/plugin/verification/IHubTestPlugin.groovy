@@ -48,7 +48,9 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
             applyPlugin GroovyPlugin
             iHubBom.dependencies {
                 testImplementation 'org.spockframework:spock-core'
-                testRuntimeOnly 'com.athaydes:spock-reports'
+                // 测试报告版本与groovy4.0.28 有兼容性问题
+//                testRuntimeOnly 'com.athaydes:spock-reports'
+                testImplementation 'org.junit.platform:junit-platform-launcher'
             }
         },
         (JUNIT_JUPITER): { IHubBomExtension iHubBom ->

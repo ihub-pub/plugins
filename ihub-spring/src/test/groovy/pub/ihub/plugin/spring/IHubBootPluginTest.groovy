@@ -42,7 +42,7 @@ class IHubBootPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
-        testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
+        newFile('.java-local.properties') << 'spring.profiles.active=dev'
         propertiesFile << 'iHub.profile=dev'
         result = gradleBuilder.build()
 
@@ -66,7 +66,7 @@ class IHubBootPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
-        testProjectDir.newFile('.java-local.properties') << 'spring.profiles.active=dev'
+        newFile('.java-local.properties') << 'spring.profiles.active=dev'
         result = gradleBuilder.build()
 
         then: '检查结果'

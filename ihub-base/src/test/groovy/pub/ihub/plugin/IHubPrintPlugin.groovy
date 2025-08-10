@@ -28,8 +28,9 @@ class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
 
     @Override
     void apply() {
-        printConfigContent 'test', []
-        printConfigContent 'test', [['123', '456', '798']]
+        printConfigContent 'test',
+            System.getProperty('hasData', 'false') == 'true' ? [['123', '456', '798']] : null,
+            System.getProperty('hasTaps', 'false') == 'true' ? (['t1', 't2', 't3'] as String[]) : null
         printConfigContent 'test', [
             ['123', '12345', '123'],
             ['12345', '123', '1234567'],

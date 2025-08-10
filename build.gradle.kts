@@ -51,16 +51,11 @@ subprojects {
 
 //<editor-fold desc="组件依赖版本管理">
 
-    // gradle groovy版本没有升级至4.0，强制指定3.0版本
+    // groovy4.0.28与spock-reports不兼容 TODO
     iHubBom {
-        groupVersions {
-            group("org.codehaus.groovy").version("3.0.24")
-            group("org.spockframework").version("2.3-groovy-3.0")
-            group("com.athaydes").version("2.5.1-groovy-3.0")
+        excludeModules {
+            group("com.athaydes")
         }
-    }
-    configure<IHubVerificationExtension> {
-        codenarcVersion.set("3.3.0")
     }
 
 //</editor-fold>

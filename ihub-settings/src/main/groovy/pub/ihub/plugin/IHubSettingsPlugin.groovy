@@ -167,6 +167,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
     }
 
     private static void includeBom(Settings settings, String bomName) {
+        settings.rootDir.toPath().resolve(bomName).toFile().mkdirs()
         includeJavaPlatform settings, bomName
         settings.gradle.afterProject { Project project ->
             if (project.name == bomName) {
@@ -185,6 +186,7 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     @SuppressWarnings('NestedBlockDepth')
     private static void includeDependencies(Settings settings, String dependName) {
+        settings.rootDir.toPath().resolve(dependName).toFile().mkdirs()
         includeJavaPlatform settings, dependName
         settings.gradle.afterProject { Project project ->
             if (project.name == settings.rootProject.name) {

@@ -30,9 +30,9 @@ class IHubJavaPluginTest extends IHubSpecification {
         setup: '初始化项目（此处借用子项目测试，主项目不触发beforeEvaluate）'
         copyProject 'basic.gradle'
         settingsFile << 'include \'a\', \'b\', \'c\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
         buildFile << '''
             allprojects {
                 apply {
@@ -85,9 +85,9 @@ class IHubJavaPluginTest extends IHubSpecification {
         setup: '初始化项目（此处借用子项目测试，主项目不触发beforeEvaluate）'
         copyProject 'basic.gradle'
         settingsFile << 'include \'a\', \'b\', \'c\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
         buildFile << '''
             allprojects {
                 apply {
@@ -157,9 +157,9 @@ class IHubJavaPluginTest extends IHubSpecification {
         setup: '初始化项目'
         copyProject 'basic.gradle'
         settingsFile << 'include \'a\', \'b\', \'c\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
         buildFile << '''
             allprojects {
                 apply {
@@ -213,9 +213,9 @@ class IHubJavaPluginTest extends IHubSpecification {
                 plugin 'pub.ihub.plugin.ihub-java'
             }
         '''
-        testProjectDir.newFolder 'src', 'main', 'java', 'pub', 'ihub', 'demo'
-        testProjectDir.newFile 'src/main/java/pub/ihub/demo/Demo.java'
-        def mainClass = testProjectDir.newFile 'src/main/java/pub/ihub/demo/Application.java'
+        newFolder 'src', 'main', 'java', 'pub', 'ihub', 'demo'
+        newFile 'src/main/java/pub/ihub/demo/Demo.java'
+        def mainClass = newFile 'src/main/java/pub/ihub/demo/Application.java'
         mainClass << 'package pub.ihub.demo;\n'
         mainClass << 'public class Application {\n'
         mainClass << '    public static void main(String[] args) {\n'

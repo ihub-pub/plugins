@@ -33,7 +33,7 @@ class IHubCopyrightPluginTest extends IHubSpecification {
                 id 'pub.ihub.plugin.ihub-copyright'
             }
         '''
-        testProjectDir.newFolder '.idea'
+        newFolder '.idea'
     }
 
     def 'Copyright插件测试：没有配置配置信息'() {
@@ -46,7 +46,7 @@ class IHubCopyrightPluginTest extends IHubSpecification {
         result.output.contains 'The LICENSE file does not exist and will use the default copyright information'
 
         when: '模拟非idea环境'
-        testProjectDir.root.eachDir {
+        testProjectDir.eachDir {
             if (it.name == '.idea') {
                 it.deleteDir()
             }
@@ -59,7 +59,7 @@ class IHubCopyrightPluginTest extends IHubSpecification {
 
     def 'Copyright插件测试：存在COPYRIGHT配置'() {
         when: '使用COPYRIGHT配置'
-        testProjectDir.newFile('COPYRIGHT') << 'COPYRIGHT'
+        newFile('COPYRIGHT') << 'COPYRIGHT'
         def result = gradleBuilder.build()
 
         then: '检查结果'
@@ -70,7 +70,7 @@ class IHubCopyrightPluginTest extends IHubSpecification {
 
     def 'Copyright插件测试：存在LICENSE配置'() {
         when: '使用LICENSE配置'
-        def license = testProjectDir.newFile('LICENSE')
+        def license = newFile('LICENSE')
         license << 'LICENSE'
         def result = gradleBuilder.build()
 
@@ -89,9 +89,9 @@ class IHubCopyrightPluginTest extends IHubSpecification {
 
     def 'Copyright插件测试：模拟修改配置'() {
         when: '使用COPYRIGHT配置'
-        testProjectDir.newFile('COPYRIGHT') << 'COPYRIGHT'
-        testProjectDir.newFolder '.idea/copyright'
-        testProjectDir.newFile('.idea/copyright/profiles_settings.xml') << settings
+        newFile('COPYRIGHT') << 'COPYRIGHT'
+        newFolder '.idea/copyright'
+        newFile('.idea/copyright/profiles_settings.xml') << settings
         def result = gradleBuilder.build()
 
         then: '检查结果'

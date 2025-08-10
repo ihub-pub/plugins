@@ -97,9 +97,9 @@ class IHubVerificationPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '构建项目'
-        testProjectDir.newFolder 'conf', 'pmd'
-        testProjectDir.newFile 'conf/pmd/ruleset.xml'
-        testProjectDir.newFile('.java-local.properties') << 'local.test=property'
+        newFolder 'conf', 'pmd'
+        newFile 'conf/pmd/ruleset.xml'
+        newFile('.java-local.properties') << 'local.test=property'
         result = gradleBuilder.withArguments('-DiHubTest.runSkippedPropNames=java.endorsed.dirs').build()
 
         then: '检查结果'
@@ -117,11 +117,11 @@ class IHubVerificationPluginTest extends IHubSpecification {
         result = gradleBuilder.withArguments('-DiHubTest.runIncludePropNames=java.endorsed.dirs').build()
 
         then: '检查结果'
-        result.output.contains '│ testImplementation                       │ org.spockframework:spock-core                         │'
-        result.output.contains '│ testRuntimeOnly                          │ com.athaydes:spock-reports                            │'
-        result.output.contains '│ pmd                                      │ net.sourceforge.pmd:pmd-groovy                        │'
-        result.output.contains '│ pmd                                      │ net.sourceforge.pmd:pmd-ant                           │'
-        result.output.contains '│ pmd                                      │ net.sourceforge.pmd:pmd-java                          │'
+        result.output.contains '│ testImplementation                 │ org.spockframework:spock-core                               │'
+        result.output.contains '│ testImplementation                 │ org.junit.platform:junit-platform-launcher                  │'
+        result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-groovy                              │'
+        result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-ant                                 │'
+        result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-java                                │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -142,11 +142,11 @@ class IHubVerificationPluginTest extends IHubSpecification {
         def result = gradleBuilder.build()
 
         then: '检查结果'
-        result.output.contains '│ testImplementation                       │ org.spockframework:spock-core                         │'
-        result.output.contains '│ testRuntimeOnly                          │ com.athaydes:spock-reports                            │'
-        result.output.contains '│ pmd                                      │ net.sourceforge.pmd:pmd-groovy                        │'
-        result.output.contains '│ pmd                                      │ net.sourceforge.pmd:pmd-ant                           │'
-        result.output.contains '│ pmd                                      │ net.sourceforge.pmd:pmd-java                          │'
+        result.output.contains '│ testImplementation                 │ org.spockframework:spock-core                               │'
+        result.output.contains '│ testImplementation                 │ org.junit.platform:junit-platform-launcher                  │'
+        result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-groovy                              │'
+        result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-ant                                 │'
+        result.output.contains '│ pmd                                │ net.sourceforge.pmd:pmd-java                                │'
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
@@ -155,7 +155,7 @@ class IHubVerificationPluginTest extends IHubSpecification {
         project = ProjectBuilder.builder().build()
         project.pluginManager.apply IHubVerificationPlugin
         project.pluginManager.apply IHubTestPlugin
-        File jacocoTestReportFile = testProjectDir.newFile().tap {
+        File jacocoTestReportFile = newFile('test-report.xml').tap {
             it << '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?><!DOCTYPE report PUBLIC "-//JACOCO//DTD Report 1.1//EN" "report.dtd"><report name="sample-groovy"><sessioninfo id="henry-PC-e97f6720" start="1623941945572" dump="1623941951115"/><package name="pub/ihub/sample/groovy"><class name="pub/ihub/sample/groovy/HelloWorld" sourcefilename="HelloWorld.groovy"><method name="getHello" desc="()Ljava/lang/String;" line="27"><counter type="INSTRUCTION" missed="0" covered="13"/><counter type="LINE" missed="0" covered="1"/><counter type="COMPLEXITY" missed="0" covered="1"/><counter type="METHOD" missed="0" covered="1"/></method><counter type="INSTRUCTION" missed="0" covered="13"/><counter type="LINE" missed="0" covered="1"/><counter type="COMPLEXITY" missed="0" covered="1"/><counter type="METHOD" missed="0" covered="1"/><counter type="CLASS" missed="0" covered="1"/></class><sourcefile name="HelloWorld.groovy"><line nr="27" mi="0" ci="10" mb="0" cb="0"/><counter type="INSTRUCTION" missed="0" covered="13"/><counter type="LINE" missed="0" covered="1"/><counter type="COMPLEXITY" missed="0" covered="1"/><counter type="METHOD" missed="0" covered="1"/><counter type="CLASS" missed="0" covered="1"/></sourcefile><counter type="INSTRUCTION" missed="0" covered="13"/><counter type="LINE" missed="0" covered="1"/><counter type="COMPLEXITY" missed="0" covered="1"/><counter type="METHOD" missed="0" covered="1"/><counter type="CLASS" missed="0" covered="1"/></package><counter type="INSTRUCTION" missed="0" covered="13"/><counter type="LINE" missed="0" covered="1"/><counter type="COMPLEXITY" missed="0" covered="1"/><counter type="METHOD" missed="0" covered="1"/><counter type="CLASS" missed="0" covered="1"/></report>'''
         }
 
@@ -189,9 +189,9 @@ class IHubVerificationPluginTest extends IHubSpecification {
             }
         '''
         settingsFile << 'include \'a\', \'b\', \'c\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
 
         when: '构建项目'
         def result = gradleBuilder.build()

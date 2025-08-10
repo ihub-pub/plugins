@@ -33,38 +33,35 @@ class IHubGitHooksPluginTest extends IHubSpecification {
                 id 'pub.ihub.plugin.ihub-git-hooks'
             }
         '''
-        testProjectDir.newFolder '.git'
-        commitMsgFile = testProjectDir.newFile '.git/COMMIT_EDITMSG'
+        newFolder '.git'
+        commitMsgFile = newFile '.git/COMMIT_EDITMSG'
     }
 
     def 'GitHooks插件配置测试'() {
-        when: '使用默认目录'
+        when: '插件扩展配置'
+        if (configHooksPath) {
+            propertiesFile << 'iHubGitHooks.hooksPath=.hooks'
+        }
+        if (configHooks) {
+            buildFile << '''
+                iHubGitHooks {
+                    hooks = ['pre-commit': 'build']
+                }
+            '''
+        }
         def result = gradleBuilder.build()
 
         then: '检查结果'
+        configHooksPath || !configHooks || new File(testProjectDir, '.gradle/pub.ihub.plugin.hooks/pre-commit').exists()
         result.output.contains 'BUILD SUCCESSFUL'
-        result.output.contains 'Unset git hooks path'
+        result.output.contains expect
 
-        when: '插件扩展配置'
-        buildFile << '''
-            iHubGitHooks {
-                hooks = ['pre-commit': 'build']
-            }
-        '''
-        result = gradleBuilder.build()
-
-        then: '检查结果'
-        new File(testProjectDir.root, '.gradle/pub.ihub.plugin.hooks/pre-commit').exists()
-        result.output.contains 'BUILD SUCCESSFUL'
-        result.output.contains 'Set git hooks path: .gradle/pub.ihub.plugin.hooks'
-
-        when: '自定义目录'
-        propertiesFile << 'iHubGitHooks.hooksPath=.hooks'
-        result = gradleBuilder.build()
-
-        then: '检查结果'
-        result.output.contains 'BUILD SUCCESSFUL'
-        result.output.contains 'Set git hooks path: .hooks'
+        where:
+        configHooksPath | configHooks | expect
+        true            | true        | 'Set git hooks path: .hooks'
+        true            | false       | 'Set git hooks path: .hooks'
+        false           | true        | 'Set git hooks path: .gradle/pub.ihub.plugin.hooks'
+        false           | false       | 'Unset git hooks path'
     }
 
     def 'GitHooks插件commitCheck任务测试-Not found commit msg file'() {
@@ -80,6 +77,9 @@ class IHubGitHooksPluginTest extends IHubSpecification {
     }
 
     def 'GitHooks插件commitCheck任务测试-Commit msg is empty!'() {
+        setup: '初始化项目'
+        commitMsgFile.write('')
+
         when: '执行任务'
         def result = gradleBuilder.withArguments('commitCheck').buildAndFail()
 
@@ -213,28 +213,28 @@ class IHubGitHooksPluginTest extends IHubSpecification {
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
-        !new File(testProjectDir.root, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
-        !new File(testProjectDir.root, '.idea/conventionalCommit.xml').exists()
+        !new File(testProjectDir, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
+        !new File(testProjectDir, '.idea/conventionalCommit.xml').exists()
 
         when: 'IDEA环境，没有Conventional Commit插件'
-        result = gradleBuilder.withArguments('-Didea.plugins.path=' + testProjectDir.root.path).build()
+        result = gradleBuilder.withArguments('-Didea.plugins.path=' + testProjectDir.path).build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
-        !new File(testProjectDir.root, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
-        !new File(testProjectDir.root, '.idea/conventionalCommit.xml').exists()
+        !new File(testProjectDir, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
+        !new File(testProjectDir, '.idea/conventionalCommit.xml').exists()
 
         when: 'IDEA环境且有Conventional Commit插件'
-        def pluginsPath = testProjectDir.newFolder('.plugins', 'idea-conventional-commit').parentFile.path
+        def pluginsPath = newFolder('.plugins', 'idea-conventional-commit').parentFile.path
         result = gradleBuilder.withArguments('-Didea.plugins.path=' + pluginsPath).build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
-        new File(testProjectDir.root, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
-        new File(testProjectDir.root, '.idea/conventionalCommit.xml').exists()
+        new File(testProjectDir, '.gradle/pub.ihub.plugin.cache/conventionalCommit.json').exists()
+        new File(testProjectDir, '.idea/conventionalCommit.xml').exists()
 
         when: '模拟插件配置已存在且没有自定义配置'
-        new File(testProjectDir.root, '.idea/conventionalCommit.xml').write '''<?xml version="1.0" encoding="UTF-8"?>
+        new File(testProjectDir, '.idea/conventionalCommit.xml').write '''<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="general">
     <option name="other" value="text" />
@@ -246,7 +246,7 @@ class IHubGitHooksPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
 
         when: '模拟插件配置已存在且设置了自定义配置'
-        new File(testProjectDir.root, '.idea/conventionalCommit.xml').write '''<?xml version="1.0" encoding="UTF-8"?>
+        new File(testProjectDir, '.idea/conventionalCommit.xml').write '''<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="general">
     <option name="customFilePath" value="path" />

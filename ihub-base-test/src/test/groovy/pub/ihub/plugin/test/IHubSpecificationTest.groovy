@@ -28,13 +28,22 @@ class IHubSpecificationTest extends IHubSpecification {
         copyProject 'sample-groovy', 'src', 'conf'
         // 示例配置脚本无法在本模块构建，以上代码仅作方法测试
         buildFile.delete()
-        buildFile = testProjectDir.newFile DEFAULT_BUILD_FILE
+        buildFile = newFile DEFAULT_BUILD_FILE
 
         when:
         def result = gradleBuilder.withArguments('tasks').build()
 
         then:
         result.output.contains('tasks - Displays the tasks runnable from')
+    }
+
+    def "test newFolder"() {
+        when:
+        newFolder 'a', 'b', 'c', 'd', 'e'
+        def result = gradleBuilder.build()
+
+        then:
+        result.output.contains('BUILD SUCCESSFUL')
     }
 
 }
