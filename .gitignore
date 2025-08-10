@@ -35,6 +35,9 @@ out
 .idea
 classes
 
+# VS Code
+.vscode
+
 # Package Files #
 *.jar
 *.war

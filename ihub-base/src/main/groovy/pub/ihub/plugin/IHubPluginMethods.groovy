@@ -102,7 +102,8 @@ final class IHubPluginMethods {
      */
     private static void printCenter(String str, int contentWidth, String frame) {
         int strRightBoundary = ((contentWidth + str.length()) / 2).intValue()
-        printf "$frame %${strRightBoundary}s${' ' * (contentWidth - strRightBoundary)} $frame\n", str
+        int width = contentWidth > strRightBoundary ? contentWidth - strRightBoundary : 0
+        printf "$frame %${strRightBoundary}s${' ' * width} $frame\n", str
     }
 
     /**

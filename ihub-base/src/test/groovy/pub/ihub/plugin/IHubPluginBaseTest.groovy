@@ -67,7 +67,7 @@ class IHubPluginBaseTest extends Specification {
         project.iHubDemo.javaHome.get()
     }
 
-    def '测试插件打印方法'() {
+    def '测试插件打印编码'() {
         setup:
         System.setProperty 'file.encoding', encoding
 
@@ -76,6 +76,22 @@ class IHubPluginBaseTest extends Specification {
 
         where:
         encoding << ['GBK', 'UTF-8']
+    }
+
+    def '测试插件打印方法'() {
+        setup:
+        System.setProperty 'hasData', hasData
+        System.setProperty 'hasTaps', hasTaps
+
+        expect:
+        project.extensions.findByName('iHubPrint') instanceof IHubPrintExtension
+
+        where:
+        hasData | hasTaps
+        'true'  | 'true'
+        'true'  | 'false'
+        'false' | 'true'
+        'false' | 'false'
     }
 
 }

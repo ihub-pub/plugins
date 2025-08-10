@@ -85,7 +85,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 iHub.repoAllowInsecureProtocol=true
 iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
 '''
-        testProjectDir.newFolder 'libs'
+        newFolder 'libs'
         def result = gradleBuilder.withArguments('-DiHub.repoUsername=username', '-DiHub.repoPassword=password').build()
 
         then: '检查结果'
@@ -170,9 +170,9 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         setup: '初始化项目'
         copyProject 'basic.gradle'
         settingsFile << 'include \'a\', \'b\', \'c\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
@@ -209,10 +209,10 @@ iHub.repoIncludeGroupRegex=pub\\.ihub\\..*
         setup: '初始化项目'
         copyProject 'basic.gradle'
         settingsFile << 'include \'a\', \'b\', \'c\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
-        testProjectDir.newFile('a/build.gradle') << 'task(\'clean\') {}'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
+        newFile('a/build.gradle') << 'task(\'clean\') {}'
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('cleanRootProject').build()
