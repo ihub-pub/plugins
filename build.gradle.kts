@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import pub.ihub.plugin.verification.IHubVerificationExtension
 plugins {
     alias(ihub.plugins.root)
     alias(ihub.plugins.copyright)
     alias(ihub.plugins.git.hooks)
-    alias(ihub.plugins.java.base) apply false
+    alias(ihub.plugins.groovy) apply false
     alias(ihub.plugins.verification) apply false
     alias(ihub.plugins.publish) apply false
     alias(libs.plugins.plugin.publish) apply false
@@ -27,16 +26,17 @@ plugins {
 }
 
 iHubGitHooks {
-    hooks.set(mapOf(
-        "pre-commit" to "./gradlew check -x test",
-        "commit-msg" to "./gradlew commitCheck"
-    ))
+    hooks.set(
+        mapOf(
+            "pre-commit" to "./gradlew check -x test",
+            "commit-msg" to "./gradlew commitCheck"
+        )
+    )
 }
 
 subprojects {
     apply {
-        plugin("groovy")
-        plugin("pub.ihub.plugin.ihub-java-base")
+        plugin("pub.ihub.plugin.ihub-groovy")
         plugin("pub.ihub.plugin.ihub-test")
         plugin("pub.ihub.plugin.ihub-verification")
         plugin("pub.ihub.plugin.ihub-publish")
@@ -49,16 +49,12 @@ subprojects {
         gradlePluginPortal()
     }
 
-//<editor-fold desc="组件依赖版本管理">
-
-    // groovy4.0.28与spock-reports不兼容 TODO
+    // 与Gradle内置Groovy版本保持一致
     iHubBom {
-        excludeModules {
-            group("com.athaydes")
+        importBoms {
+            group("org.apache.groovy").module("groovy-bom").version("4.0.27")
         }
     }
-
-//</editor-fold>
 
     dependencies {
         "implementation"(gradleApi())
