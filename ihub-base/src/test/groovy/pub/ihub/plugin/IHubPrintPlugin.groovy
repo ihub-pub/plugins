@@ -39,6 +39,9 @@ class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
         printLineConfigContent 'test', [
             '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890'
         ], 't'
+        printLineConfigContent 'title1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890', [
+            '123'
+        ]
         printMapConfigContent 'test', 'ID', 'Version', [a: '1', b: '2', c: ['3', '4']]
         registerTask 'printConfig', {
             printConfigContent 'task', []
