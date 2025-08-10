@@ -15,12 +15,6 @@
  */
 description = "IHub Gradle Plugins Base"
 
-dependencies {
-    // TODO 更换groovy插件
-    implementation("org.spockframework:spock-core")
-    implementation("org.junit.platform:junit-platform-launcher")
-}
-
 gradlePlugin {
     plugins {
         create("iHubBase") {
