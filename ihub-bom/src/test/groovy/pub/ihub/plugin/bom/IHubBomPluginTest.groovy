@@ -70,8 +70,8 @@ class IHubBomPluginTest extends IHubSpecification {
                 implementation 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter'
             }
         '''
-        testProjectDir.newFolder 'src', 'main', 'java'
-        testProjectDir.newFile 'src/main/java/Demo.java'
+        newFolder 'src', 'main', 'java'
+        newFile 'src/main/java/Demo.java'
 
         when: '构建项目'
         def result = gradleBuilder.withArguments('build').build()
@@ -128,9 +128,10 @@ class IHubBomPluginTest extends IHubSpecification {
 
         when: '添加子项目'
         settingsFile << 'include \'a\', \'b\', \'c\', \'demo-bom\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
+        newFolder 'demo-bom'
         buildFile << '''
             allprojects {
                 iHubBom {
@@ -187,7 +188,7 @@ class IHubBomPluginTest extends IHubSpecification {
                 }
             }
         '''
-        testProjectDir.newFile('a/' + DEFAULT_BUILD_FILE) << '''
+        newFile('a/' + DEFAULT_BUILD_FILE) << '''
             iHubBom {
                 excludeModules {
                     group 'pub.ihub.lib' modules 'ihub-core'

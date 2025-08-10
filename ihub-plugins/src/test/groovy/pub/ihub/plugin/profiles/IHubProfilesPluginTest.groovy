@@ -138,8 +138,8 @@ class IHubProfilesPluginTest extends IHubSpecification {
             apply plugin: 'java'
         '''
         propertiesFile << 'iHub.profile=dev'
-        testProjectDir.newFolder 'src', 'main', 'resources'
-        testProjectDir.newFile('src/main/resources/application.properties') << 'spring.profiles.active=@profile@'
+        newFolder 'src', 'main', 'resources'
+        newFile('src/main/resources/application.properties') << 'spring.profiles.active=@profile@'
         gradleBuilder.withArguments('processResources').build()
 
         then: '检查结果'

@@ -204,9 +204,10 @@ iHub.snapshotRepoUrl=https://ihub.pub/nexus/content/repositories/snapshots
         setup: '初始化项目'
         copyProject 'basic.gradle'
         settingsFile << 'include \'a\', \'b\', \'c\',\'demo-bom\''
-        testProjectDir.newFolder 'a'
-        testProjectDir.newFolder 'b'
-        testProjectDir.newFolder 'c'
+        newFolder 'a'
+        newFolder 'b'
+        newFolder 'c'
+        newFolder 'demo-bom'
         buildFile << '''
 project(':a') {
     apply {

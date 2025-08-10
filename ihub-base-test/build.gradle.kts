@@ -17,7 +17,9 @@ description = "IHub Gradle Plugins Test"
 
 dependencies {
     implementation(gradleTestKit())
+    // TODO 更换groovy插件
     implementation("org.spockframework:spock-core")
+    implementation("org.junit.platform:junit-platform-launcher")
 }
 
 gradlePlugin {

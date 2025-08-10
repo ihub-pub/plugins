@@ -66,7 +66,7 @@ class IHubNodePluginTest extends IHubSpecification {
                 args = ['run','dev']
             }
         '''
-        testProjectDir.newFile('package.json') << '''
+        newFile('package.json') << '''
 {
   "name": "test-demo",
   "description": "demo project",

@@ -15,8 +15,6 @@
  */
 package pub.ihub.plugin
 
-import org.gradle.internal.impldep.org.junit.Rule
-import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
 import pub.ihub.plugin.test.IHubSpecification
 import spock.lang.Title
@@ -34,8 +32,6 @@ import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
 @SuppressWarnings('PrivateFieldCouldBeFinal')
 class IHubSettingsPluginTest extends IHubSpecification {
 
-    @Rule
-    private TemporaryFolder testProjectDir = new TemporaryFolder()
     private File settingsFile
     private File propertiesFile
     private GradleRunner gradleBuilder
@@ -44,16 +40,11 @@ class IHubSettingsPluginTest extends IHubSpecification {
      * 初始化项目配置
      */
     def setup() {
-        testProjectDir.create()
-        settingsFile = testProjectDir.newFile DEFAULT_SETTINGS_FILE
-        propertiesFile = testProjectDir.newFile GRADLE_PROPERTIES
-        gradleBuilder = GradleRunner.create().withProjectDir(testProjectDir.root).withPluginClasspath()
+        settingsFile = newFile DEFAULT_SETTINGS_FILE
+        propertiesFile = newFile GRADLE_PROPERTIES
+        gradleBuilder = GradleRunner.create().withProjectDir(testProjectDir).withPluginClasspath()
         copy getClass().classLoader.getResourceAsStream('testkit-gradle.properties'), propertiesFile, null
-        settingsFile << '''
-            plugins {
-                id 'pub.ihub.plugin.ihub-settings'
-            }
-        '''
+        settingsFile.write('plugins { id \'pub.ihub.plugin.ihub-settings\' }')
     }
 
     def '测试插件仓库配置'() {
@@ -88,7 +79,7 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
         result.output.contains 'CustomizeRepo'
 
         when: '本地插件配置'
-        testProjectDir.newFolder 'gradle', 'plugins'
+        newFolder 'gradle', 'plugins'
         propertiesFile << 'iHub.mavenPrivateEnabled=false'
         result = gradleBuilder.build()
 
@@ -110,17 +101,17 @@ iHub.customizeRepoUrl=https://ihub.pub/nexus/content/repositories
 
     def '测试catalog配置'() {
         when: '默认配置'
-        testProjectDir.newFolder 'gradle', 'libs'
-        testProjectDir.newFile('gradle/libs.versions.toml') << '''
+        newFolder 'gradle', 'libs'
+        newFile('gradle/libs.versions.toml') << '''
 [versions]
 james-bond = '0.0.7'
 '''
-        testProjectDir.newFile('gradle/libs/myLibs.versions.toml') << '''
+        newFile('gradle/libs/myLibs.versions.toml') << '''
 [versions]
 henry = '0.0.8'
 '''
-        testProjectDir.newFile('gradle/libs/other.toml')
-        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+        newFile('gradle/libs/other.toml')
+        newFile(DEFAULT_BUILD_FILE) << '''
 println "I'm " + libs.versions.james.bond.get()
 println "I'm " + myLibs.versions.henry.get()
 '''
@@ -134,16 +125,16 @@ println "I'm " + myLibs.versions.henry.get()
 
     def '测试profile-catalog配置'() {
         when: '默认配置'
-        testProjectDir.newFolder 'gradle', 'libs', 'profiles'
-        testProjectDir.newFile('gradle/libs.versions.toml') << '''
+        newFolder 'gradle', 'libs', 'profiles'
+        newFile('gradle/libs.versions.toml') << '''
 [versions]
 henry = '0.0.7'
 '''
-        testProjectDir.newFile('gradle/libs/profiles/dev.versions.toml') << '''
+        newFile('gradle/libs/profiles/dev.versions.toml') << '''
 [versions]
 henry = '0.0.8'
 '''
-        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+        newFile(DEFAULT_BUILD_FILE) << '''
 println "I'm " + libs.versions.henry.get()
 '''
         def result = gradleBuilder.build()
@@ -164,9 +155,9 @@ println "I'm " + libs.versions.henry.get()
     def '测试扩展属性配置子项目'() {
         when: '配置项目'
         propertiesFile << 'name=demo\n'
-        testProjectDir.newFolder 'rest'
-        testProjectDir.newFolder 'service'
-        testProjectDir.newFolder 'other'
+        newFolder 'rest'
+        newFolder 'service'
+        newFolder 'other'
         settingsFile << '''
             iHubSettings {
                 includeProjects 'rest', 'service', 'other'
@@ -185,9 +176,9 @@ println "I'm " + libs.versions.henry.get()
         when: '配置项目'
         propertiesFile << 'name=demo\n'
         propertiesFile << 'iHubSettings.includeDirs=rest,service\n'
-        testProjectDir.newFolder 'rest'
-        testProjectDir.newFolder 'service'
-        testProjectDir.newFolder 'other'
+        newFolder 'rest'
+        newFolder 'service'
+        newFolder 'other'
         def result = gradleBuilder.build()
 
         then: '检查结果'
@@ -201,11 +192,11 @@ println "I'm " + libs.versions.henry.get()
         when: '配置项目'
         propertiesFile << 'name=demo\n'
         propertiesFile << 'iHubSettings.skippedDirs=other\n'
-        testProjectDir.newFolder '.git'
-        testProjectDir.newFolder 'src'
-        testProjectDir.newFolder 'rest'
-        testProjectDir.newFolder 'service'
-        testProjectDir.newFolder 'other'
+        newFolder '.git'
+        newFolder 'src'
+        newFolder 'rest'
+        newFolder 'service'
+        newFolder 'other'
         def result = gradleBuilder.build()
 
         then: '检查结果'
@@ -272,8 +263,8 @@ println "I'm " + libs.versions.henry.get()
 
     def '测试版本组件配置'() {
         when: '配置项目'
-        testProjectDir.newFolder 'gradle'
-        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        newFolder 'gradle'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), newFile('gradle/libs.versions.toml'), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         propertiesFile << 'iHubSettings.includeLibs=true\n'
@@ -286,8 +277,8 @@ println "I'm " + libs.versions.henry.get()
 
     def '测试组件本地版本配置'() {
         when: '配置项目'
-        testProjectDir.newFolder 'gradle'
-        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        newFolder 'gradle'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), newFile('gradle/libs.versions.toml'), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         propertiesFile << 'iHubSettings.includeLibs=true\n'
@@ -314,11 +305,11 @@ println "I'm " + libs.versions.henry.get()
 
     def '测试版本组件兼容模式配置'() {
         when: '配置项目'
-        testProjectDir.newFolder 'gradle', 'libs', 'compatibility'
+        newFolder 'gradle', 'libs', 'compatibility'
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
-            testProjectDir.newFile('gradle/libs.versions.toml'), null
+            newFile('gradle/libs.versions.toml'), null
         copy getClass().classLoader.getResourceAsStream('libs.versions.toml'),
-            testProjectDir.newFile("gradle/libs/compatibility/java${current()}.versions.toml"), null
+            newFile("gradle/libs/compatibility/java${current()}.versions.toml"), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         propertiesFile << 'iHubSettings.includeLibs=true\n'
@@ -330,14 +321,14 @@ println "I'm " + libs.versions.henry.get()
 
     def '测试Bom组件版本配置'() {
         when: '配置项目'
-        testProjectDir.newFolder 'gradle'
-        testProjectDir.newFolder 'rest'
-        testProjectDir.newFolder 'service'
-        testProjectDir.newFolder 'other'
-        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        newFolder 'gradle'
+        newFolder 'rest'
+        newFolder 'service'
+        newFolder 'other'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), newFile('gradle/libs.versions.toml'), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         propertiesFile << 'iHubSettings.skippedDirs=samples=gradle\n'
-        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+        newFile(DEFAULT_BUILD_FILE) << '''
         project(':service') {
             apply {
                 plugin 'java'
@@ -363,16 +354,16 @@ println "I'm " + libs.versions.henry.get()
 
     def '测试Dependencies组件版本配置'() {
         when: '配置项目'
-        testProjectDir.newFolder 'gradle'
-        testProjectDir.newFolder 'rest'
-        testProjectDir.newFolder 'service'
-        testProjectDir.newFolder 'other'
-        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('gradle/libs.versions.toml'), null
+        newFolder 'gradle'
+        newFolder 'rest'
+        newFolder 'service'
+        newFolder 'other'
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), newFile('gradle/libs.versions.toml'), null
         propertiesFile << 'iHubSettings.includeBom=demo-bom\n'
         propertiesFile << 'iHubSettings.includeDependencies=demo-dependencies\n'
         propertiesFile << 'iHubSettings.includeLibs=true\n'
         propertiesFile << 'iHubSettings.skippedDirs=samples=gradle\n'
-        testProjectDir.newFile(DEFAULT_BUILD_FILE) << '''
+        newFile(DEFAULT_BUILD_FILE) << '''
         subprojects {
             if (project.pluginManager.hasPlugin("java-platform")) {
                 return

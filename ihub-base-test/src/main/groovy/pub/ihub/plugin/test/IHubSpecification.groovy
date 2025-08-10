@@ -15,16 +15,16 @@
  */
 package pub.ihub.plugin.test
 
-import org.gradle.internal.impldep.org.junit.Rule
-import org.gradle.internal.impldep.org.junit.rules.TemporaryFolder
 import org.gradle.testkit.runner.GradleRunner
 import spock.lang.Specification
+import spock.lang.TempDir
 
 import static java.io.File.separator
 import static org.gradle.api.Project.DEFAULT_BUILD_FILE
 import static org.gradle.api.Project.GRADLE_PROPERTIES
 import static org.gradle.api.initialization.Settings.DEFAULT_SETTINGS_FILE
 import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.copy
+import static org.gradle.internal.impldep.org.apache.ivy.util.FileUtil.resolveFile
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyDirectoryStructure
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.copyFile
 import static org.gradle.internal.impldep.org.codehaus.plexus.util.FileUtils.getFile
@@ -36,18 +36,17 @@ import static org.gradle.testkit.runner.GradleRunner.create
  */
 class IHubSpecification extends Specification {
 
-    @Rule
-    protected TemporaryFolder testProjectDir = new TemporaryFolder()
+    @TempDir
+    protected File testProjectDir
     protected GradleRunner gradleBuilder
     protected File settingsFile
     protected File buildFile
     protected File propertiesFile
 
     def setup() {
-        testProjectDir.create()
-        gradleBuilder = create().withProjectDir(testProjectDir.root).withPluginClasspath()
-        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), testProjectDir.newFile('libs.versions.toml'), null
-        settingsFile = testProjectDir.newFile DEFAULT_SETTINGS_FILE
+        gradleBuilder = create().withProjectDir(testProjectDir).withPluginClasspath()
+        copy getClass().classLoader.getResourceAsStream('libs.versions.toml'), newFile('libs.versions.toml'), null
+        settingsFile = newFile DEFAULT_SETTINGS_FILE
         settingsFile << 'dependencyResolutionManagement {'
         settingsFile << '    versionCatalogs {'
         settingsFile << '        ihub {'
@@ -55,13 +54,9 @@ class IHubSpecification extends Specification {
         settingsFile << '        }'
         settingsFile << '    }'
         settingsFile << '}\n'
-        buildFile = testProjectDir.newFile DEFAULT_BUILD_FILE
-        propertiesFile = testProjectDir.newFile GRADLE_PROPERTIES
+        buildFile = newFile DEFAULT_BUILD_FILE
+        propertiesFile = newFile GRADLE_PROPERTIES
         copy getClass().classLoader.getResourceAsStream('testkit-gradle.properties'), propertiesFile, null
-    }
-
-    def cleanup() {
-        testProjectDir.delete()
     }
 
     protected void copyProject(String buildFileName) {
@@ -73,8 +68,18 @@ class IHubSpecification extends Specification {
         "${getFile(System.getProperty(OS_USER_DIR)).parentFile.path + separator}samples$separator$name".with {
             copyFile getFile(it + separator + DEFAULT_BUILD_FILE), buildFile
             dirs.each { dir ->
-                copyDirectoryStructure getFile(it + separator + dir), testProjectDir.newFolder(dir)
+                copyDirectoryStructure getFile(it + separator + dir), newFolder(dir)
             }
+        }
+    }
+
+    protected File newFile(String path) {
+        resolveFile testProjectDir, path
+    }
+
+    protected File newFolder(String... path) {
+        path.inject(testProjectDir.toPath()) { p, sp -> p.resolve(sp) }.toFile().tap {
+            mkdirs()
         }
     }
 
