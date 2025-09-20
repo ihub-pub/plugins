@@ -50,11 +50,11 @@ subprojects {
     }
 
     // 与Gradle内置Groovy版本保持一致
-    iHubBom {
-        importBoms {
-            group("org.apache.groovy").module("groovy-bom").version("4.0.27")
-        }
-    }
+//    iHubBom {
+//        importBoms {
+//            group("org.apache.groovy").module("groovy-bom").version("4.0.28")
+//        }
+//    }
 
     dependencies {
         "implementation"(gradleApi())
