@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           disable-sudo: true
           egress-policy: audit
@@ -43,7 +43,7 @@ jobs:
       matrix: ${{ steps.name.outputs.test }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           disable-sudo: true
           egress-policy: audit
@@ -73,7 +73,7 @@ jobs:
         project_name: ${{ fromJson(needs.project-matrix.outputs.matrix) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           disable-sudo: true
           egress-policy: audit
@@ -128,7 +128,7 @@ jobs:
     needs: [ build, matrix-test ]
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           disable-sudo: true
           egress-policy: audit
