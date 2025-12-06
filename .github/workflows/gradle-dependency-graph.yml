@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
         with:
           disable-sudo: true
           egress-policy: audit
 
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Set up JDK 17
-        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # main
+        uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # main
         with:
           java-version: 17
           distribution: 'adopt'
