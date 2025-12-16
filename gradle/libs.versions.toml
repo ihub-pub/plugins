@@ -24,7 +24,7 @@ johnrengelman-processes = { module = 'com.github.johnrengelman.processes:com.git
 spring-boot = { module = 'org.springframework.boot:spring-boot-gradle-plugin', version.ref = 'spring-boot' }
 spring-boot-bp = { module = 'org.springframework.boot:spring-boot-buildpack-platform', version.ref = 'spring-boot' }
 native = { module = 'org.graalvm.buildtools:native-gradle-plugin', version = '0.11.3' }
-kotlin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version = '2.2.21' }
+kotlin = { module = 'org.jetbrains.kotlin:kotlin-gradle-plugin', version = '2.3.0' }
 toml = { module = 'org.tomlj:tomlj', version = '1.1.1' }
 
 jacoco = { module = 'org.jacoco:jacoco', version.ref = 'jacoco' }
