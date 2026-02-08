@@ -1,0 +1,19 @@
+{
+  "name": "ihub-plugins",
+  "version": "1.6.2",
+  "description": "IHub Plugins",
+  "scripts": {
+    "dev": "vuepress dev",
+    "build": "vuepress build",
+    "clean-dev": "vuepress dev --clean-cache",
+    "update-package": "npx vp-update"
+  },
+  "devDependencies": {
+    "@vuepress/client": "2.0.0-rc.0",
+    "@vuepress/plugin-google-analytics": "2.0.0-rc.0",
+    "vue": "^3.4.27",
+    "vuepress": "2.0.0-rc.0",
+    "vuepress-plugin-search-pro": "2.0.0-rc.11",
+    "vuepress-theme-hope": "2.0.0-rc.11"
+  }
+}
