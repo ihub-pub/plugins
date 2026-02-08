@@ -1,3 +1,7 @@
+import org.gradle.api.tasks.testing.Test
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+import org.gradle.testing.jacoco.tasks.JacocoReport
+
 /*
  * Copyright (c) 2021-2025 the original author or authors.
  *
@@ -50,11 +54,11 @@ subprojects {
     }
 
     // 与Gradle内置Groovy版本保持一致
-//    iHubBom {
-//        importBoms {
-//            group("org.apache.groovy").module("groovy-bom").version("4.0.28")
-//        }
-//    }
+    iHubBom {
+        importBoms {
+            group("org.apache.groovy").module("groovy-bom").version("4.0.29")
+        }
+    }
 
     dependencies {
         "implementation"(gradleApi())
@@ -72,5 +76,13 @@ subprojects {
     // 跳过Gradle元数据生成，详见：https://github.com/gradle/gradle/issues/11862
     tasks.withType(GenerateModuleMetadata::class) {
         enabled = false
+    }
+
+    // 修复 Jacoco 与 Gradle 9.x 兼容性问题
+    tasks.withType<Test>().configureEach {
+        doNotTrackState("Jacoco destination file tracking issue with Gradle 9.x")
+    }
+    tasks.withType<JacocoReport>().configureEach {
+        doNotTrackState("Jacoco executionData tracking issue with Gradle 9.x")
     }
 }
