@@ -45,7 +45,7 @@ jobs:
         working-directory: docs
 
       - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@c0d7ff0487ee0415efb7f32dab10ea880330b1dd # v3.1.0
+        uses: crazy-max/ghaction-github-pages@df5cc2bfa78282ded844b354faee141f06b41865 # v4.2.0
         with:
           target_branch: gh-pages
           build_dir: docs/.vuepress/dist
