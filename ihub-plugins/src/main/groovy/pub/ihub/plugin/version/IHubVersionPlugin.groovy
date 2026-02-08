@@ -38,15 +38,17 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
 
         // 配置组件升级任务
         withTask DependencyUpdatesTask, { task ->
-            // 自定义依赖升级输出
-            task.outputFormatter = dependencyUpdatesOutputFormatter
-            // 配置拒绝升级策略
-            task.rejectVersionIf rejectVersionFilter
-            // 其他配置
-            task.checkConstraints = true
-            task.checkBuildEnvironmentConstraints = true
-            task.gradleReleaseChannel = 'current'
-            task.checkForGradleUpdate = true
+            task.with {
+                // 自定义依赖升级输出
+                outputFormatter = dependencyUpdatesOutputFormatter
+                // 配置拒绝升级策略
+                rejectVersionIf rejectVersionFilter
+                // 其他配置
+                checkConstraints = true
+                checkBuildEnvironmentConstraints = true
+                gradleReleaseChannel = 'current'
+                checkForGradleUpdate = true
+            }
         }
     }
 
