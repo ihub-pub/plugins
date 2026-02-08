@@ -1,0 +1,48 @@
+name: Docs Pages
+
+on:
+  push:
+    branches: main
+  workflow_dispatch: docs
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@128a63446a954579617e875aaab7d2978154e969 # v2.4.0
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm install
+      - name: Build VuePress site
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@c0d7ff0487ee0415efb7f32dab10ea880330b1dd # v3.1.0
+        with:
+          target_branch: gh-pages
+          build_dir: .vuepress/dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
