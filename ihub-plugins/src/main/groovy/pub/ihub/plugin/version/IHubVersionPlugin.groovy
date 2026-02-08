@@ -37,8 +37,8 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
         }
 
         // 配置组件升级任务
-        withTask DependencyUpdatesTask, {
-            it.configure {
+        withTask DependencyUpdatesTask, { task ->
+            task.with {
                 // 自定义依赖升级输出
                 outputFormatter = dependencyUpdatesOutputFormatter
                 // 配置拒绝升级策略
