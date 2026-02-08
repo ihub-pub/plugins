@@ -31,10 +31,9 @@ updates:
       - dependency-type: "production"
 
   - package-ecosystem: npm
-    directory: /
+    directory: /docs
     schedule:
       interval: daily
-    target-branch: "docs"
     assignees:
       - "ihub-bot"
     allow:
