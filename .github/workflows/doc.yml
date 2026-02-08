@@ -3,6 +3,9 @@ name: Docs Pages
 on:
   push:
     branches: main
+    paths:  
+      - 'docs/**'
+      - '.github/workflows/doc.yml'
 
 permissions:
   contents: read
