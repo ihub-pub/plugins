@@ -1,0 +1,34 @@
+import{_ as c}from"./plugin-vue_export-helper-DlAUqK2U.js";import{r,c as p,a as d,b as l,w as s,d as n,e as i,o as b}from"./app-BNKWpxIq.js";const v={},g={class:"footnotes"},m={class:"footnotes-list"},h={id:"footnote1",class:"footnote-item"},k={href:"https://docs.gradle.org/current/dsl/org.gradle.api.Project.html",target:"_blank",rel:"noopener noreferrer"};function f(y,e){const o=r("CodeTabs"),u=r("ExternalLinkIcon");return b(),p("div",null,[e[15]||(e[15]=d('<h1 id="ihub-copyright" tabindex="-1"><a class="header-anchor" href="#ihub-copyright" aria-hidden="true">#</a> ihub-copyright</h1><div class="hint-container info"><p class="hint-container-title">插件说明</p><p><code>ihub-copyright</code>插件是版权插件，用于自动配置<code>IDEA</code>版权设置，自动伪代码添加或更新版权信息。</p></div><table><thead><tr><th>插件ID</th><th>插件名称</th><th>插件类型</th><th>插件依赖</th></tr></thead><tbody><tr><td><code>pub.ihub.plugin.ihub-copyright</code></td><td><code>版权插件</code></td><td><code>Project</code><sup class="footnote-ref"><a href="#footnote1">[1]</a><a class="footnote-anchor" id="footnote-ref1"></a></sup></td><td><a href="iHub">ihub</a></td></tr></tbody></table><h2 id="插件安装" tabindex="-1"><a class="header-anchor" href="#插件安装" aria-hidden="true">#</a> 插件安装</h2>',4)),l(o,{id:"45",data:[{id:"Kotlin"},{id:"Groovy"}],"tab-id":"build"},{title0:s(({value:t,isActive:a})=>[...e[0]||(e[0]=[i("Kotlin",-1)])]),title1:s(({value:t,isActive:a})=>[...e[1]||(e[1]=[i("Groovy",-1)])]),tab0:s(({value:t,isActive:a})=>[...e[2]||(e[2]=[n("div",{class:"language-kotlin line-numbers-mode","data-ext":"kt"},[n("pre",{class:"language-kotlin"},[n("code",null,[i("plugins "),n("span",{class:"token punctuation"},"{"),i(`
+    `),n("span",{class:"token function"},"id"),n("span",{class:"token punctuation"},"("),n("span",{class:"token string-literal singleline"},[n("span",{class:"token string"},'"pub.ihub.plugin.ihub-copyright"')]),n("span",{class:"token punctuation"},")"),i(`
+`),n("span",{class:"token punctuation"},"}"),i(`
+`)])]),n("div",{class:"line-numbers","aria-hidden":"true"},[n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"})])],-1)])]),tab1:s(({value:t,isActive:a})=>[...e[3]||(e[3]=[n("div",{class:"language-groovy line-numbers-mode","data-ext":"groovy"},[n("pre",{class:"language-groovy"},[n("code",null,[i("plugins "),n("span",{class:"token punctuation"},"{"),i(`
+    id `),n("span",{class:"token string"},"'pub.ihub.plugin.ihub-copyright'"),i(`
+`),n("span",{class:"token punctuation"},"}"),i(`
+`)])]),n("div",{class:"line-numbers","aria-hidden":"true"},[n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"})])],-1)])]),_:1}),e[16]||(e[16]=n("p",null,"或",-1)),l(o,{id:"56",data:[{id:"Kotlin"},{id:"Groovy"}],"tab-id":"build"},{title0:s(({value:t,isActive:a})=>[...e[4]||(e[4]=[i("Kotlin",-1)])]),title1:s(({value:t,isActive:a})=>[...e[5]||(e[5]=[i("Groovy",-1)])]),tab0:s(({value:t,isActive:a})=>[...e[6]||(e[6]=[n("div",{class:"language-kotlin line-numbers-mode","data-ext":"kt"},[n("pre",{class:"language-kotlin"},[n("code",null,[i("plugins "),n("span",{class:"token punctuation"},"{"),i(`
+    `),n("span",{class:"token function"},"id"),n("span",{class:"token punctuation"},"("),n("span",{class:"token string-literal singleline"},[n("span",{class:"token string"},'"pub.ihub.plugin"')]),n("span",{class:"token punctuation"},")"),i(`
+`),n("span",{class:"token punctuation"},"}"),i(`
+
+apply `),n("span",{class:"token punctuation"},"{"),i(`
+    `),n("span",{class:"token function"},"plugin"),n("span",{class:"token punctuation"},"("),n("span",{class:"token string-literal singleline"},[n("span",{class:"token string"},'"pub.ihub.plugin.ihub-copyright"')]),n("span",{class:"token punctuation"},")"),i(`
+`),n("span",{class:"token punctuation"},"}"),i(`
+`)])]),n("div",{class:"line-numbers","aria-hidden":"true"},[n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"})])],-1)])]),tab1:s(({value:t,isActive:a})=>[...e[7]||(e[7]=[n("div",{class:"language-groovy line-numbers-mode","data-ext":"groovy"},[n("pre",{class:"language-groovy"},[n("code",null,[i("plugins "),n("span",{class:"token punctuation"},"{"),i(`
+    id `),n("span",{class:"token string"},"'pub.ihub.plugin'"),i(`
+`),n("span",{class:"token punctuation"},"}"),i(`
+
+apply `),n("span",{class:"token punctuation"},"{"),i(`
+    plugin `),n("span",{class:"token string"},"'pub.ihub.plugin.ihub-copyright'"),i(`
+`),n("span",{class:"token punctuation"},"}"),i(`
+`)])]),n("div",{class:"line-numbers","aria-hidden":"true"},[n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"}),n("div",{class:"line-number"})])],-1)])]),_:1}),e[17]||(e[17]=d(`<h2 id="配置示例" tabindex="-1"><a class="header-anchor" href="#配置示例" aria-hidden="true">#</a> 配置示例</h2><ol><li>通过<code>COPYRIGHT</code>文件获取版权信息，文件配置项目根目录下</li></ol><div class="language-text line-numbers-mode" data-ext="text"><pre class="language-text"><code>Copyright (c) 2023 the original author or authors.
+
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+    
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><ol start="2"><li>通过<code>LICENSE</code>文件提取版权信息，目前会识别<code>Apache License</code>、<code>MIT License</code>配置通用版权信息，其他版权会使用IDEA默认版权配置</li></ol><hr class="footnotes-sep">`,5)),n("section",g,[n("ol",m,[n("li",h,[n("p",null,[e[9]||(e[9]=n("code",null,"Project",-1)),e[10]||(e[10]=i("：项目类型插件，配置于",-1)),e[11]||(e[11]=n("code",null,"build.gradle",-1)),e[12]||(e[12]=i("文件，类型说明",-1)),n("a",k,[e[8]||(e[8]=i("详见",-1)),l(u)]),e[13]||(e[13]=i()),e[14]||(e[14]=n("a",{href:"#footnote-ref1",class:"footnote-backref"},"↩︎",-1))])])])])])}const I=c(v,[["render",f],["__file","iHubCopyright.html.vue"]]);export{I as default};
