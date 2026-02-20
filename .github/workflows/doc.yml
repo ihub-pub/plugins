@@ -1,0 +1,53 @@
+name: Docs Pages
+
+on:
+  push:
+    branches: main
+    paths:  
+      - 'docs/**'
+      - '.github/workflows/doc.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    if: ${{ github.repository_owner == 'ihub-pub' }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        with:
+          disable-sudo: true
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: docs/package-lock.json
+
+      - name: Install Dependencies
+        run: npm install
+        working-directory: docs
+      - name: Build VuePress site
+        env:
+          NODE_OPTIONS: --max_old_space_size=8192
+        run: npm run build
+        working-directory: docs
+
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@df5cc2bfa78282ded844b354faee141f06b41865 # v4.2.0
+        with:
+          target_branch: gh-pages
+          build_dir: docs/.vuepress/dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

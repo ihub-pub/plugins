@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2024 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pub.ihub.plugin.ihub-settings") version "1.9.3"
-}
+import {defineClientConfig} from "@vuepress/client";
+
+import Changelog from "./endbar/changelog.js";
+import Gitee from "./endbar/gitee.js";
+
+export default defineClientConfig({
+    enhance: ({app}) => {
+        app.component("Gitee", Gitee);
+        app.component("Changelog", Changelog);
+    },
+});

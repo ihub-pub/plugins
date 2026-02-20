@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2024 the original author or authors.
+ * Copyright (c) 2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-    id("pub.ihub.plugin.ihub-settings") version "1.9.3"
-}
+import {navbar} from "vuepress-theme-hope";
+
+export const enNavbar = navbar([
+    {text: "IHub", icon: "home", link: "https://ihub.pub/"},
+    {text: "Docs", icon: "repo", link: "https://doc.ihub.pub/"},
+    {text: "Gitee", icon: "gitee", link: "https://gitee.com/ihub-pub/plugins/"},
+    {text: "Releases", icon: "tag", link: "https://github.com/ihub-pub/plugins/releases/"},
+]);

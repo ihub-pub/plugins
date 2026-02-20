@@ -14,6 +14,12 @@ gradle-app.setting
 # Maven #
 target
 
+# Node.js #
+.temp
+.cache
+dist
+node_modules
+
 # windows #
 Thumbs.db
 
