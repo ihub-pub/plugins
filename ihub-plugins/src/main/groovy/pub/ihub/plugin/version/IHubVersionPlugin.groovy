@@ -32,6 +32,13 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
 
     @Override
     protected void apply() {
+        // dependencyUpdates任务不支持并行执行
+        project.gradle.startParameter.taskNames.any { it.contains('dependencyUpdates') }.with {
+            if (it) {
+                project.gradle.startParameter.setParallelProjectExecutionEnabled(false)
+            }
+        }
+
         afterEvaluate {
             configProjectWithGit()
         }
