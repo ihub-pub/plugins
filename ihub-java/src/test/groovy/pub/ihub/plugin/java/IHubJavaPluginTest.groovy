@@ -250,4 +250,33 @@ class IHubJavaPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'Java插件jvmArgs配置测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+            apply {
+                plugin 'application'
+                plugin 'pub.ihub.plugin.ihub-java'
+            }
+            application {
+                mainClass = 'pub.ihub.demo.Application'
+            }
+        '''
+        propertiesFile << 'iHubJava.jvmArgs=-XX:+UseG1GC -Xms128m\n'
+        newFolder 'src', 'main', 'java', 'pub', 'ihub', 'demo'
+        def mainClass = newFile 'src/main/java/pub/ihub/demo/Application.java'
+        mainClass << 'package pub.ihub.demo;\n'
+        mainClass << 'public class Application {\n'
+        mainClass << '    public static void main(String[] args) {\n'
+        mainClass << '        System.out.println("main");\n'
+        mainClass << '    }\n'
+        mainClass << '}\n'
+
+        when: '构建项目并运行run任务以触发JavaExec配置'
+        def result = gradleBuilder.withArguments('classes').build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
 }

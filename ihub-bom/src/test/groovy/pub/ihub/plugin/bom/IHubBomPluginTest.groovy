@@ -340,4 +340,32 @@ class IHubBomPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '排除模块使用all关键字测试'() {
+        setup: '初始化项目'
+        buildFile << '''
+            plugins {
+                id 'pub.ihub.plugin.ihub-bom'
+                id 'java'
+            }
+            iHubBom {
+                excludeModules {
+                    group 'com.example' modules 'all'
+                }
+            }
+            repositories {
+                mavenCentral()
+            }
+        '''
+        newFolder 'src', 'main', 'java'
+        newFile 'src/main/java/Demo.java'
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'com.example'
+        result.output.contains 'all'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
 }
