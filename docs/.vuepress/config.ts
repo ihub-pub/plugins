@@ -29,15 +29,6 @@ export default defineUserConfig({
         ['meta', { name: 'keywords', content: 'ihub,java,groovy,gradle,maven,插件,组件,plugins,libs,技术,博客' }]
     ],
 
-    locales: {
-        "/": {
-            lang: "zh-CN",
-        },
-        "/en/": {
-            lang: "en-US",
-        },
-    },
-
     pagePatterns: ["**/*.md", "!snippet/*.md", "!node_modules/**"],
     theme,
 

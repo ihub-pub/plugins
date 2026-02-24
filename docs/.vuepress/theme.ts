@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import {hopeTheme} from "vuepress-theme-hope";
-import {enNavbar, zhNavbar} from "./navbar";
-import {enSidebar, zhSidebar} from "./sidebar";
+import {zhNavbar} from "./navbar";
+import {zhSidebar} from "./sidebar";
 
 export default hopeTheme({
     hostname: "https://doc.ihub.pub/plugins/",
@@ -36,30 +36,17 @@ export default hopeTheme({
 
     breadcrumb: false,
 
-    locales: {
-        "/": {
-            navbar: zhNavbar,
-            sidebar: zhSidebar,
-            displayFooter: true,
-            metaLocales: {
-                editLink: "在 GitHub 上编辑此页",
-            },
-        },
-
-        "/en/": {
-            navbar: enNavbar,
-            sidebar: enSidebar,
-            displayFooter: true,
-            metaLocales: {
-                editLink: "Edit this page on GitHub",
-            },
-        },
+    navbar: zhNavbar,
+    sidebar: zhSidebar,
+    displayFooter: true,
+    metaLocales: {
+        editLink: "在 GitHub 上编辑此页",
     },
 
     navbarLayout: {
         start: ["Brand"],
         // center: ["Links"],
-        end: ["Language", "Outlook", "Repo", "Gitee", "Changelog", "Search"],
+        end: ["Outlook", "Repo", "Gitee", "Changelog", "Search"],
     },
 
     plugins: {
