@@ -39,10 +39,10 @@
 <table>
 <tr><td>项目目录</td><td>插件ID</td><td>插件名称</td><td>插件类型</td><td>插件描述</td></tr>
 <tr><td>ihub-settings</td><td><a href="https://doc.ihub.pub/plugins/list/iHubSettings">pub.ihub.plugin.ihub-settings</a></td><td>设置插件</td><td>Settings</td><td>插件仓库、插件版本以及子项目管理</td></tr>
-<tr><td rowspan="4">ihub-plugins</td><td><a href="https://doc.ihub.pub/plugins/list/iHub">pub.ihub.plugin</a></td><td>基础插件</td><td>Project</td><td>基础插件，用于配置组件仓库以及一些其他扩展属性</td></tr>
+<tr><td rowspan="3">ihub-plugins</td><td><a href="https://doc.ihub.pub/plugins/list/iHub">pub.ihub.plugin</a></td><td>基础插件</td><td>Project</td><td>基础插件，用于配置组件仓库以及一些其他扩展属性</td></tr>
 <tr><td><a href="https://doc.ihub.pub/plugins/list/iHubVersion">pub.ihub.plugin.ihub-version</a></td><td>版本插件</td><td>Project</td><td>集成并加强<a href="https://plugins.gradle.org/plugin/list/com.github.ben-manes.versions">ben-manes.versions</a>插件</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubCopyright">pub.ihub.plugin.ihub-copyright</a></td><td>版权插件</td><td>Project</td><td>自动配置IDEA版权信息</td></tr>
 <tr><td><a href="https://doc.ihub.pub/plugins/list/iHubProfiles">pub.ihub.plugin.ihub-profiles</a></td><td>配置文件插件</td><td>Project</td><td>Gradle版本 Maven POM Profiles</td></tr>
+<tr><td>ihub-copyright</td><td><a href="https://doc.ihub.pub/plugins/list/iHubCopyright">pub.ihub.plugin.ihub-copyright</a></td><td>版权插件</td><td>Project</td><td>自动配置IDEA版权信息</td></tr>
 <tr><td>ihub-bom</td><td><a href="https://doc.ihub.pub/plugins/list/iHubBom">pub.ihub.plugin.ihub-bom</a></td><td>Bom插件</td><td>Project</td><td>配置项目依赖组件版本以及兼容性管理</td></tr>
 <tr><td>ihub-java</td><td><a href="https://doc.ihub.pub/plugins/list/iHubJava">pub.ihub.plugin.ihub-java</a></td><td>Java插件</td><td>Project</td><td>集成Java相关插件环境、配置一些默认依赖以及兼容性配置</td></tr>
 <tr><td>ihub-groovy</td><td><a href="https://doc.ihub.pub/plugins/list/iHubGroovy">pub.ihub.plugin.ihub-groovy</a></td><td>Groovy插件</td><td>Project</td><td>集成Groovy相关插件环境以及配置Groovy默认组件依赖</td></tr>
