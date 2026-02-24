@@ -18,6 +18,7 @@
 | Extension   | Description | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
 |-------------|-------------|--------|-----------|-----------|-----------|-----------|
 | `javaagent` | Java代理插件    | ❌ | ✔         | ✔         | ❌         | ❌         |
+| `classifier` | 分类    | `all` | ✔         | ❌         | ❌         | ❌         |
 
 ## 插件安装
 

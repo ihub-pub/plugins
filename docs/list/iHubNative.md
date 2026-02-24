@@ -9,15 +9,7 @@
 | 插件ID | `pub.ihub.plugin.ihub-native` |
 | 插件名称 | `Native插件` |
 | 插件类型 | `Project`[^Project] |
-| 扩展名称 | `iHubNative` |
 | 插件依赖 | [ihub-boot](iHubBoot)、[org.graalvm.buildtools.native](https://github.com/graalvm/native-build-tools) |
-
-## 扩展属性
-
-| Extension | Description | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
-| --------- | ----------- | ------- | --- | ------- | ------ | --- |
-| `bpNativeImage` | 是否启用原生映像构建 | `true` | ✔ | ✔ | ❌ | ❌ |
-| `bpNativeImageBuildArguments` | 传递给原生映像命令的参数 | ❌ | ✔ | ✔ | ❌ | ❌ |
 
 ## 插件安装
 
@@ -49,10 +41,7 @@ plugins {
 
 ```kotlin
 iHubBoot {
-    bpJvmVersion.set('11')
-}
-iHubNative {
-    bpNativeImage.set(true)
+    bpJvmVersion.set("11")
 }
 ```
 
@@ -61,9 +50,6 @@ iHubNative {
 ```groovy
 iHubBoot {
     bpJvmVersion = '11'
-}
-iHubNative {
-    bpNativeImage = true
 }
 ```
 

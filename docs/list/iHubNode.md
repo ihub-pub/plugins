@@ -6,7 +6,7 @@
 
 | 插件ID | 插件名称 | 插件类型 | 扩展名称 | 插件依赖                                                                                                            |
 |-------|---------|--------|---------|-----------------------------------------------------------------------------------------------------------------|
-| `pub.ihub.plugin.ihub-node` | `GitHooks插件` | `Project`[^Project] | `iHubNode` | [com.github.node-gradle.node](https://plugins.gradle.org/plugin/com.github.node-gradle.node) |
+| `pub.ihub.plugin.ihub-node` | `Node插件` | `Project`[^Project] | `iHubNode` | [com.github.node-gradle.node](https://plugins.gradle.org/plugin/com.github.node-gradle.node) |
 
 ## 扩展属性
 

@@ -23,6 +23,8 @@
 | `publishSources` | 是否发布源码 | `true` | ✔ | ✔  | ✔ | ❌ |
 | `publishDocs` | 是否发布文档 | `false` | ✔ | ✔  | ✔ | ❌ |
 | `applyGithubPom` | 是否应用GithubPom插件 | `false` | ✔ | ✔  | ✔ | ❌ |
+| `publishMavenCentral` | 是否发布到Maven中央仓库 | `false` | ✔ | ✔  | ✔ | ❌ |
+| `addConfigurationMetaInformation` | 是否添加配置元信息 | `true` | ✔ | ✔  | ✔ | ❌ |
 
 ## 插件安装
 

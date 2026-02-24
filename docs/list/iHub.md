@@ -24,6 +24,7 @@
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `mavenLocalEnabled` | 是否启用本地仓库 | `false` | ✔ | ✔ | ❌ | ❌ |
 | `mavenAliYunEnabled` | 是否启用阿里云代理仓库 | `false` | ✔ | ✔ | ✔ | ✔ |
+| `mavenSpringMilestoneEnabled` | 是否启用SpringMilestone仓库 | `false` | ✔ | ✔ | ✔ | ✔ |
 | `mavenPrivateEnabled` | 是否启用私有仓库（组件发布仓库） | `true` | ✔ | ✔ | ✔ | ✔ |
 | `releaseRepoUrl` | 正式版本仓库 | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `snapshotRepoUrl` | 快照版本仓库 | ❌ | ✔ | ✔ | ❌ | ❌ |
