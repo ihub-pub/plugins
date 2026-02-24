@@ -38,13 +38,6 @@ gradlePlugin {
             implementationClass = "pub.ihub.plugin.version.IHubVersionPlugin"
             tags.set(listOf("ihub", "git", "version"))
         }
-        create("iHubCopyright") {
-            id = "pub.ihub.plugin.ihub-copyright"
-            displayName = "IHub Copyright"
-            description = "IHub Gradle Copyright Gradle Plugin"
-            implementationClass = "pub.ihub.plugin.copyright.IHubCopyrightPlugin"
-            tags.set(listOf("ihub", "git", "copyright", "idea"))
-        }
         create("iHubProfiles") {
             id = "pub.ihub.plugin.ihub-profiles"
             displayName = "IHub Profiles"

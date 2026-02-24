@@ -15,6 +15,7 @@ freefair-lombok = { module = 'io.freefair.gradle:lombok-plugin', version.ref = '
 freefair-github = { module = 'io.freefair.gradle:github-plugin', version.ref = 'freefair' }
 freefair-settings = { module = 'io.freefair.gradle:settings-plugin', version.ref = 'freefair' }
 ben-manes-versions = { module = 'com.github.ben-manes:gradle-versions-plugin', version = '0.53.0' }
+spotless = { module = 'com.diffplug.spotless:spotless-plugin-gradle', version = '7.0.2' }
 maven-central = { module = 'tech.yanand.gradle:maven-central-publish', version = '1.3.0' }
 shadow = { module = 'com.github.johnrengelman:shadow', version = '8.1.1' }
 javaagent = { module = 'com.ryandens:plugin', version = '0.10.0' }
