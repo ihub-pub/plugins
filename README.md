@@ -1,21 +1,25 @@
 <p align="center">
     <a target="_blank" href="https://ihub.pub/">
         <img src="https://doc.ihub.pub/ihub.svg" height="150" alt="IHub">
-        <img src="https://doc.ihub.pub/ihub_plugins.svg" height="150" alt="IHub">
+        <img src="https://doc.ihub.pub/ihub_plugins.svg" height="150" alt="IHub Plugins">
     </a>
 </p>
 
----
+<h1 align="center">IHub Plugins</h1>
+
+<p align="center">
+    <strong>一套为 Gradle 项目提供基础设施的插件集，极大简化项目配置</strong>
+</p>
 
 <p align="center">
     <a target="_blank" href="https://bestpractices.coreinfrastructure.org/projects/6921">
-        <img alt="CII Best Practices Level" src="https://badge.ihub.pub/cii/level/6921">
+        <img alt="CII Best Practices" src="https://badge.ihub.pub/cii/level/6921">
     </a>
     <a target="_blank" href="https://github.com/ihub-pub/plugins/actions/workflows/gradle-build.yml">
         <img src="https://badge.ihub.pub/github/actions/workflow/status/ihub-pub/plugins/gradle-build.yml?branch=main&label=Build&logo=GitHub+Actions&logoColor=white" alt="Gradle Build"/>
     </a>
     <a title="Test Cases" href="https://ihub-pub.testspace.com/spaces/219260?utm_campaign=metric&utm_medium=referral&utm_source=badge">
-        <img alt="Space Metric" src="https://badge.ihub.pub/testspace/tests/ihub-pub/ihub-pub:plugins/main?compact_message&label=Tests&logo=GitHub+Actions&logoColor=white" />
+        <img alt="Tests" src="https://badge.ihub.pub/testspace/tests/ihub-pub/ihub-pub:plugins/main?compact_message&label=Tests&logo=GitHub+Actions&logoColor=white" />
     </a>
     <a target="_blank" href="https://www.codefactor.io/repository/github/ihub-pub/plugins">
         <img src="https://badge.ihub.pub/codefactor/grade/github/ihub-pub/plugins/main?color=white&label=Codefactor&labelColor=F44A6A&logo=CodeFactor&logoColor=white" alt="CodeFactor"/>
@@ -23,100 +27,275 @@
     <a target="_blank" href="https://codecov.io/gh/ihub-pub/plugins">
         <img src="https://badge.ihub.pub/codecov/c/github/ihub-pub/plugins?token=ZQ0WR3ZSWG&color=white&label=Codecov&labelColor=F01F7A&logo=Codecov&logoColor=white" alt="Codecov"/>
     </a>
+    <a target="_blank" href="https://plugins.gradle.org/plugin/pub.ihub.plugin">
+        <img src="https://badge.ihub.pub/maven-metadata/v?color=white&label=Gradle&labelColor=02303A&logo=Gradle&metadataUrl=https%3A%2F%2Fplugins.gradle.org%2Fm2%2Fpub%2Fihub%2Fplugin%2Fihub-plugins%2Fmaven-metadata.xml" alt="Gradle Plugin"/>
+    </a>
+</p>
+
+<p align="center">
     <a target="_blank" href="https://github.com/ihub-pub/plugins/stargazers">
         <img src="https://badge.ihub.pub/github/stars/ihub-pub/plugins?color=white&style=flat&logo=GitHub&labelColor=181717" alt="GitHub Stars"/>
     </a>
     <a target="_blank" href='https://gitee.com/ihub-pub/plugins/stargazers'>
         <img src='https://badge.ihub.pub/badge/dynamic/json?url=https%3A%2F%2Fgitee.com%2Fapi%2Fv5%2Frepos%2Fihub-pub%2Fplugins&query=%24.stargazers_count&style=flat&logo=gitee&label=stars&labelColor=c71d23&color=white&cacheSeconds=5000' alt='Gitee Stars'/>
     </a>
-    <a target="_blank" href="https://plugins.gradle.org/plugin/pub.ihub.plugin">
-        <img src="https://badge.ihub.pub/maven-metadata/v?color=white&label=Gradle&labelColor=02303A&logo=Gradle&metadataUrl=https%3A%2F%2Fplugins.gradle.org%2Fm2%2Fpub%2Fihub%2Fplugin%2Fihub-plugins%2Fmaven-metadata.xml" alt="IHub Plugins Gradle Plugin"/>
+    <a href="https://github.com/ihub-pub/plugins/blob/main/LICENSE">
+        <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License">
     </a>
 </p>
 
-> `IHub Plugins`是一套为Gradle项目提供基础设施的插件集，可以极大简化项目配置。包含插件如下：
+---
 
-<table>
-<tr><td>项目目录</td><td>插件ID</td><td>插件名称</td><td>插件类型</td><td>插件描述</td></tr>
-<tr><td>ihub-settings</td><td><a href="https://doc.ihub.pub/plugins/list/iHubSettings">pub.ihub.plugin.ihub-settings</a></td><td>设置插件</td><td>Settings</td><td>插件仓库、插件版本以及子项目管理</td></tr>
-<tr><td rowspan="3">ihub-plugins</td><td><a href="https://doc.ihub.pub/plugins/list/iHub">pub.ihub.plugin</a></td><td>基础插件</td><td>Project</td><td>基础插件，用于配置组件仓库以及一些其他扩展属性</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubVersion">pub.ihub.plugin.ihub-version</a></td><td>版本插件</td><td>Project</td><td>集成并加强<a href="https://plugins.gradle.org/plugin/list/com.github.ben-manes.versions">ben-manes.versions</a>插件</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubProfiles">pub.ihub.plugin.ihub-profiles</a></td><td>配置文件插件</td><td>Project</td><td>Gradle版本 Maven POM Profiles</td></tr>
-<tr><td>ihub-copyright</td><td><a href="https://doc.ihub.pub/plugins/list/iHubCopyright">pub.ihub.plugin.ihub-copyright</a></td><td>版权插件</td><td>Project</td><td>自动配置IDEA版权信息</td></tr>
-<tr><td>ihub-bom</td><td><a href="https://doc.ihub.pub/plugins/list/iHubBom">pub.ihub.plugin.ihub-bom</a></td><td>Bom插件</td><td>Project</td><td>配置项目依赖组件版本以及兼容性管理</td></tr>
-<tr><td>ihub-java</td><td><a href="https://doc.ihub.pub/plugins/list/iHubJava">pub.ihub.plugin.ihub-java</a></td><td>Java插件</td><td>Project</td><td>集成Java相关插件环境、配置一些默认依赖以及兼容性配置</td></tr>
-<tr><td>ihub-groovy</td><td><a href="https://doc.ihub.pub/plugins/list/iHubGroovy">pub.ihub.plugin.ihub-groovy</a></td><td>Groovy插件</td><td>Project</td><td>集成Groovy相关插件环境以及配置Groovy默认组件依赖</td></tr>
-<tr><td>ihub-kotlin</td><td><a href="https://doc.ihub.pub/plugins/list/iHubKotlin">pub.ihub.plugin.ihub-kotlin</a></td><td>Kotlin插件</td><td>Project</td><td>集成Kotlin相关插件环境</td></tr>
-<tr><td>ihub-publish</td><td><a href="https://doc.ihub.pub/plugins/list/iHubPublish">pub.ihub.plugin.ihub-publish</a></td><td>发布插件</td><td>Project</td><td>集成组件发布相关插件环境，配置发布仓库以及其他默认配置</td></tr>
-<tr><td rowspan="2">ihub-verification</td><td><a href="https://doc.ihub.pub/plugins/list/iHubTest">pub.ihub.plugin.ihub-test</a></td><td>测试插件</td><td>Project</td><td>配置测试任务</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubVerification">pub.ihub.plugin.ihub-verification</a></td><td>验证插件</td><td>Project</td><td>配置代码静态检查以及测试用例覆盖率等</td></tr>
-<tr><td rowspan="2">ihub-spring</td><td><a href="https://doc.ihub.pub/plugins/list/iHubBoot">pub.ihub.plugin.ihub-boot</a></td><td>Boot插件</td><td>Project</td><td>集成spring-boot插件以及镜像默认配置</td></tr>
-<tr><td><a href="https://doc.ihub.pub/plugins/list/iHubNative">pub.ihub.plugin.ihub-native</a></td><td>Native插件</td><td>Project</td><td>基于ihub-boot扩展引入org.graalvm.buildtools.native插件</td></tr>
-<tr><td>ihub-shadow</td><td><a href="https://doc.ihub.pub/plugins/list/iHubShadow">pub.ihub.plugin.ihub-shadow</a></td><td>Shadow插件</td><td>Project</td><td>集成 <a href="https://imperceptiblethoughts.com/shadow">Shadow</a> 插件</td></tr>
-<tr><td>ihub-javaagent</td><td><a href="https://doc.ihub.pub/plugins/list/iHubJavaagent">pub.ihub.plugin.ihub-javaagent</a></td><td>Javaagent插件</td><td>Project</td><td>集成 <a href="https://github.com/ryandens/javaagent-gradle-plugin">Javaagent</a> 插件</td></tr>
-<tr><td>ihub-git-hooks</td><td><a href="https://doc.ihub.pub/plugins/list/iHubGitHooks">pub.ihub.plugin.ihub-git-hooks</a></td><td>GitHooks插件</td><td>Project</td><td>配置GitHooks，可以为git操作配置一些钩子命令</td></tr>
-<tr><td>ihub-node</td><td><a href="https://doc.ihub.pub/plugins/list/iHubNode">pub.ihub.plugin.ihub-node</a></td><td>Node.js插件</td><td>Project</td><td>集成 <a href="https://plugins.gradle.org/plugin/com.github.node-gradle.node">node-gradle</a> 插件，扩展支持 cnmp</td></tr>
-</table>
+## 特性
 
-## 🧭 使用指南
+- **开箱即用**：零配置即可快速开始，默认配置遵循最佳实践
+- **高度可扩展**：灵活的扩展属性系统，支持多种配置方式
+- **依赖管理**：统一的 BOM 依赖版本管理，告别版本冲突
+- **多语言支持**：支持 Java、Groovy、Kotlin 等 JVM 语言
+- **Spring Boot 集成**：原生支持 Spring Boot 和 GraalVM Native
+- **代码质量**：内置代码检查、测试覆盖率等验证工具
+- **发布支持**：支持发布到 Maven Central、Gradle Plugin Portal
+
+## 插件列表
+
+### 核心插件
+
+| 插件 ID | 名称 | 类型 | 描述 |
+|---------|------|------|------|
+| [pub.ihub.plugin.ihub-settings](https://doc.ihub.pub/plugins/list/iHubSettings) | Settings | Settings | 插件仓库、版本管理及子项目管理 |
+| [pub.ihub.plugin](https://doc.ihub.pub/plugins/list/iHub) | Base | Project | 基础插件，配置组件仓库及扩展属性 |
+| [pub.ihub.plugin.ihub-version](https://doc.ihub.pub/plugins/list/iHubVersion) | Version | Project | 依赖版本检查与更新 |
+| [pub.ihub.plugin.ihub-profiles](https://doc.ihub.pub/plugins/list/iHubProfiles) | Profiles | Project | Gradle 版本 Maven POM Profiles |
+
+### 语言插件
+
+| 插件 ID | 名称 | 类型 | 描述 |
+|---------|------|------|------|
+| [pub.ihub.plugin.ihub-java](https://doc.ihub.pub/plugins/list/iHubJava) | Java | Project | Java 环境配置、默认依赖及兼容性 |
+| [pub.ihub.plugin.ihub-groovy](https://doc.ihub.pub/plugins/list/iHubGroovy) | Groovy | Project | Groovy 环境配置及组件依赖 |
+| [pub.ihub.plugin.ihub-kotlin](https://doc.ihub.pub/plugins/list/iHubKotlin) | Kotlin | Project | Kotlin 环境配置 |
+
+### 依赖管理
+
+| 插件 ID | 名称 | 类型 | 描述 |
+|---------|------|------|------|
+| [pub.ihub.plugin.ihub-bom](https://doc.ihub.pub/plugins/list/iHubBom) | BOM | Project | 依赖版本管理及兼容性配置 |
+
+### Spring 生态
+
+| 插件 ID | 名称 | 类型 | 描述 |
+|---------|------|------|------|
+| [pub.ihub.plugin.ihub-boot](https://doc.ihub.pub/plugins/list/iHubBoot) | Boot | Project | Spring Boot 插件及镜像配置 |
+| [pub.ihub.plugin.ihub-native](https://doc.ihub.pub/plugins/list/iHubNative) | Native | Project | GraalVM Native 编译支持 |
+
+### 验证与测试
+
+| 插件 ID | 名称 | 类型 | 描述 |
+|---------|------|------|------|
+| [pub.ihub.plugin.ihub-test](https://doc.ihub.pub/plugins/list/iHubTest) | Test | Project | 测试任务配置 |
+| [pub.ihub.plugin.ihub-verification](https://doc.ihub.pub/plugins/list/iHubVerification) | Verification | Project | 代码静态检查、测试覆盖率 |
+
+### 构建与发布
+
+| 插件 ID | 名称 | 类型 | 描述 |
+|---------|------|------|------|
+| [pub.ihub.plugin.ihub-publish](https://doc.ihub.pub/plugins/list/iHubPublish) | Publish | Project | 组件发布配置 |
+| [pub.ihub.plugin.ihub-shadow](https://doc.ihub.pub/plugins/list/iHubShadow) | Shadow | Project | Shadow 打包支持 |
+| [pub.ihub.plugin.ihub-javaagent](https://doc.ihub.pub/plugins/list/iHubJavaagent) | Javaagent | Project | Javaagent 集成 |
+
+### 工具插件
+
+| 插件 ID | 名称 | 类型 | 描述 |
+|---------|------|------|------|
+| [pub.ihub.plugin.ihub-copyright](https://doc.ihub.pub/plugins/list/iHubCopyright) | Copyright | Project | IDEA 版权信息配置 |
+| [pub.ihub.plugin.ihub-git-hooks](https://doc.ihub.pub/plugins/list/iHubGitHooks) | GitHooks | Project | Git 钩子配置 |
+| [pub.ihub.plugin.ihub-node](https://doc.ihub.pub/plugins/list/iHubNode) | Node.js | Project | Node.js 及 cnpm 支持 |
+
+## 快速开始
+
+### 环境要求
+
+| 插件版本 | Java | Gradle |
+|----------|------|--------|
+| 1.9.3+ | 17~25 | 9.3.1 |
+| 1.9.1+ | 17~25 | 9.1.0 |
+| 1.9.0 | 17~24 | 9.0.0 |
+| 1.7.6+ | 17~23 | 8.13 |
+| 1.7.2+ | 17~23 | 8.4 |
+| 1.5.6+ | 17~21 | 8.0 |
 
 ### 安装
-> 在你的项目的`build.gradle`文件中添加以下内容：
+
+在 `settings.gradle` 中配置 Settings 插件：
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin' version '${ihub.plugin.version}'
+    id 'pub.ihub.plugin.ihub-settings' version '1.9.4'
 }
 ```
 
-### 配置
-> 在你的项目的`gradle.properties`文件中可以添加如下配置：
+在 `build.gradle` 中应用插件：
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin'
+}
+```
+
+### 基础配置
+
+在 `gradle.properties` 中添加配置：
 
 ```properties
-# 是否启用本地仓库
+# 启用本地仓库
 iHub.mavenLocalEnabled=true
-# 是否启用阿里云代理仓库
+# 启用阿里云代理仓库
 iHub.mavenAliYunEnabled=true
 ```
 
-### 使用
-> Gradle构建时会自动配置本地仓库以及阿里云代理仓库，控制台将会打印如下文本：
+### 使用示例
+
+#### Java 项目
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-java'
+}
+
+iHubBom {
+    importBoms {
+        group('org.springframework.boot').module('spring-boot-dependencies').version('3.2.0')
+    }
+}
+```
+
+#### Spring Boot 项目
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-boot'
+}
+
+iHubBoot {
+    enabled = true
+    bootImage {
+        imageName = 'my-app:latest'
+    }
+}
+```
+
+#### Groovy 项目
+
+```groovy
+plugins {
+    id 'pub.ihub.plugin.ihub-groovy'
+}
+```
+
+构建时会自动配置仓库，控制台输出：
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                       Gradle Project Repos                                       │
 ├──────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ MavenLocal(file:/C:/Users/Henry/.m2/repository/)                                                 │
+│ MavenLocal(file:/C:/Users/User/.m2/repository/)                                                  │
 │ AliYunPublic(https://maven.aliyun.com/repository/public)                                         │
 │ MavenRepo                                                                                        │
 └──────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-更多使用方式参见 [快速上手](https://doc.ihub.pub/plugins/)
+更多使用方式请参考 [快速上手](https://doc.ihub.pub/plugins/)
 
-## 🔖 版本历史
+## 项目结构
 
-详细版本历史见 [Releases](https://github.com/ihub-pub/plugins/releases)，兼容性版本说明如下：
+```
+plugins/
+├── ihub-base/              # 核心基础设施
+├── ihub-base-test/         # 测试基础设施
+├── ihub-plugins/           # 核心插件（仓库、版本、Profiles）
+├── ihub-settings/          # Settings 插件
+├── ihub-bom/               # BOM 依赖管理
+├── ihub-java/              # Java 插件
+├── ihub-groovy/            # Groovy 插件
+├── ihub-kotlin/            # Kotlin 插件
+├── ihub-spring/            # Spring Boot 插件
+├── ihub-verification/      # 验证插件（测试、代码质量）
+├── ihub-publish/           # 发布插件
+├── ihub-shadow/            # Shadow 插件
+├── ihub-copyright/         # 版权插件
+├── ihub-githooks/          # Git Hooks 插件
+├── ihub-node/              # Node.js 插件
+├── ihub-javaagent/         # Javaagent 插件
+├── samples/                # 示例项目
+└── docs/                   # 文档站点
+```
 
-| Version | Java  | Gradle |
-|---------|-------|--------|
-| 1.9.3+  | 17~25 | 9.3.1  |
-| 1.9.1+  | 17~25 | 9.1.0  |
-| 1.9.0   | 17~24 | 9.0.0  |
-| 1.7.6+  | 17~23 | 8.13   |
-| 1.7.2+  | 17~23 | 8.4    |
-| 1.5.6+  | 17~21 | 8.0    |
-| 1.5.0+  | 11~21 | 8.0    |
-| 1.4.0+  | 8~20  | 8.0    |
-| 1.3.1+  | 17    | 8.0    |
-| 1.3.0   | 17    | 7.5.1  |
-| 1.2.4+  | 11    | 7.4.1  |
+## 技术栈
 
-## ✅ 项目状态
+| 技术 | 版本 | 描述 |
+|------|------|------|
+| Groovy | 4.0.x | 主要开发语言 |
+| Gradle | 9.x | 构建系统 |
+| Spock | 2.4 | BDD 测试框架 |
+| Gradle TestKit | - | 插件测试框架 |
+| CodeNarc | 3.7 | Groovy 静态分析 |
+
+## 构建命令
+
+```bash
+# 构建项目
+./gradlew build
+
+# 运行测试
+./gradlew test
+
+# 代码检查（跳过测试）
+./gradlew check -x test
+
+# 提交信息检查
+./gradlew commitCheck
+
+# 发布到本地 Maven 仓库
+./gradlew publishToMavenLocal
+
+# 清理构建
+./gradlew clean
+```
+
+## 配置属性
+
+属性支持多种配置方式，优先级从高到低：
+
+1. **系统属性** `-DiHub.property=value`
+2. **环境变量** `IHUB_PROPERTY=value`
+3. **项目属性** `gradle.properties` 或 `-Pproperty=value`
+4. **默认值**
+
+常用配置示例：
+
+| 配置项 | 描述 | 默认值 |
+|--------|------|--------|
+| `iHub.mavenLocalEnabled` | 启用本地仓库 | `false` |
+| `iHub.mavenAliYunEnabled` | 启用阿里云代理 | `true` |
+| `iHub.repoIncludeGroup` | 仓库包含组 | - |
+
+## 文档
+
+- [官方文档](https://doc.ihub.pub/plugins/)
+- [快速上手](https://doc.ihub.pub/plugins/basics/gradleBasic.html)
+- [插件列表](https://doc.ihub.pub/plugins/list/iHub.html)
+- [高级配置](https://doc.ihub.pub/plugins/advanced/multiAdvanced.html)
+
+## 项目状态
 
 ![Alt](https://repobeats.axiom.co/api/embed/577279f67858fb89c702e0cf0bc604e42decca5d.svg "Repobeats analytics image")
 
-## 👨‍💻 贡献指南
-请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 为该项目做出贡献
+## 贡献指南
+
+欢迎为项目做出贡献！请阅读 [贡献指南](https://github.com/ihub-pub/.github/blob/main/CONTRIBUTING.md) 了解详情。
 
 [![Contributors](https://contrib.rocks/image?repo=ihub-pub/plugins)](https://github.com/ihub-pub/plugins/graphs/contributors "Contributors")
+
+## 开源协议
+
+本项目基于 [Apache License 2.0](LICENSE) 开源协议。

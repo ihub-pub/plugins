@@ -32,7 +32,7 @@ plugins {
 iHubGitHooks {
     hooks.set(
         mapOf(
-            "pre-commit" to "./gradlew check -x test",
+            "pre-commit" to "./gradlew clean check -x test spotlessCheck spotlessApply",
             "commit-msg" to "./gradlew commitCheck"
         )
     )
