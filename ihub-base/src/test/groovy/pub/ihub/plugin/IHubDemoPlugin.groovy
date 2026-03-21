@@ -40,13 +40,14 @@ class IHubDemoPlugin extends IHubProjectPluginAware<IHubDemoExtension> {
             logger.info 'after extension'
         }
 
-        withTask('demo') {
+        // 使用新的懒加载API（推荐）
+        namedTask('demo') {
             logger.info it.name
         }
+        // 按类型配置任务
         withTask(DefaultTask) {
             logger.info it.name
         }
-        withTask 'demo'
     }
 
 }

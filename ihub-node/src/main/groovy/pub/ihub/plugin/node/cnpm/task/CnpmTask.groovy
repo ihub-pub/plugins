@@ -29,6 +29,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.UntrackedTask
 import org.gradle.process.ExecResult
 import pub.ihub.plugin.IHubTask
 import pub.ihub.plugin.node.cnpm.exec.CnpmExecRunner
@@ -42,6 +43,7 @@ import pub.ihub.plugin.node.cnpm.exec.CnpmExecRunner
         description = 'Install node packages using CNpm.'
 )
 @CompileStatic
+@UntrackedTask(because = 'CNpm install task')
 @SuppressWarnings('PropertyName')
 abstract class CnpmTask extends BaseTask {
 

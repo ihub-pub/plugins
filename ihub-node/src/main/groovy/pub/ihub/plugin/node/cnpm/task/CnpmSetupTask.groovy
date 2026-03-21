@@ -20,6 +20,7 @@ import groovy.transform.CompileStatic
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.UntrackedTask
 import pub.ihub.plugin.IHubTask
 import pub.ihub.plugin.node.IHubNodeExtension
 
@@ -32,6 +33,7 @@ import pub.ihub.plugin.node.IHubNodeExtension
         description = 'Setup a specific version of CNpm to be used by the build.'
 )
 @CompileStatic
+@UntrackedTask(because = 'CNpm setup task')
 @SuppressWarnings('AbstractClassWithoutAbstractMethod')
 abstract class CnpmSetupTask extends NpmSetupTask {
 

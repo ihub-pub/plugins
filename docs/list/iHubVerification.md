@@ -43,10 +43,10 @@ ruleSets = [
 | --------- | ----------- | ------- | --- | ------- | ------ | --- |
 | `pmdConsoleOutput` | 控制台是否打印PMD信息 | `false` | ✔ | ✔ | ❌ | ❌ |
 | `pmdIgnoreFailures` | PMD检查是否忽略失败 | `false` | ✔ | ✔ | ✔ | ❌ |
-| `pmdVersion` | PMD版本 | `6.55.0` | ✔ | ✔ | ❌ | ❌ |
+| `pmdVersion` | PMD版本 | `BOM版本` | ✔ | ✔ | ❌ | ❌ |
 | `codenarcIgnoreFailures` | Codenarc检查是否忽略失败 | `false` | ✔ | ✔ | ✔ | ❌ |
-| `codenarcVersion` | Codenarc版本 | `3.2.0` | ✔ | ✔ | ❌ | ❌ |
-| `jacocoVersion` | Jacoco版本 | `0.8.8` | ✔ | ✔ | ❌ | ❌ |
+| `codenarcVersion` | Codenarc版本 | `BOM版本` | ✔ | ✔ | ❌ | ❌ |
+| `jacocoVersion` | Jacoco版本 | `BOM版本` | ✔ | ✔ | ❌ | ❌ |
 | `jacocoBranchCoverageRuleEnabled` | 是否启用bundle分支覆盖检查 | `true` | ✔ | ✔ | ✔ | ❌ |
 | `jacocoBranchCoveredRatio` | bundle分支覆盖率 | `0.9` | ✔ | ✔ | ✔ | ❌ |
 | `jacocoInstructionCoverageRuleEnabled` | 是否启用bundle指令覆盖检查 | `true` | ✔ | ✔ | ✔ | ❌ |

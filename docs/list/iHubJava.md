@@ -20,12 +20,12 @@
 
 | Extension | Description | Default | Ext[^Ext] | Prj[^Prj] | Sys[^Sys] | Env[^Env] |
 | --------- |-------------| ----- |---|---|---|---|
-| `defaultDependencies` | 默认依赖（“,”分割）[详见](#默认依赖)，可以设置`false`关闭默认配置 | `log` | ✔ | ✔ | ❌ | ❌ |
+| `defaultDependencies` | 默认依赖（”,”分割）[详见](#默认依赖)，可以设置`false`关闭默认配置，可选值：`jaxb`、`log`、`doc`、`mapstruct`、`jmolecules`、`jmolecules-integrations` | `false` | ✔ | ✔ | ❌ | ❌ |
 | `compileEncoding` | Java编译编码 | `UTF-8` | ✔ | ✔ | ❌ | ❌ |
 | `sourceCompatibility` | Java Source 兼容性配置   | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `targetCompatibility` | Java Target 兼容性配置   | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `gradleCompilationIncremental` | gradle增量编译  | `true` | ✔ | ✔ | ❌ | ❌ |
-| `compilerArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked  | ❌ | ✔ | ✔ | ❌ | ❌ |
+| `compilerArgs` | 编译扩展属性，多个参数用空格分隔，如：-parameters -Xlint:unchecked  | ❌ | ✔ | ✔ | ✔ | ❌ |
 | `jvmArgs` | JVM扩展属性，多个参数用空格分隔，如：-XX:+UseG1GC -Xms128m -Xmx512m  | ❌ | ✔ | ✔ | ❌ | ❌ |
 | `jmoleculesArchitecture` | JMolecules架构（可选类型：cqrs、layered、onion）[详见](https://jmolecules.org) | `onion` | ✔ | ✔ | ❌ | ❌ |
 

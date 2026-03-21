@@ -44,6 +44,9 @@ classes
 # VS Code
 .vscode
 
+# Claude Code
+.claude
+
 # Package Files #
 *.jar
 *.war

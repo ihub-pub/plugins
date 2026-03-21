@@ -18,6 +18,7 @@ package pub.ihub.plugin.node.cnpm.task
 import groovy.transform.CompileStatic
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.UntrackedTask
 import pub.ihub.plugin.IHubTask
 
 /**
@@ -29,6 +30,7 @@ import pub.ihub.plugin.IHubTask
         description = 'Sync node packages using CNpm.'
 )
 @CompileStatic
+@UntrackedTask(because = 'CNpm sync task')
 @SuppressWarnings('PropertyName')
 class CnpmSyncTask extends CnpmTask {
 

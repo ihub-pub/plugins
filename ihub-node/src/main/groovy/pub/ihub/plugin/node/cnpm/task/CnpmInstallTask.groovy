@@ -33,6 +33,7 @@ import static org.gradle.api.tasks.PathSensitivity.RELATIVE
         description = 'Install node packages using CNpm.'
 )
 @CompileStatic
+@UntrackedTask(because = 'CNpm install task')
 @SuppressWarnings(['NoWildcardImports', 'PropertyName'])
 class CnpmInstallTask extends CnpmTask {
 
