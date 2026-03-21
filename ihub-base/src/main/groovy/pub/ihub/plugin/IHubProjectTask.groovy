@@ -18,6 +18,7 @@ package pub.ihub.plugin
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.UntrackedTask
 
 
 
@@ -26,6 +27,7 @@ import org.gradle.api.tasks.TaskAction
  * @author henry
  */
 @CompileStatic
+@UntrackedTask(because = 'Abstract task')
 abstract class IHubProjectTask extends DefaultTask {
 
     @TaskAction

@@ -160,14 +160,51 @@ abstract class IHubProjectPluginAware<T extends IHubExtensionAware> implements P
         project.tasks.register name, taskClass, action
     }
 
+    /**
+     * 按类型配置所有任务（懒加载）
+     * @param taskClass 任务类型
+     * @param action 配置动作
+     */
     @CompileStatic(SKIP)
     protected <T extends Task> void withTask(Class<T> taskClass, Action<? super T> action) {
         project.tasks.withType taskClass, action
     }
 
+    /**
+     * 通过名称获取任务实例（即时求值，不推荐用于配置阶段）
+     * @param name 任务名称
+     * @param action 配置动作（可选）
+     * @return 任务实例
+     * @deprecated 建议使用 {@link #namedTask(String, Action)} 进行懒加载配置
+     */
+    @Deprecated
     @CompileStatic(SKIP)
     protected <T extends Task> T withTask(String name, Action<? super T> action = null) {
         project.tasks.getByName(name, action ?: doNothing()) as T
+    }
+
+    /**
+     * 通过名称获取任务Provider（懒加载，推荐）
+     * @param name 任务名称
+     * @param action 配置动作（可选）
+     * @return TaskProvider
+     */
+    @CompileStatic(SKIP)
+    protected <T extends Task> TaskProvider<T> namedTask(String name, Action<? super T> action = null) {
+        project.tasks.named(name, action ?: doNothing()) as TaskProvider<T>
+    }
+
+    /**
+     * 通过名称和类型获取任务Provider（懒加载，推荐）
+     * @param name 任务名称
+     * @param taskClass 任务类型
+     * @param action 配置动作（可选）
+     * @return TaskProvider
+     */
+    @CompileStatic(SKIP)
+    protected <T extends Task> TaskProvider<T> namedTask(
+            String name, Class<T> taskClass, Action<? super T> action = null) {
+        project.tasks.named(name, taskClass, action ?: doNothing())
     }
 
     protected void withExtension(EvaluateStage stage = null, Action<T> action) {

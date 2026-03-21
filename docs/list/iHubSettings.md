@@ -149,9 +149,9 @@ iHubSettings {
 
 | Plugin                      | Version                                                                             |
 |-----------------------------|-------------------------------------------------------------------------------------|
-| `com.gradle.plugin-publish` | [1.2.0](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)                |
-| `pub.ihub.plugin.*`         | [1.4.1](https://plugins.gradle.org/plugin/pub.ihub.plugin)                          |
-| `io.freefair.*`             | [8.0.1](https://docs.freefair.io/gradle-plugins/8.0.1/reference/#_settings_plugins) |
+| `com.gradle.plugin-publish` | [2.1.1](https://plugins.gradle.org/plugin/com.gradle.plugin-publish)               |
+| `pub.ihub.plugin.*`         | 与当前插件版本一致                                                                   |
+| `io.freefair.*`             | [9.2.0](https://docs.freefair.io/gradle-plugins/current/reference/#_settings_plugins) |
 
 使用插件时可以不用加版本号，配置如下：
 

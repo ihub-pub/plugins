@@ -17,7 +17,7 @@ Any time you write or modify code, you **MUST** follow these steps:
 4. **Documentation**: Code and documentation **MUST** correspond. Always synchronize doc updates!
    - Update `docs/list/<plugin_name>.md`
    - Update `README.md`
-   - Update this file `docs/AGENTS.md` if agent rules change.
+   - Update this file `docs/CLAUDE.md` if agent rules change.
 5. **Final Verification**: `./gradlew build`
 
 ## 3. Code Style & Guidelines
@@ -50,7 +50,10 @@ Any time you write or modify code, you **MUST** follow these steps:
 ### Plugin Architecture
 - **Lazy Configuration**: ALWAYS use `Property<T>` and `Provider<T>`. Never evaluate (`.get()`) during the configuration phase.
 - **Task Registration**: ALWAYS use `register()` rather than `create()`.
+- **Task Lookup**: Prefer `tasks.named()` over `tasks.getByName()` for lazy reference.
+- **Extension Definition**: Prefer interface-based extensions with `Property<T>` getters.
 - **Annotations**: Extensively use `@IHubPlugin`, `@IHubExtension`, `@IHubProperty`, and `@IHubTask`.
+- **Avoid `afterEvaluate`**: Prefer lazy APIs (`Provider.map()`, `configureEach()`) when possible.
 
 ## 4. Build & Test Commands Summary
 - Build project: `./gradlew build`
@@ -64,3 +67,16 @@ Any time you write or modify code, you **MUST** follow these steps:
 - ❌ Using deprecated Gradle APIs (e.g., `buildDir`).
 - ❌ Skipping static analysis or tests.
 - ❌ Discrepancies between code and docs.
+- ❌ Using `tasks.create()` instead of `tasks.register()`.
+- ❌ Using `tasks.getByName()` instead of `tasks.named()`.
+- ❌ Using `afterEvaluate` when lazy APIs can achieve the same result.
+- ❌ Upgrading Gradle without reviewing release notes and testing.
+
+## 6. Gradle Version Upgrades
+When upgrading Gradle version, **MUST**:
+1. Review [Gradle Release Notes](https://docs.gradle.org/current/release-notes.html) for breaking changes.
+2. Check [Gradle Upgrading Guide](https://docs.gradle.org/current/userguide/upgrading_version_*.html) for deprecations.
+3. Identify deprecated APIs and update accordingly.
+4. Run full test suite (`./gradlew test`).
+5. Update `gradle-wrapper.properties` with the new version.
+6. Evaluate if plugin needs adaptation for new features or API changes.
