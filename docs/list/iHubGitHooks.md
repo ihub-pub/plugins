@@ -94,6 +94,15 @@ plugins {
 
 :::
 
+## 任务
+
+| 任务 ID | 类型 | 说明 |
+|---------|------|------|
+| `iHubGitHooksSetup` | `IHubGitHooksSetupTask` | 在执行阶段调用 `git config core.hooksPath ...`（替代旧版在配置阶段执行的写法），与 `--configuration-cache` 兼容。被 `help` 任务依赖，因此任意命令都会触发一次 |
+| `commitCheck` | `IHubCommitCheckTask` | 校验最近一次 commit message 是否符合 [Conventional Commits](https://www.conventionalcommits.org/) 规则。可独立执行 `./gradlew commitCheck`，亦可被 commit-msg hook 调用 |
+
+> 自 1.9.5 起，`commitCheck` 不再持有 `Project` / `extension` 闭包引用，改为通过 `RegularFileProperty` 接收 `.git/COMMIT_EDITMSG` 路径并通过 `@Internal` 注入扩展，以保证 Configuration Cache 兼容。
+
 ## 自定义hooks路径使用示例
 
 配置自定义hooks路径，并在自定义路径下添加相关hooks配置

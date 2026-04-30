@@ -20,7 +20,6 @@ import groovy.transform.Memoized
 import io.freefair.gradle.plugins.github.GithubPomPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlatformPlugin
@@ -46,6 +45,7 @@ import tech.yanand.gradle.mavenpublish.MavenCentralPublishPlugin
 
 import static cn.hutool.http.HttpUtil.get
 import static io.freefair.gradle.util.GitUtil.isGithubActions
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
  * 组件发布插件
@@ -56,9 +56,9 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
     @Override
     void apply() {
-        afterEvaluate {
+        withExtension(AFTER) { ext ->
             // 引入GithubPom插件
-            if (extension.applyGithubPom.get() && isGithubActions(project.providers)) {
+            if (ext.applyGithubPom.get() && isGithubActions(project.providers)) {
                 applyPlugin GithubPomPlugin
                 withExtension(PublishingExtension) {
                     it.publications.withType MavenPublication, this::configurePomDevelopers
@@ -69,9 +69,9 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
 
             configPublish project, iHubExt
 
-            configSigning project, extension
+            configSigning project, ext
 
-            if (extension.publishMavenCentral.get()) {
+            if (ext.publishMavenCentral.get()) {
                 applyPlugin MavenCentralPublishPlugin
                 withExtension(MavenCentralExtension) {
                     it.authToken.set Base64.encoder.encodeToString((iHubExt.repoUsername.orNull + ':' + iHubExt.repoPassword.orNull).bytes)
@@ -79,7 +79,7 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
             }
 
             // 添加配置元信息
-            if (hasPlugin(JavaPlugin) && extension.addConfigurationMetaInformation.get()) {
+            if (hasPlugin(JavaPlugin) && ext.addConfigurationMetaInformation.get()) {
                 withExtension(IHubBomExtension) {
                     it.dependencies {
                         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -205,23 +205,24 @@ class IHubPublishPlugin extends IHubProjectPluginAware<IHubPublishExtension> {
     }
 
     private TaskProvider registerJavadocsJar() {
+        def javadocProvider = project.tasks.named('javadoc')
+        javadocProvider.configure {
+            it.options.addBooleanOption 'html5', true
+            it.options.encoding = 'UTF-8'
+        }
         registerTask('javadocsJar', Jar) {
             it.archiveClassifier.set 'javadoc'
-            Task javadocTask = it.project.tasks.getByName('javadoc').tap {
-                options.addBooleanOption 'html5', true
-                options.encoding = 'UTF-8'
-            }
-            it.dependsOn javadocTask
-            it.from javadocTask
+            it.dependsOn javadocProvider
+            it.from javadocProvider.map { it.destinationDir }
         }
     }
 
     private TaskProvider registerGroovydocJar() {
         registerTask('groovydocJar', Jar) {
             it.archiveClassifier.set 'groovydoc'
-            Task groovydocTask = it.project.tasks.getByName 'groovydoc'
-            it.dependsOn groovydocTask
-            it.from groovydocTask.destinationDir
+            def groovydocProvider = it.project.tasks.named('groovydoc')
+            it.dependsOn groovydocProvider
+            it.from groovydocProvider.map { it.destinationDir }
         }
     }
 

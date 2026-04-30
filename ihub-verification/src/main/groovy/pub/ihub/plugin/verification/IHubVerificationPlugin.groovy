@@ -19,6 +19,8 @@ import groovy.transform.CompileStatic
 import groovy.transform.TupleConstructor
 import groovy.xml.XmlParser
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.plugins.GroovyPlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.quality.CodeNarcExtension
@@ -156,30 +158,35 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
         withExtension(AFTER) { ext ->
             withExtension(JacocoPluginExtension).toolVersion = ext.jacocoVersion.get()
 
-            JacocoCoverageVerification jacocoCoverageVerification = withTask 'jacocoTestCoverageVerification',
-                JACOCO_COVERAGE_CONFIG.curry(ext)
+            TaskProvider<JacocoCoverageVerification> jacocoCoverageVerification = namedTask(
+                'jacocoTestCoverageVerification', JacocoCoverageVerification, JACOCO_COVERAGE_CONFIG.curry(ext))
 
-            // 覆盖率报告排除main class
-            JacocoReport jacocoTestReport = withTask('jacocoTestReport') { task ->
+            // 覆盖率报告排除 main class —— 使用 Provider 重置 classDirectories，
+            // 避免 afterEvaluate 副作用（Configuration Cache 友好）
+            Project p = project
+            TaskProvider<JacocoReport> jacocoTestReport = namedTask('jacocoTestReport', JacocoReport) { task ->
                 task.reports {
                     xml.required = true
                     html.required = true
                 }
-                project.afterEvaluate {
-                    task.classDirectories.from = project.files(task.classDirectories.files.collect { dir ->
-                        project.fileTree dir: dir, exclude: ext.jacocoReportExclusion.get().tokenize(',')
-                    })
-                }
+                Provider<List<String>> exclusionProvider = ext.jacocoReportExclusion.map { it.tokenize(',') }
+                org.gradle.api.file.ConfigurableFileCollection cd = task.classDirectories
+                Set<File> originalDirs = cd.files
+                cd.setFrom(p.provider {
+                    originalDirs.collect { dir -> p.fileTree(dir: dir, exclude: exclusionProvider.get()) }
+                })
 
+                // doLast 仅捕获局部变量，避免引用 plugin 实例
+                IHubVerificationPlugin pluginRef = this
                 task.doLast {
-                    File xml = reports.xml.outputLocation.asFile.get()
-                    printJacocoReportCoverage xml
+                    File xml = task.reports.xml.outputLocation.asFile.get()
+                    pluginRef.printJacocoReportCoverage xml
                 }
             }
 
             // 一些任务依赖和属性设置
-            withTask('check').finalizedBy jacocoCoverageVerification
-            withTask('test').finalizedBy jacocoTestReport
+            namedTask('check').configure { it.finalizedBy jacocoCoverageVerification }
+            namedTask('test').configure { it.finalizedBy jacocoTestReport }
         }
     }
 
@@ -197,6 +204,7 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
         }
     }
 
+    @SuppressWarnings('UnusedPrivateMethod')
     private void printJacocoReportCoverage(File xml) {
         def counters = new XmlParser().tap {
             setFeature 'http://apache.org/xml/features/nonvalidating/load-external-dtd', false
@@ -208,37 +216,18 @@ class IHubVerificationPlugin extends IHubProjectPluginAware<IHubVerificationExte
             }]
         }
 
-        extension.setExtProperty 'jacocoReportData', reportData
-
         String title = project.name.toUpperCase() + ' Jacoco Report Coverage'
         printConfigContent title, reportData.collect { type, data ->
             [type, data.total(), data.missed, data.covered, data.coverage]
         }, 'Type', 'Total', 'Missed', 'Covered', 'Coverage'
 
-        if (!extension.findExtProperty(extension.rootProject, 'printJacocoReportCoverage', false)) {
-            // 此处弃用方法待观察 https://github.com/gradle/gradle/issues/20151
-            project.gradle.buildFinished {
-                printFinishedJacocoReportCoverage()
-            }
-            extension.setExtProperty extension.rootProject, 'printJacocoReportCoverage', true
-        }
-    }
-
-    private void printFinishedJacocoReportCoverage() {
-        Map<String, ReportData> total = RULE_TYPE.collectEntries { [(it): new ReportData(0, 0)] }
-        List report = extension.rootProject.allprojects.collect { p ->
-            Map<String, ReportData> jacocoReportData = extension.findExtProperty p, 'jacocoReportData'
-            jacocoReportData ? [p.name] + jacocoReportData.collect { type, data ->
-                total.get(type).tap {
-                    covered += data.covered
-                    missed += data.missed
-                }
-                data.coverage
-            } : null
-        } - null
-        report << (['total'] + total.values().coverage)
-        printConfigContent 'Jacoco Report Coverage', report,
-            'Project', 'Instruct', 'Branch', 'Line', 'Cxty', 'Method', 'Class'
+        // 注册到 BuildService 进行跨项目覆盖率汇总（替代已弃用的 gradle.buildFinished + rootProject.allprojects）
+        Provider<JacocoCoverageReportService> serviceProvider = project.gradle.sharedServices
+            .registerIfAbsent('jacocoCoverageReportService', JacocoCoverageReportService) { }
+        serviceProvider.get().addProjectCoverage(
+            project.name,
+            RULE_TYPE.collect { type -> reportData.get(type).coverage }
+        )
     }
 
     @CompileStatic

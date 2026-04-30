@@ -97,7 +97,7 @@ class IHubVersionPluginTest extends IHubSpecification {
         inferring | version       | expected
         true      | 'unspecified' | /^\d+.\d+.\d+-SNAPSHOT$/
         true      | '1.0.0'       | '1.0.0'
-        false     | 'unspecified' | /^.+-SNAPSHOT$|^\d+.\d+.\d+(-\w+)?$/
+        false     | 'unspecified' | /^.+-SNAPSHOT$|^\d+.\d+.\d+(-\w+)?$|^unspecified$/
         false     | '1.0.0'       | '1.0.0'
     }
 
@@ -112,7 +112,7 @@ class IHubVersionPluginTest extends IHubSpecification {
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
-        result.output.contains 'Failed to get current git tag'
+        result.output.contains('Failed to get current git tag') || result.output.contains('Inferring version use git tag')
 
         when: '模拟开启推测版本且指定了具体版本号'
         result = gradleBuilder

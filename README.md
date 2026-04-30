@@ -100,7 +100,8 @@ IHub 提供了丰富的插件生态，按功能可分为以下几类：
 
 | 插件版本 | Java | Gradle |
 |----------|------|--------|
-| **1.9.4+** | 17 ~ 25 | 9.3.1+ |
+| **1.9.5+** | 17 ~ 25 | 9.4.1+ |
+| **1.9.4** | 17 ~ 25 | 9.3.1+ |
 | **1.9.3** | 17 ~ 25 | 9.3.1 |
 | **1.9.1+** | 17 ~ 25 | 9.1.0 |
 | **1.9.0** | 17 ~ 24 | 9.0.0 |
@@ -114,7 +115,7 @@ IHub 提供了丰富的插件生态，按功能可分为以下几类：
 
 ```groovy
 plugins {
-    id 'pub.ihub.plugin.ihub-settings' version '1.9.4'
+    id 'pub.ihub.plugin.ihub-settings' version '1.9.5'
 }
 ```
 
@@ -229,10 +230,12 @@ plugins/
 
 ## 🛠️ 技术栈与常用命令 (Tech Stack & Commands)
 
-- **开发语言**: Groovy 4.0.x
-- **构建系统**: Gradle 9.x
-- **测试框架**: Spock 2.4 + Gradle TestKit
-- **静态分析**: CodeNarc 3.7
+- **开发语言**: Groovy 4.0.29（`@CompileStatic`）
+- **构建系统**: Gradle 9.4.1（wrapper 锁定）
+- **测试框架**: Spock 2.4-groovy-4.0 + Gradle TestKit
+- **静态分析**: CodeNarc 3.7.0、PMD 7.23.0
+- **覆盖率**: JaCoCo 0.8.14（通过 `pl.droidsonroids.jacoco.testkit` 适配）
+- **代码格式**: Spotless 8.4.0
 
 ```bash
 # 🔨 构建整个项目
@@ -243,6 +246,9 @@ plugins/
 
 # 🔍 执行代码质量检查 (跳过测试)
 ./gradlew check -x test
+
+# ✨ 应用代码格式与版权头
+./gradlew spotlessApply
 
 # 💬 检查 Git 提交信息格式
 ./gradlew commitCheck

@@ -13,6 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+plugins {
+    id("ihub.module-conventions")
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-publish")
+}
+
 description = "IHub Publish Gradle Plugins"
 
 dependencies {
@@ -20,9 +28,9 @@ dependencies {
     implementation(project(":ihub-plugins"))
     compileOnly(libs.freefair.utils)
     implementation(libs.freefair.github)
-    implementation("cn.hutool:hutool-http")
+    implementation(libs.hutool.http)
     // GithubPom插件运行时依赖
-    runtimeOnly("com.google.code.gson:gson")
+    runtimeOnly(libs.gson)
     implementation(libs.maven.central)
 }
 
@@ -33,7 +41,7 @@ gradlePlugin {
             displayName = "IHub Publish"
             description = "IHub Publish Gradle Plugin"
             implementationClass = "pub.ihub.plugin.publish.IHubPublishPlugin"
-            tags.set(listOf("ihub", "java", "publish"))
+            tags.set(listOf("ihub", "jvm", "publish"))
         }
     }
 }

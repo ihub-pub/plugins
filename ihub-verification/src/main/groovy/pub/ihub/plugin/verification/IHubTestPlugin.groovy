@@ -75,7 +75,7 @@ class IHubTestPlugin extends IHubProjectPluginAware<IHubTestExtension> {
         }
 
         withExtension(AFTER) { ext ->
-            withTask('test') { Test it ->
+            namedTask('test', Test) { Test it ->
                 ext.systemProperties it, '.test-java-local.properties'
 
                 it.useJUnitPlatform()

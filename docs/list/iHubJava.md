@@ -145,6 +145,8 @@ config.stopBubbling = true
 lombok.addLombokGeneratedAnnotation = true
 ```
 
+> 自 1.9.5 起，该文件由 `iHubLombokConfig` 任务（`IHubLombokConfigTask`）在执行阶段生成（带 `@OutputFile`），不再使用 `afterEvaluate`。所有 `AbstractCompile` 任务自动 `dependsOn` 它，与 Configuration Cache 兼容。
+
 ### 配置Jar属性
 
 | 属性 | 值 |

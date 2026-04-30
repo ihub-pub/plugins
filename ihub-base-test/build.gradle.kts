@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 the original author or authors.
+ * Copyright (c) 2022-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-description = "IHub Gradle Plugins Test"
+plugins {
+    id("ihub.module-conventions")
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-publish")
+}
+
+description = "IHub Gradle Plugins Test Fixtures (no Gradle plugin published)"
 
 dependencies {
     implementation(gradleTestKit())
     implementation("org.spockframework:spock-core")
 }
 
-gradlePlugin {
-    plugins {
-        create("iHubBaseTest") {
-            id = "pub.ihub.plugin.ihub-base-test"
-            displayName = "IHub Base Test"
-            description = "IHub Gradle Plugins Base Test"
-            implementationClass = "pub.ihub.plugin.test.IHubSpecification"
-            tags.set(listOf("ihub", "base", "test"))
-        }
-    }
-}
+// 注意：本模块仅提供 Spock TestKit 测试基类（IHubSpecification），不发布任何 Gradle 插件。
+// 因此故意不声明 gradlePlugin {} 块，避免 Plugin Portal 校验 implementationClass 时
+// 因 IHubSpecification 不是 Plugin<?> 实现而失败。

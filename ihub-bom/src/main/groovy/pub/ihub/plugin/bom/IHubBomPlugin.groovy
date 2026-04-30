@@ -43,10 +43,6 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             return
         }
 
-        project.gradle.taskGraph.whenReady {
-            extension.printConfigContent()
-        }
-
         // 如果项目为版本目录组件项目时，不继续执行插件
         if (hasPlugin(VersionCatalogPlugin)) {
             logger.trace 'Version catalog project, skip apply ihub-bom plugin'
@@ -68,6 +64,11 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
             configProject ext
 
             ext.refreshCommonSpecs()
+            // 使用嵌套 afterEvaluate 确保在其他插件（如 ihub-verification）注册完依赖后再打印
+            // 嵌套 afterEvaluate 会排在当前 afterEvaluate 批次之后执行
+            project.afterEvaluate {
+                ext.printConfigContent()
+            }
         }
     }
 
@@ -121,18 +122,20 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                     }
                 }
             }
-            // 配置组件需要能力
-            ext.capabilities.each { spec ->
-                compileClasspath {
-                    incoming.beforeResolve {
-                        dependencies.find { spec.dependency ==~ /$it.group|$it.group:$it.name|$it.name/ }?.with { dep ->
-                            project.dependencies {
+            // 配置组件需要能力（在 afterEvaluate 时完成，避免 Gradle 9 解析期间互斥约束）
+            if (ext.capabilities && project.configurations.findByName('implementation')) {
+                ext.capabilities.each { spec ->
+                    project.configurations.all { cfg ->
+                        if (!cfg.canBeResolved) {
+                            cfg.dependencies.findAll {
+                                spec.dependency ==~ /$it.group|$it.group:$it.name|$it.name/
+                            }.each { dep ->
                                 spec.capabilities.each { module ->
-                                    implementation("$dep.group:$dep.name") {
+                                    project.dependencies.add(cfg.name, project.dependencies.create("$dep.group:$dep.name") {
                                         capabilities {
                                             requireCapability module.contains(':') ? module : "${dep.group}:$module"
                                         }
-                                    }
+                                    })
                                 }
                             }
                         }

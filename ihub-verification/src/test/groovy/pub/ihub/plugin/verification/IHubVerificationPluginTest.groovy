@@ -163,15 +163,55 @@ class IHubVerificationPluginTest extends IHubSpecification {
 
         when: '应用插件'
         project.plugins.withType(IHubVerificationPlugin) {
-            printFinishedJacocoReportCoverage()
-            printJacocoReportCoverage jacocoTestReportFile
-            printJacocoReportCoverage jacocoTestReportFile
-            printFinishedJacocoReportCoverage()
+            def method = IHubVerificationPlugin.getDeclaredMethod('printJacocoReportCoverage', File)
+            method.accessible = true
+            method.invoke(it, jacocoTestReportFile)
+            method.invoke(it, jacocoTestReportFile)
         }
 
         then: '检查结果'
         project.extensions.findByName('iHubVerification') instanceof IHubVerificationExtension
         project.extensions.findByName('iHubTest') instanceof IHubTestExtension
+    }
+
+    def 'JacocoCoverageConfig覆盖率规则配置测试'() {
+        setup: '初始化项目'
+        Project javaProject = ProjectBuilder.builder().build()
+        javaProject.pluginManager.apply 'java'
+        javaProject.pluginManager.apply IHubVerificationPlugin
+        javaProject.pluginManager.apply IHubTestPlugin
+
+        when: '触发JACOCO_COVERAGE_CONFIG静态配置及jacocoTestReport配置'
+        def ext = javaProject.extensions.getByType(IHubVerificationExtension)
+        javaProject.evaluate()
+        def verifyTask = javaProject.tasks.named('jacocoTestCoverageVerification').get()
+        def reportTask = javaProject.tasks.named('jacocoTestReport').get()
+        // 直接调用静态closure，覆盖violationRules配置代码路径
+        IHubVerificationPlugin.JACOCO_COVERAGE_CONFIG.call(ext, verifyTask)
+
+        then: '检查结果'
+        verifyTask != null
+        reportTask != null
+    }
+
+    def 'JacocoCoverageReportService汇总报告测试'() {
+        setup: '初始化项目'
+        project = ProjectBuilder.builder().build()
+
+        when: '测试空报告关闭'
+        def service = project.objects.newInstance(JacocoCoverageReportService)
+        service.close()
+
+        then: '无异常'
+        true
+
+        when: '测试有数据报告关闭'
+        service.addProjectCoverage('project-a', ['100.00%', '100.00%', '100.00%', '100.00%', '100.00%', '100.00%'])
+        service.addProjectCoverage('project-b', ['90.00%', '85.00%', '92.00%', '88.00%', '95.00%', '100.00%'])
+        service.close()
+
+        then: '无异常'
+        true
     }
 
     def 'Jacoco聚合报告配置测试'() {

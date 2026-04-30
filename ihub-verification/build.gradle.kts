@@ -13,6 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+plugins {
+    id("ihub.module-conventions")
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-publish")
+}
+
 description = "IHub Verification Gradle Plugins"
 
 dependencies {
@@ -27,14 +35,14 @@ gradlePlugin {
             displayName = "IHub Test"
             description = "IHub Test Gradle Plugin"
             implementationClass = "pub.ihub.plugin.verification.IHubTestPlugin"
-            tags.set(listOf("ihub", "java", "test"))
+            tags.set(listOf("ihub", "jvm", "test"))
         }
         create("iHubVerification") {
             id = "pub.ihub.plugin.ihub-verification"
             displayName = "IHub Verification"
             description = "IHub Verification Gradle Plugin"
             implementationClass = "pub.ihub.plugin.verification.IHubVerificationPlugin"
-            tags.set(listOf("ihub", "java", "verification"))
+            tags.set(listOf("ihub", "jvm", "verification"))
         }
     }
 }

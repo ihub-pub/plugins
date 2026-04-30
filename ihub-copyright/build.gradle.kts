@@ -13,6 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+plugins {
+    id("ihub.module-conventions")
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-publish")
+}
+
 description = "IHub Copyright Gradle Plugins"
 
 dependencies {

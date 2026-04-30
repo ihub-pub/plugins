@@ -43,6 +43,37 @@ class IHubJavaagentPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def 'Javaagent插件SpringBoot功能测试'() {
+        setup: '初始化项目'
+        // 重写settings文件，将pluginManagement放在最前面
+        settingsFile.text = '''
+            pluginManagement {
+                repositories { mavenCentral() }
+            }
+            dependencyResolutionManagement {
+                versionCatalogs {
+                    ihub {
+                        from files('libs.versions.toml')
+                    }
+                }
+            }
+        '''
+        buildFile << '''
+            plugins {
+                id 'java'
+                id 'org.springframework.boot' version '3.2.0'
+                id 'pub.ihub.plugin.ihub-javaagent'
+            }
+            repositories { mavenCentral() }
+        '''
+
+        when: '构建项目'
+        def result = gradleBuilder.build()
+
+        then: '检查结果'
+        result.output.contains 'BUILD SUCCESSFUL'
+    }
+
     def 'Javaagent插件应用配置测试'() {
         setup: '初始化项目'
         buildFile << '''
@@ -65,10 +96,28 @@ class IHubJavaagentPluginTest extends IHubSpecification {
         Project project = ProjectBuilder.builder().build()
 
         when: '构建项目'
-        project.pluginManager.apply 'org.springframework.boot'
+        project.pluginManager.apply JavaagentBasePlugin
         def bootRun = project.tasks.register 'bootRun', JavaExec
         project.pluginManager.apply IHubJavaagentPlugin
         project.plugins.getPlugin(IHubJavaagentPlugin).configJavaExec bootRun.get()
+
+        then: '检查结果'
+        project.plugins.hasPlugin JavaagentBasePlugin
+    }
+
+    def 'Javaagent插件configureJavaExec方法测试'() {
+        setup: '初始化项目'
+        Project project = ProjectBuilder.builder().build()
+
+        when: '直接测试configureJavaExec路径'
+        project.pluginManager.apply JavaagentBasePlugin
+        project.tasks.register 'bootRun', JavaExec
+        project.pluginManager.apply IHubJavaagentPlugin
+        // 通过反射调用 private configureJavaExec 方法以覆盖该路径
+        def plugin = project.plugins.getPlugin(IHubJavaagentPlugin)
+        def method = IHubJavaagentPlugin.getDeclaredMethod('configureJavaExec', String)
+        method.accessible = true
+        method.invoke(plugin, 'bootRun')
 
         then: '检查结果'
         project.plugins.hasPlugin JavaagentBasePlugin

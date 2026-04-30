@@ -23,7 +23,6 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.TupleConstructor
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
@@ -154,25 +153,6 @@ class IHubGitHooksExtension extends IHubProjectExtensionAware {
     void writeHooks() {
         hooksDir.deleteDir()
         hooks.get().forEach this::writeHook
-    }
-
-    void execute(String hooksPath, Map<String, String> hooks) {
-        Logger logger = project.logger
-        try {
-            if (hooksPath) {
-                "git config core.hooksPath $hooksPath".execute()
-                logger.lifecycle 'Set git hooks path: ' + hooksPath
-            } else if (hooks) {
-                writeHooks()
-                'git config core.hooksPath .gradle/pub.ihub.plugin.hooks'.execute()
-                logger.lifecycle 'Set git hooks path: .gradle/pub.ihub.plugin.hooks'
-            } else {
-                'git config --unset core.hooksPath'.execute()
-                logger.lifecycle 'Unset git hooks path, learn more see https://doc.ihub.pub/plugins/iHubGitHooks'
-            }
-        } catch (e) {
-            logger.lifecycle 'Git hooks config fail: ' + e.message
-        }
     }
 
     void configDefaultGitCommitCheck() {

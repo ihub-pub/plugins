@@ -38,7 +38,7 @@ class IHubShadowPlugin extends IHubProjectPluginAware<IHubShadowExtension> {
     protected void apply() {
         withExtension(AFTER) { ext ->
             if (hasPlugin(ShadowApplicationPlugin)) {
-                withTask(SHADOW_RUN_TASK_NAME) { JavaJarExec it ->
+                namedTask(SHADOW_RUN_TASK_NAME, JavaJarExec) { JavaJarExec it ->
                     ext.systemProperties it, '.shadow-java-local.properties'
                 }
             }

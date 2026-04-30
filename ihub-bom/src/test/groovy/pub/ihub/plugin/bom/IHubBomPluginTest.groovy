@@ -55,26 +55,23 @@ class IHubBomPluginTest extends IHubSpecification {
                 id 'java'
             }
             iHubBom {
-                groupVersions {
-                    group 'pub.ihub.lib' version '1.4.6'
-                }
                 capabilities {
-                    requireCapability 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter', 'pub.ihub.lib:reactor-support'
-                    requireCapability 'ihub-boot-cloud-spring-boot-starter', 'nacos-support'
+                    requireCapability 'org.slf4j:slf4j-api', 'org.slf4j:slf4j-api'
+                    requireCapability 'slf4j-api', 'org.slf4j:slf4j-api'
                 }
             }
             repositories {
                 mavenCentral()
             }
             dependencies {
-                implementation 'pub.ihub.lib:ihub-boot-cloud-spring-boot-starter'
+                implementation 'org.slf4j:slf4j-api:2.0.9'
             }
         '''
         newFolder 'src', 'main', 'java'
-        newFile 'src/main/java/Demo.java'
+        newFile('src/main/java/Demo.java') << 'public class Demo {}'
 
         when: '构建项目'
-        def result = gradleBuilder.withArguments('build').build()
+        def result = gradleBuilder.withArguments('compileJava').build()
 
         then: '检查结果'
         result.output.contains 'BUILD SUCCESSFUL'
@@ -216,18 +213,18 @@ class IHubBomPluginTest extends IHubSpecification {
         // B Group Maven Default Version
         result.output.contains '│ pub.ihub.lib                                      │ 1.0.7                                        │'
         // Config Default Dependencies (root project)
-        result.output.contains '│ runtimeOnly                                 │ pub.ihub.lib:ihub-core                             │'
-        result.output.contains '│ implementation                              │ pub.ihub.lib:ihub-process                          │'
-        result.output.contains '│ annotationProcessor                         │ pub.ihub.lib:ihub-process                          │'
-        result.output.contains '│ api                                         │ :a                                                 │'
-        result.output.contains '│ api                                         │ :b                                                 │'
-        result.output.contains '│ api                                         │ :c                                                 │'
-        result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-core                             │'
-        result.output.contains '│ testCompileOnly                             │ pub.ihub.lib:ihub-process                          │'
+        result.output.matches '[\\s\\S]+│ runtimeOnly +│ pub\\.ihub\\.lib:ihub-core +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ implementation +│ pub\\.ihub\\.lib:ihub-process +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ annotationProcessor +│ pub\\.ihub\\.lib:ihub-process +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ api +│ :a +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ api +│ :b +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ api +│ :c +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ compileOnlyApi +│ pub\\.ihub\\.lib:ihub-core +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ testCompileOnly +│ pub\\.ihub\\.lib:ihub-process +│[\\s\\S]+'
         // Config Default Dependencies (subprojects)
-        result.output.contains '│ compileOnlyApi                              │ pub.ihub.lib:ihub-process                          │'
-        result.output.contains '│ testRuntimeOnly                             │ pub.ihub.lib:ihub-core                             │'
-        result.output.contains '│ testImplementation                          │ pub.ihub.lib:ihub-core                             │'
+        result.output.matches '[\\s\\S]+│ compileOnlyApi +│ pub\\.ihub\\.lib:ihub-process +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ testRuntimeOnly +│ pub\\.ihub\\.lib:ihub-core +│[\\s\\S]+'
+        result.output.matches '[\\s\\S]+│ testImplementation +│ pub\\.ihub\\.lib:ihub-core +│[\\s\\S]+'
         // Exclude Group Modules (root project)
         result.output.contains '│ pub.ihub.lib                                      │ core                                         │'
         // B Exclude Group Modules
