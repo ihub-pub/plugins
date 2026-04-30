@@ -6,6 +6,9 @@ pom.xml.asc
 lombok.config
 .history
 
+# Kotlin compiler #
+.kotlin
+
 # Gradle #
 .gradle
 build
