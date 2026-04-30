@@ -17,6 +17,7 @@ package pub.ihub.plugin.githooks
 
 import cn.hutool.core.util.URLUtil
 import pub.ihub.plugin.IHubPlugin
+import org.gradle.api.tasks.TaskProvider
 import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
@@ -31,50 +32,33 @@ class IHubGitHooksPlugin extends IHubProjectPluginAware<IHubGitHooksExtension> {
 
     @Override
     void apply() {
+        // 默认提交规则在配置阶段补齐
         withExtension(AFTER) {
             it.configDefaultGitCommitCheck()
-            it.execute it.hooksPath.orNull, it.hooks.get()
         }
 
-        project.tasks.register('commitCheck') {
-            it.group = 'ihub'
-            String header
-            Map footers
+        // git config 调用挪到执行阶段的 Task 中（Configuration Cache 友好）
+        TaskProvider<IHubGitHooksSetupTask> setupTask = registerTask(
+            'iHubGitHooksSetup', IHubGitHooksSetupTask) { task ->
+            task.group = 'ihub'
+            task.description = 'Configure git hooks path and write hook scripts.'
+            task.hooksPath.set extension.hooksPath
+            task.hooks.set extension.hooks
+            task.extension = extension
+        }
+        // 让任意构建调用都先执行 hooks 安装
+        namedTask('help').configure { it.dependsOn setupTask }
 
-            it.doFirst {
-                File commitMsgFile = project.rootProject.file '.git/COMMIT_EDITMSG'
-                if (!commitMsgFile.exists()) {
-                    logger.warn 'Not found file: {}', commitMsgFile.toURI()
-                    return
-                }
-
-                List<String> lines = commitMsgFile.readLines()
-                extension.assertRule !lines.empty, 'Commit msg is empty!'
-                logger.lifecycle 'Extract commit msg:'
-                logger.lifecycle '---------------------------------------------'
-                lines.each { logger.lifecycle it }
-                logger.lifecycle '---------------------------------------------'
-                header = lines.first()
-                footers = lines.findAll {
-                    it ==~ /^(${extension.footers*.name.join('|')}): .+/
-                }.collectEntries { it.split ': ' }
+        // 通过 ProjectLayout 解析 commit msg 文件，避免 task 体内引用 project（CC 友好）
+        File commitMsgFile = project.rootProject.layout.projectDirectory.file('.git/COMMIT_EDITMSG').asFile
+        registerTask('commitCheck', IHubCommitCheckTask) { task ->
+            task.group = 'ihub'
+            task.description = 'Validate the latest commit message against IHub git-hooks conventions.'
+            if (commitMsgFile.exists()) {
+                task.commitMsgFile.set project.layout.file(project.provider { commitMsgFile })
             }
-
-            it.doLast {
-                // 信息头整体格式检查
-                def (type, scope) = extension.checkHeader header
-                // 范围检查
-                extension.types.find { it.name == type }.checkScope scope
-                extension.footers.each {
-                    String footerValue = footers[it.name]
-                    // 注脚必填检查
-                    it.checkRequired footerValue
-                    // 注脚类型必填检查
-                    it.checkRequiredWithType type, footerValue
-                    // 注脚值正则校验
-                    it.checkValue footerValue
-                }
-            }
+            task.missingFileHint.set commitMsgFile.toURI().toString()
+            task.extension = extension
         }
 
         // 如果IDEA安装了Conventional Commit插件，自动生成并配置自定义配置

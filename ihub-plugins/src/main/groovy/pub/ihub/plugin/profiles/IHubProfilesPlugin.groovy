@@ -22,6 +22,8 @@ import pub.ihub.plugin.IHubPluginsExtension
 import pub.ihub.plugin.IHubPluginsPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
+
 /**
  * IHub配置文件插件
  * @author henry
@@ -35,9 +37,9 @@ class IHubProfilesPlugin extends IHubProjectPluginAware<IHubProfilesExtension> {
         if (profile.present) {
             extension.tokens.put 'profile', profile.get()
         }
-        afterEvaluate {
+        withExtension(AFTER) { ext ->
             withTask(ProcessResources) {
-                it.filter ReplaceTokens, tokens: extension.tokens.get()
+                it.filter ReplaceTokens, tokens: ext.tokens.get()
             }
         }
     }

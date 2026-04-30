@@ -4,6 +4,7 @@ logs
 pom.xml
 pom.xml.asc
 lombok.config
+.history
 
 # Gradle #
 .gradle
@@ -31,6 +32,7 @@ Thumbs.db
 .classpath
 .settings
 out
+bin
 .log
 *.class
 

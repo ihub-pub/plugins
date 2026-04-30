@@ -13,13 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+plugins {
+    id("ihub.module-conventions")
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-publish")
+}
+
 description = "IHub Gradle Plugins"
 
 dependencies {
     api(project(":ihub-bom"))
     implementation(libs.freefair.git)
     implementation(libs.ben.manes.versions)
-    implementation("cn.hutool:hutool-core")
+    implementation(libs.hutool.core)
 }
 
 gradlePlugin {
@@ -43,7 +51,7 @@ gradlePlugin {
             displayName = "IHub Profiles"
             description = "IHub Profiles Gradle Plugin"
             implementationClass = "pub.ihub.plugin.profiles.IHubProfilesPlugin"
-            tags.set(listOf("ihub", "java", "profiles"))
+            tags.set(listOf("ihub", "jvm", "profiles"))
         }
     }
 }

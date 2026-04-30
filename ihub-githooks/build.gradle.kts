@@ -13,10 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+plugins {
+    id("ihub.module-conventions")
+    id("pub.ihub.plugin.ihub-groovy")
+    id("pub.ihub.plugin.ihub-test")
+    id("pub.ihub.plugin.ihub-verification")
+    id("pub.ihub.plugin.ihub-publish")
+}
+
 description = "IHub Git Hooks Gradle Plugins"
 
 dependencies {
-    implementation("cn.hutool:hutool-core")
+    implementation(libs.hutool.core)
 }
 
 gradlePlugin {
@@ -26,7 +34,7 @@ gradlePlugin {
             displayName = "IHub GitHooks"
             description = "IHub Gradle GitHooks Gradle Plugin"
             implementationClass = "pub.ihub.plugin.githooks.IHubGitHooksPlugin"
-            tags.set(listOf("ihub", "git", "gitHooks", "idea"))
+            tags.set(listOf("ihub", "git", "git-hooks", "idea"))
         }
     }
 }

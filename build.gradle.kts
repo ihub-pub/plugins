@@ -1,9 +1,5 @@
-import org.gradle.api.tasks.testing.Test
-import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.gradle.testing.jacoco.tasks.JacocoReport
-
 /*
- * Copyright (c) 2021-2025 the original author or authors.
+ * Copyright (c) 2021-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +17,6 @@ plugins {
     alias(ihub.plugins.root)
     alias(ihub.plugins.copyright)
     alias(ihub.plugins.git.hooks)
-    alias(ihub.plugins.groovy) apply false
-    alias(ihub.plugins.verification) apply false
-    alias(ihub.plugins.publish) apply false
-    alias(libs.plugins.plugin.publish) apply false
-    // Jacoco暂不支持TestKit，如下插件用于集成Jacoco报告，详见：https://github.com/gradle/gradle/issues/1465
-    alias(libs.plugins.testkit)
 }
 
 iHubGitHooks {
@@ -38,44 +28,7 @@ iHubGitHooks {
     )
 }
 
-subprojects {
-    apply {
-        plugin("pub.ihub.plugin.ihub-groovy")
-        plugin("pub.ihub.plugin.ihub-test")
-        plugin("pub.ihub.plugin.ihub-verification")
-        plugin("pub.ihub.plugin.ihub-publish")
-        plugin("java-gradle-plugin")
-        plugin("com.gradle.plugin-publish")
-        plugin("pl.droidsonroids.jacoco.testkit")
-    }
+// 注意：原 subprojects {} 块已迁移至 buildSrc/src/main/kotlin/ihub.module-conventions.gradle.kts
+// （为 Gradle Isolated Projects 兼容做准备）。
+// 每个 ihub-* 子模块在自身 build.gradle.kts 顶部 plugins 块应用 id("ihub.module-conventions") 即可。
 
-    repositories {
-        gradlePluginPortal()
-    }
-
-    // 与Gradle内置Groovy版本保持一致
-    iHubBom {
-        importBoms {
-            group("org.apache.groovy").module("groovy-bom").version("4.0.29")
-            group("org.spockframework").module("spock-bom").version("2.4-groovy-4.0")
-        }
-    }
-
-    dependencies {
-        "implementation"(gradleApi())
-        if (!listOf("ihub-base", "ihub-base-test").contains(project.name)) {
-            "implementation"(project(":ihub-base"))
-            "testImplementation"(project(":ihub-base-test"))
-        }
-    }
-
-    configure<GradlePluginDevelopmentExtension> {
-        website.set("https://github.com/ihub-pub/plugins")
-        vcsUrl.set("https://github.com/ihub-pub/plugins.git")
-    }
-
-    // 跳过Gradle元数据生成，详见：https://github.com/gradle/gradle/issues/11862
-    tasks.withType(GenerateModuleMetadata::class) {
-        enabled = false
-    }
-}

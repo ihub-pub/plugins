@@ -72,4 +72,6 @@ iHubVersion {
 
 :::
 
+> 自 1.9.5 起，推断版本号使用 `GitDescribeValueSource`（基于 `ProviderFactory.of(ValueSource)` + `ExecOperations`）调用 `git describe --tags`，与 `--configuration-cache` 兼容；旧版本基于 `'git describe --tags'.execute()` 在配置阶段直接 fork 子进程，不兼容 CC。
+
 @include(../snippet/footnote.md)

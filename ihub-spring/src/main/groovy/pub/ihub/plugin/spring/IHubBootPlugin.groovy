@@ -55,7 +55,7 @@ class IHubBootPlugin extends IHubProjectPluginAware<IHubBootExtension> {
             withTask(BootJar) {
                 it.requiresUnpack ext.bootJarRequiresUnpack.get()
             }
-            withTask('jar') {
+            namedTask('jar') {
                 it.enabled = false
             }
         }

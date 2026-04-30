@@ -6,6 +6,10 @@ plugin-publish = '2.1.1'
 jacoco = '0.8.14'
 codenarc = '3.7.0-groovy-4.0'
 pmd = '7.23.0'
+groovy = '4.0.29'
+spock = '2.4-groovy-4.0'
+hutool = '5.8.44'
+gson = '2.13.2'
 
 [libraries]
 dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.7' }
@@ -35,6 +39,13 @@ pmd = { module = 'net.sourceforge.pmd:pmd', version.ref = 'pmd' }
 ihub-dependencies = { module = 'pub.ihub.lib:ihub-dependencies', version.ref = 'ihub' }
 
 gradle-node = { module = 'com.github.node-gradle:gradle-node-plugin', version = '7.1.0' }
+
+# 测试 / 工具类（前由 ihub-bom 提供版本，现在显式声明以避免 BOM 链断裂）
+groovy-bom = { module = 'org.apache.groovy:groovy-bom', version.ref = 'groovy' }
+spock-bom = { module = 'org.spockframework:spock-bom', version.ref = 'spock' }
+hutool-core = { module = 'cn.hutool:hutool-core', version.ref = 'hutool' }
+hutool-http = { module = 'cn.hutool:hutool-http', version.ref = 'hutool' }
+gson = { module = 'com.google.code.gson:gson', version.ref = 'gson' }
 
 [plugins]
 testkit = { id = 'pl.droidsonroids.jacoco.testkit', version = '1.0.12' }

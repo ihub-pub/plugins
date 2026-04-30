@@ -22,6 +22,7 @@ import pub.ihub.plugin.IHubPlugin
 import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
+import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
  * IHub版本插件
@@ -32,14 +33,11 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
 
     @Override
     protected void apply() {
-        // dependencyUpdates任务不支持并行执行
-        project.gradle.startParameter.taskNames.any { it.contains('dependencyUpdates') }.with {
-            if (it) {
-                project.gradle.startParameter.setParallelProjectExecutionEnabled(false)
-            }
-        }
+        // NOTE: startParameter mutation for dependencyUpdates parallel disabling removed (CC-incompatible).
+        // Users should pass --no-parallel on the command line when running dependencyUpdates if needed.
 
-        afterEvaluate {
+        // 在 afterEvaluate 中执行 git 版本推断，确保 extension 属性（含 ENV 类型）已解析完毕
+        withExtension(AFTER) {
             configProjectWithGit()
         }
 
@@ -63,10 +61,14 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
         // 推断版本号
         if (extension.useInferringVersion.get() && 'unspecified' == project.version.toString()) {
             try {
-                String gitTag = 'git describe --tags'.execute().text.trim()
-                logger.lifecycle 'Inferring version use git tag: {}', gitTag
-                project.version = (gitTag =~ /^v?(\d+).(\d+).(\d+)(-\w+\d*)?(-\d+-g\w{7})?$/)[0][1..3]
-                    .with { major, minor, patch -> "$major.$minor.${(patch as int) + 1}-SNAPSHOT" }
+                String gitTag = project.providers.of(GitDescribeValueSource) { }.orNull
+                if (gitTag) {
+                    logger.lifecycle 'Inferring version use git tag: {}', gitTag
+                    project.version = (gitTag =~ /^v?(\d+).(\d+).(\d+)(-\w+\d*)?(-\d+-g\w{7})?$/)[0][1..3]
+                        .with { major, minor, patch -> "$major.$minor.${(patch as int) + 1}-SNAPSHOT" }
+                } else {
+                    logger.lifecycle 'Failed to get current git tag'
+                }
             } catch (e) {
                 logger.lifecycle 'Failed to get current git tag', e
             }
@@ -84,10 +86,9 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
     }
 
     private replaceLastVersion(dependencies) {
-        project.allprojects.each { prj ->
-            if (prj.buildFile.exists()) {
-                List<String> lines = prj.buildFile.readLines()
-                prj.buildFile.withWriter { writer ->
+        if (project.buildFile.exists()) {
+            List<String> lines = project.buildFile.readLines()
+            project.buildFile.withWriter { writer ->
                     lines.each { line ->
                         writer.writeLine dependencies.findResult { dep ->
                             def dependency = "${dep.group}:${dep.name}:${dep.version}"
@@ -95,7 +96,6 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
                             line.contains(dependency) ? line.replace(dependency, latest) : null
                         } ?: line
                     }
-                }
             }
         }
     }

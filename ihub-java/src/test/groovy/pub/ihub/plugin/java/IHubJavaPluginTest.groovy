@@ -279,4 +279,45 @@ class IHubJavaPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+
+    def '测试 lombok.config 由插件任务生成'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-java'
+            }
+        '''
+
+        when: '运行 iHubLombokConfig 任务'
+        def result = gradleBuilder.withArguments('iHubLombokConfig').build()
+
+        then: '应生成 lombok.config 并写入约定的 KV'
+        result.output.contains 'BUILD SUCCESSFUL'
+        def f = new File(testProjectDir, 'lombok.config')
+        f.exists()
+        f.text.contains 'config.stopBubbling = true'
+        f.text.contains 'lombok.addLombokGeneratedAnnotation = true'
+    }
+
+    def '测试 lombok.config 已存在时不覆盖'() {
+        setup: '初始化项目并预放 lombok.config'
+        copyProject 'basic.gradle'
+        buildFile << '''
+            apply {
+                plugin 'pub.ihub.plugin.ihub-java'
+            }
+        '''
+        def existing = newFile 'lombok.config'
+        existing.text = '# user provided\nlombok.anyConstructor.addConstructorProperties = true\n'
+
+        when: '运行 iHubLombokConfig 任务'
+        def result = gradleBuilder.withArguments('iHubLombokConfig').build()
+
+        then: '应保留用户原文件，不覆盖'
+        result.output.contains 'BUILD SUCCESSFUL'
+        existing.text.contains 'user provided'
+        !existing.text.contains('config.stopBubbling')
+    }
+
 }
