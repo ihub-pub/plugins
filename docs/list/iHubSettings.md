@@ -198,4 +198,48 @@ dependencyResolutionManagement {
 - 本插件也会自动配置`gradle/libs/`目录下的其他`.versions.toml`文件，如：`myLibs.versions.toml`，一般使用标准配置即可
 - 支持基于`iHub.profile`属性配置，根据profile替换`libs.versions.toml`里的`versions`配置，配置文件路径`gradle/libs/profiles`，如：`gradle/libs/profiles/dev.versions.toml`
 
+## ihub 插件版本目录（ihub.plugins.*）
+
+`ihub-settings` 插件会在 `settings.gradle` 配置阶段自动注册一个名为 `ihub` 的版本目录，其中包含所有 IHub 插件的别名，版本与 `ihub-settings` 保持一致。
+
+**别名规则**：
+
+| 插件 ID | 版本目录别名 |
+|---------|------------|
+| `pub.ihub.plugin` | `ihub.plugins.root` |
+| `pub.ihub.plugin.ihub-<name>` | `ihub.plugins.<name>`（`-` 转 `.`） |
+
+**使用示例**：
+
+::: code-tabs#build
+
+@tab Kotlin
+
+```kotlin
+// build.gradle.kts
+plugins {
+    alias(ihub.plugins.root)         // pub.ihub.plugin
+    alias(ihub.plugins.java)         // pub.ihub.plugin.ihub-java
+    alias(ihub.plugins.boot)         // pub.ihub.plugin.ihub-boot
+    alias(ihub.plugins.skills)       // pub.ihub.plugin.ihub-skills
+    alias(ihub.plugins.git.hooks)    // pub.ihub.plugin.ihub-git-hooks
+    alias(ihub.plugins.verification) // pub.ihub.plugin.ihub-verification
+}
+```
+
+@tab Groovy
+
+```groovy
+// build.gradle
+plugins {
+    alias(ihub.plugins.root)
+    alias(ihub.plugins.java)
+    alias(ihub.plugins.skills)
+}
+```
+
+:::
+
+> **注意**：`ihub` 版本目录由 `ihub-settings` 插件自动注册，无需在 `settings.gradle` 的 `dependencyResolutionManagement.versionCatalogs` 块中手动声明。
+
 @include(../snippet/footnote.md)
