@@ -9,7 +9,7 @@ pmd = '7.24.0'
 groovy = '4.0.29'
 spock = '2.4-groovy-4.0'
 hutool = '5.8.44'
-gson = '2.13.2'
+gson = '2.14.0'
 
 [libraries]
 dependency-management = { module = 'io.spring.gradle:dependency-management-plugin', version = '1.1.7' }
