@@ -17,7 +17,6 @@ package pub.ihub.plugin.bom
 
 import groovy.transform.CompileStatic
 import org.gradle.api.Action
-import pub.ihub.plugin.IHubExtProperty
 import pub.ihub.plugin.IHubExtension
 import pub.ihub.plugin.IHubProjectExtensionAware
 import pub.ihub.plugin.bom.impl.Dependency
@@ -41,11 +40,9 @@ import pub.ihub.plugin.bom.specs.ModuleSpec
 import pub.ihub.plugin.bom.specs.ModulesSpec
 import pub.ihub.plugin.bom.specs.VersionSpec
 
-import java.lang.reflect.Modifier
 import java.util.function.Supplier
 
 import static groovy.transform.TypeCheckingMode.SKIP
-import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 
 /**
  * BOM插件DSL扩展
@@ -54,7 +51,7 @@ import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 @IHubExtension('iHubBom')
 @CompileStatic
 @SuppressWarnings('ConfusingMethodName')
-class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtProperty {
+class IHubBomExtension extends IHubProjectExtensionAware {
 
     final Set<Module> bomVersions = []
     final Set<Modules> dependencyVersions = []
@@ -127,57 +124,5 @@ class IHubBomExtension extends IHubProjectExtensionAware implements IHubExtPrope
         actionSpec.specs*.appendTo specs
     }
 
-    @CompileStatic(SKIP)
-    void refreshCommonSpecs() {
-        if (!root) {
-            IHubBomExtension.declaredFields.findAll { Modifier.isFinal it.modifiers }.name.each {
-                refreshCommonSpecs it
-            }
-        }
-    }
-
-    void refreshCommonSpecs(String fieldName) {
-        Set<ConfigSpec> specs = getProperty(fieldName) as Set<ConfigSpec>
-        setExtProperty rootProject, fieldName, findExtProperty(rootProject, fieldName, specs).with {
-            it.findAll { specs.any { s -> compareSpec it, s } }
-        }
-    }
-
-    void printConfigContent() {
-        printConfig 'bomVersions', 'Group Maven Bom Version', 'Group', 'Module', 'Version'
-        printConfig 'dependencyVersions', 'Group Maven Module Version', 'Group', 'Module', 'Version'
-        printConfig 'groupVersions', 'Group Maven Default Version', 'Group', 'Version'
-        printConfig 'excludeModules', 'Exclude Group Modules', 'Group', 'Module'
-        printConfig 'dependencies', 'Config Default Dependencies', 'DependencyType', 'Dependencies'
-        printConfig 'capabilities', 'Config Default Require Capabilities', 'Dependency', 'Capabilities'
-    }
-
-    boolean isRoot() {
-        project == project.rootProject
-    }
-
-    @CompileStatic(SKIP)
-    void printConfig(String fieldName, String title, String... taps) {
-        Set<ConfigSpec> specs = this."$fieldName" as Set<ConfigSpec>
-        // 获取各项目通用扩展配置
-        Set<ConfigSpec> commonSpecs = findExtProperty rootProject, fieldName, []
-        List<List<?>> data = []
-        if (root) {
-            // 公共配置追加主项目配置
-            specs*.appendTo commonSpecs
-            setExtProperty rootProject, fieldName, commonSpecs
-            commonSpecs*.appendToPrintData data
-        } else {
-            // 子项目过滤掉公共配置
-            specs.findAll { commonSpecs.every { s -> !compareSpec(it, s) } }
-                *.appendToPrintData commonSpecs, data
-        }
-        printConfigContent "${project.name.toUpperCase()} $title", data, taps
-    }
-
-    @CompileStatic(SKIP)
-    static boolean compareSpec(a, b) {
-        a.comparedProperties.every { a."$it" == b."$it" }
-    }
-
 }
+

@@ -15,6 +15,7 @@
  */
 package pub.ihub.plugin
 
+import static pub.ihub.plugin.IHubPluginMethods.printBanner
 import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printMapConfigContent
@@ -28,6 +29,10 @@ class IHubPrintPlugin extends IHubProjectPluginAware<IHubPrintExtension> {
 
     @Override
     void apply() {
+        printBanner 'IHub Plugins Test', [
+            'Java Version'  : System.getProperty('java.version'),
+            'Gradle Version': 'Test',
+        ]
         printConfigContent 'test',
             System.getProperty('hasData', 'false') == 'true' ? [['123', '456', '798']] : null,
             System.getProperty('hasTaps', 'false') == 'true' ? (['t1', 't2', 't3'] as String[]) : null

@@ -57,6 +57,15 @@ final class IHubPluginMethods {
     }
 
     /**
+     * 打印Banner信息（以表格形式展示构建环境信息）
+     * @param title 标题
+     * @param info 信息键值对
+     */
+    static void printBanner(String title, Map<String, String> info) {
+        printConfigContent title, info.collect { k, v -> [k, v] } as List<List<?>>, 'Property', 'Value'
+    }
+
+    /**
      * 打印配置信息
      * @param title 标题
      * @param data 配置信息

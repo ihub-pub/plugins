@@ -32,8 +32,6 @@ final class Modules extends Group<Modules> implements ModulesSpec {
 
     Set<String> modules
 
-    final List<String> comparedProperties = ['id', 'modules', 'version']
-
     @Override
     Modules modules(String... modules) {
         this.modules = modules as Set<String>

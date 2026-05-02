@@ -36,8 +36,6 @@ final class Exclude implements ConfigSpec<Exclude>, ModulesSpec {
     String group
     Set<String> modules
 
-    final List<String> comparedProperties = ['group', 'modules']
-
     @Override
     Exclude version(String version) {
         throw new GradleException('Does not support \'version\' method!')
@@ -70,12 +68,6 @@ final class Exclude implements ConfigSpec<Exclude>, ModulesSpec {
     @Override
     void appendToPrintData(List<List<?>> data) {
         data.addAll(modules.collect { [group, it] })
-    }
-
-    @Override
-    void appendToPrintData(Set<Exclude> commonSpecs, List<List<?>> data) {
-        new Exclude(group).modules(modules - commonSpecs.find { r -> group == r.group }?.modules as String[])
-            .appendToPrintData data
     }
 
 }

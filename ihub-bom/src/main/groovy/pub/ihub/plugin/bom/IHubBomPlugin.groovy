@@ -25,6 +25,7 @@ import pub.ihub.plugin.IHubProjectPluginAware
 
 import static pub.ihub.plugin.IHubLibsVersions.IHUB_LIBS_LOCAL_VERSION
 import static pub.ihub.plugin.IHubLibsVersions.IHubLibsVersion
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
@@ -63,11 +64,9 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
 
             configProject ext
 
-            ext.refreshCommonSpecs()
-            // 使用嵌套 afterEvaluate 确保在其他插件（如 ihub-verification）注册完依赖后再打印
-            // 嵌套 afterEvaluate 会排在当前 afterEvaluate 批次之后执行
+            // 嵌套 afterEvaluate 确保在其他插件（如 ihub-verification）完成 BOM 配置后再打印
             project.afterEvaluate {
-                ext.printConfigContent()
+                printConfigs ext
             }
         }
     }
@@ -142,6 +141,40 @@ class IHubBomPlugin extends IHubProjectPluginAware<IHubBomExtension> {
                     }
                 }
             }
+        }
+    }
+
+    private void printConfigs(IHubBomExtension ext) {
+        String name = project.name.toUpperCase()
+        if (ext.bomVersions) {
+            List<List<?>> data = []
+            ext.bomVersions.each { it.appendToPrintData data }
+            printConfigContent "$name Maven Bom Version", data, 'Group', 'Module', 'Version'
+        }
+        if (ext.dependencyVersions) {
+            List<List<?>> data = []
+            ext.dependencyVersions.each { it.appendToPrintData data }
+            printConfigContent "$name Dependency Versions", data, 'Group', 'Module', 'Version'
+        }
+        if (ext.groupVersions) {
+            List<List<?>> data = []
+            ext.groupVersions.each { it.appendToPrintData data }
+            printConfigContent "$name Group Default Versions", data, 'Group', 'Version'
+        }
+        if (ext.excludeModules) {
+            List<List<?>> data = []
+            ext.excludeModules.each { it.appendToPrintData data }
+            printConfigContent "$name Excluded Modules", data, 'Group', 'Module'
+        }
+        if (ext.dependencies) {
+            List<List<?>> data = []
+            ext.dependencies.each { it.appendToPrintData data }
+            printConfigContent "$name Config Dependencies", data, 'DependencyType', 'Dependencies'
+        }
+        if (ext.capabilities) {
+            List<List<?>> data = []
+            ext.capabilities.each { it.appendToPrintData data }
+            printConfigContent "$name Config Capabilities", data, 'Dependency', 'Capabilities'
         }
     }
 

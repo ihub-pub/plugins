@@ -35,8 +35,6 @@ class Group<T extends Group> implements ConfigSpec<T>, VersionSpec {
     final String id
     String version
 
-    final List<String> comparedProperties = ['id', 'version']
-
     @Override
     T version(String version) {
         this.version = version
