@@ -23,8 +23,8 @@ repositories {
 }
 
 // IHub Plugins 自身的版本（与 settings.gradle.kts 中 pub.ihub.plugin.ihub-settings 的版本保持一致）。
-// 升级时同步修改根目录 settings.gradle.kts 中的 version 字段。
-val iHubPluginsVersion = "1.9.5"
+// 版本不一致时，syncIHubPluginsVersion 任务会自动同步（pre-commit hook 触发）。
+val iHubPluginsVersion = "1.9.6"
 val pluginPublishVersion = libs.versions.plugin.publish.get()
 val testkitVersion = libs.plugins.testkit.get().version.toString()
 
