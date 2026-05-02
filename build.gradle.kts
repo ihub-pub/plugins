@@ -22,10 +22,42 @@ plugins {
 iHubGitHooks {
     hooks.set(
         mapOf(
-            "pre-commit" to "./gradlew clean check -x test spotlessCheck spotlessApply",
+            "pre-commit" to "./gradlew syncIHubPluginsVersion clean check -x test spotlessCheck spotlessApply",
             "commit-msg" to "./gradlew commitCheck"
         )
     )
+}
+
+// 检查 settings.gradle.kts 与 buildSrc/build.gradle.kts 中的 IHub 插件版本是否一致，不一致时自动同步。
+// 由 pre-commit hook 触发，确保 Dependabot 自动升级 settings 版本后 buildSrc 不会滞后。
+tasks.register("syncIHubPluginsVersion") {
+    group = "ihub"
+    description = "Sync IHub plugins version from settings.gradle.kts to buildSrc/build.gradle.kts"
+    doLast {
+        val settingsFile = file("settings.gradle.kts")
+        val buildSrcFile = file("buildSrc/build.gradle.kts")
+
+        val settingsVersion = Regex("""id\("pub\.ihub\.plugin\.ihub-settings"\)\s+version\s+"([^"]+)"""")
+            .find(settingsFile.readText())?.groupValues?.get(1)
+            ?: error("无法从 settings.gradle.kts 解析 ihub-settings 版本")
+
+        val buildSrcText = buildSrcFile.readText()
+        val buildSrcVersion = Regex("""val iHubPluginsVersion = "([^"]+)"""")
+            .find(buildSrcText)?.groupValues?.get(1)
+            ?: error("无法从 buildSrc/build.gradle.kts 解析 iHubPluginsVersion")
+
+        if (settingsVersion != buildSrcVersion) {
+            logger.lifecycle("同步 iHubPluginsVersion: $buildSrcVersion → $settingsVersion")
+            buildSrcFile.writeText(
+                buildSrcText.replace(
+                    """val iHubPluginsVersion = "$buildSrcVersion"""",
+                    """val iHubPluginsVersion = "$settingsVersion""""
+                )
+            )
+        } else {
+            logger.lifecycle("iHubPluginsVersion 已是最新：$settingsVersion")
+        }
+    }
 }
 
 // 注意：原 subprojects {} 块已迁移至 buildSrc/src/main/kotlin/ihub.module-conventions.gradle.kts
