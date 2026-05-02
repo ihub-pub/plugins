@@ -19,8 +19,6 @@ final class Capability implements ConfigSpec<Capability> {
     String dependency
     Set<String> capabilities
 
-    final List<String> comparedProperties = ['dependency', 'capabilities']
-
     @Override
     void renewSpec(Capability spec) {
         spec.capabilities.addAll capabilities

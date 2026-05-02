@@ -34,8 +34,6 @@ final class Dependency implements ConfigSpec<Dependency> {
     String type
     Set dependencies
 
-    final List<String> comparedProperties = ['type', 'dependencies']
-
     @Override
     void renewSpec(Dependency spec) {
         spec.dependencies.addAll dependencies
@@ -44,12 +42,6 @@ final class Dependency implements ConfigSpec<Dependency> {
     @Override
     void appendToPrintData(List<List<?>> data) {
         data.addAll(dependencies.collect { [type, it] })
-    }
-
-    @Override
-    void appendToPrintData(Set<Dependency> commonSpecs, List<List<?>> data) {
-        new Dependency(type, dependencies - commonSpecs.find { r -> type == r.type }?.dependencies)
-            .appendToPrintData data
     }
 
 }

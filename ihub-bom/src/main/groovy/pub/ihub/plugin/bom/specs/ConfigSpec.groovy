@@ -42,24 +42,9 @@ interface ConfigSpec<T extends ConfigSpec> {
     void renewSpec(T spec)
 
     /**
-     * 用于重复比较的属性
-     * @return 比较属性
-     */
-    List<String> getComparedProperties()
-
-    /**
      * 追加打印配置
      * @param data 配置信息
      */
     void appendToPrintData(List<List<?>> data)
-
-    /**
-     * 追加打印配置
-     * @param commonSpecs 配置
-     * @param data 配置信息
-     */
-    default void appendToPrintData(Set<T> commonSpecs, List<List<?>> data) {
-        appendToPrintData data
-    }
 
 }

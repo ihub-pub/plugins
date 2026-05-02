@@ -25,6 +25,7 @@ import pub.ihub.plugin.node.cnpm.task.CnpmSetupTask
 import pub.ihub.plugin.node.cnpm.task.CnpmSyncTask
 import pub.ihub.plugin.node.cnpm.task.CnpmTask
 
+import static pub.ihub.plugin.IHubPluginMethods.printBanner
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
 /**
@@ -40,8 +41,14 @@ class IHubNodePlugin extends IHubProjectPluginAware<IHubNodeExtension> {
 
     @Override
     protected void apply() {
-        logger.lifecycle 'Build with IHub Node Plugin ' + IHubNodePlugin.package.implementationVersion +
-                ', You can see the documentation to learn more see https://doc.ihub.pub/plugins/iHubNode'
+        String version = IHubNodePlugin.package.implementationVersion ?: 'local'
+        printBanner "IHub Node Plugin $version", [
+            'Java Version'  : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')})",
+            'Gradle Version': project.gradle.gradleVersion,
+            'OS'            : "${System.getProperty('os.name')} ${System.getProperty('os.version')} (${System.getProperty('os.arch')})",
+            'CPU / Max Heap': "${Runtime.runtime.availableProcessors()} cores, ${Runtime.runtime.maxMemory() >> 20} MB",
+            'Documentation' : 'https://doc.ihub.pub/plugins/iHubNode',
+        ]
 
         Directory cacheDir = project.layout.projectDirectory.dir '.gradle'
         extension.workDir.set extension.workDir.getOrElse(cacheDir.dir('nodejs').asFile.path)
