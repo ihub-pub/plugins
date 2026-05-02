@@ -31,3 +31,7 @@ dependencies {
 // 注意：本模块仅提供 Spock TestKit 测试基类（IHubSpecification），不发布任何 Gradle 插件。
 // 因此故意不声明 gradlePlugin {} 块，避免 Plugin Portal 校验 implementationClass 时
 // 因 IHubSpecification 不是 Plugin<?> 实现而失败。
+// com.gradle.plugin-publish 由 ihub.module-conventions 引入，但本模块无需发布插件，故禁用 publishPlugins。
+tasks.named("publishPlugins") {
+    enabled = false
+}
