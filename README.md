@@ -94,6 +94,7 @@ IHub 提供了丰富的插件生态，按功能可分为以下几类：
 | [`pub.ihub.plugin.ihub-git-hooks`](https://doc.ihub.pub/plugins/list/iHubGitHooks) | GitHooks | Project | Git 钩子 (Hooks) 自动化配置 |
 | [`pub.ihub.plugin.ihub-node`](https://doc.ihub.pub/plugins/list/iHubNode) | Node.js | Project | Node.js 及 cnpm 运行支持 |
 | [`pub.ihub.plugin.ihub-skills`](https://doc.ihub.pub/plugins/list/iHubSkills) | Skills | Project | AI 技能文件自动安装（Claude Code / Copilot / OpenCode） |
+| [`pub.ihub.plugin.ihub-meta`](https://doc.ihub.pub/plugins/list/iHubMeta) | Meta | Project | 项目结构元数据 JSON 生成，供 LLM/AI 工具使用 |
 
 ## 🚀 快速开始 (Quick Start)
 
@@ -225,6 +226,7 @@ plugins/
 ├── ihub-githooks/          # Git Hooks 自动化插件
 ├── ihub-node/              # Node.js 插件
 ├── ihub-javaagent/         # Javaagent 插件
+├── ihub-meta/              # AI 元数据 JSON 生成插件
 ├── ihub-skills/            # AI 技能文件自动安装插件
 ├── samples/                # 示例项目
 └── docs/                   # VuePress 文档站点
