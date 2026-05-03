@@ -162,6 +162,13 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
         // compileJava 之前确保 lombok.config 存在
         withTask(AbstractCompile) { it.dependsOn lombokConfigTask }
+        // Lombok 插件的 generateEffectiveLombokConfig 读取 lombok.config，
+        // 需显式声明依赖避免 Gradle 隐式依赖验证警告
+        project.tasks.configureEach {
+            if (it.name == 'generateEffectiveLombokConfig' || it.name == 'generateTestEffectiveLombokConfig') {
+                it.dependsOn(lombokConfigTask)
+            }
+        }
     }
 
 }
