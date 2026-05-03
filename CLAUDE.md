@@ -32,6 +32,8 @@ plugins/
 ├── ihub-publish/           # 发布插件：ihub-publish
 ├── ihub-shadow/            # Shadow Fat JAR：ihub-shadow
 ├── ihub-javaagent/         # Javaagent 插件：ihub-javaagent
+├── ihub-meta/              # AI 元数据 JSON 生成：ihub-meta
+├── ihub-skills/            # AI 技能文件自动安装：ihub-skills
 ├── ihub-copyright/         # Spotless 版权头：ihub-copyright
 ├── ihub-githooks/          # Git Hooks 自动化：ihub-git-hooks
 ├── ihub-node/              # Node.js / cnpm 支持：ihub-node
@@ -65,6 +67,8 @@ plugins/
 | `pub.ihub.plugin.ihub-copyright` | ihub-copyright | Spotless 版权头管理 |
 | `pub.ihub.plugin.ihub-git-hooks` | ihub-githooks | Git hooks 配置 |
 | `pub.ihub.plugin.ihub-node` | ihub-node | Node.js / cnpm 支持 |
+| `pub.ihub.plugin.ihub-skills` | ihub-skills | AI 技能文件自动安装（Claude Code / Copilot / OpenCode） |
+| `pub.ihub.plugin.ihub-meta` | ihub-meta | 项目结构元数据 JSON 生成，供 LLM/AI 工具使用 |
 
 ## VERSION COMPATIBILITY
 
