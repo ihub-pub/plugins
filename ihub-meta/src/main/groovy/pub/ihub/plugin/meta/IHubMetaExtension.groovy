@@ -50,12 +50,26 @@ class IHubMetaExtension {
      */
     final Property<Boolean> includeSourceSets
 
+    /**
+     * 是否将项目已解析依赖与 IHub 能力目录进行语义匹配，并在输出中附加组件语义信息（默认关闭）。
+     * 启用后，输出 JSON 中每条依赖将附加 catalog 中对应组件的 description、use_case、domain 等字段。
+     */
+    final Property<Boolean> includeCatalogContext
+
+    /**
+     * IHub 能力目录 catalog.json 的路径（默认：项目根目录下 gradle/ihub-catalog/catalog.json）。
+     * 仅在 {@code includeCatalogContext = true} 时生效。
+     */
+    final RegularFileProperty catalogFile
+
     @Inject
     IHubMetaExtension(ObjectFactory objects) {
         enabled = objects.property(Boolean).convention(true)
         outputFile = objects.fileProperty()
         includeDependencies = objects.property(Boolean).convention(true)
         includeSourceSets = objects.property(Boolean).convention(true)
+        includeCatalogContext = objects.property(Boolean).convention(false)
+        catalogFile = objects.fileProperty()
     }
 
 }

@@ -16,12 +16,17 @@
 package pub.ihub.plugin.meta
 
 import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 
@@ -48,6 +53,14 @@ abstract class IHubMetaTask extends DefaultTask {
     @Input
     abstract Property<Boolean> getIncludeSourceSets()
 
+    @Input
+    abstract Property<Boolean> getIncludeCatalogContext()
+
+    @InputFile
+    @Optional
+    @PathSensitive(PathSensitivity.NONE)
+    abstract RegularFileProperty getCatalogFile()
+
     @TaskAction
     void generate() {
         if (!metaEnabled.get()) {
@@ -56,6 +69,14 @@ abstract class IHubMetaTask extends DefaultTask {
         }
 
         Project rootProject = project.rootProject
+
+        // 预加载 catalog（仅当启用语义注入时）
+        Map<String, Map<String, Object>> catalogIndex = [:]
+        if (includeCatalogContext.get()) {
+            catalogIndex = loadCatalogIndex()
+            logger.lifecycle('IHub Meta: catalog loaded, {} components indexed', catalogIndex.size())
+        }
+
         Map<String, Object> meta = [:]
 
         meta.project = collectProjectInfo(rootProject)
@@ -66,7 +87,7 @@ abstract class IHubMetaTask extends DefaultTask {
         }
 
         if (includeDependencies.get()) {
-            meta.dependencies = collectDependencies(rootProject)
+            meta.dependencies = collectDependencies(rootProject, catalogIndex)
         }
 
         meta.modules = collectModules(rootProject)
@@ -76,6 +97,37 @@ abstract class IHubMetaTask extends DefaultTask {
         outFile.write new JsonBuilder(meta).toPrettyString()
 
         logger.lifecycle('IHub Meta: project metadata written to {}', outFile)
+    }
+
+    /**
+     * 加载 catalog.json 并按 gradle_ref 建立索引，便于依赖匹配。
+     * 返回 Map<gradleRef, componentEntry>。
+     */
+    private Map<String, Map<String, Object>> loadCatalogIndex() {
+        File cf = catalogFile.orNull?.asFile
+        if (!cf?.exists()) {
+            // 尝试默认位置：rootProject/gradle/ihub-catalog/catalog.json
+            cf = new File(project.rootProject.projectDir, 'gradle/ihub-catalog/catalog.json')
+        }
+        if (!cf?.exists()) {
+            logger.warn('IHub Meta: catalog file not found, skipping catalog context injection')
+            return [:]
+        }
+        try {
+            def parsed = new JsonSlurper().parse(cf)
+            Map<String, Map<String, Object>> index = [:]
+            (parsed.components as List<Map<String, Object>>).each { entry ->
+                def ref = entry.gradle_ref
+                List<String> refs = ref instanceof List ? ref as List<String> : [ref as String]
+                refs.each { r ->
+                    if (r) index[r] = entry
+                }
+            }
+            return index
+        } catch (Exception e) {
+            logger.warn('IHub Meta: failed to load catalog: {}', e.message)
+            return [:]
+        }
     }
 
     private Map<String, Object> collectProjectInfo(Project project) {
@@ -183,7 +235,7 @@ abstract class IHubMetaTask extends DefaultTask {
         dirs
     }
 
-    private Map<String, Object> collectDependencies(Project project) {
+    private Map<String, Object> collectDependencies(Project project, Map<String, Map<String, Object>> catalogIndex) {
         Map<String, Object> result = [:]
         List<String> relevantConfigs = [
             'implementation', 'testImplementation', 'compileOnly',
@@ -195,7 +247,21 @@ abstract class IHubMetaTask extends DefaultTask {
             def config = project.configurations.findByName(configName)
             if (config) {
                 def deps = config.dependencies.findAll { it.group }
-                    .collect { "${it.group}:${it.name}:${it.version}" }
+                    .collect { dep ->
+                        Map<String, Object> entry = [gav: "${dep.group}:${dep.name}:${dep.version}"]
+                        if (catalogIndex) {
+                            def match = catalogIndex[dep.name]
+                            if (match) {
+                                entry.catalog = [
+                                    id         : match.id,
+                                    domain     : match.domain,
+                                    description: match.description,
+                                    status     : match.status,
+                                ]
+                            }
+                        }
+                        entry
+                    }
                 if (deps) {
                     result[configName] = deps
                 }
