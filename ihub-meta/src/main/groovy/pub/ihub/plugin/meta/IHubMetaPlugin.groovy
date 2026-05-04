@@ -61,6 +61,8 @@ class IHubMetaPlugin implements Plugin<Project> {
             task.metaEnabled.set(ext.enabled)
             task.includeDependencies.set(ext.includeDependencies)
             task.includeSourceSets.set(ext.includeSourceSets)
+            task.includeCatalogContext.set(ext.includeCatalogContext)
+            task.catalogFile.set(ext.catalogFile)
         }
     }
 
