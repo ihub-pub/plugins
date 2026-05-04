@@ -107,7 +107,7 @@ abstract class IHubMetaTask extends DefaultTask {
         File cf = catalogFile.orNull?.asFile
         if (!cf?.exists()) {
             // 尝试默认位置：rootProject/gradle/ihub-catalog/catalog.json
-            cf = new File(project.rootProject.projectDir, 'gradle/ihub-catalog/catalog.json')
+            cf = project.rootProject.file('gradle/ihub-catalog/catalog.json')
         }
         if (!cf?.exists()) {
             logger.warn('IHub Meta: catalog file not found, skipping catalog context injection')
@@ -120,11 +120,11 @@ abstract class IHubMetaTask extends DefaultTask {
                 def ref = entry.gradle_ref
                 List<String> refs = ref instanceof List ? ref as List<String> : [ref as String]
                 refs.each { r ->
-                    if (r) index[r] = entry
+                    if (r) { index[r] = entry }
                 }
             }
             return index
-        } catch (Exception e) {
+        } catch (IOException | groovy.json.JsonException e) {
             logger.warn('IHub Meta: failed to load catalog: {}', e.message)
             return [:]
         }
