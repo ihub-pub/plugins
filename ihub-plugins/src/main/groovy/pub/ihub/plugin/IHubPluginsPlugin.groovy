@@ -19,7 +19,7 @@ import org.gradle.api.tasks.Delete
 import pub.ihub.plugin.bom.IHubBomPlugin
 import pub.ihub.plugin.version.IHubVersionPlugin
 
-import static pub.ihub.plugin.IHubPluginMethods.printBanner
+import static pub.ihub.plugin.IHubPluginMethods.printConfigContent
 import static pub.ihub.plugin.IHubPluginMethods.printLineConfigContent
 import static pub.ihub.plugin.IHubProjectPluginAware.EvaluateStage.AFTER
 
@@ -37,13 +37,13 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
         if (project == project.rootProject) {
             String version = IHubPluginsPlugin.package.implementationVersion ?: 'local'
-            printBanner "IHub Plugins $version", [
-                'Java Version'  : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')})",
-                'Gradle Version': project.gradle.gradleVersion,
-                'OS'            : "${System.getProperty('os.name')} ${System.getProperty('os.version')} (${System.getProperty('os.arch')})",
-                'CPU / Max Heap': "${Runtime.runtime.availableProcessors()} cores, ${Runtime.runtime.maxMemory() >> 20} MB",
-                'Documentation' : 'https://doc.ihub.pub/plugins',
-            ]
+            printConfigContent "IHub Plugins $version".toString(), [
+                ['Java Version',   "${System.getProperty('java.version')} (${System.getProperty('java.vendor')})".toString()],
+                ['Gradle Version', project.gradle.gradleVersion],
+                ['OS',             "${System.getProperty('os.name')} ${System.getProperty('os.version')} (${System.getProperty('os.arch')})".toString()],
+                ['CPU / Max Heap', "${Runtime.runtime.availableProcessors()} cores, ${Runtime.runtime.maxMemory() >> 20} MB".toString()],
+                ['Documentation',  'https://doc.ihub.pub/plugins'],
+            ] as List<List<?>>, 'Property', 'Value'
             // Github Actions环境下，自动同意Scan插件条款
             if (project.hasProperty('buildScan') && System.getenv('GITHUB_ACTIONS')) {
                 project.buildScan {

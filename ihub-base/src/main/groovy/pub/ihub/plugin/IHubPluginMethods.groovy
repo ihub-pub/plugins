@@ -66,6 +66,15 @@ final class IHubPluginMethods {
     }
 
     /**
+     * 打印Banner信息（兼容跨ClassLoader场景下GString/LinkedHashMap类型）
+     * @param title 标题（接受GString）
+     * @param info 信息键值对（接受LinkedHashMap）
+     */
+    static void printBanner(Object title, Map info) {
+        printConfigContent title.toString(), info.collect { k, v -> [k, v] } as List<List<?>>, 'Property', 'Value'
+    }
+
+    /**
      * 打印配置信息
      * @param title 标题
      * @param data 配置信息
