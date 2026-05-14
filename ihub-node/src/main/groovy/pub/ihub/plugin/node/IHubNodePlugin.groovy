@@ -48,7 +48,7 @@ class IHubNodePlugin extends IHubProjectPluginAware<IHubNodeExtension> {
             ['OS',             "${System.getProperty('os.name')} ${System.getProperty('os.version')} (${System.getProperty('os.arch')})".toString()],
             ['CPU / Max Heap', "${Runtime.runtime.availableProcessors()} cores, ${Runtime.runtime.maxMemory() >> 20} MB".toString()],
             ['Documentation',  'https://doc.ihub.pub/plugins/iHubNode'],
-        ] as List<List<?>>, 'Property', 'Value'
+        ], 'Property', 'Value'
 
         Directory cacheDir = project.layout.projectDirectory.dir '.gradle'
         extension.workDir.set extension.workDir.getOrElse(cacheDir.dir('nodejs').asFile.path)

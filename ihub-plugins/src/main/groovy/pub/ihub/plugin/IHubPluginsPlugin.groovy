@@ -43,7 +43,7 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
                 ['OS',             "${System.getProperty('os.name')} ${System.getProperty('os.version')} (${System.getProperty('os.arch')})".toString()],
                 ['CPU / Max Heap', "${Runtime.runtime.availableProcessors()} cores, ${Runtime.runtime.maxMemory() >> 20} MB".toString()],
                 ['Documentation',  'https://doc.ihub.pub/plugins'],
-            ] as List<List<?>>, 'Property', 'Value'
+            ], 'Property', 'Value'
             // Github Actions环境下，自动同意Scan插件条款
             if (project.hasProperty('buildScan') && System.getenv('GITHUB_ACTIONS')) {
                 project.buildScan {
