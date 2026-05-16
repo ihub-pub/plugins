@@ -16,10 +16,12 @@
 package pub.ihub.plugin.java
 
 import io.freefair.gradle.plugins.lombok.LombokPlugin
+import io.freefair.gradle.plugins.lombok.tasks.LombokConfig
 import net.bytebuddy.build.gradle.AbstractByteBuddyTask
 import net.bytebuddy.build.gradle.AbstractByteBuddyTaskExtension
 import net.bytebuddy.build.gradle.ByteBuddyPlugin
 import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.AbstractCompile
 import org.jmolecules.bytebuddy.JMoleculesPlugin
@@ -162,12 +164,16 @@ class IHubJavaPlugin extends IHubProjectPluginAware<IHubJavaExtension> {
         }
         // compileJava 之前确保 lombok.config 存在
         withTask(AbstractCompile) { it.dependsOn lombokConfigTask }
-        // Lombok 插件的 generateEffectiveLombokConfig 读取 lombok.config，
-        // 需显式声明依赖避免 Gradle 隐式依赖验证警告
-        project.tasks.configureEach {
-            if (it.name == 'generateEffectiveLombokConfig' || it.name == 'generateTestEffectiveLombokConfig') {
-                it.dependsOn(lombokConfigTask)
-            }
+        // freefair LombokConfig（generateEffectiveLombokConfig）在运行时会沿目录树向上扫描并读取 lombok.config，
+        // 但未将其声明为 @InputFiles，Gradle 9 隐式依赖检测会报错。
+        // 解决方案：将 iHubLombokConfig 的输出文件显式注册为 LombokConfig 任务的 input，
+        // Gradle 由此自动建立正确的任务依赖，同时满足增量构建语义。
+        withTask(LombokConfig) { lombokConfig ->
+            lombokConfig.inputs
+                .file(lombokConfigTask.flatMap { it.lombokConfigFile })
+                .withPropertyName('iHubLombokConfig.output')
+                .withPathSensitivity(PathSensitivity.NONE)
+                .optional()
         }
     }
 
