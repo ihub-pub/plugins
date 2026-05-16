@@ -54,10 +54,14 @@ class IHubPluginsPlugin extends IHubProjectPluginAware<IHubPluginsExtension> {
 
             // 清理根项目
             cleanRootProject()
+
+            // IHubVersionPlugin 仅根项目需要：dependencyUpdates 通过 allprojects 扫描子项目，
+            // 子项目注册 dependencyUpdates 是冗余的，且在 Gradle 9+ 并行模式下触发报错
+            applyPlugin IHubVersionPlugin
         }
 
-        // 默认应用IHubVersion、IHubBom插件
-        applyPlugin IHubVersionPlugin, IHubBomPlugin
+        // 默认应用IHubBom插件
+        applyPlugin IHubBomPlugin
 
         // NOTE: recursive subprojects apply is IP-incompatible; each subproject should
         // explicitly apply pub.ihub.plugin via ihub.module-conventions or its own build script.

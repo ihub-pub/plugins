@@ -65,6 +65,13 @@ class IHubSettingsPlugin implements Plugin<Settings> {
 
     @Override
     void apply(Settings settings) {
+        // dependencyUpdates（gradle-versions-plugin）在 Gradle 9+ 并行执行时直接报错。
+        // gradle.properties 可能全局开启了 org.gradle.parallel=true，需在 settings 层
+        // 检测任务名并临时关闭并行，此处早于 CC 生效，修改 startParameter 是安全的。
+        if (settings.startParameter.taskNames.any { it == 'dependencyUpdates' || it.endsWith(':dependencyUpdates') }) {
+            settings.gradle.startParameter.parallelProjectExecutionEnabled = false
+        }
+
         // 配置插件仓库
         configPluginRepositories settings
 

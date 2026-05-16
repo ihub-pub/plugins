@@ -379,4 +379,15 @@ println "I'm " + libs.versions.henry.get()
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '并行模式下dependencyUpdates任务自动关闭并行执行测试'() {
+        when: '开启并行执行并运行 dependencyUpdates'
+        newFile(DEFAULT_BUILD_FILE) << "plugins { id 'pub.ihub.plugin' }"
+        // 通过命令行参数开启并行，模拟 gradle.properties org.gradle.parallel=true 的场景
+        def result = gradleBuilder.withArguments('--parallel', 'dependencyUpdates').build()
+
+        then: 'dependencyUpdates 正常执行，不因并行标志报错'
+        result.output.contains 'BUILD SUCCESSFUL'
+        result.tasks.any { it.path == ':dependencyUpdates' }
+    }
+
 }
