@@ -379,4 +379,22 @@ println "I'm " + libs.versions.henry.get()
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '并行模式下dependencyUpdates任务自动关闭并行执行测试'() {
+        when: '开启并行执行并运行 dependencyUpdates'
+        // 注册一个同名的假任务，打印 startParameter 中并行标志的实际值
+        // IHubSettingsPlugin 检测到 dependencyUpdates 时会将并行标志置为 false
+        newFile(DEFAULT_BUILD_FILE) << """
+            tasks.register('dependencyUpdates') {
+                doLast {
+                    println 'parallel:' + gradle.startParameter.parallelProjectExecutionEnabled
+                }
+            }
+        """
+        def result = gradleBuilder.withArguments('--parallel', 'dependencyUpdates').build()
+
+        then: 'IHubSettingsPlugin 已将并行标志关闭'
+        result.output.contains 'BUILD SUCCESSFUL'
+        result.output.contains 'parallel:false'
+    }
+
 }

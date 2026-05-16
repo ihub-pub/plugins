@@ -33,9 +33,6 @@ class IHubVersionPlugin extends IHubProjectPluginAware<IHubVersionExtension> {
 
     @Override
     protected void apply() {
-        // NOTE: startParameter mutation for dependencyUpdates parallel disabling removed (CC-incompatible).
-        // Users should pass --no-parallel on the command line when running dependencyUpdates if needed.
-
         // 在 afterEvaluate 中执行 git 版本推断，确保 extension 属性（含 ENV 类型）已解析完毕
         withExtension(AFTER) {
             configProjectWithGit()

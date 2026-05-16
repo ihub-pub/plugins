@@ -138,4 +138,36 @@ class IHubVersionPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
+    def '多项目构建中仅根项目注册dependencyUpdates任务测试'() {
+        setup: '初始化项目'
+        copyProject 'basic.gradle'
+        settingsFile << '\ninclude \'sub\''
+        newFolder 'sub'
+        // 子项目通过 ihub-publish 间接引入 IHubPluginsPlugin（进而触发 IHubVersionPlugin 的注册路径）
+        newFile('sub/build.gradle') << '''
+plugins {
+    id 'pub.ihub.plugin'
+}
+task checkNoVersionTask {
+    doLast {
+        assert !project.tasks.names.contains('dependencyUpdates') :
+            "子项目不应注册 dependencyUpdates 任务，该任务由根项目通过 allprojects 扫描子项目依赖"
+    }
+}
+'''
+
+        when: '检查子项目任务'
+        def result = gradleBuilder.withArguments(':sub:checkNoVersionTask').build()
+
+        then: '子项目没有 dependencyUpdates'
+        result.output.contains 'BUILD SUCCESSFUL'
+
+        when: '根项目 dependencyUpdates 正常执行'
+        result = gradleBuilder.withArguments('dependencyUpdates').build()
+
+        then: '仅根项目执行，且构建成功'
+        result.output.contains 'BUILD SUCCESSFUL'
+        result.tasks.count { it.path.endsWith(':dependencyUpdates') } == 1
+    }
+
 }
