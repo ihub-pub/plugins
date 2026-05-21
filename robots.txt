@@ -1,0 +1,5 @@
+
+User-agent:*
+Disallow:
+
+Sitemap: https://doc.ihub.pub/plugins/plugins/sitemap.xml
