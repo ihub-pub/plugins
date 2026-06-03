@@ -284,3 +284,9 @@ plugins/
 ## 📄 开源协议 (License)
 
 本项目基于 [Apache License 2.0](LICENSE) 协议开源。
+
+## 💝 鸣谢
+
+非常感谢 [Jetbrains](https://jb.gg/OpenSourceSupport) 对本开源项目的支持。
+
+[![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://jb.gg/OpenSourceSupport "Thanks to JetBrains for sponsoring")
