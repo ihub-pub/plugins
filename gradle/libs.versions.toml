@@ -8,7 +8,7 @@ codenarc = '3.7.0-groovy-4.0'
 pmd = '7.26.0'
 groovy = '4.0.29'
 spock = '2.4-groovy-4.0'
-hutool = '5.8.46'
+hutool = '5.8.47'
 gson = '2.14.0'
 
 [libraries]
