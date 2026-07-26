@@ -196,4 +196,128 @@ class IHubMetaPluginTest extends IHubSpecification {
         json.modules.find { it.name == 'sub2' && it.path == ':sub2' }
     }
 
+    def 'catalog 语义注入测试：includeCatalogContext 启用时依赖附加 catalog 字段'() {
+        given: '创建 catalog.json 并配置依赖'
+        newFolder('gradle', 'ihub-catalog')
+        def catalogFile = newFile('gradle/ihub-catalog/catalog.json')
+        catalogFile << '''
+            {
+              "catalog_version": "1.0.0",
+              "components": [
+                {
+                  "id": "guava-test",
+                  "name": "Guava",
+                  "domain": "utilities",
+                  "type": "third-party-reference",
+                  "description": "Google Core Libraries",
+                  "status": "stable",
+                  "gradle_ref": "guava"
+                }
+              ]
+            }
+        '''
+        buildFile << '''
+            plugins {
+                id 'java'
+            }
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                implementation 'com.google.guava:guava:33.0.0-jre'
+            }
+            iHubMeta {
+                includeCatalogContext = true
+            }
+        '''
+
+        when: '执行 iHubMeta 任务'
+        gradleBuilder.withArguments('iHubMeta').build()
+
+        then: '依赖条目包含 catalog 语义字段'
+        def jsonFile = new File(testProjectDir, 'build/ihub/project-meta.json')
+        def json = new JsonSlurper().parse(jsonFile)
+        json.dependencies
+        def implDeps = json.dependencies.implementation as List<Map>
+        def guavaDep = implDeps.find { it.gav?.contains('guava') }
+        guavaDep
+        guavaDep.catalog
+        guavaDep.catalog.id == 'guava-test'
+        guavaDep.catalog.domain == 'utilities'
+        guavaDep.catalog.description == 'Google Core Libraries'
+    }
+
+    def 'catalog 自定义路径测试：catalogFile 指向外部文件'() {
+        given: '指定自定义 catalog 路径'
+        def catalogFile = newFile('custom-catalog.json')
+        catalogFile << '''
+            {
+              "components": [
+                {
+                  "id": "custom-lib",
+                  "name": "Custom",
+                  "domain": "data",
+                  "type": "third-party-reference",
+                  "description": "Custom lib",
+                  "status": "stable",
+                  "gradle_ref": "guava"
+                }
+              ]
+            }
+        '''
+        buildFile << """
+            plugins {
+                id 'java'
+            }
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                implementation 'com.google.guava:guava:33.0.0-jre'
+            }
+            iHubMeta {
+                includeCatalogContext = true
+                catalogFile = file('${catalogFile.absolutePath.replace('\\', '\\\\')}')
+            }
+        """
+
+        when: '执行 iHubMeta 任务'
+        gradleBuilder.withArguments('iHubMeta').build()
+
+        then: '使用自定义路径的 catalog 匹配依赖'
+        def jsonFile = new File(testProjectDir, 'build/ihub/project-meta.json')
+        def json = new JsonSlurper().parse(jsonFile)
+        def guavaDep = (json.dependencies.implementation as List<Map>).find { it.gav?.contains('guava') }
+        guavaDep.catalog.id == 'custom-lib'
+    }
+
+    def 'catalog 缺失容错测试：catalogFile 不存在时不报错'() {
+        given: '启用 catalog 但不提供文件'
+        buildFile << '''
+            plugins {
+                id 'java'
+            }
+            repositories {
+                mavenCentral()
+            }
+            dependencies {
+                implementation 'com.google.guava:guava:33.0.0-jre'
+            }
+            iHubMeta {
+                includeCatalogContext = true
+            }
+        '''
+
+        when: '执行 iHubMeta 任务'
+        def result = gradleBuilder.withArguments('iHubMeta').build()
+
+        then: '构建成功，依赖无 catalog 字段'
+        result.output.contains 'BUILD SUCCESSFUL'
+        def jsonFile = new File(testProjectDir, 'build/ihub/project-meta.json')
+        def json = new JsonSlurper().parse(jsonFile)
+        def guavaDep = (json.dependencies.implementation as List<Map>).find { it.gav?.contains('guava') }
+        guavaDep
+        !guavaDep.containsKey('catalog')
+    }
+
 }
