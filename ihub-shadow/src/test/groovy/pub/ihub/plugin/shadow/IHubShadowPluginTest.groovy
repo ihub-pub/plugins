@@ -15,9 +15,7 @@
  */
 package pub.ihub.plugin.shadow
 
-import org.gradle.testkit.runner.UnexpectedBuildFailure
 import pub.ihub.plugin.test.IHubSpecification
-import spock.lang.FailsWith
 import spock.lang.Title
 
 /**
@@ -49,7 +47,6 @@ class IHubShadowPluginTest extends IHubSpecification {
         result.output.contains 'BUILD SUCCESSFUL'
     }
 
-    @FailsWith(value = UnexpectedBuildFailure, reason = 'shadow 暂不兼容Gradle 9.0.0')
     def 'Shadow插件应用配置测试'() {
         setup: '初始化项目'
         copyProject 'basic.gradle'
