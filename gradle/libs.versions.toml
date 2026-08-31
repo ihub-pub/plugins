@@ -21,7 +21,7 @@ freefair-settings = { module = 'io.freefair.gradle:settings-plugin', version.ref
 ben-manes-versions = { module = 'com.github.ben-manes:gradle-versions-plugin', version = '0.54.0' }
 spotless = { module = 'com.diffplug.spotless:spotless-plugin-gradle', version = '8.10.1' }
 maven-central = { module = 'tech.yanand.gradle:maven-central-publish', version = '1.3.0' }
-shadow = { module = 'com.gradleup.shadow:shadow-gradle-plugin', version = '8.3.6' }
+shadow = { module = 'com.gradleup.shadow:shadow-gradle-plugin', version = '9.6.1' }
 javaagent = { module = 'com.ryandens:plugin', version = '0.12.2' }
 byte-buddy = { module = 'net.bytebuddy:byte-buddy-gradle-plugin', version = '1.18.12' }
 jmolecules-bytebuddy = { module = 'org.jmolecules.integrations:jmolecules-bytebuddy', version = '1.6.0' }
