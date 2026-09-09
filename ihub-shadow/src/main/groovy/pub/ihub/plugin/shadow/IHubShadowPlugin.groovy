@@ -17,7 +17,7 @@ package pub.ihub.plugin.shadow
 
 import com.github.jengelman.gradle.plugins.shadow.ShadowApplicationPlugin
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
-import com.github.jengelman.gradle.plugins.shadow.internal.JavaJarExec
+import org.gradle.api.tasks.JavaExec
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import groovy.transform.CompileStatic
 import org.gradle.api.plugins.JavaPluginExtension
@@ -38,7 +38,7 @@ class IHubShadowPlugin extends IHubProjectPluginAware<IHubShadowExtension> {
     protected void apply() {
         withExtension(AFTER) { ext ->
             if (hasPlugin(ShadowApplicationPlugin)) {
-                namedTask(SHADOW_RUN_TASK_NAME, JavaJarExec) { JavaJarExec it ->
+                namedTask(SHADOW_RUN_TASK_NAME, JavaExec) { JavaExec it ->
                     ext.systemProperties it, '.shadow-java-local.properties'
                 }
             }
