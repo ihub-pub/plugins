@@ -1,6 +1,6 @@
 [versions]
 ihub = '2.0.1'
-freefair = '9.5.0'
+freefair = '9.7.0'
 spring-boot = '4.1.1'
 plugin-publish = '2.2.1'
 jacoco = '0.8.15'
