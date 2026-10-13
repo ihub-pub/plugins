@@ -7,7 +7,7 @@ jacoco = '0.8.15'
 codenarc = '3.7.0-groovy-4.0'
 pmd = '7.28.0'
 groovy = '4.0.32'
-spock = '2.4-groovy-4.0'
+spock = '2.5-groovy-4.0'
 hutool = '5.8.47'
 gson = '2.14.0'
 
