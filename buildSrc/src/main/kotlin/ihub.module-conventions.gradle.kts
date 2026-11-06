@@ -71,7 +71,7 @@ dependencies {
 }
 
 // 与 Gradle 内置 Groovy 版本保持一致
-// 通过 `iHubBom { importBoms { ... } }` 让 Spring Dependency Management 强制对齐 4.0.29
+// 通过 `iHubBom { importBoms { ... } }` 让 Spring Dependency Management 强制对齐目录中的 Groovy 版本
 // （直接用 `enforcedPlatform()` 无法压制 plugin-publish / testkit 拉入的 5.0.4 strict 请求）。
 // `iHubBom` 由 ihub-bom 注册（被 ihub-publish 间接引入），用 pluginManager.withPlugin 推迟到
 // ihub-bom 真正 apply 之后再调用。
